@@ -1,0 +1,32 @@
+{
+  "name": "dbl-client",
+  "version": "0.0.0",
+  "description": "Client for DBL",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "",
+  "license": "BSD",
+  "devDependencies": {
+    "browserify-shim": "~2.0.3",
+    "uglify-js": "~2.2.5",
+    "coffeeify": "~0.4.0",
+    "grunt-contrib-watch": "~0.3.1",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-sass": "~0.3.0",
+    "browser-resolve": "git://github.com/alexgorbatchev/node-browser-resolve.git",
+    "module-deps": "git://github.com/alexgorbatchev/module-deps.git",
+    "browserify": "git://github.com/alexgorbatchev/node-browserify.git",
+    "grunt-contrib-concat": "~0.3.0"
+  },
+  "dependencies": {
+    "streamline": "~0.4.9",
+    "underscore": "~1.4.4",
+    "grunt": "~0.4.1",
+    "grunt-contrib-handlebars": "~0.5.8",
+    "coffee-script": "~1.6.2",
+    "backbone-faux-server": "~0.7.0"
+  }
+}
