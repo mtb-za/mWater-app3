@@ -35,12 +35,15 @@ class Pager extends Backbone.View
 
     @stack=[]
 
-  addPage: (pageClass, args) ->
+  # Adds a page from a constructor
+  openPage: (pageClass, args) ->
     # Create page
     page = new pageClass(args)
     
     # Deactivate current page
-    # TOOD
+    if @stack.length > 0
+      _.last(@stack).deactivate()
+      _.last(@stack).$el.detach()
 
     # Activate new page
     @stack.push(page)
@@ -48,9 +51,32 @@ class Pager extends Backbone.View
     page.activate()
     @$el.append(page.el)
 
+    # Indicate page change
+    @trigger 'change'
 
+  closePage: (replaceWith, args) ->
+    # Prevent closing last page
+    if not replaceWith and @stack.length <= 1
+      return
 
+    # Destroy current page
+    _.last(@stack).deactivate()
+    _.last(@stack).stop()
+    @stack.pop()
 
+    # Open replaceWith
+    if replaceWith
+      @openPage replaceWith, args
 
+    # Indicate page change
+    @trigger 'change'
+
+  # Get title of active page
+  title: ->
+    _.last(@stack).title()
+
+  # Determine if has multiple pages
+  multiplePages: ->
+    @stack.length > 1
 
 module.exports = Pager

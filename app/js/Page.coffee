@@ -4,5 +4,8 @@ class Page extends Backbone.View
   deactivate: ->
   stop: ->
 
+  title: ->
+    ""
+
 
 module.exports = Page
