@@ -21,6 +21,10 @@ module.exports = function(grunt) {
       libscss: {
         src: ['vendor/bootstrap/css/bootstrap.min.css'],
         dest: 'dist/libs.css'
+      },
+      css: {
+          src: ['app/css/*.css'],
+          dest: 'dist/app.css'
       }
     },
     handlebars: {

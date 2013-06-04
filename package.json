@@ -27,6 +27,7 @@
     "grunt": "~0.4.1",
     "grunt-contrib-handlebars": "~0.5.8",
     "coffee-script": "~1.6.2",
-    "backbone-faux-server": "~0.7.0"
+    "backbone-faux-server": "~0.7.0",
+    "express": "~3.2.6"
   }
 }
