@@ -13,7 +13,7 @@ module.exports = function() {
     }, function(err, src) {
         if (err) return console.error(err);
 
-        fs.writeFileSync("dist/app.js", src);
+        fs.writeFileSync("dist/js/app.js", src);
         done();
     });
 };

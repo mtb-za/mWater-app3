@@ -9,6 +9,10 @@ class AppView extends Backbone.View
 
     @render()
 
+    # Make clicks fast
+    $ =>
+      FastClick.attach(@el);
+
   events:
     'click #navbar_slidemenu_button': 'toggleSlideMenu'
     'click #navbar_back': 'back'

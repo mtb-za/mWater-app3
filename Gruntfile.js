@@ -16,15 +16,15 @@ module.exports = function(grunt) {
               'vendor/handlebars.runtime.js',
               'vendor/fastclick.js'],
         // the location of the resulting JS file
-        dest: 'dist/libs.js'
+        dest: 'dist/js/libs.js'
       },
       libscss: {
         src: ['vendor/bootstrap/css/bootstrap.min.css'],
-        dest: 'dist/libs.css'
+        dest: 'dist/css/libs.css'
       },
       css: {
           src: ['app/css/*.css'],
-          dest: 'dist/app.css'
+          dest: 'dist/css/app.css'
       }
     },
     handlebars: {
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
         }
       },
       files: {
-        "dist/templates.js": ["app/templates/**/*.hbs"] }
+        "dist/js/templates.js": ["app/templates/**/*.hbs"] }
       }
     },
     copy: {

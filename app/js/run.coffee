@@ -1,27 +1,27 @@
 AppView = require("./AppView")
 SlideMenu = require("./SlideMenu")
 
-$ ->
-  # Create page
-  Page = require("./Page")
-  class SomePage extends Page
-    constructor: (args) ->
-      super()
-      console.log args
-      @render()
+# Create page
+Page = require("./Page")
+class SomePage extends Page
+  constructor: (args) ->
+    super()
+    console.log args
+    @render()
 
-    render: ->
-      @$el.html("this is a test")
-    title: ->
-      "some page!"
+  render: ->
+    for x in [0..500]
+      @$el.append("this is a test")
+  title: ->
+    "some page!"
 
-  Pager = require("./Pager")
-  pager = new Pager()
+Pager = require("./Pager")
+pager = new Pager()
 
-  slideMenu = new SlideMenu()
-  app = new AppView(slideMenu: slideMenu, pager: pager)
+slideMenu = new SlideMenu()
+app = new AppView(slideMenu: slideMenu, pager: pager)
 
-  pager.openPage(SomePage, ["test"])
-  pager.openPage(SomePage, ["test2"])
-  
-  $("body").append(app.el)
+pager.openPage(SomePage, ["test"])
+pager.openPage(SomePage, ["test2"])
+
+$("body").append(app.$el)

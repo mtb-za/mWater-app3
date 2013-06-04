@@ -21,7 +21,7 @@ class SlideMenu extends Backbone.View
     # Animate visibility
     @$el.css("width", @width + "px")
     @$el.css("right", -@width + "px")
-    @$el.show({}).animate({ right: "0px" })
+    @$el.show().animate({ right: "0px" })
     @visible = true;
  
 module.exports = SlideMenu
