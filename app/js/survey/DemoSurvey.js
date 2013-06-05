@@ -427,7 +427,7 @@ function createSurvey(model) {
         id : "q40",
         model : model,
         required : true,
-        prompt : "Has there been discontinuity n the last 10 days at any tapstand?",
+        prompt : "Has there been discontinuity in the last 10 days at any tapstand?",
 
         options : [[true, "Yes"], [false, "No"]],
     }));

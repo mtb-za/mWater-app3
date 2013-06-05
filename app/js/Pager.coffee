@@ -65,6 +65,7 @@ class Pager extends Backbone.View
     # Destroy current page
     _.last(@stack).deactivate()
     _.last(@stack).stop()
+    _.last(@stack).remove()
     @stack.pop()
 
     # Open replaceWith

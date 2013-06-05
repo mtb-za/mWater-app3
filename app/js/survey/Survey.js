@@ -91,7 +91,7 @@ exports.SurveyView = Backbone.View.extend({
         this.renderNextPrev();
 
         // Scroll into view
-        this.el.scrollIntoView();
+        this.$el.scrollintoview();
     },
     
     renderNextPrev : function() {
@@ -390,7 +390,7 @@ exports.DateQuestion = exports.Question.extend({
         this.model.set(this.id, this.$el.find('input[name="date"]').val());
     },
     renderAnswer : function(answerEl) {
-        answerEl.html(_.template('<input name="date" />', this));
+        answerEl.html(_.template('<input class="needsclick" name="date" />', this));
 
         answerEl.find('input').val(this.model.get(this.id));
 
