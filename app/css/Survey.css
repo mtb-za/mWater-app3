@@ -21,3 +21,6 @@
 .required {
     color: Red;
 }
+select {
+  width: 300px;
+}

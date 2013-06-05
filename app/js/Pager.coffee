@@ -4,19 +4,23 @@ class Pager extends Backbone.View
   constructor: (ctx) ->
     super()
 
+    # Context contains pager
+    ctx.pager = this
+
     # Save context
     @ctx = ctx
 
     # Setup special mobile behavior
-    # # Make links and anything with class 'tappable' act on taps
-    # @$el.on "mousedown touchstart", "a,button,.tappable", ->
-    #   $(this).addClass "pressed"
-    #   pressedElem = this
+    # Make links and anything with class 'tappable' act on taps
+    pressedElem = null
+    @$el.on "mousedown touchstart", "a,button,.tappable", ->
+      $(this).addClass "pressed"
+      pressedElem = this
 
-    # @$el.on "mouseup touchleave touchend touchmove touchcancel scroll", ->
-    #   if pressedElem
-    #     $(pressedElem).removeClass "pressed"
-    #     pressedElem = null
+    @$el.on "mouseup touchleave touchend touchmove touchcancel scroll", ->
+      if pressedElem
+        $(pressedElem).removeClass "pressed"
+        pressedElem = null
 
     # Make checkboxes clickable
     @$el.on "click", ".checkbox", ->
@@ -39,7 +43,7 @@ class Pager extends Backbone.View
     @stack=[]
 
   # Adds a page from a constructor
-  openPage: (pageClass, args) ->
+  openPage: (pageClass, args...) ->
     # Create page
     page = new pageClass(@ctx, args...)
     
@@ -71,6 +75,10 @@ class Pager extends Backbone.View
     # Open replaceWith
     if replaceWith
       @openPage replaceWith, args
+    else
+      page = _.last(@stack)
+      page.activate()
+      @$el.append(page.el)
 
     # Indicate page change
     @trigger 'change'

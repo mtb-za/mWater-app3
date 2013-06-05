@@ -4,8 +4,8 @@ SlideMenu = require("./SlideMenu")
 # Create page
 Page = require("./Page")
 class SomePage extends Page
-  constructor: (args) ->
-    super()
+  constructor: (ctx, args) ->
+    super(ctx)
     console.log args
     @render()
 
@@ -22,8 +22,11 @@ pager = new Pager(ctx)
 slideMenu = new SlideMenu()
 app = new AppView(slideMenu: slideMenu, pager: pager)
 
-pager.openPage(SomePage, ["test"])
-survey = require("./survey/DemoSurvey")(ctx);
-pager.openPage(require("./pages/SurveyPage"), [survey])
+pager.openPage(require("./pages/MainPage"))
 
+# survey = require("./survey/DemoSurvey")(ctx);
+# pager.openPage(require("./pages/SurveyPage"), survey)
+
+if $("body").length == 0
+  alert("fail!!!")
 $("body").append(app.$el)

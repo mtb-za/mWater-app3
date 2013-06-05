@@ -80,13 +80,13 @@ exports.SurveyView = Backbone.View.extend({
         this.sections[index].$el.show();
 
         // Setup breadcrumbs
-        var tmpl = '<% _.each(sections, function(s, i) { %> <li><a href="#" class="section-crumb" data-value="<%=i%>"><%=s.title%></a> <span class="divider">/</span></li> <% }); %>';
+        var tmpl = '<% _.each(sections, function(s, i) { %> <li><a class="section-crumb" data-value="<%=i%>"><%=s.title%></a> <span class="divider">/</span></li> <% }); %>';
         var visibleSections = _.filter(_.first(this.sections, index + 1), function(s) {
             return s.shouldBeVisible()
         });
         this.$(".breadcrumb").html(_.template(tmpl, {
             sections : _.initial(visibleSections)
-        }) + _.template('<li class="active"><%=title%></li>', _.last(visibleSections)));
+        }) + _.template('<li class="active"><b><%=title%></b></li>', _.last(visibleSections)));
         
         this.renderNextPrev();
 
@@ -117,7 +117,7 @@ exports.SurveyView = Backbone.View.extend({
 
 exports.Section = Backbone.View.extend({
     className : "section",
-    template : _.template('<h4><%=title%></h4><div class="contents"></div>'),
+    template : _.template('<div class="contents"></div>'),
 
     initialize : function() {
         this.title = this.options.title;
