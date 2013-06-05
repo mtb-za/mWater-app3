@@ -33,7 +33,7 @@ module.exports = function(grunt) {
     handlebars: {
       compile: {
       options: {
-        namespace: "JST",
+        namespace: "templates",
         wrapped: true,
         processName: function(filename) {
           var name = filename.substr('app/templates/'.length);    // cwd doesn't work

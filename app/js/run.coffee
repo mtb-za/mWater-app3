@@ -1,5 +1,7 @@
 AppView = require("./AppView")
 SlideMenu = require("./SlideMenu")
+Pager = require("./Pager")
+PageMenu = require("./PageMenu")
 
 # Create page
 Page = require("./Page")
@@ -16,10 +18,15 @@ class SomePage extends Page
     "some page!"
 
 ctx = {}
-Pager = require("./Pager")
+
+# Create pager
 pager = new Pager(ctx)
 
+# Create slide menu
 slideMenu = new SlideMenu()
+slideMenu.addSubmenu(new PageMenu())
+
+# Create app view
 app = new AppView(slideMenu: slideMenu, pager: pager)
 
 pager.openPage(require("./pages/MainPage"))
@@ -27,6 +34,4 @@ pager.openPage(require("./pages/MainPage"))
 # survey = require("./survey/DemoSurvey")(ctx);
 # pager.openPage(require("./pages/SurveyPage"), survey)
 
-if $("body").length == 0
-  alert("fail!!!")
 $("body").append(app.$el)

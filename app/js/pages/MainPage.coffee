@@ -9,7 +9,7 @@ class MainPage extends Page
     "click #survey" : "survey"
 
   render: ->
-    @$el.html JST['pages/MainPage']()
+    @$el.html templates['pages/MainPage']()
 
   title: ->
     "mWater"

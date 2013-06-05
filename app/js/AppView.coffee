@@ -18,9 +18,9 @@ class AppView extends Backbone.View
     'click #navbar_back': 'back'
     'click #navbar_title': 'back'
   render: ->  	
-    @$el.html JST['AppView']()
+    @$el.html templates['AppView']()
     @$el.append @slideMenu.el
-    @$('#content').append @pager.el
+    @$('#appview_content').append @pager.el
     this
 
   toggleSlideMenu: ->
