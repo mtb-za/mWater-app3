@@ -15,13 +15,15 @@ class SomePage extends Page
   title: ->
     "some page!"
 
+ctx = {}
 Pager = require("./Pager")
-pager = new Pager()
+pager = new Pager(ctx)
 
 slideMenu = new SlideMenu()
 app = new AppView(slideMenu: slideMenu, pager: pager)
 
 pager.openPage(SomePage, ["test"])
-pager.openPage(SomePage, ["test2"])
+survey = require("./survey/DemoSurvey")(ctx);
+pager.openPage(require("./pages/SurveyPage"), [survey])
 
 $("body").append(app.$el)

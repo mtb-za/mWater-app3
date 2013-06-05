@@ -14,12 +14,14 @@ module.exports = function(grunt) {
               'vendor/backbone.js', 
               'vendor/bootstrap/js/bootstrap.min.js', 
               'vendor/handlebars.runtime.js',
-              'vendor/fastclick.js'],
+              'vendor/fastclick.js',
+              'vendor/mobiscroll-2.1.custom.min.js'],
         // the location of the resulting JS file
         dest: 'dist/js/libs.js'
       },
       libscss: {
-        src: ['vendor/bootstrap/css/bootstrap.min.css'],
+        src: ['vendor/bootstrap/css/bootstrap.css',
+              'vendor/*.css'],
         dest: 'dist/css/libs.css'
       },
       css: {

@@ -1,8 +1,12 @@
 
 
 class Pager extends Backbone.View
-  constructor: ->
+  constructor: (ctx) ->
     super()
+
+    # Save context
+    @ctx = ctx
+
 
     # Setup special mobile behavior
     # Make links and anything with class 'tappable' act on taps
@@ -38,7 +42,7 @@ class Pager extends Backbone.View
   # Adds a page from a constructor
   openPage: (pageClass, args) ->
     # Create page
-    page = new pageClass(args)
+    page = new pageClass(@ctx, args...)
     
     # Deactivate current page
     if @stack.length > 0
