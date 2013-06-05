@@ -6,6 +6,7 @@
     
     color: White;
     display:none;
+    overflow: auto;
   }
   
 .slidemenu h3 {

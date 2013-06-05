@@ -1,6 +1,6 @@
 # Menu which slides out from the right side
 class SlideMenu extends Backbone.View
-  className: "slidemenu"
+  className: "slidemenu overthrow"
 
   initialize: ->
     @submenus = []

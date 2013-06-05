@@ -16,7 +16,8 @@ module.exports = function(grunt) {
               'vendor/handlebars.runtime.js',
               'vendor/fastclick.js',
               'vendor/mobiscroll.custom-2.5.4.min.js',
-              'vendor/jquery.scrollintoview.min.js'],
+              'vendor/jquery.scrollintoview.min.js',
+              'vendor/overthrow.js'],
         // the location of the resulting JS file
         dest: 'dist/js/libs.js'
       },
