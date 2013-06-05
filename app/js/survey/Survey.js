@@ -5,7 +5,7 @@ exports.SurveyModel = Backbone.Model.extend({
 
 exports.SurveyView = Backbone.View.extend({
     className : "survey",
-    template : _.template('<h2><%=title%></h2><ul class="breadcrumb"></ul><div class="sections"></div>' + '<button type="button" class="btn prev"><i class="icon-backward"></i> Back</button>&nbsp;' + '<button type="button" class="btn btn-primary next">Next <i class="icon-forward icon-white"></i></button>' + '<button type="button" class="btn btn-primary finish">Finish</button>'),
+    template : _.template('<h4><%=title%></h4><ul class="breadcrumb"></ul><div class="sections"></div>' + '<button type="button" class="btn prev"><i class="icon-backward"></i> Back</button>&nbsp;' + '<button type="button" class="btn btn-primary next">Next <i class="icon-forward icon-white"></i></button>' + '<button type="button" class="btn btn-primary finish">Finish</button>'),
 
     initialize : function() {
         this.title = this.options.title;
@@ -89,6 +89,9 @@ exports.SurveyView = Backbone.View.extend({
         }) + _.template('<li class="active"><%=title%></li>', _.last(visibleSections)));
         
         this.renderNextPrev();
+
+        // Scroll into view
+        this.el.scrollIntoView();
     },
     
     renderNextPrev : function() {
@@ -114,7 +117,7 @@ exports.SurveyView = Backbone.View.extend({
 
 exports.Section = Backbone.View.extend({
     className : "section",
-    template : _.template('<h3><%=title%></h3><div class="contents"></div>'),
+    template : _.template('<h4><%=title%></h4><div class="contents"></div>'),
 
     initialize : function() {
         this.title = this.options.title;

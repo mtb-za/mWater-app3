@@ -3,6 +3,7 @@ class Page extends Backbone.View
     super()
     @ctx = ctx
 
+  className: "page"
   start: ->
   activate: ->
   deactivate: ->

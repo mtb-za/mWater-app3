@@ -7,25 +7,24 @@ class Pager extends Backbone.View
     # Save context
     @ctx = ctx
 
-
     # Setup special mobile behavior
-    # Make links and anything with class 'tappable' act on taps
-    @$el.on "mousedown touchstart", "a,button,.tappable", ->
-      $(this).addClass "pressed"
-      pressedElem = this
+    # # Make links and anything with class 'tappable' act on taps
+    # @$el.on "mousedown touchstart", "a,button,.tappable", ->
+    #   $(this).addClass "pressed"
+    #   pressedElem = this
 
-    @$el.on "mouseup touchleave touchend touchmove touchcancel scroll", ->
-      if pressedElem
-        $(pressedElem).removeClass "pressed"
-        pressedElem = null
+    # @$el.on "mouseup touchleave touchend touchmove touchcancel scroll", ->
+    #   if pressedElem
+    #     $(pressedElem).removeClass "pressed"
+    #     pressedElem = null
 
-    # Make checkboxes tappable
-    @$el.on "tap", ".checkbox", ->
+    # Make checkboxes clickable
+    @$el.on "click", ".checkbox", ->
       $(this).  toggleClass "checked"
       $(this).trigger "checked"
 
-    # Make radio buttons tappable
-    @$el.on "tap", ".radio-button", ->
+    # Make radio buttons clickable
+    @$el.on "click", ".radio-button", ->
       # Find parent radiogroup
       $(this).parents(".radio-group").find(".radio-button").removeClass "checked"
       $(this).addClass "checked"

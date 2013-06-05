@@ -45,7 +45,13 @@ module.exports = function(grunt) {
       }
     },
     copy: {
-      images: {
+      appimages: {
+        expand: true,
+        cwd: 'app/img/',
+        src: '*',
+        dest: 'dist/img/',
+      },
+      libimages: {
         expand: true,
         cwd: 'vendor/bootstrap/img/',
         src: '*',
