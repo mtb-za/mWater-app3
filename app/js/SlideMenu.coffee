@@ -6,12 +6,16 @@ class SlideMenu extends Backbone.View
     @submenus = []
     @$el.html templates['SlideMenu']()
 
+  events: ->
+    "click": "hide"
+
   toggle: ->
     if @visible then @hide() else @show()
 
   hide: ->
-    @$el.animate({ right: -@width + "px" }).hide({})
-    @visible = false
+    if @visible
+      @$el.animate({ right: -@width + "px" }).hide({})
+      @visible = false
 
   show: ->
     # Re-render submenus

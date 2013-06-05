@@ -24,7 +24,7 @@ pager = new Pager(ctx)
 
 # Create slide menu
 slideMenu = new SlideMenu()
-slideMenu.addSubmenu(new PageMenu())
+slideMenu.addSubmenu(new PageMenu(ctx: ctx))
 
 # Create app view
 app = new AppView(slideMenu: slideMenu, pager: pager)
