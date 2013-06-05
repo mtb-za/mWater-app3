@@ -34,7 +34,5 @@ class AppView extends Backbone.View
   back: ->
     @pager.closePage()
  
-module.exports = AppView
-  	
-    
+module.exports = AppView    
     
