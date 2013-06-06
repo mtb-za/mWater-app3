@@ -35,6 +35,11 @@ class Collection
     @items.push(data)
     success(data)
 
+  remove: (id, success, error) ->
+    @items = _.filter(@items, (item) -> item._id != id)
+    success()
+
+
 # class Cursor 
 #   constructor: (collection, selector, options) ->
 #     @collection = collection

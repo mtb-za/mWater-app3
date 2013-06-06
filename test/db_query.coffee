@@ -28,6 +28,20 @@ test_queries = (db, reset) ->
         assert.equal 'Alice', results[0].a
         done()
 
+    it 'removes item', (done) ->
+      db.test.remove 2, ->
+        db.test.find({}).fetch (results) ->
+          assert.equal 2, results.length
+          assert 1 in (result._id for result in results)
+          assert 2 not in (result._id for result in results)
+          done()
+
+    it 'removes non-existent item', (done) ->
+      db.test.remove 999, ->
+        db.test.find({}).fetch (results) ->
+          assert.equal 3, results.length
+          done()
+
   it 'adds _id to rows', (done) ->
     db.test.upsert { a: 1 }, (item) ->
       assert.property item, '_id'
@@ -45,11 +59,8 @@ test_queries = (db, reset) ->
 
 describe 'LocalDb', ->
   @db = new LocalDb()
-  @db.addCollection('test')
 
   test_queries @db, (done) =>
     @db.removeCollection('test')
     @db.addCollection('test')
     done()
-
-
