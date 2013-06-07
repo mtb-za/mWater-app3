@@ -17,7 +17,8 @@ class SomePage extends Page
   title: ->
     "some page!"
 
-ctx = {}
+db = require('./database')()
+ctx = { db: db }
 
 # Create pager
 pager = new Pager(ctx)

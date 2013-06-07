@@ -11,9 +11,9 @@ class MainPage extends Page
 
   survey: ->
     survey = require("../survey/DemoSurvey")(@ctx);
-    @ctx.pager.openPage(require("./SurveyPage"), survey)
+    @pager.openPage(require("./SurveyPage"), survey)
 
   sourceList: ->
-    @ctx.pager.openPage(require("./SourceListPage"))
+    @pager.openPage(require("./SourceListPage"))
 
 module.exports = MainPage

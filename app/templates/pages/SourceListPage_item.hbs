@@ -1,9 +1,9 @@
-{{#each rows}}
-<tr class="tappable" id="{uid}">
-    <td><strong>{name}</strong>
+{{#each sources}}
+<tr class="tappable" id="{{_id}}">
+    <td><strong>{{name}}</strong>
     <br/>
-    <span class="muted">{desc}&nbsp;</span></td>
-    <td><strong>{code}</strong></td>
+    <span class="muted">{{desc}}&nbsp;</span></td>
+    <td><strong>{{code}}</strong></td>
 </tr>
 {{else}}
 <tr>

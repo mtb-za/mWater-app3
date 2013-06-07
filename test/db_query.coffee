@@ -28,6 +28,11 @@ test_queries = (db, reset) ->
         assert.equal 'Alice', results[0].a
         done()
 
+    it 'finds one row', (done) ->
+      db.test.findOne { _id: 2 }, (result) ->
+        assert.equal 'Bob', result.a
+        done()
+
     it 'removes item', (done) ->
       db.test.remove 2, ->
         db.test.find({}).fetch (results) ->

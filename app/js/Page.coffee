@@ -4,6 +4,9 @@ class Page extends Backbone.View
     @ctx = ctx
     @args = args
 
+    # Mix in context for convenience
+    _.extend(@, ctx) 
+
   className: "page"
   create: ->
   activate: ->

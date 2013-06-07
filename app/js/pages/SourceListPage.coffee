@@ -9,9 +9,11 @@ module.exports = class SourceListPage extends Page
     @setTitle 'Nearby Sources'
 
   activate: ->
-    rows = ({ name: 'test'} for x in [1..10])
-    @$("#table").html templates['pages/SourceListPage_item'](rows:rows)
+    # TODO? @template '#table', 'pages/SourceListPage_item', { rows: sources }
+    # Query database TODO $near
+    @db.sources.find({}).fetch (sources) ->
+      @$("#table").html templates['pages/SourceListPage_item'](sources:sources)
 
   sourceClicked: (ev) ->
-    console.log ev
-    @ctx.pager.openPage(require("./SourcePage"))
+    @pager.openPage(require("./SourcePage"), ev.currentTarget.id)
+
