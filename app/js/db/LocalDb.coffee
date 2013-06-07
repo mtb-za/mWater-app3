@@ -1,12 +1,5 @@
 compileDocumentSelector = require('./selector').compileDocumentSelector
 
-createUid = -> 
-  'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) ->
-    r = Math.random()*16|0
-    v = if c == 'x' then r else (r&0x3|0x8)
-    return v.toString(16)
-   )
-
 class LocalDb
   addCollection: (name) ->
     @[name] = new Collection(name)
@@ -20,9 +13,9 @@ class Collection
 
   find: (selector, options) ->
     return fetch: (success, error) =>
-      @findFetch(selector, options, success, error)
+      @_findFetch(selector, options, success, error)
 
-  findFetch: (selector, options, success, error) ->
+  _findFetch: (selector, options, success, error) ->
     filtered = _.filter(@items, compileDocumentSelector(selector))
     success(filtered)
 
@@ -39,18 +32,16 @@ class Collection
     @items = _.filter(@items, (item) -> item._id != id)
     success()
 
-
-# class Cursor 
-#   constructor: (collection, selector, options) ->
-#     @collection = collection
-#     @selector = selector
-#     @options = options
-
-#   fetch: (success, error) ->
-#     success([])
-
-
-#   # find: (selector, options) ->
-#   #   return new Cursor(this, selector, options)
+createUid = -> 
+  'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) ->
+    r = Math.random()*16|0
+    v = if c == 'x' then r else (r&0x3|0x8)
+    return v.toString(16)
+   )
+  # 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) ->
+  #   r = Math.random()*16|0
+  #   v = if c == 'x' then r else (r&0x3|0x8)
+  #   return v.toString(16)
+  #  )
 
 module.exports = LocalDb

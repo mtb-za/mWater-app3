@@ -45,7 +45,7 @@ test_queries = (db, reset) ->
   it 'adds _id to rows', (done) ->
     db.test.upsert { a: 1 }, (item) ->
       assert.property item, '_id'
-      assert.lengthOf item._id, 36
+      assert.lengthOf item._id, 32
       done()
 
   it 'updates by id', (done) ->
