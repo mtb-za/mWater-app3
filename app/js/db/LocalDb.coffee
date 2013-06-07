@@ -19,7 +19,7 @@ class Collection
     if _.isFunction(options) 
       [options, success, error] = [{}, options, success]
 
-    @_findFetch(selector, options, (results) ->
+    @find(selector, options).fetch (results) ->
       if success? then success(if results.length>0 then results[0] else null)
     , error)
 
