@@ -60,7 +60,25 @@ module.exports = function(grunt) {
         dest: 'dist/img/',
       }
     },
-    watch: {
+   manifest: {
+      generate: {
+        options: {
+          basePath: 'dist/',
+          network: ['http://*', 'https://*'],
+          preferOnline: true,
+          verbose: true,
+          timestamp: true
+        },
+        src: [
+          '*.html',
+            'js/*.js',
+            'css/*.css',
+            'img/*'
+        ],
+        dest: 'dist/manifest.appcache'
+      }
+    },
+   watch: {
       scripts: {
         files: ['app/**/*.*'],
         tasks: ['default'],
@@ -73,7 +91,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
+  grunt.loadNpmTasks('grunt-manifest');
 
   // Default task(s).
-  grunt.registerTask('default', ['browserify', 'concat', 'copy', 'handlebars']);
+  grunt.registerTask('default', ['browserify', 'concat', 'copy', 'handlebars', 'manifest']);
 };
