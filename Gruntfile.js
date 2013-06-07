@@ -31,6 +31,15 @@ module.exports = function(grunt) {
           dest: 'dist/css/app.css'
       }
     },
+    uglify: {
+      options: {
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+      },
+      dist: {
+        src: 'dist/js/libs.js',
+        dest: 'dist/js/libs.min.js'
+      }
+    },
     handlebars: {
       compile: {
       options: {
@@ -91,6 +100,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-manifest');
 
   // Default task(s).

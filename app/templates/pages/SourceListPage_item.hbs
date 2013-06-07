@@ -1,0 +1,12 @@
+{{#each rows}}
+<tr class="tappable" id="{uid}">
+    <td><strong>{name}</strong>
+    <br/>
+    <span class="muted">{desc}&nbsp;</span></td>
+    <td><strong>{code}</strong></td>
+</tr>
+{{else}}
+<tr>
+    <td> See the map for a global view if no sources are found. </td>
+</tr>
+{{/each}}

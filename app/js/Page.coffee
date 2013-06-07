@@ -1,16 +1,20 @@
 class Page extends Backbone.View
-  constructor: (ctx) ->
+  constructor: (ctx, args...) ->
     super()
     @ctx = ctx
+    @args = args
 
   className: "page"
-  start: ->
+  create: ->
   activate: ->
   deactivate: ->
-  stop: ->
+  destroy: ->
 
-  title: ->
-    ""
+  getTitle: -> @title
+
+  setTitle: (title) ->
+    @title = title
+    @trigger 'change:title'
 
 
 module.exports = Page

@@ -21,7 +21,8 @@
     "browserify": "git://github.com/alexgorbatchev/node-browserify.git",
     "grunt-contrib-concat": "~0.3.0",
     "testem": "~0.2.94",
-    "grunt-manifest": "~0.4.0"
+    "grunt-manifest": "~0.4.0",
+    "grunt-contrib-uglify": "~0.2.2"
   },
   "dependencies": {
     "streamline": "~0.4.9",

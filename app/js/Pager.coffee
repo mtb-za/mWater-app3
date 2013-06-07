@@ -24,9 +24,14 @@ class Pager extends Backbone.View
 
     # Activate new page
     @stack.push(page)
-    page.start()
-    page.activate()
     @$el.append(page.el)
+
+    page.create()
+    page.activate()
+
+    # Listen to page changes and bubble up
+    @listenTo page, 'change', (args...) ->
+      @trigger 'change', args...
 
     # Indicate page change
     @trigger 'change'
@@ -37,9 +42,11 @@ class Pager extends Backbone.View
       return
 
     # Destroy current page
-    _.last(@stack).deactivate()
-    _.last(@stack).stop()
-    _.last(@stack).remove()
+    page = _.last(@stack)
+    page.deactivate()
+    page.destroy()
+    page.remove()
+
     @stack.pop()
 
     # Open replaceWith
@@ -47,15 +54,16 @@ class Pager extends Backbone.View
       @openPage replaceWith, args
     else
       page = _.last(@stack)
-      page.activate()
+
       @$el.append(page.el)
+      page.activate()
 
     # Indicate page change
     @trigger 'change'
 
   # Get title of active page
-  title: ->
-    _.last(@stack).title()
+  getTitle: ->
+    _.last(@stack).getTitle()
 
   # Determine if has multiple pages
   multiplePages: ->

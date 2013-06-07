@@ -10,8 +10,7 @@ class AppView extends Backbone.View
     @render()
 
     # Make clicks fast
-    $ =>
-      FastClick.attach(@el);
+    $ => FastClick.attach(@el);
 
     # Setup special mobile behavior
     # Make links and anything with class 'tappable' act on taps
@@ -61,7 +60,7 @@ class AppView extends Backbone.View
   pageChanged: ->
     # Set title
     @$("#navbar_back").css("visibility", if @pager.multiplePages() then "visible" else "hidden")
-    @$("#navbar_title").text(@pager.title())
+    @$("#navbar_title").text(@pager.getTitle())
 
   back: ->
     @pager.closePage()

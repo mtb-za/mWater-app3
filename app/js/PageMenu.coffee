@@ -6,11 +6,17 @@ module.exports = class PageMenu extends Backbone.View
     @pager = options.ctx.pager
 
   events:
-    "click #home" : "goto_home"
+    "click #home" : "gotoHome"
+    "click #source_list" : "gotoSourceList"
 
   render: ->
     @$el.html templates['PageMenu']()
 
-  goto_home: ->
+  gotoHome: ->
     while @pager.multiplePages()
       @pager.closePage()
+
+  gotoSourceList: ->
+    while @pager.multiplePages()
+      @pager.closePage()
+    @pager.openPage(require("./pages/SourceListPage"))
