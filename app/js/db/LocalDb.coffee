@@ -59,7 +59,25 @@ class Collection
     for doc in docs
       if not _.has(@upserts, doc._id) and not _.has(@removes, doc._id)
         @items[doc._id] = doc
-    if success? then success()
+
+    docsMap = _.object(_.pluck(docs, "_id"), docs)
+
+    if options.sort
+      sort = compileSort(options.sort)
+
+    # Perform query, removing rows missing in docs from local db 
+    @find(selector, options).fetch (results)=>
+      for result in results
+        if not docsMap[result._id] and not _.has(@upserts, result._id)
+          # If past end on sorted limited, ignore
+          if options.sort and options.limit and docs.length == options.limit
+            if sort(result, _.last(docs)) >= 0
+              continue
+          delete @items[result._id]
+
+      if success? then success()  
+    , error
+    
 
 createUid = -> 
   'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) ->
