@@ -1,10 +1,6 @@
 assert = chai.assert
-LocalDb = require "LocalDb"
 
-test_queries = (db, reset) ->
-  beforeEach (done) ->
-    reset(done)
-
+window.test_queries = (db) ->
   context 'With sample rows', ->
     beforeEach (done) ->
       db.test.upsert { _id:1, a:"Alice" }, ->
@@ -62,10 +58,3 @@ test_queries = (db, reset) ->
           assert.equal 1, results.length
           done()
 
-describe 'LocalDb', ->
-  @db = new LocalDb()
-
-  test_queries @db, (done) =>
-    @db.removeCollection('test')
-    @db.addCollection('test')
-    done()

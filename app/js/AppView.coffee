@@ -9,10 +9,11 @@ class AppView extends Backbone.View
 
     @render()
 
+    # Setup special mobile behavior
+
     # Make clicks fast
     $ => FastClick.attach(@el);
 
-    # Setup special mobile behavior
     # Make links and anything with class 'tappable' act on taps
     pressedElem = null
     @$el.on "mousedown touchstart", "a,button,.tappable", ->
@@ -63,6 +64,7 @@ class AppView extends Backbone.View
     @$("#navbar_title").text(@pager.getTitle())
 
   back: ->
+    @slideMenu.hide()
     @pager.closePage()
  
 module.exports = AppView    
