@@ -1,6 +1,7 @@
 // TODO add license
 
-LocalCollection = {}
+LocalCollection = {};
+EJSON = require("./EJSON");
 
 // Like _.isArray, but doesn't regard polyfilled Uint8Arrays on old browsers as
 // arrays.
@@ -694,3 +695,4 @@ LocalCollection._compileSort = function (spec) {
 };
 
 exports.compileDocumentSelector = compileDocumentSelector;
+exports.compileSort = LocalCollection._compileSort;

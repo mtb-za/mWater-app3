@@ -4,8 +4,8 @@ window.test_queries = (db) ->
   context 'With sample rows', ->
     beforeEach (done) ->
       db.test.upsert { _id:1, a:"Alice" }, ->
-        db.test.upsert { _id:2, a:"Bob" }, ->
-          db.test.upsert { _id:3, a:"Charlie" }, ->
+        db.test.upsert { _id:2, a:"Charlie" }, ->
+          db.test.upsert { _id:3, a:"Bob" }, ->
             done()
 
     it 'finds all rows', (done) ->
@@ -26,7 +26,7 @@ window.test_queries = (db) ->
 
     it 'finds one row', (done) ->
       db.test.findOne { _id: 2 }, (result) ->
-        assert.equal 'Bob', result.a
+        assert.equal 'Charlie', result.a
         done()
 
     it 'removes item', (done) ->
@@ -42,6 +42,21 @@ window.test_queries = (db) ->
         db.test.find({}).fetch (results) ->
           assert.equal 3, results.length
           done()
+
+    it 'sorts ascending', (done) ->
+      db.test.find({}, {sort: ['a']}).fetch (results) ->
+        assert.deepEqual _.pluck(results, '_id'), [1,3,2]
+        done()
+
+    it 'sorts descending', (done) ->
+      db.test.find({}, {sort: [['a','desc']]}).fetch (results) ->
+        assert.deepEqual _.pluck(results, '_id'), [2,3,1]
+        done()
+
+    it 'limits', (done) ->
+      db.test.find({}, {sort: ['a'], limit:2}).fetch (results) ->
+        assert.deepEqual _.pluck(results, '_id'), [1,3]
+        done()
 
   it 'adds _id to rows', (done) ->
     db.test.upsert { a: 1 }, (item) ->

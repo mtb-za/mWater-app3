@@ -1,4 +1,5 @@
 compileDocumentSelector = require('./selector').compileDocumentSelector
+compileSort = require('./selector').compileSort
 
 class LocalDb
   addCollection: (name) ->
@@ -28,6 +29,13 @@ class Collection
 
   _findFetch: (selector, options, success, error) ->
     filtered = _.filter(_.values(@items), compileDocumentSelector(selector))
+
+    if options and options.sort 
+      filtered.sort(compileSort(options.sort))
+
+    if options and options.limit
+      filtered = _.first filtered, options.limit
+
     if success? then success(filtered)
 
   upsert: (doc, success, error) ->
@@ -46,9 +54,11 @@ class Collection
     
     if success? then success()
 
-  cache: (doc, success, error) ->
-    if not _.has(@upserts, doc._id) and not _.has(@removes, doc._id)
-      @items[doc._id] = doc
+  cache: (docs, selector, options, success, error) ->
+    # Add all non-local that are not upserted or deleted
+    for doc in docs
+      if not _.has(@upserts, doc._id) and not _.has(@removes, doc._id)
+        @items[doc._id] = doc
     if success? then success()
 
 createUid = -> 
