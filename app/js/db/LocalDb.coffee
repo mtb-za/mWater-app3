@@ -7,9 +7,12 @@ class LocalDb
   removeCollection: (name) ->
     delete @[name]
 
+# Stores data in memory
 class Collection
   constructor: ->
-    @items = []
+    @items = {}
+    @upserts = {}  # Pending upserts by _id. Still in items
+    @removes = {}  # Pending deletes by _id. No longer in items
 
   find: (selector, options) ->
     return fetch: (success, error) =>
@@ -24,24 +27,29 @@ class Collection
     , error
 
   _findFetch: (selector, options, success, error) ->
-    filtered = _.filter(@items, compileDocumentSelector(selector))
+    filtered = _.filter(_.values(@items), compileDocumentSelector(selector))
     if success? then success(filtered)
 
   upsert: (doc, success, error) ->
     if not doc._id
       doc._id = createUid()
 
-    # Replace if present
-    @items = _.filter(@items, (item) -> item._id != doc._id)
-    @items.push(doc)
+    # Replace/add 
+    @items[doc._id] = doc
+    @upserts[doc._id] = doc
     if success? then success(doc)
 
   remove: (id, success, error) ->
-    @items = _.filter(@items, (item) -> item._id != id)
+    if _.has(@items, id)
+      @removes[id] = @items[id]
+      delete @items[id]
+    
     if success? then success()
 
-  #cache: (doc, success, error) ->
-  #  @items.
+  cache: (doc, success, error) ->
+    if not _.has(@upserts, doc._id) and not _.has(@removes, doc._id)
+      @items[doc._id] = doc
+    if success? then success()
 
 createUid = -> 
   'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) ->
