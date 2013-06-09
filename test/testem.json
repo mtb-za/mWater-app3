@@ -1,5 +1,5 @@
 {
-  "before_tests": "coffee -c *.coffee; coffee -c helpers/*.coffee",
+  "before_tests": "coffee -c *.coffee; coffee -c helpers/*.coffee; grunt",
   "after_tests": "rm *.js; rm helpers/*.js",
   "framework": "mocha+chai",
   "src_files": ["../app/**/*.*", "*.coffee"],

@@ -51,6 +51,7 @@ class Collection
     if _.has(@items, id)
       @removes[id] = @items[id]
       delete @items[id]
+      delete @upserts[id]
     
     if success? then success()
 
@@ -66,7 +67,7 @@ class Collection
       sort = compileSort(options.sort)
 
     # Perform query, removing rows missing in docs from local db 
-    @find(selector, options).fetch (results)=>
+    @find(selector, options).fetch (results) =>
       for result in results
         if not docsMap[result._id] and not _.has(@upserts, result._id)
           # If past end on sorted limited, ignore
@@ -78,6 +79,26 @@ class Collection
       if success? then success()  
     , error
     
+  pendingUpserts: (success) ->
+    success _.values(@upserts)
+
+  pendingRemoves: (success) ->
+    success _.keys(@removes)
+
+  resolveUpsert: (doc, success) ->
+    if @upserts[doc._id] and _.isEqual(doc, @upserts[doc._id])
+      delete @upserts[doc._id]
+    if success? then success()
+
+  resolveRemove: (id, success) ->
+    delete @removes[id]
+    if success? then success()
+
+  seed: (doc, success) ->
+    if not _.has(@items, doc._id) and not _.has(@removes, doc._id)
+      @items[doc._id] = doc
+    if success? then success()
+
 
 createUid = -> 
   'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) ->
