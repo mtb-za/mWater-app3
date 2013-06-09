@@ -146,3 +146,20 @@ describe 'LocalDb', ->
         assert.equal results[0].a, "Alice"
         done()
 
+  it "retains upserts", (done) ->
+    @db.test.upsert { _id:1, a:"Alice" }, =>
+      db2 = new LocalDb('test')
+      db2.addCollection 'test'
+      db2.test.find({}).fetch (results) ->
+        db2.test.pendingUpserts (upserts) ->
+          assert.deepEqual results, upserts
+          done()
+
+  it "retains removes", (done) ->
+    @db.test.seed { _id:1, a:"Alice" }, =>
+      @db.test.remove 1, =>
+        db2 = new LocalDb('test')
+        db2.addCollection 'test'
+        db2.test.pendingRemoves (removes) ->
+          assert.deepEqual removes, [1]
+          done()

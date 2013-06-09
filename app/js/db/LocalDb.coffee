@@ -6,19 +6,55 @@ class LocalDb
     @name = name
 
   addCollection: (name) ->
-    namespace = "db.#{@name}.#{name}."
+    dbName = @name
+    namespace = "db.#{dbName}.#{name}."
 
     @[name] = new Collection(namespace)
 
   removeCollection: (name) ->
+    dbName = @name
+    namespace = "db.#{dbName}.#{name}."
+
+    keys = []
+    for i in [0...localStorage.length]
+      keys.push(localStorage.key(i))
+
+    for key in keys
+      if key.substring(0, namespace.length) == namespace
+        localStorage.removeItem(key)
+
     delete @[name]
 
 # Stores data in memory
 class Collection
   constructor: (namespace) ->
+    @namespace = namespace
+
     @items = {}
     @upserts = {}  # Pending upserts by _id. Still in items
-    @removes = {}  # Pending deletes by _id. No longer in items
+    @removes = {}  # Pending removes by _id. No longer in items
+
+    # Read from local storage
+    @loadStorage()
+
+  loadStorage: ->
+    # Read items from localStorage
+    @itemNamespace = @namespace + "_"
+
+    for i in [0...localStorage.length]
+      key = localStorage.key(i)
+      if key.substring(0, @itemNamespace.length) == @itemNamespace
+        item = JSON.parse(localStorage[key])
+        @items[item._id] = item
+
+    # Read upserts
+    upsertKeys = if localStorage[@namespace+"upserts"] then JSON.parse(localStorage[@namespace+"upserts"]) else []
+    for key in upsertKeys
+      @upserts[key] = @items[key]
+
+    # Read removes
+    removeItems = if localStorage[@namespace+"removes"] then JSON.parse(localStorage[@namespace+"removes"]) else []
+    @removes = _.object(_.pluck(removeItems, "_id"), removeItems)
 
   find: (selector, options) ->
     return fetch: (success, error) =>
@@ -48,23 +84,47 @@ class Collection
       doc._id = createUid()
 
     # Replace/add 
-    @items[doc._id] = doc
-    @upserts[doc._id] = doc
+    @_putItem(doc)
+    @_putUpsert(doc)
+
     if success? then success(doc)
 
   remove: (id, success, error) ->
     if _.has(@items, id)
-      @removes[id] = @items[id]
-      delete @items[id]
-      delete @upserts[id]
-    
+      @_putRemove(@items[id])
+      @_deleteItem(id)
+      @_deleteUpsert(id)
+
     if success? then success()
 
+  _putItem: (doc) ->
+    @items[doc._id] = doc
+    localStorage[@itemNamespace + doc._id] = JSON.stringify(doc)
+
+  _deleteItem: (id) ->
+    delete @items[id]
+
+  _putUpsert: (doc) ->
+    @upserts[doc._id] = doc
+    localStorage[@namespace+"upserts"] = JSON.stringify(_.keys(@upserts))
+
+  _deleteUpsert: (id) ->
+    delete @upserts[id]
+    localStorage[@namespace+"upserts"] = JSON.stringify(_.keys(@upserts))
+
+  _putRemove: (doc) ->
+    @removes[doc._id] = doc
+    localStorage[@namespace+"removes"] = JSON.stringify(_.values(@removes))
+
+  _deleteRemove: (id) ->
+    delete @removes[id]
+    localStorage[@namespace+"removes"] = JSON.stringify(_.values(@removes))
+
   cache: (docs, selector, options, success, error) ->
-    # Add all non-local that are not upserted or deleted
+    # Add all non-local that are not upserted or removed
     for doc in docs
       if not _.has(@upserts, doc._id) and not _.has(@removes, doc._id)
-        @items[doc._id] = doc
+        @_putItem(doc)
 
     docsMap = _.object(_.pluck(docs, "_id"), docs)
 
@@ -79,7 +139,7 @@ class Collection
           if options.sort and options.limit and docs.length == options.limit
             if sort(result, _.last(docs)) >= 0
               continue
-          delete @items[result._id]
+          @_deleteItem(result._id)
 
       if success? then success()  
     , error
@@ -88,20 +148,20 @@ class Collection
     success _.values(@upserts)
 
   pendingRemoves: (success) ->
-    success _.keys(@removes)
+    success _.pluck(@removes, "_id")
 
   resolveUpsert: (doc, success) ->
     if @upserts[doc._id] and _.isEqual(doc, @upserts[doc._id])
-      delete @upserts[doc._id]
+      @_deleteUpsert(doc._id)
     if success? then success()
 
   resolveRemove: (id, success) ->
-    delete @removes[id]
+    @_deleteRemove(id)
     if success? then success()
 
   seed: (doc, success) ->
     if not _.has(@items, doc._id) and not _.has(@removes, doc._id)
-      @items[doc._id] = doc
+      @_putItem(doc)
     if success? then success()
 
 
