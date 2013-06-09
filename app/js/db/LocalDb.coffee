@@ -2,15 +2,20 @@ compileDocumentSelector = require('./selector').compileDocumentSelector
 compileSort = require('./selector').compileSort
 
 class LocalDb
+  constructor: (name) ->
+    @name = name
+
   addCollection: (name) ->
-    @[name] = new Collection(name)
+    namespace = "db.#{@name}.#{name}."
+
+    @[name] = new Collection(namespace)
 
   removeCollection: (name) ->
     delete @[name]
 
 # Stores data in memory
 class Collection
-  constructor: ->
+  constructor: (namespace) ->
     @items = {}
     @upserts = {}  # Pending upserts by _id. Still in items
     @removes = {}  # Pending deletes by _id. No longer in items

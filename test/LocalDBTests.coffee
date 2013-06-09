@@ -3,7 +3,7 @@ LocalDb = require "LocalDb"
 
 describe 'LocalDb', ->
   before ->
-    @db = new LocalDb()
+    @db = new LocalDb('test')
 
   beforeEach (done) ->
     @db.removeCollection('test')
@@ -137,3 +137,12 @@ describe 'LocalDb', ->
           @db.test.find({}).fetch (results) ->
             assert.equal results.length, 0
             done()
+
+  it "retains items", (done) ->
+    @db.test.upsert { _id:1, a:"Alice" }, =>
+      db2 = new LocalDb('test')
+      db2.addCollection 'test'
+      db2.test.find({}).fetch (results) ->
+        assert.equal results[0].a, "Alice"
+        done()
+
