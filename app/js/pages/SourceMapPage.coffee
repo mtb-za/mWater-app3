@@ -8,7 +8,7 @@ class SourceMapPage extends Page
     @$el.html templates['pages/SourceMapPage']()
 
     L.Icon.Default.imagePath = "images"
-    @map = L.map(this.$("#map")[0]) #.setView([51.505, -0.09], 13)
+    @map = L.map(this.$("#map")[0])
     @resizeMap()
 
     # Recalculate on resize
@@ -22,18 +22,24 @@ class SourceMapPage extends Page
     mapquest.addTo(@map)
 
     @map.on('locationfound', @locationFound)
+    @map.on('locationerror', @locationError)
     @map.locate(watch:true, enableHighAccuracy: true)
 
   destroy: ->
     $(window).off('resize', @resizeMap)
     @map.stopLocate()
-    @map.off('locationfound', @locationFound)
 
   resizeMap: =>
     # Calculate map height
     mapHeight = $("html").height() - 40
     $("#map").css("height", mapHeight + "px")
     @map.invalidateSize()
+
+  locationError: (e) =>
+    if not @locationZoomed
+      @map.fitWorld()
+      alert("Unable to determine location")
+      @locationZoomed = true
 
   locationFound: (e) =>
     radius = e.accuracy / 2
