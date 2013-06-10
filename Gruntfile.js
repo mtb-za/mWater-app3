@@ -17,13 +17,15 @@ module.exports = function(grunt) {
               'vendor/fastclick.js',
               'vendor/mobiscroll.custom-2.5.4.min.js',
               'vendor/jquery.scrollintoview.min.js',
-              'vendor/overthrow.js'],
+              'vendor/overthrow.js',
+              'vendor/leaflet/leaflet.js'],
         // the location of the resulting JS file
         dest: 'dist/js/libs.js'
       },
       libscss: {
         src: ['vendor/bootstrap/css/bootstrap.css',
-              'vendor/*.css'],
+              'vendor/*.css',
+              'vendor/leaflet/leaflet.css'],
         dest: 'dist/css/libs.css'
       },
       css: {
@@ -67,6 +69,12 @@ module.exports = function(grunt) {
         cwd: 'vendor/bootstrap/img/',
         src: '*',
         dest: 'dist/img/',
+      },
+      leafletimages: {
+        expand: true,
+        cwd: 'vendor/leaflet/images/',
+        src: '*',
+        dest: 'dist/images/',
       }
     },
    manifest: {

@@ -8,6 +8,7 @@ module.exports = class PageMenu extends Backbone.View
   events:
     "click #home" : "gotoHome"
     "click #source_list" : "gotoSourceList"
+    "click #source_map" : "gotoSourceMap"
 
   render: ->
     @$el.html templates['PageMenu']()
@@ -20,3 +21,8 @@ module.exports = class PageMenu extends Backbone.View
     while @pager.multiplePages()
       @pager.closePage()
     @pager.openPage(require("./pages/SourceListPage"))
+
+  gotoSourceMap: ->
+    while @pager.multiplePages()
+      @pager.closePage()
+    @pager.openPage(require("./pages/SourceMapPage"))

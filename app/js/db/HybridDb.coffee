@@ -19,3 +19,4 @@ class HybridCollection
   upsert: (doc, success, error) ->
 
   remove: (id, success, error) ->
+
