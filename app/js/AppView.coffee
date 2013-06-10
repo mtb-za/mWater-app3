@@ -1,4 +1,5 @@
 class AppView extends Backbone.View
+  className: 'appview'
   constructor: (opts) ->
     super(opts)
     @slideMenu = opts.slideMenu
@@ -10,7 +11,6 @@ class AppView extends Backbone.View
     @render()
 
     # Setup special mobile behavior
-
     # Make clicks fast
     $ => FastClick.attach(@el);
 
@@ -52,7 +52,7 @@ class AppView extends Backbone.View
   render: ->  	
     @$el.html templates['AppView']()
     @$el.append @slideMenu.el
-    @$('#appview_content').append @pager.el
+    @$('.appview_content').append @pager.el
     this
 
   toggleSlideMenu: -> @slideMenu.toggle()

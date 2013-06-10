@@ -1,6 +1,7 @@
 
 
 class Pager extends Backbone.View
+  id: 'pager'
   constructor: (ctx) ->
     super()
 

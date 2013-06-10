@@ -29,11 +29,13 @@ slideMenu.addSubmenu(new PageMenu(ctx: ctx))
 
 # Create app view
 app = new AppView(slideMenu: slideMenu, pager: pager)
+$("body").append(app.$el)
 
 #pager.openPage(require("./pages/MainPage"))
-pager.openPage(require("./pages/SourceMapPage"))
+$ -> 
+  pager.openPage(require("./pages/SourceMapPage"))
 
-# survey = require("./survey/DemoSurvey")(ctx);
-# pager.openPage(require("./pages/SurveyPage"), survey)
+  # survey = require("./survey/DemoSurvey")(ctx);
+  # pager.openPage(require("./pages/SurveyPage"), survey)
 
-$("body").append(app.$el)
+
