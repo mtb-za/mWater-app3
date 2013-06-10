@@ -81,7 +81,7 @@ module.exports = function(grunt) {
       generate: {
         options: {
           basePath: 'dist/',
-          network: ['http://*', 'https://*'],
+          network: ['*'],
           preferOnline: true,
           verbose: true,
           timestamp: true
