@@ -15,17 +15,18 @@ class LocalDb
     dbName = @name
     namespace = "db.#{dbName}.#{name}."
 
-    keys = []
-    for i in [0...localStorage.length]
-      keys.push(localStorage.key(i))
+    if window.localStorage
+      keys = []
+      for i in [0...localStorage.length]
+        keys.push(localStorage.key(i))
 
-    for key in keys
-      if key.substring(0, namespace.length) == namespace
-        localStorage.removeItem(key)
+      for key in keys
+        if key.substring(0, namespace.length) == namespace
+          localStorage.removeItem(key)
 
     delete @[name]
 
-# Stores data in memory
+# Stores data in memory, backed by local storage
 class Collection
   constructor: (namespace) ->
     @namespace = namespace
@@ -35,7 +36,8 @@ class Collection
     @removes = {}  # Pending removes by _id. No longer in items
 
     # Read from local storage
-    @loadStorage()
+    if window.localStorage
+      @loadStorage()
 
   loadStorage: ->
     # Read items from localStorage
@@ -159,6 +161,7 @@ class Collection
     @_deleteRemove(id)
     if success? then success()
 
+  # Add but do not overwrite or record as upsert
   seed: (doc, success) ->
     if not _.has(@items, doc._id) and not _.has(@removes, doc._id)
       @_putItem(doc)
