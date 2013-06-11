@@ -1,12 +1,14 @@
 # GeoJSON helper routines
 
 exports.LatLngBoundsToGeoJSON = (bounds) ->
+  sw = bounds.getSouthWest()
+  ne = bounds.getNorthEast()
   return {
     type: 'Polygon',
     coordinates: [
-      [[bounds.getSouth(), bounds.getWest()], 
-      [bounds.getNorth(), bounds.getWest()], 
-      [bounds.getNorth(), bounds.getEast()], 
-      [bounds.getSouth(), bounds.getEast()]]
+      [[sw.lng, sw.lat], 
+      [sw.lng, ne.lat], 
+      [ne.lng, ne.lat], 
+      [ne.lng, sw.lat]]
     ]
   }

@@ -8,9 +8,9 @@ describe 'GeoJSON', ->
     bounds = new L.LatLngBounds(southWest, northEast)
 
     json = GeoJSON.LatLngBoundsToGeoJSON(bounds)
-    assert.deepEqual json, {
+    assert _.isEqual json, {
       type: "Polygon",
       coordinates: [
-        [[10,20],[13,20],[13,23],[10,23]]
+        [[20,10],[20,13],[23,13],[23,10]]
       ]
     }
