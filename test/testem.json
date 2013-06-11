@@ -1,13 +1,11 @@
 {
-  "before_tests": "coffee -c *.coffee; coffee -c helpers/*.coffee; grunt",
-  "after_tests": "rm *.js; rm helpers/*.js",
+  "before_tests": "grunt",
   "framework": "mocha+chai",
   "src_files": ["../app/**/*.*", "*.coffee"],
   "serve_files": ["../vendor/sinon-1.6.0.js", 
                   "../dist/js/libs.js", 
                   "../dist/js/templates.js", 
-                  "../dist/js/app.js", 
-                  "helpers/*.js", "*.js"],
+                  "tests.js"],
   "routes": {
     "/dist": "../dist",
     "/vendor": "../vendor"

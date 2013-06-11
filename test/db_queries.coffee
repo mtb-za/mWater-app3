@@ -1,6 +1,6 @@
 assert = chai.assert
 
-window.test_queries = ->
+module.exports = ->
   context 'With sample rows', ->
     beforeEach (done) ->
       @db.test.upsert { _id:1, a:"Alice" }, =>

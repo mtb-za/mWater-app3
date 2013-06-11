@@ -1,5 +1,5 @@
 assert = chai.assert
-ItemTracker = require "ItemTracker"
+ItemTracker = require "../app/js/ItemTracker"
 
 describe 'ItemTracker', ->
   beforeEach ->

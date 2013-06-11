@@ -1,5 +1,6 @@
 assert = chai.assert
-LocalDb = require "LocalDb"
+LocalDb = require "../app/js/db/LocalDb"
+db_queries = require "./db_queries"
 
 describe 'LocalDb', ->
   before ->
@@ -11,7 +12,7 @@ describe 'LocalDb', ->
     done()
 
   describe "passes queries", ->
-    test_queries.call(this)
+    db_queries.call(this)
 
   it 'caches rows', (done) ->
     @db.test.cache [{ _id: 1, a: 'apple' }], {}, {}, =>
