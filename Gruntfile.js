@@ -74,7 +74,7 @@ module.exports = function(grunt) {
         expand: true,
         cwd: 'vendor/leaflet/images/',
         src: '*',
-        dest: 'dist/images/',
+        dest: 'dist/img/leaflet/',
       }
     },
    manifest: {
@@ -88,9 +88,9 @@ module.exports = function(grunt) {
         },
         src: [
           '*.html',
-            'js/*.js',
-            'css/*.css',
-            'img/*'
+          'js/*.js',
+          'css/*.css',
+          'img/**/*.png'
         ],
         dest: 'dist/manifest.appcache'
       }

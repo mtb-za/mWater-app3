@@ -1,5 +1,11 @@
 Page = require("../Page")
 
+setupMapTiles = ->
+  mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png'
+  subDomains = ['otile1','otile2','otile3','otile4']
+  mapquestAttrib = 'Data, imagery and map information provided by <a href="http://open.mapquest.co.uk" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
+  return new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: subDomains})
+
 class SourceMapPage extends Page
   create: ->
     @setTitle "Source Map"
@@ -7,7 +13,7 @@ class SourceMapPage extends Page
     # Calculate height
     @$el.html templates['pages/SourceMapPage']()
 
-    L.Icon.Default.imagePath = "images"
+    L.Icon.Default.imagePath = "img/leaflet/"
     @map = L.map(this.$("#map")[0])
     @resizeMap()
 
@@ -15,14 +21,11 @@ class SourceMapPage extends Page
     $(window).on('resize', @resizeMap)
 
     # Setup map tiles
-    mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png'
-    subDomains = ['otile1','otile2','otile3','otile4']
-    mapquestAttrib = 'Data, imagery and map information provided by <a href="http://open.mapquest.co.uk" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
-    mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: subDomains});
-    mapquest.addTo(@map)
+    setupMapTiles().addTo(@map)
 
     @map.on('locationfound', @locationFound)
     @map.on('locationerror', @locationError)
+    @map.on('moveend', @updateMarkers)
     @map.locate(watch:true, enableHighAccuracy: true)
 
   destroy: ->
@@ -59,6 +62,15 @@ class SourceMapPage extends Page
     else
       @meMarker.setLatLng(e.latlng)
       @meCircle.setLatLng(e.latlng).setRadius(radius)
+
+  updateMarkers: =>
+    # Get bounds
+    # Pad them
+    # Query sources with projection
+    # For each source
+      # If present and different, update
+      # If not present, add
+    # If was not seen, remove  
 
 
 module.exports = SourceMapPage
