@@ -1,5 +1,7 @@
 assert = chai.assert
 
+GeoJSON = require '../app/js/GeoJSON'
+
 module.exports = ->
   context 'With sample rows', ->
     beforeEach (done) ->
@@ -95,4 +97,39 @@ module.exports = ->
 
       @db.test.find(selector).fetch (results) =>
         assert.deepEqual _.pluck(results, '_id'), [1,3,2,4]
+        done()
+
+    it 'finds points near maxDistance', (done) ->
+      selector = loc: 
+        $near: 
+          $geometry: geopoint(90, 45)
+          $maxDistance: 111000
+
+      @db.test.find(selector).fetch (results) =>
+        assert.deepEqual _.pluck(results, '_id'), [1,3]
         done()      
+
+    it 'finds points near maxDistance just above', (done) ->
+      selector = loc: 
+        $near: 
+          $geometry: geopoint(90, 45)
+          $maxDistance: 112000
+
+      @db.test.find(selector).fetch (results) =>
+        assert.deepEqual _.pluck(results, '_id'), [1,3,2]
+        done()
+
+    it 'finds points within simple box', (done) ->
+      selector = loc: 
+        $geoIntersects: 
+          $geometry: 
+            type: 'Polygon'
+            coordinates: [[
+              [89.5, 45.5], [89.5, 46.5], [90.5, 46.5], [90.5, 45.5]
+            ]]
+      @db.test.find(selector).fetch (results) =>
+        assert.deepEqual _.pluck(results, '_id'), [2]
+        done()
+
+
+

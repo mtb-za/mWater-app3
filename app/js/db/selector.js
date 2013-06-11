@@ -308,14 +308,20 @@ var VALUE_OPERATORS = {
       return !matcher(value);
     };
   },
-  
+
   "$near": function (operand) {
-    // Always returns true. Near must be handled in post-filter/sort/limit
+    // Always returns true. Must be handled in post-filter/sort/limit
+    return function (value) {
+      return true;
+    }
+  },
+
+  "$geoIntersects": function (operand) {
+    // Always returns true. Must be handled in post-filter/sort/limit
     return function (value) {
       return true;
     }
   }
-
 
 };
 
