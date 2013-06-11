@@ -23,13 +23,6 @@ function createSurvey(model) {
         options : [["PipedWater", "Piped Water"], ["PipedWaterRes", "Piped Water with Service Reservoir"], ["GravityFedPiped", "Gravity-fed Piped Water"], ["BoreholeMech", "Deep Borehole with Mechanized Pumping"], ["BoreholeHand", "Deep Borehole with Handpump"], ["ProtectedSpring", "Protected Spring"], ["DugWellPump", "Dug Well with Handpump/windlass"], ["TreatmentPlant", "Water Treatment Plant"]],
     }));
 
-    sections.push(new surveys.Section({
-        model : model,
-        title : "Choose your survey",
-        contents : questions
-    }));
-    questions = [];
-
     /* General Information */
 
     questions.push(new surveys.TextQuestion({

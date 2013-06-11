@@ -26,6 +26,7 @@ function bundleTests(done) {
     bundle.transform('coffeeify')
     .add('./test/ItemTrackerTests')
     .add('./test/LocalDbTests')
+    .add('./test/GeoJSONTests')
     .bundle({
         debug: true
     }, function(err, src) {
