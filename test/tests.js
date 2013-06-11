@@ -555,7 +555,7 @@
 }).call(this);
 
 
-},{"../app/js/db/LocalDb":4,"./db_queries":5}],5:[function(require,module,exports){
+},{"./db_queries":4,"../app/js/db/LocalDb":5}],4:[function(require,module,exports){
 (function() {
   var assert,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
@@ -766,7 +766,7 @@
 }).call(this);
 
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 (function() {
   var Collection, LocalDb, compileDocumentSelector, compileSort, createUid;
 

@@ -19,6 +19,8 @@ class SourceMapPage extends Page
     # Setup map tiles
     setupMapTiles().addTo(@map)
 
+    # TODO zoom to last known bounds
+
     # Setup localtion display
     @locationDisplay = new LocationDisplay(@map)
 
@@ -42,7 +44,7 @@ class SourceMapPage extends Page
     bounds = @map.getBounds().pad(0.33)
 
     # Query sources with projection TODO
-    @db.sources.find({}, { sort: ["_id"], limit: 200 }).fetch (sources) =>
+    @db.sources.find({}, { sort: ["_id"], limit: 100 }).fetch (sources) =>
       # Find out which to add/remove
       [adds, removes] = @itemTracker.update(sources)
 
