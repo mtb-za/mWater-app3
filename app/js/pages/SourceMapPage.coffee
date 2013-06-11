@@ -1,11 +1,5 @@
 Page = require("../Page")
 
-setupMapTiles = ->
-  mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png'
-  subDomains = ['otile1','otile2','otile3','otile4']
-  mapquestAttrib = 'Data, imagery and map information provided by <a href="http://open.mapquest.co.uk" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
-  return new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: subDomains})
-
 class SourceMapPage extends Page
   create: ->
     @setTitle "Source Map"
@@ -23,20 +17,58 @@ class SourceMapPage extends Page
     # Setup map tiles
     setupMapTiles().addTo(@map)
 
-    @map.on('locationfound', @locationFound)
-    @map.on('locationerror', @locationError)
+    @locationDisplay = new LocationDisplay(@map)
     @map.on('moveend', @updateMarkers)
-    @map.locate(watch:true, enableHighAccuracy: true)
 
   destroy: ->
     $(window).off('resize', @resizeMap)
-    @map.stopLocate()
+    @locationDisplay.stop()
 
   resizeMap: =>
     # Calculate map height
     mapHeight = $("html").height() - 40
     $("#map").css("height", mapHeight + "px")
     @map.invalidateSize()
+
+  updateMarkers: =>
+    # Get bounds padded
+    bounds = @map.getBounds().pad(0.33)
+
+    # Query sources with projection
+    # boundsGeoJSON = { "type": "Polygon",
+    #   "coordinates": [
+    #     [[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]
+    #     ]}
+    # query = { $geoIntersects : { $geometry : boundsGeoJSON } }
+    # @db.find(query, { sort: "_id", limit: 200}).fetch()
+    # For each source
+      # If present and different, update
+      # If not present, add
+    # If was not seen, remove  
+
+
+
+
+setupMapTiles = ->
+  mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png'
+  subDomains = ['otile1','otile2','otile3','otile4']
+  mapquestAttrib = 'Data, imagery and map information provided by <a href="http://open.mapquest.co.uk" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
+  return new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: subDomains})
+
+class SourceDisplay
+  constructor: (map) ->
+    @map = map
+  
+
+class LocationDisplay
+  constructor: (map) ->
+    @map = map
+    @map.on('locationfound', @locationFound)
+    @map.on('locationerror', @locationError)
+    @map.locate(watch:true, enableHighAccuracy: true)
+
+  stop: ->
+    @map.stopLocate()
 
   locationError: (e) =>
     if not @locationZoomed
@@ -62,15 +94,5 @@ class SourceMapPage extends Page
     else
       @meMarker.setLatLng(e.latlng)
       @meCircle.setLatLng(e.latlng).setRadius(radius)
-
-  updateMarkers: =>
-    # Get bounds
-    # Pad them
-    # Query sources with projection
-    # For each source
-      # If present and different, update
-      # If not present, add
-    # If was not seen, remove  
-
 
 module.exports = SourceMapPage

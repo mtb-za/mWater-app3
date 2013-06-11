@@ -7,8 +7,9 @@ bundle.extension('.coffee');
 module.exports = function() {
     var done = this.async();
     bundle.transform('coffeeify')
-    .require(require.resolve('./app/js/run'), { entry: true })
-    .require('./app/js/db/LocalDb', {expose: 'LocalDb'})
+    .require(require.resolve('./app/js/run'), {expose: 'run'})
+    .require('./app/js/db/LocalDb', {expose: 'LocalDb'})  // For tests
+    .require('./app/js/ItemTracker', {expose: 'ItemTracker'})  // For tests
     .bundle({
         debug: true
     }, function(err, src) {
