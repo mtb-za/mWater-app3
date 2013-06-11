@@ -73,6 +73,36 @@ class Collection
   _findFetch: (selector, options, success, error) ->
     filtered = _.filter(_.values(@items), compileDocumentSelector(selector))
 
+    # Handle $near operator
+    for key, value of selector
+      if value['$near']
+        # Extract distances
+        geo = value['$near']['$geometry']
+        if geo.type != 'Point'
+          error 'Invalid near operator'
+
+        near = new L.LatLng(geo.coordinates[1], geo.coordinates[0])
+
+        # Get distances
+        distances = _.map filtered, (doc) ->
+          if doc[key].type != 'Point'
+            return { doc: doc, distance: -1 }
+          return { doc: doc, distance: 
+            near.distanceTo(new L.LatLng(doc[key].coordinates[1], doc[key].coordinates[0]))
+          }
+
+        # Filter non-points
+        distances = _.filter distances, (item) -> item.distance >= 0
+
+        # Sort by distance
+        distances = _.sortBy distances, 'distance'
+
+        # Limit to 100
+        distances = _.first distances, 100
+
+        # Extract docs
+        filtered = _.pluck distances, 'doc'
+
     if options and options.sort 
       filtered.sort(compileSort(options.sort))
 

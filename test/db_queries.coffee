@@ -73,3 +73,26 @@ module.exports = ->
           assert.equal 1, results.length
           done()
 
+
+  geopoint = (lng, lat) ->
+    return {
+        type: 'Point'
+        coordinates: [lng, lat]
+    }
+
+  context 'With geolocated rows', ->
+    beforeEach (done) ->
+      @db.test.upsert { _id:1, loc:geopoint(90, 45) }, =>
+        @db.test.upsert { _id:2, loc:geopoint(90, 46) }, =>
+          @db.test.upsert { _id:3, loc:geopoint(91, 45) }, =>
+            @db.test.upsert { _id:4, loc:geopoint(91, 46) }, =>
+              done()
+
+    it 'finds points near', (done) ->
+      selector = loc: 
+        $near: 
+          $geometry: geopoint(90, 45)
+
+      @db.test.find(selector).fetch (results) =>
+        assert.deepEqual _.pluck(results, '_id'), [1,3,2,4]
+        done()      

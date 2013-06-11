@@ -307,7 +307,16 @@ var VALUE_OPERATORS = {
     return function (value) {
       return !matcher(value);
     };
+  },
+  
+  "$near": function (operand) {
+    // Always returns true. Near must be handled in post-filter/sort/limit
+    return function (value) {
+      return true;
+    }
   }
+
+
 };
 
 // helpers used by compiled selector code
