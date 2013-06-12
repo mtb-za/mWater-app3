@@ -5,12 +5,15 @@ GeoJSON = require '../GeoJSON'
 class LocalDb
   constructor: (name) ->
     @name = name
+    @collections = {}
 
   addCollection: (name) ->
     dbName = @name
     namespace = "db.#{dbName}.#{name}."
 
-    @[name] = new Collection(namespace)
+    collection = new Collection(name, namespace)
+    @[name] = collection
+    @collections[name] = collection
 
   removeCollection: (name) ->
     dbName = @name
@@ -26,10 +29,13 @@ class LocalDb
           localStorage.removeItem(key)
 
     delete @[name]
+    delete @collections[name]
+
 
 # Stores data in memory, backed by local storage
 class Collection
-  constructor: (namespace) ->
+  constructor: (name, namespace) ->
+    @name = name
     @namespace = namespace
 
     @items = {}

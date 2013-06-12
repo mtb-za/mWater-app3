@@ -3,6 +3,8 @@ SlideMenu = require("./SlideMenu")
 Pager = require("./Pager")
 PageMenu = require("./PageMenu")
 
+Database = require "./Database"
+
 # Create page
 Page = require("./Page")
 class SomePage extends Page
@@ -17,7 +19,7 @@ class SomePage extends Page
   title: ->
     "some page!"
 
-db = require('./database')()
+db = Database.createDb()
 ctx = { db: db }
 
 # Create pager
