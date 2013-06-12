@@ -13,7 +13,7 @@ exports.latLngBoundsToGeoJSON = (bounds) ->
     ]
   }
 
-# Warning: only works with bounds
+# TODO: only works with bounds
 exports.pointInPolygon = (point, polygon) ->
   # Get bounds
   bounds = new L.LatLngBounds(_.map(polygon.coordinates[0], (coord) -> new L.LatLng(coord[1], coord[0])))

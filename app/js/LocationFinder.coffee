@@ -33,6 +33,10 @@ class LocationFinder
     })
 
   startWatch: ->
+    # Allow one watch at most
+    if @locationWatchId?
+      return
+
     highAccuracyFired = false
     lowAccuracyFired = false
 
@@ -63,7 +67,9 @@ class LocationFinder
     })  
 
   stopWatch: ->
-    navigator.geolocation.clearWatch(@locationWatchId);
+    if @locationWatchId?
+      navigator.geolocation.clearWatch(@locationWatchId);
+      @locationWatchId = undefined
 
 
 module.exports = LocationFinder  

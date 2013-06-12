@@ -27,6 +27,7 @@ function bundleTests(done) {
     .add('./test/ItemTrackerTests')
     .add('./test/LocalDbTests')
     .add('./test/GeoJSONTests')
+    .add('./test/LocationViewTests')
     .bundle({
         debug: true
     }, function(err, src) {

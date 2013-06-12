@@ -1,6 +1,14 @@
+assert = chai.assert
+
 class UIDriver
   constructor: (el) ->
     @el = $(el)
+
+  getDisabled: (str) ->
+    for item in @el.find("a,button")
+      if $(item).text().indexOf(str) != -1
+        return $(item).is(":disabled")
+    assert.fail(null, str, "Can't find: " + str)
 
   click: (str) ->
     for item in @el.find("a,button")
@@ -22,4 +30,4 @@ class UIDriver
   wait: (after) ->
     setTimeout after, 10
 
-window.UIDriver = UIDriver
+module.exports = UIDriver
