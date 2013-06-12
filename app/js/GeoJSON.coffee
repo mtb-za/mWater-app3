@@ -1,6 +1,6 @@
 # GeoJSON helper routines
 
-exports.LatLngBoundsToGeoJSON = (bounds) ->
+exports.latLngBoundsToGeoJSON = (bounds) ->
   sw = bounds.getSouthWest()
   ne = bounds.getNorthEast()
   return {
@@ -12,3 +12,9 @@ exports.LatLngBoundsToGeoJSON = (bounds) ->
       [ne.lng, sw.lat]]
     ]
   }
+
+# Warning: only works with bounds
+exports.pointInPolygon = (point, polygon) ->
+  # Get bounds
+  bounds = new L.LatLngBounds(_.map(polygon.coordinates[0], (coord) -> new L.LatLng(coord[1], coord[0])))
+  return bounds.contains(new L.LatLng(point.coordinates[1], point.coordinates[0]))

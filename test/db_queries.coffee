@@ -131,5 +131,17 @@ module.exports = ->
         assert.deepEqual _.pluck(results, '_id'), [2]
         done()
 
+    it 'handles undefined', (done) ->
+      selector = loc: 
+        $geoIntersects: 
+          $geometry: 
+            type: 'Polygon'
+            coordinates: [[
+              [89.5, 45.5], [89.5, 46.5], [90.5, 46.5], [90.5, 45.5]
+            ]]
+      @db.test.upsert { _id:5 }, =>
+        @db.test.find(selector).fetch (results) =>
+          assert.deepEqual _.pluck(results, '_id'), [2]
+          done()
 
 

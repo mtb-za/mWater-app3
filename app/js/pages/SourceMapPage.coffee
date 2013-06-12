@@ -2,6 +2,7 @@ Page = require "../Page"
 SourcePage = require "../pages/SourcePage"
 ItemTracker = require "../ItemTracker"
 LocationFinder = require '../LocationFinder'
+GeoJSON = require '../GeoJSON'
 
 class SourceMapPage extends Page
   create: ->
@@ -39,17 +40,6 @@ class SourceMapPage extends Page
     $("#map").css("height", mapHeight + "px")
     @map.invalidateSize()
 
-    # boundsGeoJSON = { "type": "Polygon",
-    #   "coordinates": [
-    #     [[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]
-    #     ]}
-    # query = { $geoIntersects : { $geometry : boundsGeoJSON } }
-    # @db.find(query, { sort: "_id", limit: 200}).fetch()
-    # For each source
-      # If present and different, update
-      # If not present, add
-    # If was not seen, remove  
-
 
 setupMapTiles = ->
   mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png'
@@ -71,8 +61,12 @@ class SourceDisplay
     # Get bounds padded
     bounds = @map.getBounds().pad(0.33)
 
+    boundsGeoJSON = GeoJSON.latLngBoundsToGeoJSON(bounds)
+    selector = { geo: { $geoIntersects: { $geometry: boundsGeoJSON } } }
+
     # Query sources with projection TODO
-    @db.sources.find({}, { sort: ["_id"], limit: 100 }).fetch (sources) =>
+    @db.sources.find(selector, { sort: ["_id"], limit: 100 }).fetch (sources) =>
+      console.log "### matched Sources:" + sources.length
       # Find out which to add/remove
       [adds, removes] = @itemTracker.update(sources)
 

@@ -1,6 +1,6 @@
 compileDocumentSelector = require('./selector').compileDocumentSelector
 compileSort = require('./selector').compileSort
-geojson_utils = require('geojson-utils')
+GeoJSON = require '../GeoJSON'
 
 class LocalDb
   constructor: (name) ->
@@ -183,17 +183,17 @@ createUid = ->
 processNearOperator = (selector, list) ->
   for key, value of selector
     if value['$near']
-      # Extract distances
       geo = value['$near']['$geometry']
       if geo.type != 'Point'
         break
 
       near = new L.LatLng(geo.coordinates[1], geo.coordinates[0])
 
+      list = _.filter list, (doc) ->
+        return doc[key] and doc[key].type == 'Point'
+
       # Get distances
       distances = _.map list, (doc) ->
-        if doc[key].type != 'Point'
-          return { doc: doc, distance: -1 }
         return { doc: doc, distance: 
           near.distanceTo(new L.LatLng(doc[key].coordinates[1], doc[key].coordinates[0]))
         }
@@ -218,7 +218,6 @@ processNearOperator = (selector, list) ->
 processGeoIntersectsOperator = (selector, list) ->
   for key, value of selector
     if value['$geoIntersects']
-      # Extract distances
       geo = value['$geoIntersects']['$geometry']
       if geo.type != 'Polygon'
         break
@@ -226,13 +225,12 @@ processGeoIntersectsOperator = (selector, list) ->
       # Check within for each
       list = _.filter list, (doc) ->
         # Reject non-points
-        if doc[key].type != 'Point'
+        if not doc[key] or doc[key].type != 'Point'
           return false
 
         # Check polygon
-        return geojson_utils.pointInPolygon(doc[key], geo)
+        return GeoJSON.pointInPolygon(doc[key], geo)
 
   return list
-
 
 module.exports = LocalDb
