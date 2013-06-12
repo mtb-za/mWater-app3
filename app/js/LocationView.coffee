@@ -38,8 +38,10 @@ class LocationView extends Backbone.View
       @$("#location_relative").text("Unspecified location")
     else if @setLocation
       @$("#location_relative").text("Setting location...")
+    else if not @currentLoc
+      @$("#location_relative").text("Waiting for GPS...")
     else
-      # TODO
+      @$("#location_relative").text(GeoJSON.getRelativeLocation(@currentLoc, @loc))
 
     # Disable map if location not set
     @$("#location_map").attr("disabled", not @loc);
@@ -55,7 +57,9 @@ class LocationView extends Backbone.View
       # Set location
       @loc = GeoJSON.posToPoint(pos)
       @trigger('locationset', @loc)
-      @render()
+
+    @currentLoc = GeoJSON.posToPoint(pos)  
+    @render()
 
   locationError: =>
     @setLocation = false

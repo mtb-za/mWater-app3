@@ -42,4 +42,16 @@ describe 'LocationView', ->
       assert.equal setPos, null
       assert.include(@ui.text(), 'Cannot')
 
+  context 'With set location', ->
+    beforeEach ->
+      @locationFinder = new MockLocationFinder()
+      @locationView = new LocationView(loc: { type: "Point", coordinates: [10, 20]}, locationFinder: @locationFinder)
+      @ui = new UIDriver(@locationView.el)
+
+    it 'displays Waiting', ->
+      assert.include(@ui.text(), 'Waiting')
+
+    it 'displays relative', ->
+      @locationFinder.trigger 'found', { coords: { latitude: 21, longitude: 10, accuracy: 10}}
+      assert.include(@ui.text(), '111.2km S')
 

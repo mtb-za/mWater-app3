@@ -15,3 +15,14 @@ describe 'GeoJSON', ->
       ]
     }
 
+  it 'gets relative location N', ->
+    from = { type: "Point", coordinates: [10, 20]}
+    to = { type: "Point", coordinates: [10, 21]}
+    str = GeoJSON.getRelativeLocation(from, to)
+    assert.equal str, '111.2km N'
+
+  it 'gets relative location S', ->
+    from = { type: "Point", coordinates: [10, 20]}
+    to = { type: "Point", coordinates: [10, 19]}
+    str = GeoJSON.getRelativeLocation(from, to)
+    assert.equal str, '111.2km S'
