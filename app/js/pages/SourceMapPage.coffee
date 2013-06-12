@@ -66,6 +66,7 @@ class SourceDisplay
 
     # Query sources with projection TODO
     @db.sources.find(selector, { sort: ["_id"], limit: 100 }).fetch (sources) =>
+      console.log "### matched Sources:" + sources.length
       # Find out which to add/remove
       [adds, removes] = @itemTracker.update(sources)
 

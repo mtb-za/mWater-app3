@@ -14,6 +14,7 @@ seedData = (db) ->
       name: oldSource.name
       desc: oldSource.desc
       code: oldSource.code
+      # TODO: type??
     }
     if oldSource.latitude? and oldSource.longitude?
       source.geo = {
