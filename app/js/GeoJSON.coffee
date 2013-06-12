@@ -1,5 +1,13 @@
 # GeoJSON helper routines
 
+# Converts navigator position to point
+exports.posToPoint = (pos) ->
+  return {
+    type: 'Point'
+    coordinates: [pos.coords.longitude, pos.coords.latitude]
+  }
+
+
 exports.latLngBoundsToGeoJSON = (bounds) ->
   sw = bounds.getSouthWest()
   ne = bounds.getNorthEast()

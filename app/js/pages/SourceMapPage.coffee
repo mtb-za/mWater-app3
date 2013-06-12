@@ -96,7 +96,8 @@ class LocationDisplay
   constructor: (map) ->
     @map = map
 
-    @locationFinder = new LocationFinder(@locationFound, @locationError)
+    @locationFinder = new LocationFinder()
+    @locationFinder.on('found', @locationFound).on('error', @locationError)
     @locationFinder.startWatch()
 
   stop: ->

@@ -13,7 +13,8 @@ module.exports = class SourceListPage extends Page
 
   activate: ->
     # Find location
-    @locationFinder = new LocationFinder(@locationFound, @locationError)
+    @locationFinder = new LocationFinder()
+    @locationFinder.on('found', @locationFound).on('error', @locationError)
     @locationFinder.getLocation()
     @$("#location_msg").show()
 
