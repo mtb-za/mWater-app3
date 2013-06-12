@@ -34,7 +34,7 @@ class LocationFinder
   startWatch: ->
     # Allow one watch at most
     if @locationWatchId?
-      return
+      @stopWatch()
 
     highAccuracyFired = false
     lowAccuracyFired = false
@@ -44,30 +44,31 @@ class LocationFinder
         lowAccuracyFired = true
         @trigger 'found', pos
 
+    highAccuracy = (pos) =>
+      highAccuracyFired = true
+      @trigger 'found', pos
+
+    error = (error) =>
+      console.log "### error "
+      # No error if fired once
+      if not lowAccuracyFired and not highAccuracyFired
+        @trigger 'error', error
+
     # Fire initial low-accuracy one
-    navigator.geolocation.getCurrentPosition(lowAccuracy, null, {
+    navigator.geolocation.getCurrentPosition(lowAccuracy, error, {
         maximumAge : 3600*24,
         timeout : 10000,
         enableHighAccuracy : false
     })
 
-    success = (pos) =>
-      highAccuracyFired = true
-      @trigger 'found', pos
-
-    error = (error) =>
-      # No error if fired once
-      if not lowAccuracyFired and not highAccuracyFired
-        @trigger 'error', error
-
-    @locationWatchId = navigator.geolocation.watchPosition(success, error, {
+    @locationWatchId = navigator.geolocation.watchPosition(highAccuracy, error, {
         maximumAge : 3000,
         enableHighAccuracy : true
     })  
 
   stopWatch: ->
     if @locationWatchId?
-      navigator.geolocation.clearWatch(@locationWatchId);
+      navigator.geolocation.clearWatch(@locationWatchId)
       @locationWatchId = undefined
 
 

@@ -6,27 +6,26 @@ class LocationView extends Backbone.View
   constructor: (options) ->
     super()
     @loc = options.loc
-    @setLocation = options.setLocation
-    @locationFinder = options.locationFinder
+    @settingLocation = false
+    @locationFinder = options.locationFinder || new LocationFinder()
 
     # Listen to location events
-    @locationFinder.on('found', @locationFound)
-    @locationFinder.on('error', @locationError)
+    @listenTo(@locationFinder, 'found', @locationFound)
+    @listenTo(@locationFinder, 'error', @locationError)
 
-    @locationFinder.startWatch()
-    # Start tracking location if set or setting
-    if @loc or @setLocation
+    # Start tracking location if set
+    if @loc
       @locationFinder.startWatch()
 
     @render()
 
   events:
     'click #location_map' : 'mapClicked'
-    'click #location_set' : 'setClicked'
+    'click #location_set' : 'setLocation'
 
   remove: ->
-    super()
     @locationFinder.stopWatch()
+    super()
 
   render: ->
     @$el.html templates['LocationView']()
@@ -34,9 +33,9 @@ class LocationView extends Backbone.View
     # Set location string
     if @errorFindingLocation
       @$("#location_relative").text("Cannot find location")
-    else if not @loc and not @setLocation 
+    else if not @loc and not @settingLocation 
       @$("#location_relative").text("Unspecified location")
-    else if @setLocation
+    else if @settingLocation
       @$("#location_relative").text("Setting location...")
     else if not @currentLoc
       @$("#location_relative").text("Waiting for GPS...")
@@ -46,23 +45,29 @@ class LocationView extends Backbone.View
     # Disable map if location not set
     @$("#location_map").attr("disabled", not @loc);
 
-  setClicked: ->
-    @setLocation = true
+    # Disable set if setting
+    @$("#location_set").attr("disabled", @settingLocation == true);    
+
+  setLocation: ->
+    @settingLocation = true
     @errorFindingLocation = false
     @locationFinder.startWatch()
     @render()
 
   locationFound: (pos) =>
-    if @setLocation
+    if @settingLocation
+      @settingLocation = false
+      @errorFindingLocation = false
+
       # Set location
       @loc = GeoJSON.posToPoint(pos)
       @trigger('locationset', @loc)
 
-    @currentLoc = GeoJSON.posToPoint(pos)  
+    @currentLoc = GeoJSON.posToPoint(pos)
     @render()
 
   locationError: =>
-    @setLocation = false
+    @settingLocation = false
     @errorFindingLocation = true
     @render()
 

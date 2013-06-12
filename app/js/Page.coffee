@@ -7,11 +7,15 @@ class Page extends Backbone.View
     # Mix in context for convenience
     _.extend(@, ctx) 
 
+    # Store subviews
+    @_subviews = []
+
   className: "page"
   create: ->
   activate: ->
   deactivate: ->
   destroy: ->
+    @removeSubviews()
 
   getTitle: -> @title
 
@@ -19,5 +23,11 @@ class Page extends Backbone.View
     @title = title
     @trigger 'change:title'
 
+  addSubview: (view) ->
+    @_subviews.push(view)
+
+  removeSubviews: ->
+    for subview in @_subviews
+      subview.remove()
 
 module.exports = Page
