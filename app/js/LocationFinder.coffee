@@ -1,22 +1,23 @@
 # Improved location finder
 class LocationFinder
-  constructor: ->
-    _.extend(@, Backbone.Events)
+  constructor: (success, error) ->
+    @success = success
+    @error = error
 
   getLocation: ->
     # Both failures are required to trigger error
     locationError = _.after 2, =>
-      @trigger 'locationerror'
+      if @error? then @error()
 
     highAccuracyFired = false
 
     lowAccuracy = (pos) =>
       if not highAccuracyFired
-        @trigger 'locationfound', pos
+        @success(pos)
 
     highAccuracy = (pos) =>
       highAccuracyFired = true
-      @trigger 'locationfound', pos
+      @success(pos)
 
     # Get both high and low accuracy, as low is sufficient for initial display
     navigator.geolocation.getCurrentPosition(lowAccuracy, locationError, {
@@ -38,7 +39,7 @@ class LocationFinder
     lowAccuracy = (pos) =>
       if not highAccuracyFired
         lowAccuracyFired = true
-        @trigger 'locationfound', pos
+        @success(pos)
 
     # Fire initial low-accuracy one
     navigator.geolocation.getCurrentPosition(lowAccuracy, null, {
@@ -49,12 +50,12 @@ class LocationFinder
 
     success = (pos) =>
       highAccuracyFired = true
-      @trigger 'locationfound', pos      
+      @success(pos)
 
     error = (error) =>
       # No error if fired once
       if not lowAccuracyFired and not highAccuracyFired
-        @trigger 'locationerror', error
+        if @error? then @error(error)
 
     @locationWatchId = navigator.geolocation.watchPosition(success, error, {
         maximumAge : 3000,

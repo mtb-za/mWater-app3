@@ -9,8 +9,8 @@ module.exports = class SourceListPage extends Page
     @setTitle 'Nearby Sources'
 
   activate: ->
-    # TODO? @template '#table', 'pages/SourceListPage_item', { rows: sources }
-    # Query database TODO $near
+    # Find location
+    # Query database 
     @db.sources.find({}).fetch (sources) ->
       @$("#table").html templates['pages/SourceListPage_item'](sources:sources)
 

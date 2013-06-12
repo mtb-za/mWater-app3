@@ -96,12 +96,8 @@ class LocationDisplay
   constructor: (map) ->
     @map = map
 
-    @locationFinder = new LocationFinder()
-    @locationFinder.on('locationfound', @locationFound)
-    @locationFinder.on('locationerror', @locationError)
-
+    @locationFinder = new LocationFinder(@locationFound, @locationError)
     @locationFinder.startWatch()
-    @map.locate(watch:true, enableHighAccuracy: true)
 
   stop: ->
     @locationFinder.stopWatch()
