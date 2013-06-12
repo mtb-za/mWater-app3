@@ -84,6 +84,8 @@ class Collection
     if options and options.limit
       filtered = _.first filtered, options.limit
 
+    # Clone to prevent accidental updates
+    filtered = _.map filtered, (doc) -> _.cloneDeep(doc)
     if success? then success(filtered)
 
   upsert: (doc, success, error) ->

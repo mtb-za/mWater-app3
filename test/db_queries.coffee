@@ -60,6 +60,13 @@ module.exports = ->
         assert.deepEqual _.pluck(results, '_id'), [1,3]
         done()
 
+    it 'fetches independent copies', (done) ->
+      @db.test.findOne { _id: 2 }, (result) =>
+        result.a = 'David'
+        @db.test.findOne { _id: 2 }, (result) =>
+          assert.equal 'Charlie', result.a
+          done()
+
   it 'adds _id to rows', (done) ->
     @db.test.upsert { a: 1 }, (item) =>
       assert.property item, '_id'
