@@ -1,8 +1,3 @@
-
-exports.SurveyModel = Backbone.Model.extend({
-
-});
-
 exports.Sections = Backbone.View.extend({
     className : "survey",
 
@@ -83,9 +78,9 @@ exports.Sections = Backbone.View.extend({
             return s.shouldBeVisible()
         });
         this.$(".breadcrumb").html(templates['forms/Sections_breadcrumbs']({
-            sections : _.initial(visibleSections)
+            sections : _.initial(visibleSections),
             lastSection: _.last(visibleSections)
-        });
+        }));
         
         this.renderNextPrev();
 

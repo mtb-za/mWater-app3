@@ -7,8 +7,7 @@ function bundleApp(done) {
     bundle.extension('.coffee');
     bundle.transform('coffeeify')
     .require(require.resolve('./app/js/run'), {expose: 'run'})
-    .require('./app/js/db/LocalDb', {expose: 'LocalDb'})  // For tests
-    .require('./app/js/ItemTracker', {expose: 'ItemTracker'})  // For tests
+    .require('./app/js/forms', {expose: 'forms'})  // For forms
     .bundle({
         debug: true
     }, function(err, src) {
@@ -24,6 +23,7 @@ function bundleTests(done) {
     bundle = browserify();
     bundle.extension('.coffee');
     bundle.transform('coffeeify')
+    .require('./app/js/forms', {expose: 'forms'})  // For forms
     .add('./test/ItemTrackerTests')
     .add('./test/LocalDbTests')
     .add('./test/GeoJSONTests')

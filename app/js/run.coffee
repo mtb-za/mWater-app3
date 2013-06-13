@@ -41,3 +41,5 @@ $ ->
   # pager.openPage(require("./pages/SurveyPage"), survey)
 
 
+# TODO ### remove
+require("./forms")
