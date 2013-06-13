@@ -24,8 +24,7 @@ exports.Sections = Backbone.View.extend({
         // Validate current section
         var section = this.sections[this.section];
         if (section.validate()) {
-            if (this.options.onFinish)
-                this.options.onFinish();
+            this.trigger('finish');
         }
     },
 

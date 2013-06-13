@@ -3,13 +3,15 @@
 exports.Form = class Form extends Backbone.View
   initialize: (options) ->
     # Add views and listen to events
-    for view in options.view
-      @el.append(view.el);
+    for view in options.views
+      @$el.append(view.el);
       @listenTo view, 'close', =>
         @trigger('close')
+      @listenTo view, 'finish', =>
+        @trigger('finish')
 
     # Add listener to model
-    @model.listenTo 'change', =>
+    @listenTo @model, 'change', =>
       @trigger('change')
 
   load: (data) ->

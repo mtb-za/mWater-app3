@@ -1,4 +1,6 @@
+
 var browserify = require('./browserify-task');
+var compileForms = require('./compile-forms-task');
 
 module.exports = function(grunt) {
 
@@ -104,6 +106,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('browserify', 'Make single file output', browserify);
+  grunt.registerTask('compile-forms', 'Make forms into js', compileForms);
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
@@ -112,5 +115,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-manifest');
 
   // Default task(s).
-  grunt.registerTask('default', ['browserify', 'concat', 'copy', 'handlebars', 'manifest']);
+  grunt.registerTask('default', ['browserify', 'concat', 'copy', 'handlebars', 'manifest', 'compile-forms']);
 };

@@ -10,6 +10,8 @@ module.exports = class PageMenu extends Backbone.View
     "click #source_list" : "gotoSourceList"
     "click #source_map" : "gotoSourceMap"
     "click #settings" : "gotoSettings"
+    "click #new_survey" : "gotoNewSurvey"
+    "click #existing_survey" : "gotoExistingSurvey"
 
   render: ->
     @$el.html templates['PageMenu']()
@@ -30,3 +32,9 @@ module.exports = class PageMenu extends Backbone.View
 
   gotoSettings: ->
     @pager.openPage(require("./pages/SettingsPage"))
+
+  gotoNewSurvey: ->
+    @pager.openPage(require("./pages/NewSurveyPage"))
+
+  gotoExistingSurvey: ->
+    @pager.openPage(require("./pages/ExistingSurveyPage"))

@@ -1,0 +1,16 @@
+<style>
+    a { font-weight: bold; }
+    .page ul > li > a:hover {
+      background-color: transparent; // Prevent hover as is problem with touch
+    }
+}
+</style>
+
+<h4>Select survey to continue</h4>
+<ul class="nav nav-tabs nav-stacked">
+  {{#each responses}}
+  <li>
+    <a class="response" id="{{_id}}"><span id="name_{{_id}}"></span> (started {{started}}) &gt;</a>
+  </li>
+  {{/each}}
+</ul>

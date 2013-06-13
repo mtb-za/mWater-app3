@@ -1,5 +1,5 @@
 Page = require "../Page"
-SourcePage = require "../pages/SourcePage"
+SourcePage = require "./SourcePage"
 ItemTracker = require "../ItemTracker"
 LocationFinder = require '../LocationFinder'
 GeoJSON = require '../GeoJSON'
