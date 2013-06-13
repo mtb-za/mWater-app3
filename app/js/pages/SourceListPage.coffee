@@ -1,5 +1,6 @@
 Page = require("../Page")
 LocationFinder = require '../LocationFinder'
+GeoJSON = require '../GeoJSON'
 
 # TODO source search
 
@@ -22,9 +23,7 @@ module.exports = class SourceListPage extends Page
     @$("#location_msg").hide()
     selector = geo: 
         $near: 
-          $geometry: 
-            type: 'Point'
-            coordinates: [pos.coords.longitude, pos.coords.latitude]
+          $geometry: GeoJSON.posToPoint(pos)
 
     # Query database 
     @db.sources.find(selector).fetch (sources) ->

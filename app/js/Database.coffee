@@ -37,4 +37,6 @@ exports.createDb = ->
   for name in collectionNames
     db.addCollection(name)
 
+  seedData(db)
+
   return db
