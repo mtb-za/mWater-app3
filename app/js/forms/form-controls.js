@@ -296,6 +296,27 @@ exports.DropdownQuestion = exports.Question.extend({
 
 });
 
+exports.CheckQuestion = exports.Question.extend({
+    events : {
+        "checked" : "checked",
+    },
+
+    checked : function(e) {
+        // Get checked
+        this.model.set(this.id, this.$(".checkbox").hasClass("checked"));
+    },
+
+    renderAnswer : function(answerEl) {
+        var i;
+        answerEl.append($(_.template('<div class="checkbox <%=checked%>"><%=text%></div>', {
+            text : this.options.text,
+            checked : (this.model.get(this.id)) ? "checked" : ""
+        })));
+    }
+
+});
+
+
 exports.MulticheckQuestion = exports.Question.extend({
     events : {
         "checked" : "checked",

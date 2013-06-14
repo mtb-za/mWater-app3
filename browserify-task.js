@@ -6,8 +6,9 @@ function bundleApp(done) {
     bundle = browserify();
     bundle.extension('.coffee');
     bundle.transform('coffeeify')
-    .require(require.resolve('./app/js/run'), {expose: 'run'})
+    .require('./app/js/run', {expose: 'run'})
     .require('./app/js/forms', {expose: 'forms'})  // For forms
+    .require('./app/js/mobile-behavior', {expose: 'mobile-behavior'})  // For tests
     .bundle({
         debug: true
     }, function(err, src) {

@@ -16,6 +16,9 @@
     <script src="../dist/js/forms.js"></script>
     <script>
         $(function() {
+
+            require('mobile-behavior').setup($('body'));
+    
             _.each(forms, function(form) {
                 $('#formlist').append($('<div><button type="button" class="btn formbutton" id="'+form._id+'">'+form.name+'</button></div>'));
             });
