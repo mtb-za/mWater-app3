@@ -23,7 +23,7 @@ class SurveyPage extends Page
 
         # Listen to events
         @listenTo @formView, 'change', @saveResponse
-        @listenTo @formView, 'finish', @formFinished
+        @listenTo @formView, 'complete', @formCompleted
 
         @formView.load response.data
 
@@ -40,11 +40,11 @@ class SurveyPage extends Page
     @response.data = @formView.save()
     @db.responses.upsert(@response)
 
-  formFinished: =>
-    # Mark as finished
+  formCompleted: =>
+    # Mark as completed
     @response.data = @formView.save()
     @response.completed = true
-    
+
     @db.responses.upsert(@response)
     @pager.closePage()
 

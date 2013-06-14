@@ -7,8 +7,8 @@ exports.Form = class Form extends Backbone.View
       @$el.append(view.el);
       @listenTo view, 'close', =>
         @trigger('close')
-      @listenTo view, 'finish', =>
-        @trigger('finish')
+      @listenTo view, 'complete', =>
+        @trigger('complete')
 
     # Add listener to model
     @listenTo @model, 'change', =>
