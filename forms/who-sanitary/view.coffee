@@ -14,7 +14,7 @@ questions.push new forms.DropdownQuestion(
 )
 
 # General Information 
-questions.push new forms.TextQuestion(
+questions.push new forms.NumberQuestion(
   id: "q2"
   model: model
   prompt: "Cluster number?"

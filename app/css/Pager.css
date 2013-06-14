@@ -1,33 +1,5 @@
-tr.pressed > td {
-  background-color: #60B0FF;
-}
-
-.pressed {
-  background-color: #60B0FF;
-}
-.pressed:active {
-  background-color: #60B0FF;
-}
-.pressed:hover {
-  background-color: #60B0FF;
-}
-.pressed:focus {
-  background-color: #60B0FF;
-}
-
 .page {
   padding: 5px;
-}
-
-*:focus {
-  outline: none;
-}
-* {
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-}
-
-.btn {
-  background-image: none;
 }
 
 .buttoned {
@@ -35,40 +7,3 @@ tr.pressed > td {
   vertical-align: middle;
 }
 
-.checkbox {
-  background-repeat: no-repeat;
-  vertical-align: middle;
-  line-height: 25px;
-  padding-left: 25px;
-  background-image: url('../img/checkbox.png');
-  font-size: 11pt;
-  font-weight: bold;
-  background-position-y: 3px;
-  margin-left: 8px;
-  margin-bottom: 3px;
-  margin-top: 3px;
-  cursor: pointer;
-}
-
-.checkbox.checked {
-  background-position-y: -30px;
-}
-
-.radio-button {
-  background-repeat: no-repeat;
-  vertical-align: middle;
-  line-height: 30px;
-  padding-left: 25px;
-  background-image: url('../img/radio-button.png');
-  font-size: 12pt;
-  font-weight: bold;
-  background-position-y: 6px;
-  margin-left: 8px;
-  margin-bottom: 3px;
-  margin-top: 3px;
-  cursor: pointer;
-}
-
-.radio-button.checked {
-  background-position-y: -30px;
-}

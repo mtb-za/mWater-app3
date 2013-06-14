@@ -7,6 +7,7 @@ module.exports = class PageMenu extends Backbone.View
 
   events:
     "click #home" : "gotoHome"
+    "click #login" : "gotoLogin"
     "click #source_list" : "gotoSourceList"
     "click #source_map" : "gotoSourceMap"
     "click #settings" : "gotoSettings"
@@ -19,6 +20,9 @@ module.exports = class PageMenu extends Backbone.View
   gotoHome: ->
     while @pager.multiplePages()
       @pager.closePage()
+
+  gotoLogin: ->
+    @pager.openPage(require("./pages/LoginPage"))
 
   gotoSourceList: ->
     while @pager.multiplePages()
