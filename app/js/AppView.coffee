@@ -29,9 +29,13 @@ class AppView extends Backbone.View
   hideSlideMenu: -> @slideMenu.hide()
 
   pageChanged: ->
-    # Set title
+    # Set title and back button
     @$("#navbar_back").css("visibility", if @pager.multiplePages() then "visible" else "hidden")
     @$("#navbar_title").text(@pager.getTitle())
+
+    # Detach existing button bar and attach new one
+    @$("#navbar_buttons").children().detach()
+    @$("#navbar_buttons").append(@pager.getButtonBar().el)
 
   back: ->
     @slideMenu.hide()

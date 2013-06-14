@@ -1,0 +1,26 @@
+<style>
+.dropdown-menu .menuitem {
+  font-size: 16px;
+  line-height: 26px;
+}
+</style>
+<ul class="nav pull-right">
+  {{#each items}}
+  {{#if menu}}
+  <li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" {{#if icon}}style="background: url(img/{{icon}}) no-repeat 0; width: 6px;"{{/if}}>
+      {{#if text}}{{text}}{{else}}&nbsp;{{/if}}
+    </a>
+    <ul class="dropdown-menu">
+      {{#each menu}}
+      <li><a id="{{id}}" class="menuitem">{{text}}</a></li>
+      {{/each}}
+    </ul>
+  </li>
+  {{else}}
+  <li>
+    <a id="{{id}}" class="menuitem">{{text}}</a>
+  </li>
+  {{/if}}
+  {{/each}}
+</ul>

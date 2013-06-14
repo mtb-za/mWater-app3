@@ -66,6 +66,10 @@ class Pager extends Backbone.View
   getTitle: ->
     _.last(@stack).getTitle()
 
+  # Get buttonbar of active page
+  getButtonBar: ->
+    _.last(@stack).getButtonBar()
+
   # Determine if has multiple pages
   multiplePages: ->
     @stack.length > 1

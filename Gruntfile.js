@@ -16,6 +16,7 @@ module.exports = function(grunt) {
               'vendor/backbone.js', 
               'vendor/bootstrap/js/bootstrap.min.js', 
               'vendor/handlebars.runtime.js',
+              'vendor/swag.js',
               'vendor/fastclick.js',
               'vendor/mobiscroll.custom-2.5.4.min.js',
               'vendor/jquery.scrollintoview.min.js',

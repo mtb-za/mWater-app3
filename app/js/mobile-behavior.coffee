@@ -30,5 +30,11 @@ exports.setup = ($el) ->
   # Prevent links from launching new pages
   $el.on "click", "a", ->
     # Allow tabs
-    return true  if $(this).attr("data-toggle") is "tab"
+    return true if $(this).attr("data-toggle") is "tab"
+
+    # Allow dropdowns
+    return true if $(this).attr("data-toggle") is "dropdown"
+
+    # Allow if not hrefed
+    return true if not $(this).attr('href')
     false      
