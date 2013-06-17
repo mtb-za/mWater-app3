@@ -1,6 +1,7 @@
 
+exports.DateQuestion = require './DateQuestion'
 
-exports.Form = class Form extends Backbone.View
+exports.SurveyView = class SurveyView extends Backbone.View
   initialize: (options) ->
     # Add views and listen to events
     for view in options.views

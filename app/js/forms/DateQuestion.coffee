@@ -1,4 +1,8 @@
-module.exports = exports.Question.extend(
+# TODO Fix to have editable YYYY-MM-DD with click to popup scroller
+
+Question = require('./form-controls').Question
+
+module.exports = Question.extend(
   events:
     change: "changed"
 
@@ -13,6 +17,7 @@ module.exports = exports.Question.extend(
       theme: "ios"
       display: "modal"
       mode: "scroller"
-      dateOrder: "mmD ddyy"
+      dateOrder: "yymmD dd"
+      dateFormat: "yy-mm-dd"
 
 )

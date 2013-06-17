@@ -394,27 +394,3 @@ exports.PhotoQuestion = exports.Question.extend({
     }
 
 });
-
-exports.DateQuestion = exports.Question.extend({
-    events : {
-        "change" : "changed"
-    },
-
-    changed : function() {
-        this.model.set(this.id, this.$el.find('input[name="date"]').val());
-    },
-    renderAnswer : function(answerEl) {
-        answerEl.html(_.template('<input class="needsclick" name="date" />', this));
-
-        answerEl.find('input').val(this.model.get(this.id));
-
-        answerEl.find('input').scroller({
-            preset : 'date',
-            theme : 'ios',
-            display : 'modal',
-            mode : 'scroller',
-            dateOrder : 'mmD ddyy',
-        });
-    },
-
-});

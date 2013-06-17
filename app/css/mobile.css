@@ -15,6 +15,10 @@ tr.pressed > td {
   background-color: #60B0FF;
 }
 
+a { 
+ cursor:pointer;
+}
+
 *:focus {
   outline: none;
 }

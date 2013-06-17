@@ -676,6 +676,6 @@ view = new forms.Sections(
   model: model
 )
 
-return new forms.Form
+return new forms.SurveyView
   model: model
   views: [view]
