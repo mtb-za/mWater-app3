@@ -139,9 +139,18 @@ describe 'LocalDb', ->
             assert.equal results.length, 0
             done()
 
+describe 'LocalDb with local storage', ->
+  before ->
+    @db = new LocalDb('test', { namespace: "db.test" })
+
+  beforeEach (done) ->
+    @db.removeCollection('test')
+    @db.addCollection('test')
+    done()
+
   it "retains items", (done) ->
     @db.test.upsert { _id:1, a:"Alice" }, =>
-      db2 = new LocalDb('test')
+      db2 = new LocalDb('test', { namespace: "db.test" })
       db2.addCollection 'test'
       db2.test.find({}).fetch (results) ->
         assert.equal results[0].a, "Alice"
@@ -149,7 +158,7 @@ describe 'LocalDb', ->
 
   it "retains upserts", (done) ->
     @db.test.upsert { _id:1, a:"Alice" }, =>
-      db2 = new LocalDb('test')
+      db2 = new LocalDb('test', { namespace: "db.test" })
       db2.addCollection 'test'
       db2.test.find({}).fetch (results) ->
         db2.test.pendingUpserts (upserts) ->
@@ -159,8 +168,44 @@ describe 'LocalDb', ->
   it "retains removes", (done) ->
     @db.test.seed { _id:1, a:"Alice" }, =>
       @db.test.remove 1, =>
-        db2 = new LocalDb('test')
+        db2 = new LocalDb('test', { namespace: "db.test" })
         db2.addCollection 'test'
         db2.test.pendingRemoves (removes) ->
           assert.deepEqual removes, [1]
           done()
+
+describe 'LocalDb without local storage', ->
+  before ->
+    @db = new LocalDb('test')
+
+  beforeEach (done) ->
+    @db.removeCollection('test')
+    @db.addCollection('test')
+    done()
+
+  it "does not retain items", (done) ->
+    @db.test.upsert { _id:1, a:"Alice" }, =>
+      db2 = new LocalDb('test')
+      db2.addCollection 'test'
+      db2.test.find({}).fetch (results) ->
+        assert.equal results.length, 0
+        done()
+
+  it "does not retain upserts", (done) ->
+    @db.test.upsert { _id:1, a:"Alice" }, =>
+      db2 = new LocalDb('test')
+      db2.addCollection 'test'
+      db2.test.find({}).fetch (results) ->
+        db2.test.pendingUpserts (upserts) ->
+          assert.equal results.length, 0
+          done()
+
+  it "does not retain removes", (done) ->
+    @db.test.seed { _id:1, a:"Alice" }, =>
+      @db.test.remove 1, =>
+        db2 = new LocalDb('test')
+        db2.addCollection 'test'
+        db2.test.pendingRemoves (removes) ->
+          assert.equal removes.length, 0
+          done()
+

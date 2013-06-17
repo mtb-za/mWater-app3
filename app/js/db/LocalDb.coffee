@@ -3,13 +3,18 @@ compileSort = require('./selector').compileSort
 GeoJSON = require '../GeoJSON'
 
 class LocalDb
-  constructor: (name) ->
+  constructor: (name, options) ->
     @name = name
     @collections = {}
 
+    if options and options.namespace and window.localStorage
+      @namespace = options.namespace
+
   addCollection: (name) ->
     dbName = @name
-    namespace = "db.#{dbName}.#{name}."
+
+    # Set namespace for collection
+    namespace = @namespace+"."+name if @namespace
 
     collection = new Collection(name, namespace)
     @[name] = collection
@@ -17,22 +22,21 @@ class LocalDb
 
   removeCollection: (name) ->
     dbName = @name
-    namespace = "db.#{dbName}.#{name}."
 
-    if window.localStorage
+    if @namespace and window.localStorage
       keys = []
       for i in [0...localStorage.length]
         keys.push(localStorage.key(i))
 
       for key in keys
-        if key.substring(0, namespace.length) == namespace
+        if key.substring(0, @namespace.length + 1) == @namespace + "."
           localStorage.removeItem(key)
 
     delete @[name]
     delete @collections[name]
 
 
-# Stores data in memory, backed by local storage
+# Stores data in memory, optionally backed by local storage
 class Collection
   constructor: (name, namespace) ->
     @name = name
@@ -43,7 +47,7 @@ class Collection
     @removes = {}  # Pending removes by _id. No longer in items
 
     # Read from local storage
-    if window.localStorage
+    if window.localStorage and namespace?
       @loadStorage()
 
   loadStorage: ->
@@ -114,26 +118,33 @@ class Collection
 
   _putItem: (doc) ->
     @items[doc._id] = doc
-    localStorage[@itemNamespace + doc._id] = JSON.stringify(doc)
+    if @namespace
+      localStorage[@itemNamespace + doc._id] = JSON.stringify(doc)
 
   _deleteItem: (id) ->
     delete @items[id]
+    if @namespace
+      localStorage.removeItem(@itemNamespace + id)
 
   _putUpsert: (doc) ->
     @upserts[doc._id] = doc
-    localStorage[@namespace+"upserts"] = JSON.stringify(_.keys(@upserts))
+    if @namespace
+      localStorage[@namespace+"upserts"] = JSON.stringify(_.keys(@upserts))
 
   _deleteUpsert: (id) ->
     delete @upserts[id]
-    localStorage[@namespace+"upserts"] = JSON.stringify(_.keys(@upserts))
+    if @namespace
+      localStorage[@namespace+"upserts"] = JSON.stringify(_.keys(@upserts))
 
   _putRemove: (doc) ->
     @removes[doc._id] = doc
-    localStorage[@namespace+"removes"] = JSON.stringify(_.values(@removes))
+    if @namespace
+      localStorage[@namespace+"removes"] = JSON.stringify(_.values(@removes))
 
   _deleteRemove: (id) ->
     delete @removes[id]
-    localStorage[@namespace+"removes"] = JSON.stringify(_.values(@removes))
+    if @namespace
+      localStorage[@namespace+"removes"] = JSON.stringify(_.values(@removes))
 
   cache: (docs, selector, options, success, error) ->
     # Add all non-local that are not upserted or removed
