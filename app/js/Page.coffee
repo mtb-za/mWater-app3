@@ -18,7 +18,9 @@ class Page extends Backbone.View
   activate: ->
   deactivate: ->
   destroy: ->
+  remove: ->
     @removeSubviews()
+    super()
 
   getTitle: -> @title
 
@@ -40,6 +42,7 @@ class Page extends Backbone.View
     # Setup button bar
     @buttonBar.setup(items)
 
+# Standard button bar
 class ButtonBar extends Backbone.View
   events: 
     "click .menuitem" : "clickMenuItem"

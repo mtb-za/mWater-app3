@@ -8,21 +8,14 @@ module.exports = class SourceEditPage extends Page
     super(ctx)
     @_id = _id
 
-  events: 
-    'click #save_button': 'save'
-    'click #cancel_button': 'cancel'
-
   activate: ->
     @db.sources.findOne {_id: @_id}, (source) =>
-      @source = source
-
       @setTitle "Edit Source #{source.code}"
-      @$el.html templates['pages/SourceEditPage'](source:source)
 
       # Create model from source
-      @model = new Backbone.Model(_.pick(source, 'source_type', 'name', 'desc'))
+      @model = new Backbone.Model(source)
   
-      # Create question group
+      # Create questions
       sourceTypesQuestion = new forms.DropdownQuestion
         id: 'source_type'
         model: @model
@@ -32,7 +25,7 @@ module.exports = class SourceEditPage extends Page
         # Fill source types
         sourceTypesQuestion.setOptions _.map(sourceTypes, (st) => [st.code, st.name])
 
-      @questionGroup = new forms.QuestionGroup
+      saveCancelForm = new forms.SaveCancelForm
         contents: [
           sourceTypesQuestion
           new forms.TextQuestion
@@ -45,12 +38,11 @@ module.exports = class SourceEditPage extends Page
             prompt: 'Enter optional description'
         ]
 
-      @$("#questions").append(@questionGroup.el)
+      @$el.empty().append(saveCancelForm.el)
 
-  save: ->
-    if @questionGroup.validate()
-      _.extend(@source, @model.toJSON())
-      @db.sources.upsert @source, => @pager.closePage()
+      @listenTo saveCancelForm, 'save', =>
+        @db.sources.upsert @model.toJSON(), => @pager.closePage()
 
-  cancel: -> @pager.closePage()
+      @listenTo saveCancelForm, 'cancel', =>
+        @pager.closePage()
  

@@ -113,4 +113,4 @@ view = new forms.Sections(
 
 return new forms.SurveyView
   model: model
-  views: [view]
+  contents: [view]

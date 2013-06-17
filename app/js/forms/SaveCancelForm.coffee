@@ -28,12 +28,12 @@ module.exports = Backbone.View.extend
     </div>'''
     
     # Add contents (questions, mostly)
-    _.each @contents, (c) => @$el.append c.$el
+    _.each @contents, (c) => @$('#contents').append c.$el
     this
 
   save: ->
     if @validate()
       @trigger 'save'
 
-  cancel:
+  cancel: ->
     @trigger 'cancel'
