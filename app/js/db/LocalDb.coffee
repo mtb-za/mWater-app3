@@ -201,7 +201,7 @@ createUid = ->
 
 processNearOperator = (selector, list) ->
   for key, value of selector
-    if value['$near']
+    if value? and value['$near']
       geo = value['$near']['$geometry']
       if geo.type != 'Point'
         break
@@ -236,7 +236,7 @@ processNearOperator = (selector, list) ->
 
 processGeoIntersectsOperator = (selector, list) ->
   for key, value of selector
-    if value['$geoIntersects']
+    if value? and value['$geoIntersects']
       geo = value['$geoIntersects']['$geometry']
       if geo.type != 'Polygon'
         break

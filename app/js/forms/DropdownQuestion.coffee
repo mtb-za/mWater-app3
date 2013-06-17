@@ -5,7 +5,8 @@ module.exports = Question.extend(
     change: "changed"
 
   setOptions: (options) ->
-    return
+    @options.options = options
+    @render()
 
   changed: (e) ->
     val = $(e.target).val()
@@ -18,8 +19,8 @@ module.exports = Question.extend(
 
   renderAnswer: (answerEl) ->
     answerEl.html _.template("<select id=\"source_type\"><%=renderDropdownOptions()%></select>", this)
-    # Check if answer present
-    if not _.any(@options.options, (opt) => opt[0] == @model.get(@id))
+    # Check if answer present 
+    if not _.any(@options.options, (opt) => opt[0] == @model.get(@id)) and @model.get(@id)?
       @$("select").attr('disabled', 'disabled')
 
   renderDropdownOptions: ->

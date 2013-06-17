@@ -20,6 +20,11 @@ module.exports = class SourcePage extends Page
     @removeSubviews()
     @$el.html templates['pages/SourcePage'](@source)
 
+    # Set source type
+    if @source.source_type?
+      @db.source_types.findOne {code: @source.source_type}, (sourceType) =>
+        if sourceType? then @$("#source_type").text(sourceType.name)
+
     # Add location view
     locationView = new LocationView(loc: @source.geo)
     @addSubview(locationView)

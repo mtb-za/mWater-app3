@@ -29,47 +29,14 @@ describe 'DropdownQuestion', ->
       assert.equal @model.get('q1'), 'x'
       assert.isTrue @question.$("select").is(":disabled")
 
-#   context 'With set value', ->
-#     beforeEach ->
-#       @locationFinder = new MockLocationFinder()
-#       @locationView = new LocationView(loc:null, locationFinder: @locationFinder)
-#       @ui = new UIDriver(@locationView.el)
+    it 'is not disabled with empty value', ->
+      @model.set(q1: null)
+      assert.equal @model.get('q1'), null
+      assert.isFalse @question.$("select").is(":disabled")
 
-#     it 'displays Unspecified', ->
-#       assert.include(@ui.text(), 'Unspecified')
-
-#     it 'disables map', ->
-#       assert.isTrue @ui.getDisabled("Map") 
-
-#     it 'allows setting location', ->
-#       @ui.click('Set')
-#       setPos = null
-#       @locationView.on 'locationset', (pos) ->
-#         setPos = pos
-
-#       @locationFinder.trigger 'found', { coords: { latitude: 2, longitude: 3, accuracy: 10}}
-#       assert.equal setPos.coordinates[1], 2
-
-#     it 'Displays error', ->
-#       @ui.click('Set')
-#       setPos = null
-#       @locationView.on 'locationset', (pos) ->
-#         setPos = pos
-
-#       @locationFinder.trigger 'error'
-#       assert.equal setPos, null
-#       assert.include(@ui.text(), 'Cannot')
-
-#   context 'With set location', ->
-#     beforeEach ->
-#       @locationFinder = new MockLocationFinder()
-#       @locationView = new LocationView(loc: { type: "Point", coordinates: [10, 20]}, locationFinder: @locationFinder)
-#       @ui = new UIDriver(@locationView.el)
-
-#     it 'displays Waiting', ->
-#       assert.include(@ui.text(), 'Waiting')
-
-#     it 'displays relative', ->
-#       @locationFinder.trigger 'found', { coords: { latitude: 21, longitude: 10, accuracy: 10}}
-#       assert.include(@ui.text(), '111.2km S')
+    it 'is reenabled with setting value', ->
+      @model.set(q1: 'x')
+      assert.equal @model.get('q1'), 'x'
+      @question.setOptions([['a', 'Apple'], ['b', 'Banana'], ['x', 'Kiwi']])
+      assert.isFalse @question.$("select").is(":disabled")
 

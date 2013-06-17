@@ -3,7 +3,7 @@
 LocalDb = require './db/LocalDb'
 
 
-collectionNames = ['sources', 'forms', 'responses']
+collectionNames = ['sources', 'forms', 'responses', 'source_types']
 
 # ### TODO change from upsert to seed
 
@@ -25,6 +25,15 @@ seedData = (db) ->
       }
 
     db.sources.upsert(source)
+
+  oldSourceTypes = [{"code": 0, "name": "Piped into dwelling"}, {"code": 1, "name": "Piped into yard/plot"}, {"code": 2, "name": "Public tap or standpipe"}, {"code": 3, "name": "Tubewell"}, {"code": 4, "name": "Borehole"}, {"code": 5, "name": "Protected dug well"}, {"code": 6, "name": "Protected spring"}, {"code": 7, "name": "Rainwater catchment"}, {"code": 8, "name": "Unprotected spring"}, {"code": 9, "name": "Unprotected dug well"}, {"code": 10, "name": "Cart with tank"}, {"code": 11, "name": "Tanker-truck"}, {"code": 12, "name": "Surface Water"}, {"code": 13, "name": "Bottled Water"}, {"code": 14, "name": "Public tank or basin"}, {"code": 15, "name": "Supply network sampling point"}]
+  for oldSourceType in oldSourceTypes
+    sourceType = {
+      code: oldSourceType.code
+      name: oldSourceType.name
+    }
+
+    db.source_types.upsert(sourceType)
 
   # Seed forms
   for form in window.forms

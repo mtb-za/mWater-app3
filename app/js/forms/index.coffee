@@ -1,6 +1,8 @@
 
 exports.DateQuestion = require './DateQuestion'
 exports.DropdownQuestion = require './DropdownQuestion'
+exports.QuestionGroup = require './QuestionGroup'
+exports.SaveCancelForm = require './SaveCancelForm'
 
 exports.SurveyView = class SurveyView extends Backbone.View
   initialize: (options) ->
