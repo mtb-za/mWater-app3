@@ -1,4 +1,5 @@
-Page = require("../Page")
+Page = require "../Page"
+forms = require '../forms'
 
 class SurveyPage extends Page
   constructor: (ctx, responseId) ->
@@ -15,11 +16,8 @@ class SurveyPage extends Page
       # Get form
       @db.forms.findOne {_id: response.form}, (form) =>
         # Render form
-        viewFunc = new Function("options", form.view)
-        view = viewFunc({ ctx: @ctx });
-        @formView = view
-
-        @$el.append(view.el);
+        @formView = forms.instantiateView(form.views.edit, { ctx: @ctx })
+        @$el.append(@formView.el)
 
         # Listen to events
         @listenTo @formView, 'change', @saveResponse

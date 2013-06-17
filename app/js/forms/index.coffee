@@ -27,6 +27,12 @@ exports.SurveyView = class SurveyView extends FormView
 
 exports.WaterTestView = class WaterTestView extends FormView
 
+
+# Creates a form view from a string
+exports.instantiateView = (viewStr, options) =>
+  viewFunc = new Function("options", viewStr)
+  viewFunc(options)
+
 _.extend(exports, require('./form-controls'))
 
 
