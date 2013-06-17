@@ -1,5 +1,5 @@
 assert = chai.assert
-SourceTypeQuestion = require('forms').SourceTypeQuestion
+DropdownQuestion = require('forms').DropdownQuestion
 UIDriver = require './helpers/UIDriver'
 
 # class MockLocationFinder
@@ -10,7 +10,25 @@ UIDriver = require './helpers/UIDriver'
 #   startWatch: ->
 #   stopWatch: ->
 
-# describe 'SourceTypeQuestion', ->
+describe 'DropdownQuestion', ->
+  context 'With a few options', ->
+    beforeEach ->
+      @model = new Backbone.Model()
+      @question = new DropdownQuestion
+        options: [['a', 'Apple'], ['b', 'Banana']]
+        model: @model
+        id: "q1"
+
+    it 'accepts known value', ->
+      @model.set(q1: 'a')
+      assert.equal @model.get('q1'), 'a'
+      assert.isFalse @question.$("select").is(":disabled")
+
+    it 'is disabled with unknown value', ->
+      @model.set(q1: 'x')
+      assert.equal @model.get('q1'), 'x'
+      assert.isTrue @question.$("select").is(":disabled")
+
 #   context 'With set value', ->
 #     beforeEach ->
 #       @locationFinder = new MockLocationFinder()

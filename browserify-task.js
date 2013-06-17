@@ -30,8 +30,10 @@ function bundleTests(done) {
     // Add tests
     files = glob.sync('./test/*.coffee');
     var i;
-    for (i=0;i<files.length;i++)
+    for (i=0;i<files.length;i++) {
+        console.log("Adding test:" + files[i]);
         bundle.add(files[i]);
+    }
 
     bundle.bundle({
         debug: true
@@ -39,6 +41,7 @@ function bundleTests(done) {
         if (err) return console.error(err);
 
         fs.writeFileSync("test/tests.js", src);
+        console.log("Tests bundled");
         done();
     });
 }
