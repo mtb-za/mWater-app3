@@ -1,5 +1,6 @@
 var browserify = require('browserify'),
-    fs = require("fs");
+    fs = require("fs"), 
+    glob = require("glob");
 
 
 function bundleApp(done) {
@@ -24,12 +25,15 @@ function bundleTests(done) {
     bundle = browserify();
     bundle.extension('.coffee');
     bundle.transform('coffeeify')
-    .require('./app/js/forms', {expose: 'forms'})  // For forms
-    .add('./test/ItemTrackerTests')
-    .add('./test/LocalDbTests')
-    .add('./test/GeoJSONTests')
-    .add('./test/LocationViewTests')
-    .bundle({
+    .require('./app/js/forms', {expose: 'forms'});  // For forms
+
+    // Add tests
+    files = glob.sync('./test/*.coffee');
+    var i;
+    for (i=0;i<files.length;i++)
+        bundle.add(files[i]);
+
+    bundle.bundle({
         debug: true
     }, function(err, src) {
         if (err) return console.error(err);
