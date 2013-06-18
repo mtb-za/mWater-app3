@@ -18,16 +18,20 @@
         $(function() {
 
             require('mobile-behavior').setup($('body'));
+            var formsModule =require('forms');
     
             _.each(forms, function(form) {
-                $('#formlist').append($('<div><button type="button" class="btn formbutton" id="'+form._id+'">'+form.name+'</button></div>'));
+                _.each(_.keys(form.views), function(viewName){
+                    $('#formlist').append($('<div><button type="button" class="btn formbutton" id="'+form._id+'/'+viewName+'">'+form.name+'/'+viewName+'</button></div>'));
+                });                
             });
 
             $(".formbutton").on('click', function(ev) {
-                form = _.findWhere(forms, {_id: ev.currentTarget.id});
-                //console.log(form);
-                viewFunc = new Function("options", form.view);
-                view = viewFunc({ ctx: {} });
+                form = _.findWhere(forms, {_id: ev.currentTarget.id.split('/')[0]});
+                view = form.views[ev.currentTarget.id.split('/')[1]];
+                view = formsModule.instantiateView(view, { ctx: {} });
+                view.load({});
+
                 $("#form").html("");
                 $("#form").append(view.el);
                 view.on('finish', function() {

@@ -19,8 +19,10 @@ exports.FormView = class FormView extends Backbone.View
     @listenTo @model, 'change', => @trigger('change')
 
   load: (data) ->
-    @model.clear()
-    @model.set(data)
+    @model.clear()  #TODO clear or not clear? clearing removes defaults, but allows true reuse.
+
+    # Apply defaults 
+    @model.set(_.defaults(_.cloneDeep(data), @options.defaults || {}))
 
   save: ->
     return @model.toJSON()
@@ -54,7 +56,7 @@ exports.WaterTestEditView = class WaterTestEditView extends FormView
       <div>
           <button id="close_button" type="button" class="btn margined">Save for Later</button>
           &nbsp;
-          <button id="complete_button" type="button" class="btn btn-primary margined">Complete</button>
+          <button id="complete_button" type="button" class="btn btn-primary margined"><i class="icon-ok icon-white"></i> Complete</button>
       </div>
     ''')
 
