@@ -4,6 +4,17 @@ model = new Backbone.Model()
 
 questions = []
 
+questions.push new forms.SourceQuestion
+  id: 'source'
+  model: model
+  prompt: "Water Source ID"
+
+questions.push new forms.NumberQuestion
+  id: 'dilution'
+  model: model
+  prompt: "Dilution of sample"
+  required: true
+
 questions.push new forms.RadioQuestion
   id: 'ecoli'
   model: model
@@ -16,12 +27,6 @@ questions.push new forms.RadioQuestion
   model: model
   prompt: "Are the tube contents yellowish?"
   options: [[true, 'Yes'], [false, 'No']]
-  required: true
-
-questions.push new forms.NumberQuestion
-  id: 'dilution'
-  model: model
-  prompt: "Dilution of sample"
   required: true
 
 questions.push new forms.TextQuestion
