@@ -1,0 +1,12 @@
+{{#each tests}}
+<tr class="tappable" id="{{_id}}">
+  {{! TODO don't include name here directly }}
+  <td><strong>{{name}}</strong></td>
+  <td><strong>{{#if source}}Source {{source}}{{/if}}</strong></td>
+  <td>{{formatDate started "%F"}}</strong></td>
+</tr>
+{{else}}
+<tr>
+    <td> None </td>
+</tr>
+{{/each}}

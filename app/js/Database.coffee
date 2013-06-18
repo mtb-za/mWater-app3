@@ -3,7 +3,8 @@
 LocalDb = require './db/LocalDb'
 
 
-collectionNames = ['sources', 'forms', 'responses', 'source_types']
+# TODO tests or water_tests (also sources)
+collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests']
 
 # ### TODO change from upsert to seed
 

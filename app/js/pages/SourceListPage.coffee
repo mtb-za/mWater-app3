@@ -27,7 +27,7 @@ module.exports = class SourceListPage extends Page
 
     # Query database 
     @db.sources.find(selector).fetch (sources) ->
-      @$("#table").html templates['pages/SourceListPage_item'](sources:sources)
+      @$("#table").html templates['pages/SourceListPage_items'](sources:sources)
 
   locationError: (pos) =>
     @$("#location_msg").hide()

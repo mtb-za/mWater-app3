@@ -1,0 +1,11 @@
+{{#each tests}}
+<tr class="tappable test" id="{{_id}}">
+  {{! TODO don't include name here directly }}
+  <td><strong>{{name}}</strong></td>
+  <td>{{formatDate started "%F"}}</td>
+</tr>
+{{else}}
+<tr>
+    <td> None </td>
+</tr>
+{{/each}}

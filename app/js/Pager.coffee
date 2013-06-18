@@ -37,7 +37,7 @@ class Pager extends Backbone.View
     # Indicate page change
     @trigger 'change'
 
-  closePage: (replaceWith, args) ->
+  closePage: (replaceWith, args...) ->
     # Prevent closing last page
     if not replaceWith and @stack.length <= 1
       return
@@ -52,7 +52,7 @@ class Pager extends Backbone.View
 
     # Open replaceWith
     if replaceWith
-      @openPage replaceWith, args
+      @openPage replaceWith, args...
     else
       page = _.last(@stack)
 

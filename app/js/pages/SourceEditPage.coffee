@@ -17,7 +17,7 @@ module.exports = class SourceEditPage extends Page
   
       # Create questions
       sourceTypesQuestion = new forms.DropdownQuestion
-        id: 'source_type'
+        id: 'type'
         model: @model
         prompt: 'Enter Source Type'
         options: []

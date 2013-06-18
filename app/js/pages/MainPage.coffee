@@ -21,12 +21,11 @@ class MainPage extends Page
     @pager.openPage(require("./NewSurveyPage"))
 
   addTest: ->
-    # TODO
-    alert("Coming soon")
+    @pager.openPage(require("./NewTestPage"))
 
   addSource: ->
-    # TODO
-    alert("Coming soon")
+    @pager.openPage(require("./NewSourcePage"))
+
   # survey: ->
   #   #
   #   survey = require("../survey/DemoSurvey")(@ctx);

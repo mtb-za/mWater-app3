@@ -14,21 +14,37 @@ compile = (dir) ->
     fs.writeFileSync(path.resolve(dir, 'form.json'), JSON.stringify(form, null, 4))
   form.views = {}
   
-  # Read each view
+  # Get list of views (files in view folder)
+  viewFiles = {}
   for file in fs.readdirSync(path.resolve(dir, 'views'))
-    if file.match(/\.coffee$/)
-      viewName = file.substring(0, file.length - ".coffee".length)
-      script = fs.readFileSync(path.resolve(dir, 'views', file), 'utf8')
-      js = coffee.compile(script, {bare: true})
+    name = file.match(/^(\w+)\.(\w+)$/)[1]
+    ext = file.match(/^(\w+)\.(\w+)$/)[2]
+    viewFiles[name] = viewFiles[name] || {}
+    viewFiles[name][ext] = fs.readFileSync(path.resolve(dir, 'views', file), 'utf8')
 
-      # Add template if present
-      handlebarsFilename = path.resolve(dir, 'views', viewName + ".hbs")
-      if fs.existsSync(handlebarsFilename)
-        templ = handlebars.precompile(fs.readFileSync(handlebarsFilename, 'utf8'))
-        templ = "var template = Handlebars.template("+templ+");"
-        js = templ + js;
+  # Read each view
+  for name, files of viewFiles
+    js = ""
 
-      form.views[viewName] = js
+    # Add template if present
+    if files.hbs
+      templ = handlebars.precompile(files.hbs)
+      templ = "var template = Handlebars.template("+templ+");"
+      js += templ
+
+    # Add coffee-script
+    if files.coffee
+      js += coffee.compile(files.coffee, {bare: true})
+    else if files.hbs
+      # Add simple template view
+      js += '''var view = Backbone.View.extend({
+          load: function(data) {
+            this.$el.html(template(data));
+          }
+        });
+        return new view();'''
+
+    form.views[name] = js
       
   return form
 
