@@ -74,4 +74,17 @@ class Pager extends Backbone.View
   multiplePages: ->
     @stack.length > 1
 
+  # Flash a message
+  flash: (text, style="", delay=4000) ->
+    # Create flash message
+    msg = $(_.template('''<div class="alert <% if (style) { %>alert-<%=style%><% } %> flash"><%=text%></div>''', { text:text, style:style }))
+
+    # Add to pager
+    @$el.prepend(msg)
+
+    # Fade after x seconds
+    setTimeout => 
+      msg.slideUp(400, => msg.remove())
+    , delay
+
 module.exports = Pager

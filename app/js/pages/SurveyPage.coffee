@@ -33,6 +33,11 @@ class SurveyPage extends Page
     # Save to be safe
     @saveResponse()
 
+  destroy: ->
+    # Let know that saved if closed incompleted
+    if @response and not @response.completed
+      @pager.flash "Survey saved as draft."
+
   saveResponse: =>
     # Save to db
     @response.data = @formView.save()
@@ -45,5 +50,6 @@ class SurveyPage extends Page
 
     @db.responses.upsert(@response)
     @pager.closePage()
+    @pager.flash "Survey submitted successfully", "success"
 
 module.exports = SurveyPage
