@@ -24,7 +24,8 @@
     "grunt-manifest": "~0.4.0",
     "grunt-contrib-uglify": "~0.2.2",
     "uuid": "~1.4.1",
-    "handlebars": "~1.0.12"
+    "handlebars": "~1.0.12",
+    "grunt-shell": "~0.2.2"
   },
   "dependencies": {
     "streamline": "~0.4.9",

@@ -98,6 +98,17 @@ module.exports = function(grunt) {
         dest: 'dist/manifest.appcache'
       }
     },
+    shell: {
+     deploy: {
+      command: 's3cmd sync --acl-public --guess-mime-type * s3://demo.mwater.co',
+      options: {
+          stdout: true,
+          execOptions: {
+              cwd: 'dist'
+          }
+      }
+    },
+   },
    watch: {
       scripts: {
         files: ['app/**/*.*'],
@@ -118,7 +129,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-handlebars');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-manifest');
+  grunt.loadNpmTasks('grunt-shell');
 
   // Default task(s).
   grunt.registerTask('default', ['browserify', 'concat', 'copy', 'handlebars', 'manifest', 'compile-forms']);
+  grunt.registerTask('deploy', ['default', 'shell:deploy']);
 };
