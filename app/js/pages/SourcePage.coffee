@@ -22,6 +22,11 @@ module.exports = class SourcePage extends Page
   render: ->
     @setTitle "Source " + @source.code
 
+    @setupContextMenu [
+      { glyph: 'remove', text: "Delete Source", click: => @deleteSource() }
+    ]
+
+    # Re-render template
     @removeSubviews()
     @$el.html templates['pages/SourcePage'](source: @source)
 
@@ -60,6 +65,11 @@ module.exports = class SourcePage extends Page
 
   editSource: ->
     @pager.openPage(require("./SourceEditPage"), @_id)
+
+  deleteSource: ->
+    if confirm("Permanently delete source?")
+      @db.sources.remove @source._id, =>
+        @pager.closePage()
 
   addTest: ->
     @pager.openPage(require("./NewTestPage"), @source.code)

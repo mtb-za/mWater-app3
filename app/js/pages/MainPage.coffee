@@ -17,10 +17,6 @@ class MainPage extends Page
       ]}
     ]
 
-    @setupContextMenu [
-      { glyph: 'home', text: "Hello!", click: => alert("hesfsdf") }
-    ]
-
   addSurvey: ->
     @pager.openPage(require("./NewSurveyPage"))
 
