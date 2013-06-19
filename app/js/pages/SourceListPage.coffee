@@ -9,10 +9,13 @@ module.exports = class SourceListPage extends Page
     'click tr.tappable' : 'sourceClicked'
 
   create: ->
-    @$el.html templates['pages/SourceListPage']()
     @setTitle 'Nearby Sources'
 
   activate: ->
+    @$el.html templates['pages/SourceListPage']()
+    @nearSources = []
+    @unlocatedSources = []
+
     # Find location
     @locationFinder = new LocationFinder()
     @locationFinder.on('found', @locationFound).on('error', @locationError)
@@ -23,6 +26,11 @@ module.exports = class SourceListPage extends Page
       { icon: "plus-32.png", click: => @addSource() }
     ]
 
+    # Query database for unlocated sources # TODO only by user
+    @db.sources.find(geo: {$exists:false}).fetch (sources) =>
+      @unlocatedSources = sources
+      @renderList()
+
   addSource: ->
     @pager.openPage(require("./NewSourcePage"))
     
@@ -32,14 +40,20 @@ module.exports = class SourceListPage extends Page
         $near: 
           $geometry: GeoJSON.posToPoint(pos)
 
-    # Query database 
-    @db.sources.find(selector).fetch (sources) ->
-      @$("#table").html templates['pages/SourceListPage_items'](sources:sources)
+    # Query database for near sources
+    @db.sources.find(selector).fetch (sources) =>
+      @nearSources = sources
+      @renderList()
+
+  renderList: ->
+    # Append located and unlocated sources
+    sources = @unlocatedSources.concat(@nearSources)
+    @$("#table").html templates['pages/SourceListPage_items'](sources:sources)
 
   locationError: (pos) =>
     @$("#location_msg").hide()
-    alert "Unable to determine location"
+    @pager.flash "Unable to determine location", "error"
 
   sourceClicked: (ev) ->
-    @pager.openPage(require("./SourcePage"), ev.currentTarget.id)
+    @pager.openPage(require("./SourcePage"), { _id: ev.currentTarget.id})
 

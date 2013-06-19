@@ -21,6 +21,6 @@ class NewSurveyPage extends Page
       started: new Date().toISOString()
     }
     @db.responses.upsert response, (response) =>
-      @pager.closePage(SurveyPage, response._id)
+      @pager.closePage(SurveyPage, {_id: response._id})
 
 module.exports = NewSurveyPage

@@ -3,19 +3,16 @@ LocationView = require ("../LocationView")
 forms = require '../forms'
 
 module.exports = class SourcePage extends Page
-  constructor: (ctx, _id, options={}) ->
-    super(ctx)
-    @_id = _id
-    if options.setLocation
-      @setLocation = true
-
   events:
     'click #edit_source_button' : 'editSource'
     'click #add_test_button' : 'addTest'
     'click .test' : 'openTest'
 
+  create: ->
+    @setLocation = @options.setLocation
+
   activate: ->
-    @db.sources.findOne {_id: @_id}, (source) =>
+    @db.sources.findOne {_id: @options._id}, (source) =>
       @source = source
       @render()
 
@@ -24,6 +21,13 @@ module.exports = class SourcePage extends Page
 
     @setupContextMenu [
       { glyph: 'remove', text: "Delete Source", click: => @deleteSource() }
+    ]
+
+    @setupButtonBar [
+      { icon: "plus-32.png", menu: [
+        { text: "Start Water Test", click: => @addTest() }
+        { text: "Add Note", click: => @addNote() }
+      ]}
     ]
 
     # Re-render template
@@ -64,7 +68,7 @@ module.exports = class SourcePage extends Page
       @db.sources.upsert @source.toJSON(), => @render()
 
   editSource: ->
-    @pager.openPage(require("./SourceEditPage"), @_id)
+    @pager.openPage(require("./SourceEditPage"), { _id: @_id})
 
   deleteSource: ->
     if confirm("Permanently delete source?")
@@ -72,7 +76,10 @@ module.exports = class SourcePage extends Page
         @pager.closePage()
 
   addTest: ->
-    @pager.openPage(require("./NewTestPage"), @source.code)
+    @pager.openPage(require("./NewTestPage"), { source: @source.code})
 
   openTest: (ev) ->
-    @pager.openPage(require("./TestPage"), ev.currentTarget.id)
+    @pager.openPage(require("./TestPage"), { _id: ev.currentTarget.id})
+
+  addNote: ->
+    alert("TODO")

@@ -18,5 +18,5 @@ module.exports = class TestListPage extends Page
       @$("#incomplete_table").html templates['pages/TestListPage_items'](tests:tests)
 
   testClicked: (ev) ->
-    @pager.openPage(require("./TestPage"), ev.currentTarget.id)
+    @pager.openPage(require("./TestPage"), {_id: ev.currentTarget.id})
 

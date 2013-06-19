@@ -2,15 +2,11 @@ Page = require "../Page"
 forms = require '../forms'
 
 class SurveyPage extends Page
-  constructor: (ctx, responseId) ->
-    super(ctx)
-    @responseId = responseId
-
   create: ->
     @setTitle "Survey"
 
     # Get response
-    @db.responses.findOne {_id: @responseId}, (response) =>
+    @db.responses.findOne {_id: @options._id}, (response) =>
       @response = response
 
       # Get form

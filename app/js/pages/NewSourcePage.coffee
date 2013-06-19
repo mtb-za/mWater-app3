@@ -45,7 +45,7 @@ module.exports = class NewSourcePage extends Page
       source = _.pick(@model.toJSON(), 'name', 'desc', 'type')
       source.code = ""+Math.floor(Math.random()*1000000)  # TODO real codes
       @db.sources.upsert source, (source) => 
-        @pager.closePage(SourcePage, source._id, { setLocation: @model.get('setLocation')})
+        @pager.closePage(SourcePage, { _id: source._id, setLocation: @model.get('setLocation')})
 
     @listenTo saveCancelForm, 'cancel', =>
       @pager.closePage()

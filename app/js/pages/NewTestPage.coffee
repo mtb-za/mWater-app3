@@ -18,13 +18,13 @@ class NewTestPage extends Page
 
     # Create test
     test = {
-      source: @args[0] if @args.length > 0
+      source: @options.source
       type: testCode
       completed: null
       started: new Date().toISOString()
       name: _.findWhere(@forms, { code: testCode }).name  # TODO don't put name here? Also fix in TestListPage
     }
     @db.tests.upsert test, (test) =>
-      @pager.closePage(TestPage, test._id)
+      @pager.closePage(TestPage, { _id: test._id })
 
 module.exports = NewTestPage

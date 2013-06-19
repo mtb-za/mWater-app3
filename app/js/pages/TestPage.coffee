@@ -2,18 +2,13 @@ Page = require "../Page"
 forms = require '../forms'
 
 class TestPage extends Page
-  constructor: (ctx, testId) ->
-    super(ctx)
-    @testId = testId
-
-  create: ->
   activate: -> @render()
 
   render: ->
     @setTitle "Test" # TODO nicer title
 
     # Get test
-    @db.tests.findOne {_id: @testId}, (test) =>
+    @db.tests.findOne {_id: @options._id}, (test) =>
       @test = test
 
       # Get form

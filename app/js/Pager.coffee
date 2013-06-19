@@ -21,15 +21,14 @@ class Pager extends Backbone.View
       # Swap items out for new page
       @buttonBar.$el.children().detach()
       @buttonBar.$el.append(_.last(@stack).getButtonBar().el)
-      console.log @buttonBar.$el.html()
  
       @contextMenu.$el.children().detach()
       @contextMenu.$el.append(_.last(@stack).getContextMenu().el)
 
   # Adds a page from a constructor
-  openPage: (pageClass, args...) ->
+  openPage: (pageClass, options) ->
     # Create page
-    page = new pageClass(@ctx, args...)
+    page = new pageClass(@ctx, options)
     
     # Deactivate current page
     if @stack.length > 0
@@ -44,13 +43,13 @@ class Pager extends Backbone.View
     page.activate()
 
     # Listen to page changes and bubble up
-    @listenTo page, 'change', (args...) ->
-      @trigger 'change', args...
+    @listenTo page, 'change', (options) ->
+      @trigger 'change', options
 
     # Indicate page change
     @trigger 'change'
 
-  closePage: (replaceWith, args...) ->
+  closePage: (replaceWith, options) ->
     # Prevent closing last page
     if not replaceWith and @stack.length <= 1
       return
@@ -65,7 +64,7 @@ class Pager extends Backbone.View
 
     # Open replaceWith
     if replaceWith
-      @openPage replaceWith, args...
+      @openPage replaceWith, options
     else
       page = _.last(@stack)
 

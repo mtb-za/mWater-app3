@@ -7,10 +7,6 @@ GeoJSON = require '../GeoJSON'
 # Map of water sources. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
 class SourceMapPage extends Page
-  constructor: (ctx, options={}) ->
-    super(ctx)
-    @options = options
-
   create: ->
     @setTitle "Source Map"
 
@@ -76,7 +72,6 @@ class SourceDisplay
 
     # Query sources with projection TODO
     @db.sources.find(selector, { sort: ["_id"], limit: 100 }).fetch (sources) =>
-      console.log "### matched Sources:" + sources.length
       # Find out which to add/remove
       [adds, removes] = @itemTracker.update(sources)
 
@@ -92,7 +87,7 @@ class SourceDisplay
       marker = new L.Marker(latlng)
       
       marker.on 'click', =>
-        @pager.openPage(SourcePage, source._id)
+        @pager.openPage(SourcePage, {_id: source._id})
       
       @sourceMarkers[source._id] = marker
       marker.addTo(@map)

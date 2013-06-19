@@ -1,6 +1,7 @@
 {{#each sources}}
 <tr class="tappable" id="{{_id}}">
-    <td><strong>{{name}}</strong>
+    <td><strong>{{name}}</strong> 
+    <td>{{#if geo}}{{else}}<span class="text-error"><b>Unlocated</b></span>{{/if}}</td>
     <br/>
     <span class="muted">{{desc}}&nbsp;</span></td>
     <td><strong>{{code}}</strong></td>

@@ -1,8 +1,7 @@
 class Page extends Backbone.View
-  constructor: (ctx, args...) ->
-    super()
+  constructor: (ctx, options={}) ->
+    super(options)
     @ctx = ctx
-    @args = args
 
     # Mix in context for convenience
     _.extend(@, ctx) 
@@ -58,7 +57,7 @@ class Page extends Backbone.View
 class ButtonBar extends Backbone.View
   events: 
     "click .menuitem" : "clickMenuItem"
-    
+
   setup: (items) ->
     @items = items
     @itemMap = {}

@@ -4,12 +4,8 @@ forms = require '../forms'
 # Allows editing of source details
 # TODO login required
 module.exports = class SourceEditPage extends Page
-  constructor: (ctx, _id) ->
-    super(ctx)
-    @_id = _id
-
   activate: ->
-    @db.sources.findOne {_id: @_id}, (source) =>
+    @db.sources.findOne {_id: @options._id}, (source) =>
       @setTitle "Edit Source #{source.code}"
 
       # Create model from source

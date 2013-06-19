@@ -22,6 +22,6 @@ class ExistingSurveyPage extends Page
 
   openResponse: (ev) ->
     responseId = ev.currentTarget.id
-    @pager.closePage(SurveyPage, responseId)
+    @pager.closePage(SurveyPage, { _id: responseId})
 
 module.exports = ExistingSurveyPage
