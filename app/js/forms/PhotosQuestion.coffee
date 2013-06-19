@@ -2,7 +2,7 @@ Question = require('./form-controls').Question
 
 module.exports = Question.extend
   events:
-    "click camera": "cameraClick"
+    "click #camera": "cameraClick"
 
   renderAnswer: (answerEl) ->
     answerEl.html '''

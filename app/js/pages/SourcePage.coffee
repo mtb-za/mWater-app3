@@ -35,10 +35,13 @@ module.exports = class SourcePage extends Page
     if @setLocation
       locationView.setLocation()
       @setLocation = false
-      
+
     @listenTo locationView, 'locationset', (loc) ->
       @source.geo = loc
       @db.sources.upsert @source, => @render()
+
+    @listenTo locationView, 'map', (loc) ->
+      @pager.openPage(require("./SourceMapPage"), {initialGeo: loc})
       
     @addSubview(locationView)
     @$("#location").append(locationView.el)

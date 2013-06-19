@@ -11,7 +11,20 @@ class Pager extends Backbone.View
     # Save context
     @ctx = ctx
 
+    # Create empty stack
     @stack=[]
+
+    # Create button bar and context menu that change with page loads
+    @buttonBar = new Backbone.View()
+    @contextMenu = new Backbone.View()
+    @listenTo this, 'change', =>
+      # Swap items out for new page
+      @buttonBar.$el.children().detach()
+      @buttonBar.$el.append(_.last(@stack).getButtonBar().el)
+      console.log @buttonBar.$el.html()
+ 
+      @contextMenu.$el.children().detach()
+      @contextMenu.$el.append(_.last(@stack).getContextMenu().el)
 
   # Adds a page from a constructor
   openPage: (pageClass, args...) ->
@@ -67,8 +80,12 @@ class Pager extends Backbone.View
     _.last(@stack).getTitle()
 
   # Get buttonbar of active page
-  getButtonBar: ->
-    _.last(@stack).getButtonBar()
+  getButtonBar: -> 
+    return @buttonBar
+
+  # Get context menu of active page
+  getContextMenu: ->
+    return @contextMenu
 
   # Determine if has multiple pages
   multiplePages: ->

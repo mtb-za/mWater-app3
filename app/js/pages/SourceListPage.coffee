@@ -19,6 +19,13 @@ module.exports = class SourceListPage extends Page
     @locationFinder.getLocation()
     @$("#location_msg").show()
 
+    @setupButtonBar [
+      { icon: "plus-32.png", click: => @addSource() }
+    ]
+
+  addSource: ->
+    @pager.openPage(require("./NewSourcePage"))
+    
   locationFound: (pos) =>
     @$("#location_msg").hide()
     selector = geo: 

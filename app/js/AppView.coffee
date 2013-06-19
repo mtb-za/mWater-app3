@@ -13,6 +13,9 @@ class AppView extends Backbone.View
     
     @render()
 
+    # Add button bar
+    @$("#navbar_buttons").append(@pager.getButtonBar().el)
+
   events:
     'click #navbar_slidemenu_button': 'toggleSlideMenu'
     'click #navbar_back': 'back'
@@ -32,10 +35,6 @@ class AppView extends Backbone.View
     # Set title and back button
     @$("#navbar_back").css("visibility", if @pager.multiplePages() then "visible" else "hidden")
     @$("#navbar_title").text(@pager.getTitle())
-
-    # Detach existing button bar and attach new one
-    @$("#navbar_buttons").children().detach()
-    @$("#navbar_buttons").append(@pager.getButtonBar().el)
 
   back: ->
     @slideMenu.hide()

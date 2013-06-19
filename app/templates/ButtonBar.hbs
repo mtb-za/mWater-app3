@@ -19,7 +19,9 @@
   </li>
   {{else}}
   <li>
-    <a id="{{id}}" class="menuitem">{{text}}</a>
+    <a id="{{id}}" class="menuitem" {{#if icon}}style="background: url(img/{{icon}}) no-repeat 0; width: 6px;"{{/if}}>
+      {{#if text}}{{text}}{{else}}&nbsp;{{/if}}
+    </a>
   </li>
   {{/if}}
   {{/each}}

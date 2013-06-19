@@ -2,6 +2,7 @@ LocationFinder = require './LocationFinder'
 GeoJSON = require './GeoJSON'
 
 # Shows the relative location of a point and allows setting it
+# Fires events locationset, map, both with 
 class LocationView extends Backbone.View
   constructor: (options) ->
     super()
@@ -70,6 +71,9 @@ class LocationView extends Backbone.View
     @settingLocation = false
     @errorFindingLocation = true
     @render()
+
+  mapClicked: =>
+    @trigger('map', @loc)
 
 
 module.exports = LocationView

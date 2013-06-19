@@ -4,7 +4,13 @@ ItemTracker = require "../ItemTracker"
 LocationFinder = require '../LocationFinder'
 GeoJSON = require '../GeoJSON'
 
+# Map of water sources. Options include:
+# initialGeo: Geometry to zoom to. Point only supported.
 class SourceMapPage extends Page
+  constructor: (ctx, options={}) ->
+    super(ctx)
+    @options = options
+
   create: ->
     @setTitle "Source Map"
 
@@ -22,13 +28,17 @@ class SourceMapPage extends Page
     # Setup map tiles
     setupMapTiles().addTo(@map)
 
-    # TODO zoom to last known bounds
-
-    # Setup localtion display
-    @locationDisplay = new LocationDisplay(@map)
-
     # Setup marker display
     @sourceDisplay = new SourceDisplay(@map, @db, @pager)
+
+    # TODO zoom to last known bounds
+    
+    # Setup initial zoom
+    if @options.initialGeo and @options.initialGeo.type=="Point"
+      @map.setView(L.GeoJSON.coordsToLatLng(@options.initialGeo.coordinates), 15)
+
+    # Setup localtion display
+    @locationDisplay = new LocationDisplay(@map, not @options.initialGeo?)
 
   destroy: ->
     $(window).off('resize', @resizeMap)
@@ -93,8 +103,10 @@ class SourceDisplay
 
 
 class LocationDisplay
-  constructor: (map) ->
+  # Setup display, optionally zooming to current location
+  constructor: (map, zoomTo) ->
     @map = map
+    @zoomTo = zoomTo
 
     @locationFinder = new LocationFinder()
     @locationFinder.on('found', @locationFound).on('error', @locationError)
@@ -104,9 +116,9 @@ class LocationDisplay
     @locationFinder.stopWatch()
 
   locationError: (e) =>
-    if not @locationZoomed
+    if @zoomTo
       @map.fitWorld()
-      @locationZoomed = true
+      @zoomTo = false
       alert("Unable to determine location")
 
   locationFound: (e) =>
@@ -114,10 +126,10 @@ class LocationDisplay
     latlng = new L.LatLng(e.coords.latitude, e.coords.longitude)
 
     # Set position once
-    if not @locationZoomed
-      zoom = 16
+    if @zoomTo
+      zoom = 15
       @map.setView(latlng, zoom)
-      @locationZoomed = true
+      @zoomTo = false
 
     # Setup marker and circle
     if not @meMarker

@@ -39,4 +39,9 @@ class SlideMenu extends Backbone.View
     @submenus.push(submenu)
     @$("#content").append(submenu.$el)
 
+  # Remove submenu
+  removeSubmenu: (submenu) ->
+    @submenus = _.without(@submenus, submenu)
+    submenu.remove()
+
 module.exports = SlideMenu
