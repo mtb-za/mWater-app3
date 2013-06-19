@@ -1,5 +1,6 @@
 Page = require("../Page")
 LocationView = require ("../LocationView")
+forms = require '../forms'
 
 module.exports = class SourcePage extends Page
   constructor: (ctx, _id, options={}) ->
@@ -22,7 +23,7 @@ module.exports = class SourcePage extends Page
     @setTitle "Source " + @source.code
 
     @removeSubviews()
-    @$el.html templates['pages/SourcePage'](@source)
+    @$el.html templates['pages/SourcePage'](source: @source)
 
     # Set source type
     if @source.type?
@@ -33,6 +34,11 @@ module.exports = class SourcePage extends Page
     locationView = new LocationView(loc: @source.geo)
     if @setLocation
       locationView.setLocation()
+      @setLocation = false
+      
+    @listenTo locationView, 'locationset', (loc) ->
+      @source.geo = loc
+      @db.sources.upsert @source, => @render()
       
     @addSubview(locationView)
     @$("#location").append(locationView.el)
@@ -40,6 +46,14 @@ module.exports = class SourcePage extends Page
     # Add tests
     @db.tests.find({source: @source.code}).fetch (tests) ->
       @$("#tests").html templates['pages/SourcePage_tests'](tests:tests)
+
+    # Add photos # TODO wire model to actual db
+    photosView = new forms.PhotosQuestion
+      id: 'photos'
+      model: new Backbone.Model(@source)
+      prompt: 'Photos'
+    photosView.model.on 'change', =>
+      @db.sources.upsert @source.toJSON(), => @render()
 
   editSource: ->
     @pager.openPage(require("./SourceEditPage"), @_id)

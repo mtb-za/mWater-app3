@@ -17,13 +17,13 @@
 </style>
 
 <div class="page">
-    <div style="border: 1px solid #A0A0A0; padding: 5px; width: 100px; min-height: 75px; float:right;">
+    <!-- TODO <div style="border: 1px solid #A0A0A0; padding: 5px; width: 100px; min-height: 75px; float:right;">
         <img id="photo" style="max-width: 100px; display: block; margin-left: auto; margin-right: auto"/>
-    </div>
-    <h3>{{name}}</h3>
+    </div>-->
+    <h3>{{source.name}}</h3>
     <div class="margined">
         <div style="color: Gray">
-            {{desc}}
+            {{source.desc}}
         </div>
         <div>
             <b>ID:</b> {{code}}
@@ -51,4 +51,5 @@
             <table id="notes" class="table"></table>-->
         </div>
     </div>
+    <div id="photos"></div>
 </div>

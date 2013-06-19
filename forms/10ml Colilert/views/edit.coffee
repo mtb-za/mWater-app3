@@ -29,6 +29,11 @@ questions.push new forms.RadioQuestion
   options: [[true, 'Yes'], [false, 'No']]
   required: true
 
+questions.push new forms.PhotosQuestion
+  id: 'photos'
+  model: model
+  prompt: "Photos"
+
 questions.push new forms.TextQuestion
   id: 'notes'
   model: model
