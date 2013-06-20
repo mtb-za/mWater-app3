@@ -9,6 +9,10 @@ module.exports = class TestListPage extends Page
     @setTitle 'Recent Tests'
 
   activate: ->
+    @setupButtonBar [
+      { icon: "plus-32.png", click: => @addTest() }
+    ]
+
     # Query database for recent, completed tests
     # TODO filter to recent by user
     @db.tests.find({completed: {$ne: null}}).fetch (tests) ->
@@ -20,3 +24,5 @@ module.exports = class TestListPage extends Page
   testClicked: (ev) ->
     @pager.openPage(require("./TestPage"), {_id: ev.currentTarget.id})
 
+  addTest: ->
+    @pager.openPage(require("./NewTestPage"))
