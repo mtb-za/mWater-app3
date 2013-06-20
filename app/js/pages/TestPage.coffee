@@ -4,6 +4,11 @@ forms = require '../forms'
 class TestPage extends Page
   create: -> @render()
 
+  activate: ->
+    @setupContextMenu [
+      { glyph: 'remove', text: "Delete Test", click: => @deleteTest() }
+    ]
+
   render: ->
     @setTitle "Test" # TODO nicer title
 
@@ -56,6 +61,12 @@ class TestPage extends Page
     # Mark as completed
     @test.completed = new Date().toISOString()
     @db.tests.upsert @test, => @render()
-    
+
+  deleteTest: ->
+    if confirm("Permanently delete test?")
+      @db.tests.remove @test._id, =>
+        @test = null
+        @pager.closePage()
+        @pager.flash "Test deleted", "success"
 
 module.exports = TestPage
