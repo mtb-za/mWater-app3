@@ -2,7 +2,7 @@ Page = require "../Page"
 forms = require '../forms'
 
 class TestPage extends Page
-  activate: -> @render()
+  create: -> @render()
 
   render: ->
     @setTitle "Test" # TODO nicer title
@@ -33,9 +33,10 @@ class TestPage extends Page
   events:
     "click #edit_button" : "edit"
 
-  deactivate: ->
-    # TODO Save to be safe
-    # @save()
+  destroy: ->
+    # Let know that saved if closed incompleted
+    if @test and not @test.completed
+      @pager.flash "Test saved as draft."
 
   edit: ->
     # Mark as incomplete

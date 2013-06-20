@@ -2,11 +2,16 @@ Page = require("../Page")
 LocationView = require ("../LocationView")
 forms = require '../forms'
 
+
+# Displays a source
+# Options: setLocation - true to autoset location
+# onSelect - call when source is selected via button that appears
 module.exports = class SourcePage extends Page
   events:
     'click #edit_source_button' : 'editSource'
     'click #add_test_button' : 'addTest'
     'click .test' : 'openTest'
+    'click #select_source' : 'selectSource'
 
   create: ->
     @setLocation = @options.setLocation
@@ -32,7 +37,7 @@ module.exports = class SourcePage extends Page
 
     # Re-render template
     @removeSubviews()
-    @$el.html templates['pages/SourcePage'](source: @source)
+    @$el.html templates['pages/SourcePage'](source: @source, select: @options.onSelect?)
 
     # Set source type
     if @source.type?
@@ -83,3 +88,8 @@ module.exports = class SourcePage extends Page
 
   addNote: ->
     alert("TODO")
+
+  selectSource: ->
+    if @options.onSelect?
+      @pager.closePage()
+      @options.onSelect(@source)

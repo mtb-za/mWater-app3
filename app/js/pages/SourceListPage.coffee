@@ -4,6 +4,8 @@ GeoJSON = require '../GeoJSON'
 
 # TODO source search
 
+# Lists nearby and unlocated sources
+# Options: onSelect - function to call with source doc when selected
 module.exports = class SourceListPage extends Page
   events: 
     'click tr.tappable' : 'sourceClicked'
@@ -55,5 +57,11 @@ module.exports = class SourceListPage extends Page
     @pager.flash "Unable to determine location", "error"
 
   sourceClicked: (ev) ->
-    @pager.openPage(require("./SourcePage"), { _id: ev.currentTarget.id})
+    # Wrap onSelect
+    onSelect = undefined
+    if @options.onSelect
+      onSelect = (source) =>
+        @pager.closePage()
+        @options.onSelect(source)
+    @pager.openPage(require("./SourcePage"), { _id: ev.currentTarget.id, onSelect: onSelect})
 
