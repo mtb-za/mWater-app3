@@ -15,12 +15,14 @@ questions.push new forms.NumberQuestion
   model: model
   prompt: "Nitrate (NO3) Nitrogen (mg / L)"
   required: true
+  decimal: true
 
 questions.push new forms.NumberQuestion
   id: 'no2_mgperL'
   model: model
   prompt: "Nitrite (NO2) Nitrogen (mg / L)"
   required: true
+  decimal: true
 
 questions.push new forms.PhotoQuestion
   id: 'photo'

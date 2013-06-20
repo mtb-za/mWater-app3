@@ -176,6 +176,11 @@ exports.Question = Backbone.View.extend({
                 val = "Required";
         }
 
+        // Check internal validation
+        if (!val && this.validateInternal) {
+            val = this.validateInternal();
+        }
+
         // Check custom validation
         if (!val && this.options.validate) {
             val = this.options.validate();
@@ -313,7 +318,7 @@ exports.MulticheckQuestion = exports.Question.extend({
 exports.TextQuestion = exports.Question.extend({
     renderAnswer : function(answerEl) {
         if (this.options.multiline) {
-            answerEl.html(_.template('<textarea/>', this));
+            answerEl.html(_.template('<textarea style="width:90%"/>', this)); // TODO make width properly
             answerEl.find("textarea").val(this.model.get(this.id));
         } else {
             answerEl.html(_.template('<input type="text"/>', this));
@@ -326,36 +331,6 @@ exports.TextQuestion = exports.Question.extend({
     },
     changed : function() {
         this.model.set(this.id, this.$(this.options.multiline ? "textarea" : "input").val());
-    }
-
-});
-
-exports.NumberQuestion = exports.Question.extend({
-    renderAnswer : function(answerEl) {
-        answerEl.html(_.template('<input type="number"/>', this));
-        answerEl.find("input").val(this.model.get(this.id));
-    },
-
-    events : {
-        "change" : "changed"
-    },
-    changed : function() {
-        this.model.set(this.id, parseFloat(this.$("input").val()));
-    }
-
-});
-
-exports.PhotoQuestion = exports.Question.extend({
-    renderAnswer : function(answerEl) {
-        answerEl.html(_.template('<img style="max-width: 100px;" src="images/camera-icon.jpg"/>', this));
-    },
-
-    events : {
-        "click img" : "takePicture"
-    },
-
-    takePicture : function() {
-        alert("In an app, this would launch the camera activity as in mWater native apps.");
     }
 
 });

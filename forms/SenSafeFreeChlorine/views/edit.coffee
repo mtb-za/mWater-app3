@@ -24,9 +24,10 @@ questions.push new forms.RadioQuestion
 questions.push new forms.NumberQuestion
   id: 'freeCl_mgperL'
   model: model
-  prompt: "Free chlorine"
+  prompt: "Free chlorine (mg/L)"
+  decimal: true
   conditional: ->
-    @model.get('freeCl_present')
+    @model.get('freeCl_present') == true
 
 questions.push new forms.PhotoQuestion
   id: 'photo'

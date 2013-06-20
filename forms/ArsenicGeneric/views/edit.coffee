@@ -15,6 +15,7 @@ questions.push new forms.NumberQuestion
   model: model
   prompt: "Arsenic (mg / L)"
   required: true
+  decimal: true
 
 questions.push new forms.PhotoQuestion
   id: 'photo'

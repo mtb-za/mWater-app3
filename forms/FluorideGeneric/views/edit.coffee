@@ -15,6 +15,7 @@ questions.push new forms.NumberQuestion
   model: model
   prompt: "Fluoride (mg / L)"
   required: true
+  decimal: true
 
 questions.push new forms.PhotoQuestion
   id: 'photo'

@@ -1,6 +1,7 @@
 
 exports.DateQuestion = require './DateQuestion'
 exports.DropdownQuestion = require './DropdownQuestion'
+exports.NumberQuestion = require './NumberQuestion'
 exports.QuestionGroup = require './QuestionGroup'
 exports.SaveCancelForm = require './SaveCancelForm'
 exports.SourceQuestion = require './SourceQuestion'

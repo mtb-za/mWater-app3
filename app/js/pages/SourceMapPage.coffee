@@ -13,7 +13,7 @@ class SourceMapPage extends Page
     # Calculate height
     @$el.html templates['pages/SourceMapPage']()
 
-    L.Icon.Default.imagePath = "img/leaflet/"
+    L.Icon.Default.imagePath = "img/leaflet"
     @map = L.map(this.$("#map")[0])
     L.control.scale(imperial:false).addTo(@map)
     @resizeMap()
