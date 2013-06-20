@@ -4,6 +4,9 @@ model = new Backbone.Model()
 
 questions = []
 
+questions.push new forms.Instructions
+  text: "Incubate at 37 C for 24 hours"
+
 questions.push new forms.SourceQuestion
   id: 'source'
   ctx: options.ctx
@@ -13,24 +16,25 @@ questions.push new forms.SourceQuestion
 questions.push new forms.NumberQuestion
   id: 'dilution'
   model: model
-  prompt: "Dilution of sample"
+  prompt: "Dilution factor"
+  hint: "e.g. 10 means a 1:10 dilution"
   required: true
 
 questions.push new forms.NumberQuestion
-  id: 'ecoli'
+  id: 'ecoli_count'
   model: model
-  prompt: "Number of E.Coli (blue) colonies?"
+  prompt: "Number of blue colonies (E. coli)"
   required: true
 
 questions.push new forms.NumberQuestion
-  id: 'tc'
+  id: 'tc_count'
   model: model
-  prompt: "Number of Total Coliform (red) colonies?"
+  prompt: "Number of red colonies (total coliform)"
 
-questions.push new forms.PhotosQuestion
-  id: 'photos'
+questions.push new forms.PhotoQuestion
+  id: 'photo'
   model: model
-  prompt: "Photos"
+  prompt: "Photo"
 
 questions.push new forms.TextQuestion
   id: 'notes'

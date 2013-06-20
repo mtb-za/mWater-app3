@@ -4,7 +4,9 @@ exports.DropdownQuestion = require './DropdownQuestion'
 exports.QuestionGroup = require './QuestionGroup'
 exports.SaveCancelForm = require './SaveCancelForm'
 exports.SourceQuestion = require './SourceQuestion'
+exports.PhotoQuestion = require './PhotoQuestion'
 exports.PhotosQuestion = require './PhotosQuestion'
+exports.Instructions = require './Instructions'
 
 # Must be created with model (backbone model) and contents (array of views)
 exports.FormView = class FormView extends Backbone.View
