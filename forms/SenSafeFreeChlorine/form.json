@@ -1,0 +1,7 @@
+{
+    "_id": "341df80cfff444bdbcaab48ffd16ec6b",
+    "type": "WaterTest",
+    "name": "SenSafe Free Chlorine Water Check",
+    "desc": "US EPA approved test strip for free chlorine (manufactured by ITS)",
+    "code": "SenSafeFreeChlorine"
+}

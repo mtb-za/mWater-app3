@@ -1,0 +1,7 @@
+{
+    "_id": "bfd55312bb6e41ebb8e543ea2fe417f8",
+    "type": "WaterTest",
+    "name": "Arsenic (generic method)",
+    "desc": "Any method for measuring arsenic in water",
+    "code": "ArsenicGeneric"
+}

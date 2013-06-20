@@ -21,6 +21,7 @@
             var formsModule =require('forms');
     
             _.each(forms, function(form) {
+                $('#formlist').append($("<br/>"));
                 _.each(_.keys(form.views), function(viewName){
                     $('#formlist').append($('<div><button type="button" class="btn formbutton" id="'+form._id+'/'+viewName+'">'+form.name+'/'+viewName+'</button></div>'));
                 });                

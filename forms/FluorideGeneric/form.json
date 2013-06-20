@@ -1,0 +1,7 @@
+{
+    "_id": "6deede4bb11941ffa3680578de41aca5",
+    "type": "WaterTest",
+    "name": "Fluoride (generic method)",
+    "desc": "Any method for measuring fluoride in water",
+    "code": "FluorideGeneric"
+}

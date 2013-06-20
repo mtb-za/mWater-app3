@@ -1,0 +1,17 @@
+
+<div><strong><i>Water Source ID</i></strong>: {{#if source}}{{source}}{{else}}<i>None</i>{{/if}}</div>
+<div><strong><i>Free Chlorine</i></strong>: 
+{{#if freeCl_present}}
+  {{#if freeCl_mgperL}}
+  {{freeCl_mgperL}} mg/L
+  {{else}}
+  Present
+  {{/if}}
+{{else}}
+0 mg/L
+{{/if}}
+</div>
+
+<!-- TODO photo display -->
+
+<div>Notes: {{notes}}</div>

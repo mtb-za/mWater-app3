@@ -1,0 +1,7 @@
+{
+    "_id": "687e6d7e615f40b9a9404eb7fcdb9dbc",
+    "type": "WaterTest",
+    "name": "WaterWorks Nitrate / Nitrite Nitrogen",
+    "desc": "Test strip for nitrate (NO3) and nitrite (NO2) (manufactured by ITS)",
+    "code": "WaterWorksNitrateNitrite"
+}
