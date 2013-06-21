@@ -10,7 +10,7 @@ module.exports = class TestListPage extends Page
 
   activate: ->
     @setupButtonBar [
-      { icon: "plus-32.png", click: => @addTest() }
+      { icon: "plus.png", click: => @addTest() }
     ]
 
     # Query database for recent, completed tests

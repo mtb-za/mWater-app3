@@ -10,7 +10,7 @@ class MainPage extends Page
     @$el.html templates['pages/MainPage']()
     
     @setupButtonBar [
-      { icon: "plus-32.png", menu: [
+      { icon: "plus.png", menu: [
         { text: "Add Water Source", click: => @addSource() }
         { text: "Start Water Test", click: => @addTest() }
         { text: "Start Survey", click: => @addSurvey() }

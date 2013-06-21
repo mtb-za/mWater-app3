@@ -29,7 +29,7 @@ module.exports = class SourcePage extends Page
     ]
 
     @setupButtonBar [
-      { icon: "plus-32.png", menu: [
+      { icon: "plus.png", menu: [
         { text: "Start Water Test", click: => @addTest() }
         { text: "Add Note", click: => @addNote() }
       ]}
