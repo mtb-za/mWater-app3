@@ -1,0 +1,17 @@
+{{#each notes}}
+<tr class="tappable note" id="{{_id}}">
+  <td><strong>{{date}}</strong></td>
+  <td style="border-left:none;">
+    {{#is status "ok"}}<span class="text-success">Functional</span>{{/is}}
+    {{#is status "repair"}}<span class="text-warning">Needs repair</span>{{/is}}
+    {{#is status "broken"}}<span class="text-error">Non-functional</span>{{/is}}
+    {{#is status "missing"}}<span class="text-error">No longer exists</span>{{/is}}
+  </td>
+  <td><span class="muted">{{truncate notes 31 "..."}}</td>
+  <td style="vertical-align:middle; border-left:none; width: 16px"><i class="icon-chevron-right"></i></td>
+</tr>
+{{else}}
+<tr>
+    <td> <i>None</i> </td>
+</tr>
+{{/each}}

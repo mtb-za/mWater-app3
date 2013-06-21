@@ -10,7 +10,9 @@ module.exports = class SourcePage extends Page
   events:
     'click #edit_source_button' : 'editSource'
     'click #add_test_button' : 'addTest'
+    'click #add_note_button' : 'addNote'
     'click .test' : 'openTest'
+    'click .note' : 'openNote'
     'click #select_source' : 'selectSource'
 
   create: ->
@@ -61,8 +63,12 @@ module.exports = class SourcePage extends Page
     @$("#location").append(locationView.el)
 
     # Add tests
-    @db.tests.find({source: @source.code}).fetch (tests) ->
+    @db.tests.find({source: @source.code}).fetch (tests) -> # TODO source.code? 
       @$("#tests").html templates['pages/SourcePage_tests'](tests:tests)
+
+    # Add notes
+    @db.source_notes.find({source: @source.code}).fetch (notes) ->  # TODO source.code?
+      @$("#notes").html templates['pages/SourcePage_notes'](notes:notes)
 
     # Add photos # TODO wire model to actual db
     photosView = new forms.PhotosQuestion
@@ -88,7 +94,10 @@ module.exports = class SourcePage extends Page
     @pager.openPage(require("./TestPage"), { _id: ev.currentTarget.id})
 
   addNote: ->
-    alert("TODO")
+    @pager.openPage(require("./SourceNotePage"), { source: @source.code})   # TODO id or code?
+
+  openNote: (ev) ->
+    @pager.openPage(require("./SourceNotePage"), { source: @source.code, _id: ev.currentTarget.id})
 
   selectSource: ->
     if @options.onSelect?
