@@ -2,7 +2,8 @@
 <tr class="tappable test" id="{{_id}}">
   {{! TODO don't include name here directly }}
   <td><strong>{{name}}</strong></td>
-  <td>{{formatDate started "%F"}}</td>
+  <td style="border-left:none;">{{formatDate started "%F"}}</td>
+  <td style="vertical-align:middle; border-left:none; width: 16px"><i class="icon-chevron-right"></i></td>
 </tr>
 {{else}}
 <tr>

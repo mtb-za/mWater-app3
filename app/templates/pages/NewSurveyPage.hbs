@@ -7,10 +7,11 @@
 </style>
 
 <h4>Select type of survey to start</h4>
-<ul class="nav nav-tabs nav-stacked">
+<table class="table table-bordered">
   {{#each forms}}
-  <li>
-    <a class="survey" id="{{_id}}">{{name}} &gt;</a>
-  </li>
+  <tr class="survey tappable" id="{{_id}}">
+    <td>{{name}}</a>
+    <td style="vertical-align:middle; border-left:none; width: 16px"><i class="icon-chevron-right"></i></td>
+  </tr>
   {{/each}}
-</ul>
+</table>

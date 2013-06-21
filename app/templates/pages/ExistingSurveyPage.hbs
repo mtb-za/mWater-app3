@@ -8,13 +8,16 @@
 
 <h4>Select survey to continue</h4>
 {{#if responses}}
-<ul class="nav nav-tabs nav-stacked">
+<table class="table table-bordered">
   {{#each responses}}
-  <li>
-    <a class="response" id="{{_id}}"><span id="name_{{_id}}"></span> (started {{started}}) &gt;</a>
-  </li>
+  <tr class="response tappable" id="{{_id}}">
+    <td>
+      <span id="name_{{_id}}"></span> (started {{started}}) 
+    </td>
+    <td style="vertical-align:middle; border-left:none; width: 16px"><i class="icon-chevron-right"></i></td>
+  </tr>
   {{/each}}
-</ul>
+</table>
 {{else}}
   <h5>No incompleted surveys found</h5>
 {{/if}}

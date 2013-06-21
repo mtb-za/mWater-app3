@@ -10,3 +10,13 @@
 .flash {
   margin-bottom: 0px;
 }
+
+.no-border {
+  border-left: none;
+}
+
+.right-chevron {
+  vertical-align:middle; 
+  border-left:none; 
+  width: 16px;
+}

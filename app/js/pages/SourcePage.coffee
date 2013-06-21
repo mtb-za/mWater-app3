@@ -79,6 +79,7 @@ module.exports = class SourcePage extends Page
     if confirm("Permanently delete source?")
       @db.sources.remove @source._id, =>
         @pager.closePage()
+        @pager.flash "Source deleted", "success"
 
   addTest: ->
     @pager.openPage(require("./NewTestPage"), { source: @source.code})
