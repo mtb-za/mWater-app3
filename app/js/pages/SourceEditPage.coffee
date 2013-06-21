@@ -32,6 +32,12 @@ module.exports = class SourceEditPage extends Page
             id: 'desc'
             model: @model
             prompt: 'Enter optional description'
+          new forms.CheckQuestion
+            id: 'private'
+            model: @model
+            prompt: "Privacy"
+            text: 'Water source is private'
+            hint: 'This should only be used for sources that are not publically accessible'
         ]
 
       @$el.empty().append(saveCancelForm.el)

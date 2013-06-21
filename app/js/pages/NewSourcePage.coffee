@@ -32,6 +32,12 @@ module.exports = class NewSourcePage extends Page
           id: 'desc'
           model: @model
           prompt: 'Enter optional description'
+        new forms.CheckQuestion
+          id: 'private'
+          model: @model
+          prompt: "Privacy"
+          text: 'Water source is private'
+          hint: 'This should only be used for sources that are not publically accessible'
         new forms.RadioQuestion
           id: 'setLocation'
           model: @model
@@ -42,7 +48,7 @@ module.exports = class NewSourcePage extends Page
     @$el.empty().append(saveCancelForm.el)
 
     @listenTo saveCancelForm, 'save', =>
-      source = _.pick(@model.toJSON(), 'name', 'desc', 'type')
+      source = _.pick(@model.toJSON(), 'name', 'desc', 'type', 'private')
       source.code = ""+Math.floor(Math.random()*1000000)  # TODO real codes
       @db.sources.upsert source, (source) => 
         @pager.closePage(SourcePage, { _id: source._id, setLocation: @model.get('setLocation')})

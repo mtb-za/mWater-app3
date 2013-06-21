@@ -79,7 +79,7 @@ module.exports = class SourcePage extends Page
       @db.sources.upsert @source.toJSON(), => @render()
 
   editSource: ->
-    @pager.openPage(require("./SourceEditPage"), { _id: @_id})
+    @pager.openPage(require("./SourceEditPage"), { _id: @source._id})
 
   deleteSource: ->
     if confirm("Permanently delete source?")
