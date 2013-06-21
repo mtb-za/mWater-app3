@@ -9,6 +9,7 @@ GeoJSON = require '../GeoJSON'
 module.exports = class SourceListPage extends Page
   events: 
     'click tr.tappable' : 'sourceClicked'
+    'click #search_cancel' : 'cancelSearch'
 
   create: ->
     @setTitle 'Nearby Sources'
@@ -34,6 +35,8 @@ module.exports = class SourceListPage extends Page
       @unlocatedSources = sources
       @renderList()
 
+    @performSearch()
+
   addSource: ->
     @pager.openPage(require("./NewSourcePage"))
     
@@ -50,7 +53,11 @@ module.exports = class SourceListPage extends Page
 
   renderList: ->
     # Append located and unlocated sources
-    sources = @unlocatedSources.concat(@nearSources)
+    if not @searchText
+      sources = @unlocatedSources.concat(@nearSources)
+    else
+      sources = @searchSources
+
     @$("#table").html templates['pages/SourceListPage_items'](sources:sources)
 
   locationError: (pos) =>
@@ -65,4 +72,29 @@ module.exports = class SourceListPage extends Page
         @pager.closePage()
         @options.onSelect(source)
     @pager.openPage(require("./SourcePage"), { _id: ev.currentTarget.id, onSelect: onSelect})
+
+  search: ->
+    # Prompt for search
+    @searchText = prompt("Enter search text or ID of water source")
+    @performSearch()
+
+  performSearch: ->
+    @$("#search_bar").toggle(@searchText and @searchText.length>0)
+    @$("#search_text").text(@searchText)
+    if @searchText
+      # If digits, search for code
+      if @searchText.match(/^\d+$/)
+        selector = { code: @searchText }
+      else
+        selector = { name: new RegExp(@searchText,"i")}
+        
+      @db.sources.find(selector, {limit: 50}).fetch (sources) =>
+        @searchSources = sources
+        @renderList()
+    else
+      @renderList()
+
+  cancelSearch: ->
+    @searchText = ""
+    @performSearch()
 
