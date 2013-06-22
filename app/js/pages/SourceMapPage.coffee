@@ -62,6 +62,13 @@ class SourceDisplay
 
     @sourceMarkers = {}
     @map.on('moveend', @updateMarkers)
+
+    @icon = new L.icon
+      iconUrl: 'img/DropMarker.png'
+      iconRetinaUrl: 'img/DropMarker@2x.png'
+      iconSize: [27, 41],
+      iconAnchor: [13, 41]
+      popupAnchor: [-3, -41]
   
   updateMarkers: =>
     # Get bounds padded
@@ -84,7 +91,7 @@ class SourceDisplay
   addSourceMarker: (source) ->
     if source.geo?
       latlng = new L.LatLng(source.geo.coordinates[1], source.geo.coordinates[0])
-      marker = new L.Marker(latlng)
+      marker = new L.Marker(latlng, {icon:@icon})
       
       marker.on 'click', =>
         @pager.openPage(SourcePage, {_id: source._id})
