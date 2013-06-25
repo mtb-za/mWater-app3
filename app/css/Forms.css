@@ -6,12 +6,10 @@
   min-width: 80px;
 }
 .section {
-  font-weight: bold;
-  font-size: 125%;
   margin-bottom: 15px;
 }
 .question {
-    padding: 5px 5px 5px 5px;
+  padding: 5px 5px 5px 5px;
   margin-bottom: 20px;
 }
 .question.invalid {

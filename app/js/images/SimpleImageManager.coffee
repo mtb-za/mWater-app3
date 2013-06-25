@@ -10,5 +10,5 @@ module.exports = class SimpleImageManager
   getImageThumbnailUrl: (imageId, success, error) ->
     success @apiUrl + "images/" + imageId + "/thumbnail"
 
-  getImageUrl = (imageId, success, error) ->
+  getImageUrl: (imageId, success, error) ->
     success @apiUrl + "images/" + imageId

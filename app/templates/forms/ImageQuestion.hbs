@@ -1,6 +1,6 @@
-{{#each images}}
-<img id="{{id}}" class="img-rounded thumbnail" style="max-height: 100px" onError="this.onerror=null;this.src='img/no-image-icon.jpg';" />
-{{/each}}
+{{#if image}}
+<img id="{{image.id}}" class="img-rounded thumbnail" style="max-height: 100px" onError="this.onerror=null;this.src='img/no-image-icon.jpg';" />
+{{/if}}
 
 {{#if canAdd}}
 <img src="img/camera-icon-add.jpg" id="add" class="img-rounded" style="max-height: 100px"/>

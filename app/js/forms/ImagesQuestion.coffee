@@ -14,15 +14,20 @@ module.exports = class ImagesQuestion extends Question
       images = @model.get(@id)
 
       # Determine if can add images
+      notSupported = false
       if @options.readonly
         canAdd = false
       else if @ctx.camera and @ctx.imageManager.addImage
         canAdd = true
       else
         canAdd = false
+        notSupported = not images or images.length == 0
+
+      # Determine if we need to tell user that no image are available
+      noImage = not canAdd and (not images or images.length == 0) and not notSupported
 
       # Render images
-      answerEl.html templates['forms/ImagesQuestion'](images: images, canAdd: canAdd)
+      answerEl.html templates['forms/ImagesQuestion'](images: images, canAdd: canAdd, noImage: noImage, notSupported: notSupported)
 
       # Set sources
       if images

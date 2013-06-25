@@ -1,8 +1,9 @@
 Question = require('./form-controls').Question
+ImagePage = require '../pages/ImagePage'
 
-module.exports = class ImagesQuestion extends Question
+module.exports = class ImageQuestion extends Question
   events:
-    "click #camera": "cameraClick"
+    "click #add": "addClick"
     "click .thumbnail": "thumbnailClick"
 
   renderAnswer: (answerEl) ->
@@ -10,26 +11,43 @@ module.exports = class ImagesQuestion extends Question
     if not @ctx.imageManager
       answerEl.html '''<div class="text-error">Images not available</div>'''
     else
-      imageUid = @model.get(@id)
+      image = @model.get(@id)
 
-      # If none, show camera
-      if not imageUid
-        answerEl.html '''
-          <img src="img/camera-icon.jpg" id="camera" class="img-rounded" style="max-height: 100px"/>
-        '''
+      # Determine if can add images
+      notSupported = false
+      if @options.readonly
+        canAdd = false
+      else if @ctx.camera and @ctx.imageManager.addImage
+        canAdd = not image? # Don't allow adding more than one
       else
-        # Render image
-        answerEl.html _.template('''
-          <img id="<%=imageUid%>" class="img-rounded thumbnail" style="max-height: 100px" onError="this.onerror=null;this.src='img/no-image-icon.jpg';" />
-        ''', { imageUid: imageUid })
+        canAdd = false
+        notSupported = not image
 
-        # Set source
-        success = (url) =>
-          @$("#"+imageUid).attr("src", url)
-        @ctx.imageManager.getImageThumbnailUrl imageUid, success, @error
+      # Determine if we need to tell user that no image is available
+      noImage = not canAdd and not image and not notSupported
 
-  cameraClick: ->
-    alert("On Android App, would launch Camera+Photo Viewer")
+      # Render images
+      answerEl.html templates['forms/ImageQuestion'](image: image, canAdd: canAdd, noImage: noImage, notSupported: notSupported)
 
-  thumbnailClick: =>
-    @pager.openPage(ImagePage, { uid: ev.currentTarget.id })
+      # Set source
+      if image
+        @setThumbnailUrl(image.id)
+    
+  setThumbnailUrl: (id) ->
+    success = (url) =>
+      @$("#" + id).attr("src", url)
+    @ctx.imageManager.getImageThumbnailUrl id, success, @error
+
+  addClick: ->
+    # Call camera to get image
+    success = (url) =>
+      # Add image
+      @ctx.imageManager.addImage(url, (id) =>
+        # Add to model
+        @model.set(@id, { id: id })
+      , @ctx.error)
+    @ctx.camera.takePicture success, (err) ->
+      alert("Failed to take picture")
+
+  thumbnailClick: (ev) ->
+    @ctx.pager.openPage(ImagePage, { id: ev.currentTarget.id })

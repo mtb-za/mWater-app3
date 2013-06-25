@@ -51,12 +51,14 @@ questions.push new forms.ImageQuestion
   id: 'photo'
   model: model
   prompt: "Take one photo"
+  ctx: options.ctx
 
 questions.push new forms.ImagesQuestion
   id: 'photos'
   model: model
   prompt: "Take multiple photos"
-
+  ctx: options.ctx
+  
 sections.push new forms.Section(
   model: model
   title: "Basic Controls"
