@@ -6,7 +6,7 @@ module.exports = class ImagePage extends Page
     @$el.html templates['ImagePage']()
 
     # Get image url
-    @imageManager.getImageUrl(@options.uid, (url) =>
+    @imageManager.getImageUrl(@options.id, (url) =>
       @$("#message_bar").hide()
       @$("#image").attr("src", url).show()
     , @error)

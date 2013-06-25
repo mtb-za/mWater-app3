@@ -47,7 +47,12 @@ questions.push new forms.MulticheckQuestion(
   options: [[1, "Some option"], [2, "Another option"], [3, "Third option"]]
 )
 
-questions.push new forms.PhotosQuestion
+questions.push new forms.ImageQuestion
+  id: 'photo'
+  model: model
+  prompt: "Take one photo"
+
+questions.push new forms.ImagesQuestion
   id: 'photos'
   model: model
   prompt: "Take multiple photos"

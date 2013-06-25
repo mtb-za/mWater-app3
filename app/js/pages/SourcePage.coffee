@@ -71,10 +71,9 @@ module.exports = class SourcePage extends Page
       @$("#notes").html templates['pages/SourcePage_notes'](notes:notes)
 
     # Add photos # TODO wire model to actual db
-    photosView = new forms.PhotosQuestion
+    photosView = new forms.ImagesQuestion
       id: 'photos'
       model: new Backbone.Model(@source)
-      prompt: 'Photos'
       ctx: @ctx
       
     photosView.model.on 'change', =>

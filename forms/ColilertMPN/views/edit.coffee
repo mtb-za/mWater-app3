@@ -34,7 +34,7 @@ questions.push new forms.RadioQuestion
   options: [[true, 'Yes'], [false, 'No']]
   required: true
 
-questions.push new forms.PhotoQuestion
+questions.push new forms.ImageQuestion
   id: 'photo'
   model: model
   prompt: "Photo"

@@ -17,7 +17,7 @@ questions.push new forms.NumberQuestion
   required: true
   decimal: true
 
-questions.push new forms.PhotoQuestion
+questions.push new forms.ImageQuestion
   id: 'photo'
   model: model
   prompt: "Photo"

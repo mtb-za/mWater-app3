@@ -29,7 +29,7 @@ questions.push new forms.NumberQuestion
   conditional: ->
     @model.get('freeCl_present') == true
 
-questions.push new forms.PhotoQuestion
+questions.push new forms.ImageQuestion
   id: 'photo'
   model: model
   prompt: "Photo"

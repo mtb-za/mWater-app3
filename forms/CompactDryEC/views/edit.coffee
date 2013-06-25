@@ -31,7 +31,7 @@ questions.push new forms.NumberQuestion
   model: model
   prompt: "Number of red colonies (total coliform)"
 
-questions.push new forms.PhotoQuestion
+questions.push new forms.ImageQuestion
   id: 'photo'
   model: model
   prompt: "Photo"

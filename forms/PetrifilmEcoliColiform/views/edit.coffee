@@ -36,7 +36,7 @@ questions.push new forms.NumberQuestion
   model: model
   prompt: "Number of red colonies with no gas bubble (gram negative non-coliforms)"
 
-questions.push new forms.PhotoQuestion
+questions.push new forms.ImageQuestion
   id: 'photo'
   model: model
   prompt: "Photo"

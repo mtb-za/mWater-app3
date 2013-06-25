@@ -154,7 +154,7 @@ exports.Section = Backbone.View.extend({
 exports.Question = Backbone.View.extend({
     className : "question",
 
-    template : _.template('<div class="prompt"><%=options.prompt%><%=renderRequired()%></div><div class="answer"></div><%=renderHint()%>'),
+    template : _.template('<% if (options.prompt) { %><div class="prompt"><%=options.prompt%><%=renderRequired()%></div><% } %><div class="answer"></div><%=renderHint()%>'),
 
     renderRequired : function() {
         if (this.required)

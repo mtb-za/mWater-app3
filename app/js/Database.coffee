@@ -28,7 +28,7 @@ seedData = (db) ->
       continue # TODO REMOVE
 
     if oldSource.photo
-      source.photos = [oldSource.photo]
+      source.photos = [{ id: oldSource.photo }]
       console.log source.code + " has photo"
 
     db.sources.upsert(source)

@@ -1,4 +1,5 @@
 # TODO Untested
+# TODO id, not uid
 
 # cachePath: e.g. "Android/data/co.mwater.clientapp/images" 
 module.exports = (syncServer, cachePath) ->

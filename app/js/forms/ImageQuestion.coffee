@@ -1,6 +1,6 @@
 Question = require('./form-controls').Question
 
-module.exports = Question.extend
+module.exports = class ImagesQuestion extends Question
   events:
     "click #camera": "cameraClick"
     "click .thumbnail": "thumbnailClick"
