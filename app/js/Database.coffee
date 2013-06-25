@@ -24,6 +24,12 @@ seedData = (db) ->
         type: 'Point'
         coordinates: [oldSource.longitude, oldSource.latitude]
       }
+    else
+      continue # TODO REMOVE
+
+    if oldSource.photo
+      source.photos = [oldSource.photo]
+      console.log source.code + " has photo"
 
     db.sources.upsert(source)
 

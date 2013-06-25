@@ -220,6 +220,9 @@ exports.Question = Backbone.View.extend({
 
         this.required = this.options.required;
 
+        // Save context
+        this.ctx = this.options.ctx || {};
+
         this.render();
     },
 

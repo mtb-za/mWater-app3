@@ -8,6 +8,8 @@
                   "tests.js"],
   "routes": {
     "/dist": "../dist",
-    "/vendor": "../vendor"
+    "/vendor": "../vendor",
+    "/images": "images",
+    "/img": "../dist/img"
   }
 }

@@ -43,8 +43,8 @@ module.exports = class SourceListPage extends Page
   locationFound: (pos) =>
     @$("#location_msg").hide()
     selector = geo: 
-        $near: 
-          $geometry: GeoJSON.posToPoint(pos)
+      $near: 
+        $geometry: GeoJSON.posToPoint(pos)
 
     # Query database for near sources
     @db.sources.find(selector).fetch (sources) =>

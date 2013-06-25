@@ -75,8 +75,11 @@ module.exports = class SourcePage extends Page
       id: 'photos'
       model: new Backbone.Model(@source)
       prompt: 'Photos'
+      ctx: @ctx
+      
     photosView.model.on 'change', =>
       @db.sources.upsert @source.toJSON(), => @render()
+    @$('#photos').append(photosView.el)
 
   editSource: ->
     @pager.openPage(require("./SourceEditPage"), { _id: @source._id})

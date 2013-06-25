@@ -2,25 +2,25 @@ AppView = require("./AppView")
 SlideMenu = require("./SlideMenu")
 Pager = require("./Pager")
 PageMenu = require("./PageMenu")
-
 Database = require "./Database"
+SimpleImageManager = require './images/SimpleImageManager'
 
-# Create page
-Page = require("./Page")
-class SomePage extends Page
-  constructor: (ctx, args) ->
-    super(ctx)
-    console.log args
-    @render()
-
-  render: ->
-    for x in [0..500]
-      @$el.append("this is a test")
-  title: ->
-    "some page!"
-
+# Create database
 db = Database.createDb()
-ctx = { db: db }
+
+# Create image manager
+imageManager = new SimpleImageManager('http://data.mwater.co/apiv2/') # TODO move to new api
+
+# Create error handler ### TODO
+error = (err) ->
+  console.error err
+  alert("Internal error: " + err)
+
+ctx = { 
+  db: db 
+  imageManager: imageManager
+  error: error
+}
 
 # Create pager
 pager = new Pager(ctx)
@@ -34,13 +34,10 @@ slideMenu.addSubmenu(new PageMenu(ctx: ctx))
 app = new AppView(slideMenu: slideMenu, pager: pager)
 $("body").append(app.$el)
 
-
 $ -> 
-  #pager.openPage(require("./pages/SourceMapPage"))
   pager.openPage(require("./pages/MainPage"))
-  # survey = require("./survey/DemoSurvey")(ctx);
-  # pager.openPage(require("./pages/SurveyPage"), survey)
 
 
-# TODO ### remove
-require("./forms")
+#pager.openPage(require("./pages/SourceMapPage"))
+# survey = require("./survey/DemoSurvey")(ctx);
+# pager.openPage(require("./pages/SurveyPage"), survey)

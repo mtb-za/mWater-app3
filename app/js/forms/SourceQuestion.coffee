@@ -18,7 +18,7 @@ module.exports = Question.extend
     @model.set @id, @$("input").val()
 
   selectSource: ->
-    @options.ctx.pager.openPage SourceListPage, 
+    @ctx.pager.openPage SourceListPage, 
       { onSelect: (source)=>
         @model.set @id, source.code
       }
