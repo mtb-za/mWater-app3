@@ -10,7 +10,12 @@ class SurveyPage extends Page
       @response = response
 
       # Get form
-      @db.forms.findOne {_id: response.form}, (form) =>
+      @db.forms.findOne {code: response.type}, (form) =>
+        if not form
+          alert "Survey form #{response.type} not found"
+          @pager.closePage()
+          return
+
         # Render form
         @formView = forms.instantiateView(form.views.edit, { ctx: @ctx })
         @$el.append(@formView.el)
@@ -27,7 +32,8 @@ class SurveyPage extends Page
 
   deactivate: ->
     # Save to be safe
-    @saveResponse()
+    if @formView
+      @saveResponse()
 
   destroy: ->
     # Let know that saved if closed incompleted

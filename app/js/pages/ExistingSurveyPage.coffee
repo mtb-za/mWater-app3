@@ -17,7 +17,7 @@ class ExistingSurveyPage extends Page
 
       # Fill in survey names
       for resp in responses
-        @db.forms.findOne {_id:resp.form}, (form) =>
+        @db.forms.findOne { code:resp.type }, (form) =>
           @$("#name_"+resp._id).text(form.name)
 
   openResponse: (ev) ->

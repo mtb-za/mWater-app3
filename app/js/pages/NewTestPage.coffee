@@ -16,13 +16,14 @@ class NewTestPage extends Page
   startTest: (ev) ->
     testCode = ev.currentTarget.id
 
+    # TODO add user/org
+
     # Create test
     test = {
       source: @options.source
       type: testCode
       completed: null
       started: new Date().toISOString()
-      name: _.findWhere(@forms, { code: testCode }).name  # TODO don't put name here? Also fix in TestListPage
     }
     @db.tests.upsert test, (test) =>
       @pager.closePage(TestPage, { _id: test._id })

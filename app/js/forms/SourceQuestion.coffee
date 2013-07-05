@@ -1,5 +1,6 @@
 Question = require('./form-controls').Question
 SourceListPage = require '../pages/SourceListPage'
+sourcecodes = require '../sourcecodes'
 
 module.exports = Question.extend
   renderAnswer: (answerEl) ->
@@ -22,3 +23,13 @@ module.exports = Question.extend
       { onSelect: (source)=>
         @model.set @id, source.code
       }
+
+  validateInternal: ->
+    if not @$("input").val()
+      return false
+
+    if sourcecodes.isValid(@$("input").val())
+      return false
+
+    return "Invalid Source"
+

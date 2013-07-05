@@ -11,6 +11,16 @@ db = Database.createDb()
 # Create image manager
 imageManager = new SimpleImageManager('http://data.mwater.co/apiv2/') # TODO move to new api
 
+# Fake adding images
+imageManager.addImage = (url, success, error) ->
+  error("Not implemented")
+
+# Fake camera
+camera = {
+  takePicture: (success, error) ->
+    alert("On the Android app, this would take a picture")
+}
+
 # Create error handler ### TODO
 error = (err) ->
   console.error err
@@ -19,6 +29,7 @@ error = (err) ->
 ctx = { 
   db: db 
   imageManager: imageManager
+  camera: camera
   error: error
 }
 

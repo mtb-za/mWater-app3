@@ -4,7 +4,7 @@ ImagePage = require '../pages/ImagePage'
 module.exports = class ImageQuestion extends Question
   events:
     "click #add": "addClick"
-    "click .thumbnail": "thumbnailClick"
+    "click .thumbnail-img": "thumbnailClick"
 
   renderAnswer: (answerEl) ->
     # Render image using image manager
@@ -50,4 +50,10 @@ module.exports = class ImageQuestion extends Question
       alert("Failed to take picture")
 
   thumbnailClick: (ev) ->
-    @ctx.pager.openPage(ImagePage, { id: ev.currentTarget.id })
+    id = ev.currentTarget.id
+
+    # Create onRemove callback
+    onRemove = () => 
+      @model.set(@id, null)
+
+    @ctx.pager.openPage(ImagePage, { id: id, onRemove: onRemove })

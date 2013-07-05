@@ -14,3 +14,15 @@ module.exports = class ImagePage extends Page
   activate: ->
     @setTitle "Image"
 
+    # If remove allowed, set in button bar
+    if @options.onRemove
+      @setupButtonBar [
+        { icon: "delete.png", click: => @removePhoto() }
+      ]
+    else
+      @setupButtonBar []
+
+  removePhoto: ->
+    if confirm("Remove image?")
+      @options.onRemove()
+      @pager.closePage()

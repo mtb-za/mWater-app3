@@ -61,6 +61,12 @@ module.exports = function(grunt) {
       }
     },
     copy: {
+      apphtml: {
+        expand: true,
+        cwd: 'app/html/',
+        src: '*',
+        dest: 'dist/'
+      },
       appimages: {
         expand: true,
         cwd: 'app/img/',
@@ -132,6 +138,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
 
   // Default task(s).
-  grunt.registerTask('default', ['browserify', 'concat', 'copy', 'handlebars', 'manifest', 'compile-forms']);
+  grunt.registerTask('default', ['browserify', 'concat', 'copy', 'uglify', 'handlebars', 'manifest', 'compile-forms']);
   grunt.registerTask('deploy', ['default', 'shell:deploy']);
 };

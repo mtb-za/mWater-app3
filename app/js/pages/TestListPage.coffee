@@ -16,9 +16,13 @@ module.exports = class TestListPage extends Page
     # Query database for recent, completed tests
     # TODO filter to recent by user
     @db.tests.find({completed: {$ne: null}}).fetch (tests) ->
+      # TODO fill form and fix in hbs
+
       @$("#recent_table").html templates['pages/TestListPage_items'](tests:tests)
 
     @db.tests.find({completed: null}).fetch (tests) ->
+      # TODO fill form and fix in hbs
+
       @$("#incomplete_table").html templates['pages/TestListPage_items'](tests:tests)
 
   testClicked: (ev) ->

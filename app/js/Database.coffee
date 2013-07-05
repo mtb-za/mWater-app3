@@ -1,6 +1,7 @@
 # Temporary database setter upper
 
 LocalDb = require './db/LocalDb'
+sourcecodes = require './sourcecodes'
 
 
 # TODO tests or water_tests (also sources)
@@ -16,7 +17,7 @@ seedData = (db) ->
       _id: oldSource.uid
       name: oldSource.name
       desc: oldSource.desc
-      code: oldSource.code
+      code: sourcecodes.seqToCode(oldSource.code)
       # TODO: type??
     }
     if oldSource.latitude? and oldSource.longitude?

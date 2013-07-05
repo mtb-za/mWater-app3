@@ -1,6 +1,8 @@
 # TODO Untested
 # TODO id, not uid
 
+# TODO addImage = (url, success, error) ->
+
 # cachePath: e.g. "Android/data/co.mwater.clientapp/images" 
 module.exports = (syncServer, cachePath) ->
   createDirs = (baseDirEntry, path, success, error) ->

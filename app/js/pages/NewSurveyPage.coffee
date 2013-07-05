@@ -12,11 +12,12 @@ class NewSurveyPage extends Page
       @$el.html templates['pages/NewSurveyPage'](forms:forms)
 
   startSurvey: (ev) ->
-    formId = ev.currentTarget.id
+    surveyCode = ev.currentTarget.id
 
     # Create response
+    # TODO Add user/org
     response = {
-      form: formId
+      type: surveyCode
       completed: false
       started: new Date().toISOString()
     }
