@@ -11,7 +11,7 @@ describe 'GeoJSON', ->
     assert _.isEqual json, {
       type: "Polygon",
       coordinates: [
-        [[20,10],[20,13],[23,13],[23,10]]
+        [[20,10],[20,13],[23,13],[23,10],[20,10]]
       ]
     }
 

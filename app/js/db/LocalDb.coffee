@@ -11,8 +11,6 @@ class LocalDb
       @namespace = options.namespace
 
   addCollection: (name) ->
-    dbName = @name
-
     # Set namespace for collection
     namespace = @namespace+"."+name if @namespace
 
@@ -21,8 +19,6 @@ class LocalDb
     @collections[name] = collection
 
   removeCollection: (name) ->
-    dbName = @name
-
     if @namespace and window.localStorage
       keys = []
       for i in [0...localStorage.length]

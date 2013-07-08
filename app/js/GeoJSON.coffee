@@ -17,12 +17,17 @@ exports.latLngBoundsToGeoJSON = (bounds) ->
       [[sw.lng, sw.lat], 
       [sw.lng, ne.lat], 
       [ne.lng, ne.lat], 
-      [ne.lng, sw.lat]]
+      [ne.lng, sw.lat],
+      [sw.lng, sw.lat]]
     ]
   }
 
 # TODO: only works with bounds
 exports.pointInPolygon = (point, polygon) ->
+  # Check that first == last
+  if not _.isEqual(_.first(polygon.coordinates[0]), _.last(polygon.coordinates[0]))
+    throw new Error("First must equal last")
+
   # Get bounds
   bounds = new L.LatLngBounds(_.map(polygon.coordinates[0], (coord) -> new L.LatLng(coord[1], coord[0])))
   return bounds.contains(new L.LatLng(point.coordinates[1], point.coordinates[0]))

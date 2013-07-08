@@ -21,6 +21,8 @@ camera = {
     alert("On the Android app, this would take a picture")
 }
 
+# TODO create problem reporter
+
 # Create error handler ### TODO
 error = (err) ->
   console.error err
