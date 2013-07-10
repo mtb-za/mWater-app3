@@ -1,7 +1,7 @@
 
 
 date: ISO string of date e.g. 2013-04-20
-datetimr: ISO string of date time, GMT
+datetime: ISO string of date time, GMT
 photoset: array of { id: <image id, required>, caption: string }
 
 ## sources
@@ -27,8 +27,10 @@ photoset: array of { id: <image id, required>, caption: string }
 * _id (string, required): UUID v4 with no dashes 
 * source (sources.code, required): Source that note concerns
 * date (datetime, required): Date note was created
-* status (string): Status of source ('ok', 'repair', 'broken', 'missing')
+* status (string): Status of source ('ok', 'maint', 'broken', 'missing')
 * notes (string): Notes about source visit
+* user (users.username): User who manages note
+* org (orgs.code): User who manages note
 
 ## forms
 
@@ -41,16 +43,20 @@ photoset: array of { id: <image id, required>, caption: string }
 ## responses
 
 * _id (string, required): UUID v4 with no dashes 
-* type (forms.code, required): TODO type or form? TODO code instead? type is more consistent, use code
+* type (forms.code, required): code of form
 * started (datetime, required): when survey was started
 * data (object): data of survey
 * completed (boolean, required): true when completed TODO datetime?
+* user (users.username): User who manages response
+* org (orgs.code): User who manages response
 
 ## tests
 
-source (sources.code): Source which test is of
-type (forms.code): TODO type or form? type is more consistent
-started (datetime): Date test was started
-completed (datetime): Date test was completed
-<other fields>: as form defines
+* source (sources.code): Source which test is of
+* type (forms.code): code of form
+* started (datetime): Date test was started
+* completed (datetime): Date test was completed
+* user (users.username): User who manages test
+* org (orgs.code): User who manages test
+* <other fields>: as form defines
 

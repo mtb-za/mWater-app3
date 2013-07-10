@@ -18,7 +18,7 @@ class NewSurveyPage extends Page
     # TODO Add user/org
     response = {
       type: surveyCode
-      completed: false
+      completed: null
       started: new Date().toISOString()
     }
     @db.responses.upsert response, (response) =>

@@ -9,7 +9,7 @@ class ExistingSurveyPage extends Page
   activate: ->
     @setTitle "Select Survey"
 
-    @db.responses.find({completed:false}).fetch (responses) =>
+    @db.responses.find({completed:null}).fetch (responses) =>
       # Make presentable
       list = _.map responses, (r) ->
         return { _id: r._id, started: r.started.substring(0,10) }

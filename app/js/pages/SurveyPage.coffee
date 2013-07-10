@@ -48,7 +48,7 @@ class SurveyPage extends Page
   formCompleted: =>
     # Mark as completed
     @response.data = @formView.save()
-    @response.completed = true
+    @response.completed = new Date().toISOString()
 
     @db.responses.upsert(@response)
     @pager.closePage()

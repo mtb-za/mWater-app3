@@ -28,7 +28,7 @@ module.exports = class SourceNotePage extends Page
             id: 'status'
             model: @model
             prompt: 'Status of Water Source'
-            options: [['ok', 'Functional'], ['repair', 'Needs repair'], ['broken', 'Non-functional'], ['missing', 'No longer exists']]
+            options: [['ok', 'Functional'], ['maint', 'Needs maintenance'], ['broken', 'Non-functional'], ['missing', 'No longer exists']]
             required: true
           new forms.TextQuestion
             id: 'notes'
