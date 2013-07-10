@@ -1,3 +1,4 @@
+processFind = require('./utils').processFind
 
 module.exports = class HybridDb
   constructor: (localDb, remoteDb) ->
@@ -13,17 +14,62 @@ class HybridCollection
     @localCol = localCol
     @remoteCol = remoteCol
 
+  # options.mode defaults to "hybrid".
+  # In "hybrid", it will return local results, then hit remote and return again if different
+  # If remote gives error, it will be ignored
+  # In "remote", it will call remote and not cache, but integrates local upserts/deletes
+  # If remote gives error, then it will return local results
+  # In "local", just returns local results
   find: (selector, options = {}) ->
     return fetch: (success, error) =>
       @_findFetch(selector, options, success, error)
 
+  # options.mode defaults to "hybrid".
+  # In "hybrid", it will return local if present, otherwise fall to remote without returning null
+  # If remote gives error, then it will return null if none locally. If remote and local differ, it
+  # will return twice
+  # In "local", it will return local if present. If not present, only then will it hit remote.
+  # If remote gives error, then it will return null
+  # In "remote"... (not implemented)
   findOne: (selector, options = {}, success, error) ->
     if _.isFunction(options) 
       [options, success, error] = [{}, options, success]
 
-    #@find(selector, options).fetch (results) ->
-    #  if success? then success(if results.length>0 then results[0] else null)
-    #, error
+    mode = options.mode || "hybrid"
+
+    if mode == "hybrid" or mode == "local"
+      options.limit = 1
+      @localCol.findOne selector, options, (localDoc) =>
+        # If found, return
+        if localDoc
+          success(localDoc)
+          # No need to hit remote if local
+          if mode == "local"
+            return 
+
+        remoteSuccess = (remoteDoc) =>
+          # Cache
+          cacheSuccess = =>
+            # Try query again
+            @localCol.findOne selector, options, (localDoc2) =>
+              if not _.isEqual(localDoc, localDoc2)
+                success(localDoc2)
+              else if not localDoc
+                success(null)
+
+          docs = if remoteDoc then [remoteDoc] else []
+          @localCol.cache(docs, selector, options, cacheSuccess, error)
+
+        remoteError = =>
+          # Remote errored out. Return null if local did not return
+          if not localDoc
+            success(null)
+
+        # Call remote
+        @remoteCol.findOne selector, options, remoteSuccess, remoteError
+      , error
+    else 
+      throw new Error("Unknown mode")
 
   _findFetch: (selector, options, success, error) ->
     mode = options.mode || "hybrid"
@@ -49,6 +95,39 @@ class HybridCollection
         @remoteCol.find(selector, options).fetch(remoteSuccess)
 
       @localCol.find(selector, options).fetch(localSuccess, error)
+    else if mode == "local"
+      @localCol.find(selector, options).fetch(success, error)
+    else if mode == "remote"
+      # Get remote results
+      remoteSuccess = (remoteData) =>
+        # Remove local remotes
+        @localCol.pendingRemoves (removes) =>
+          removesMap = _.object(_.map(removes, (id) -> [id, id]))
+          data = _.filter remoteData, (doc) ->
+            return not _.has(removesMap, doc._id)
+
+          # Add upserts
+          @localCol.pendingUpserts (upserts) =>
+            # Remove upserts from data
+            upsertsMap = _.object(_.pluck(upserts, '_id'), _.pluck(upserts, '_id'))
+            data = _.filter data, (doc) ->
+              return not _.has(upsertsMap, doc._id)
+
+            # Add upserts
+            data = data.concat(upserts)
+
+            # Refilter/sort/limit
+            data = processFind(data, selector, options)
+
+            success(data)
+
+      remoteError = =>
+        # Call local
+        @localCol.find(selector, options).fetch(success, error)
+
+      @remoteCol.find(selector, options).fetch(remoteSuccess, remoteError)
+    else
+      throw new Error("Unknown mode")
 
   upsert: (doc, success, error) ->
 
