@@ -4,9 +4,30 @@ module.exports = class HybridDb
   constructor: (localDb, remoteDb) ->
     @localDb = localDb
     @remoteDb = remoteDb
+    @collections = {}
 
   addCollection: (name) ->
-    @[name] = new HybridCollection(name, @localDb[name], @remoteDb[name])
+    collection = new HybridCollection(name, @localDb[name], @remoteDb[name])
+    @[name] = collection
+    @collections[name] = collection
+
+  removeCollection: (name) ->
+    delete @[name]
+    delete @collections[name]
+  
+  upload: (success, error) ->
+    cols = _.values(@collections)
+
+    uploadCols = (cols, success, error) =>
+      col = _.first(cols)
+      if col
+        col.upload(() =>
+          uploadCols(_.rest(cols), success, error)
+        , (err) =>
+          error(err))
+      else
+        success()
+    uploadCols(cols, success, error)
 
 class HybridCollection
   constructor: (name, localCol, remoteCol) ->
@@ -130,6 +151,21 @@ class HybridCollection
       throw new Error("Unknown mode")
 
   upsert: (doc, success, error) ->
+    @localCol.upsert(doc, success, error)
 
   remove: (id, success, error) ->
+    @localCol.remove(id, success, error)
 
+  upload: (success, error) ->
+    uploadUpserts = (upserts, success, error) =>
+      upsert = _.first(upserts)
+      if upsert
+        @remoteCol.upsert(upsert, () =>
+          @localCol.resolveUpsert upsert, =>
+            uploadUpserts(_.rest(upserts), success, error)
+        , (err) =>
+          error(err))
+      else 
+        success()
+    @localCol.pendingUpserts (upserts) =>
+      uploadUpserts(upserts, success, error)

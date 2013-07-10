@@ -25,8 +25,11 @@ describe 'HybridDb', ->
       @rc.seed(_id:"1", a:1)
       @rc.seed(_id:"2", a:2)
 
+      calls = 0
       @hc.find({}).fetch (data) ->
+        calls += 1
         assert.equal data.length, 2
+        assert.equal calls, 1
         done()
       , fail
 
@@ -201,6 +204,43 @@ describe 'HybridDb', ->
         assert.deepEqual _.pluck(data, 'a'), [4]
         done()
     
-  it "sync applies pending upserts and deletes"
-  it "keeps upserts and deletes if failed to apply"
+  it "upload applies pending upserts and deletes", (done) ->
+    @lc.upsert(_id:"1", a:1)
+    @lc.upsert(_id:"2", a:2)
 
+    @hybrid.upload(() =>
+      @lc.pendingUpserts (data) =>
+        assert.equal data.length, 0
+
+        @rc.pendingUpserts (data) =>
+          assert.deepEqual _.pluck(data, 'a'), [1,2]
+          done()
+    , fail)
+
+  it "keeps upserts and deletes if failed to apply", (done) ->
+    @lc.upsert(_id:"1", a:1)
+    @lc.upsert(_id:"2", a:2)
+
+    @rc.upsert = (doc, success, error) =>
+      error(new Error("fail"))
+
+    @hybrid.upload(() =>
+      assert.fail()
+    , ()=>
+      @lc.pendingUpserts (data) =>
+        assert.equal data.length, 2
+        done()
+    )
+
+  it "upserts to local db", (done) ->
+    @hc.upsert(_id:"1", a:1)
+    @lc.pendingUpserts (data) =>
+      assert.equal data.length, 1
+      done()
+
+  it "removes to local db", (done) ->
+    @lc.seed(_id:"1", a:1)
+    @hc.remove("1")
+    @lc.pendingRemoves (data) =>
+      assert.equal data.length, 1
+      done()
