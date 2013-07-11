@@ -1,3 +1,9 @@
+# Page that is displayed by the Pager. Pages have the following lifecycle:
+# create, activate, [deactivate, activate...], deactivate, destroy
+# Context is mixed in to the page object
+# Static method "canOpen(ctx)", if present, can forbid opening page if it returns false
+# Useful for displaying menus with page lists.
+
 class Page extends Backbone.View
   constructor: (ctx, options={}) ->
     super(options)
@@ -16,6 +22,8 @@ class Page extends Backbone.View
     @contextMenu = new ContextMenu()
 
   className: "page"
+
+  @canOpen: (ctx) -> true
   create: ->
   activate: ->
   deactivate: ->

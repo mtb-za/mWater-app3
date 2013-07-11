@@ -5,6 +5,8 @@ SourcePage = require "./SourcePage"
 # Allows creating of a source
 # TODO login required
 module.exports = class NewSourcePage extends Page
+  @canOpen: (ctx) -> ctx.auth.insert("sources")
+
   activate: ->
     @setTitle "New Source"
 

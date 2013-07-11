@@ -8,6 +8,8 @@ forms = require '../forms'
 
 # TODO login required
 module.exports = class SourceNotePage extends Page
+  @canOpen: (ctx) -> ctx.auth.update("source_notes") && ctx.auth.insert("source_notes") 
+
   activate: ->
     # Find water source
     @db.sources.findOne {code: @options.source}, (source) =>

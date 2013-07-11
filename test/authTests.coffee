@@ -16,6 +16,9 @@ describe "UserAuth", ->
     it "does allow sources update for user", ->
       assert.isTrue @auth.update("sources", { user: "someuser"})
 
+    it "does allow sources updates in general", ->
+      assert.isTrue @auth.update("sources")
+
     it "does not allow sources update for other user", ->
       assert.isFalse @auth.update("sources", { user: "xyzzy"})
 

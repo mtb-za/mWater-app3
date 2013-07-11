@@ -2,6 +2,8 @@ Page = require "../Page"
 forms = require '../forms'
 
 class TestPage extends Page
+  @canOpen: (ctx) -> ctx.auth.update("tests") && ctx.auth.insert("tests") 
+
   create: -> @render()
 
   activate: ->

@@ -2,6 +2,8 @@ Page = require "../Page"
 SurveyPage = require "./SurveyPage"
 
 class NewSurveyPage extends Page
+  @canOpen: (ctx) -> ctx.auth.insert("responses")
+
   events: 
     "click .survey" : "startSurvey"
 

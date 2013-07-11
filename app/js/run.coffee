@@ -33,6 +33,7 @@ ctx = {
   imageManager: imageManager
   camera: camera
   error: error
+  auth: new (require("./auth").NoneAuth)
 }
 
 # Create pager

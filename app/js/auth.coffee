@@ -1,4 +1,6 @@
 
+# Authorization classes all follow same pattern.
+# doc can be undefined in update and remove: authorizes whether ever possible.
 
 exports.AllAuth = class AllAuth
   insert: (col) ->
@@ -37,6 +39,9 @@ exports.UserAuth = class UserAuth
     if not (col in @editableCols)
       return false
 
+    if not doc
+      return true
+
     if doc.org and @org
       return doc.user == @user || doc.org == @org
     else
@@ -45,6 +50,9 @@ exports.UserAuth = class UserAuth
   remove: (col, doc) ->
     if not (col in @editableCols)
       return false
+
+    if not doc
+      return true
 
     if doc.org and @org
       return doc.user == @user || doc.org == @org

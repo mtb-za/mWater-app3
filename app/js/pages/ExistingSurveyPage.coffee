@@ -3,6 +3,8 @@ Page = require "../Page"
 SurveyPage = require "./SurveyPage"
 
 class ExistingSurveyPage extends Page
+  @canOpen: (ctx) -> ctx.auth.update("responses") 
+
   events: 
     "click .response" : "openResponse"
 

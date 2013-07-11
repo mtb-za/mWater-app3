@@ -2,6 +2,8 @@ Page = require "../Page"
 forms = require '../forms'
 
 class SurveyPage extends Page
+  @canOpen: (ctx) -> ctx.auth.update("responses")
+
   create: ->
     @setTitle "Survey"
 

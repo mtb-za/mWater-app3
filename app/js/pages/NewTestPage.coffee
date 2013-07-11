@@ -3,6 +3,8 @@ TestPage = require "./TestPage"
 
 # Parameter is optional source code
 class NewTestPage extends Page
+  @canOpen: (ctx) -> ctx.auth.insert("tests")
+
   events: 
     "click .test" : "startTest"
 

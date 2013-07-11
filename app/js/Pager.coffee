@@ -27,6 +27,11 @@ class Pager extends Backbone.View
 
   # Adds a page from a constructor
   openPage: (pageClass, options) ->
+    # Check canOpen
+    if pageClass.canOpen
+      if not pageClass.canOpen(@ctx)
+        return
+        
     # Create page
     page = new pageClass(@ctx, options)
     

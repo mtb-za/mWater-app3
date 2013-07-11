@@ -18,6 +18,9 @@ module.exports = class PageMenu extends Backbone.View
 
   render: ->
     @$el.html templates['PageMenu']()
+    @$("#new_test").toggle(require("./pages/NewTestPage").canOpen(@options.ctx))
+    @$("#new_survey").toggle(require("./pages/NewSurveyPage").canOpen(@options.ctx))
+    @$("#existing_survey").toggle(require("./pages/ExistingSurveyPage").canOpen(@options.ctx))
 
   gotoHome: ->
     while @pager.multiplePages()
