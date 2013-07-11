@@ -23,6 +23,10 @@ exports.FormView = class FormView extends Backbone.View
     # Add listener to model
     @listenTo @model, 'change', => @trigger('change')
 
+    # Override save if passed as option
+    if options.save
+      @save = options.save
+
   load: (data) ->
     @model.clear()  #TODO clear or not clear? clearing removes defaults, but allows true reuse.
 

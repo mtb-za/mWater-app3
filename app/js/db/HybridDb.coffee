@@ -87,7 +87,7 @@ class HybridCollection
             success(null)
 
         # Call remote
-        @remoteCol.findOne selector, options, remoteSuccess, remoteError
+        @remoteCol.findOne selector, _.omit(options, 'fields'), remoteSuccess, remoteError
       , error
     else 
       throw new Error("Unknown mode")

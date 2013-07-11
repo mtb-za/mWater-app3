@@ -61,7 +61,7 @@ describe 'HybridDb', ->
       @rc.seed(_id:"1", a:1, b:11)
       @rc.seed(_id:"2", a:2, b:12)
 
-      @hc.findOne({ _id: "1" }, { fields: { b:0 } }, (doc) =>
+      @hc.findOne { _id: "1" }, { fields: { b:0 } }, (doc) =>
         assert.isUndefined doc.b
         @lc.findOne { _id: "1" }, (doc) ->
           assert.equal doc.b, 11

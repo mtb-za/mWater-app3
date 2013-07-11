@@ -96,8 +96,8 @@ module.exports = ->
 
   geopoint = (lng, lat) ->
     return {
-        type: 'Point'
-        coordinates: [lng, lat]
+      type: 'Point'
+      coordinates: [lng, lat]
     }
 
   context 'With geolocated rows', ->

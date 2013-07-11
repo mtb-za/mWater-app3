@@ -4,7 +4,7 @@ db_queries = require "./db_queries"
 
 # To work, this must have the following server running:
 # NODE_ENV=test node server.js
-if true
+if false
   describe 'RemoteDb', ->
     beforeEach (done) ->
       url = 'http://localhost:8080/v3/'

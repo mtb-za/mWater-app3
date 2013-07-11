@@ -25,11 +25,27 @@ questions.push new forms.NumberQuestion
   model: model
   prompt: "Number of blue colonies (E. coli)"
   required: true
+  conditional: ->
+    @model.get('ecoli_tntc') != true
+
+questions.push new forms.CheckQuestion
+  id: 'ecoli_tntc'
+  model: model
+  prompt: ""
+  text: "Blue colonies too numerous to count"
 
 questions.push new forms.NumberQuestion
   id: 'tc_count'
   model: model
   prompt: "Number of red colonies (total coliform)"
+  conditional: ->
+    @model.get('tc_tntc') != true
+
+questions.push new forms.CheckQuestion
+  id: 'tc_tntc'
+  model: model
+  prompt: ""
+  text: "Red colonies too numerous to count"
 
 questions.push new forms.ImageQuestion
   id: 'photo'
@@ -46,3 +62,13 @@ return new forms.WaterTestEditView
   contents: questions
   model: model
   defaults: { dilution: 1 }
+  save: ->
+    data = model.toJSON()
+
+    # Omit count if tntc
+    if data.ecoli_tntc
+      delete data.ecoli_count
+    if data.tc_tntc
+      delete data.tc_count
+    return data
+

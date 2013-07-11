@@ -32,6 +32,10 @@
                 view = form.views[ev.currentTarget.id.split('/')[1]];
                 view = formsModule.instantiateView(view, { ctx: {} });
                 view.load({});
+                if (view.on)
+                    view.on('change', function() {
+                        $("#data").text(JSON.stringify(view.save()));
+                    });
 
                 $("#form").html("");
                 $("#form").append(view.el);
@@ -44,6 +48,8 @@
     <div id="formlist">
     </div>
     <div id="form">
+    </div>
+    <div id="data">
     </div>
 </body>
 </html>
