@@ -5,9 +5,9 @@ GeoJSON = require '../app/js/GeoJSON'
 module.exports = ->
   context 'With sample rows', ->
     beforeEach (done) ->
-      @db.scratch.upsert { _id:"1", a:"Alice" }, =>
-        @db.scratch.upsert { _id:"2", a:"Charlie" }, =>
-          @db.scratch.upsert { _id:"3", a:"Bob" }, =>
+      @db.scratch.upsert { _id:"1", a:"Alice", b:1 }, =>
+        @db.scratch.upsert { _id:"2", a:"Charlie", b:2 }, =>
+          @db.scratch.upsert { _id:"3", a:"Bob", b:3 }, =>
             done()
 
     it 'finds all rows', (done) ->
@@ -24,6 +24,17 @@ module.exports = ->
       @db.scratch.find({ _id: "1" }).fetch (results) =>
         assert.equal 1, results.length
         assert.equal 'Alice', results[0].a
+        done()
+
+    it 'includes fields', (done) ->
+      @db.scratch.find({ _id: "1" }, { fields: { a:1 }}).fetch (results) =>
+        assert.deepEqual results[0], { _id: "1",  a: "Alice" }
+        done()
+
+    it 'excludes fields', (done) ->
+      @db.scratch.find({ _id: "1" }, { fields: { a:0 }}).fetch (results) =>
+        assert.isUndefined results[0].a
+        assert.equal results[0].b, 1
         done()
 
     it 'finds one row', (done) ->

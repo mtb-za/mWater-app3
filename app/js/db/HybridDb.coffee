@@ -113,7 +113,7 @@ class HybridCollection
                 success(localData2)
             @localCol.find(selector, options).fetch(localSuccess2)
           @localCol.cache(remoteData, selector, options, cacheSuccess, error)
-        @remoteCol.find(selector, options).fetch(remoteSuccess)
+        @remoteCol.find(selector, _.omit(options, "fields")).fetch(remoteSuccess)
 
       @localCol.find(selector, options).fetch(localSuccess, error)
     else if mode == "local"
@@ -122,23 +122,27 @@ class HybridCollection
       # Get remote results
       remoteSuccess = (remoteData) =>
         # Remove local remotes
+        data = remoteData
+
         @localCol.pendingRemoves (removes) =>
-          removesMap = _.object(_.map(removes, (id) -> [id, id]))
-          data = _.filter remoteData, (doc) ->
-            return not _.has(removesMap, doc._id)
+          if removes.length > 0
+            removesMap = _.object(_.map(removes, (id) -> [id, id]))
+            data = _.filter remoteData, (doc) ->
+              return not _.has(removesMap, doc._id)
 
           # Add upserts
           @localCol.pendingUpserts (upserts) =>
-            # Remove upserts from data
-            upsertsMap = _.object(_.pluck(upserts, '_id'), _.pluck(upserts, '_id'))
-            data = _.filter data, (doc) ->
-              return not _.has(upsertsMap, doc._id)
+            if upserts.length > 0
+              # Remove upserts from data
+              upsertsMap = _.object(_.pluck(upserts, '_id'), _.pluck(upserts, '_id'))
+              data = _.filter data, (doc) ->
+                return not _.has(upsertsMap, doc._id)
 
-            # Add upserts
-            data = data.concat(upserts)
+              # Add upserts
+              data = data.concat(upserts)
 
-            # Refilter/sort/limit
-            data = processFind(data, selector, options)
+              # Refilter/sort/limit
+              data = processFind(data, selector, options)
 
             success(data)
 

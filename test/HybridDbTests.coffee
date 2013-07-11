@@ -45,9 +45,27 @@ describe 'HybridDb', ->
         done()
       , fail
 
-    it "respects projections"
+    it "find performs full field remote queries in hybrid mode", (done) ->
+      @rc.seed(_id:"1", a:1, b:11)
+      @rc.seed(_id:"2", a:2, b:12)
 
-    it "does not cache projected remote docs"
+      @hc.find({}, { fields: { b:0 } }).fetch (data) =>
+        if data.length == 0
+          return
+        assert.isUndefined data[0].b
+        @lc.findOne { _id: "1" }, (doc) ->
+          assert.equal doc.b, 11
+          done()
+
+    it "findOne performs full field remote queries in hybrid mode", (done) ->
+      @rc.seed(_id:"1", a:1, b:11)
+      @rc.seed(_id:"2", a:2, b:12)
+
+      @hc.findOne({ _id: "1" }, { fields: { b:0 } }, (doc) =>
+        assert.isUndefined doc.b
+        @lc.findOne { _id: "1" }, (doc) ->
+          assert.equal doc.b, 11
+          done()
 
     it "find gives results twice if remote gives different answer", (done) ->
       @lc.seed(_id:"1", a:1)

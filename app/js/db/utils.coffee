@@ -18,8 +18,16 @@ exports.processFind = (items, selector, options) ->
   if options and options.limit
     filtered = _.first filtered, options.limit
 
-  # Clone to prevent accidental updates
-  filtered = _.map filtered, (doc) -> _.cloneDeep(doc)
+  # Clone to prevent accidental updates, or apply fields if present
+  if options and options.fields
+    if _.first(_.values(options.fields)) == 1
+      # Include fields
+      filtered = _.map filtered, (doc) -> _.pick(doc, _.keys(options.fields).concat(["_id"]))
+    else
+      # Exclude fields
+      filtered = _.map filtered, (doc) -> _.omit(doc, _.keys(options.fields))
+  else
+    filtered = _.map filtered, (doc) -> _.cloneDeep(doc)
 
   return filtered
 

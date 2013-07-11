@@ -2,7 +2,9 @@ assert = chai.assert
 RemoteDb = require "../app/js/db/RemoteDb"
 db_queries = require "./db_queries"
 
-if false
+# To work, this must have the following server running:
+# NODE_ENV=test node server.js
+if true
   describe 'RemoteDb', ->
     beforeEach (done) ->
       url = 'http://localhost:8080/v3/'
