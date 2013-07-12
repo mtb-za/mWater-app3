@@ -3,6 +3,9 @@ path = require 'path'
 coffee = require 'coffee-script'
 uuid = require 'uuid'
 handlebars = require 'handlebars'
+read = require 'read'
+JsonClient = require('request-json').JsonClient
+sync = require 'synchronize'
 
 compile = (dir) ->
   # Read form.json
@@ -61,3 +64,33 @@ exports.compileAll = ->
       forms.push(compile(dirpath))
 
   return forms
+
+exports.upsertAll = (callback) ->
+  jsonClient = new JsonClient "http://api.mwater.co/v3/"
+
+  post = (path, data) ->
+    df = sync.defer()
+    jsonClient.post path, data, (err, res, body) ->
+      df(err, {res: res, body: body, status: res.statusCode})
+    return sync.await()
+
+  sync.fiber ->
+    # Get password for admin
+    password = sync.await(read({ prompt: 'Admin password: ', silent: true}, sync.defer()))
+      
+    # Login as admin
+    res = post "clients", { username: "admin", password: password }
+    if res.status != 200
+      console.error "Got #{res.status} code on login"
+      throw new Error(res.body)
+    client = res.body.client
+
+    forms = exports.compileAll()
+
+    # Upsert
+    for form in forms
+      res = post "forms?client=#{client}", form
+      if res.status != 200
+        console.error "Got #{res.status} code on upsert"
+        throw new Error(res.body)
+  , callback
