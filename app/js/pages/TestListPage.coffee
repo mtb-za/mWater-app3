@@ -3,7 +3,7 @@ TestPage = require("./TestPage")
 NewTestPage = require("./NewTestPage")
 
 module.exports = class TestListPage extends Page
-  @canOpen: (ctx) -> ctx.login.user
+  @canOpen: (ctx) -> ctx.login.user?
 
   events: 
     'click tr.tappable' : 'testClicked'
@@ -27,7 +27,7 @@ module.exports = class TestListPage extends Page
       # Fill in test names
       for test in tests
         @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
-          @$("#name_"+test._id).text(form.name)
+          @$("#name_"+test._id).text(if form then form.name else "???")
 
     @db.tests.find({ completed: null, user: @login.user }).fetch (tests) =>
       @$("#incomplete_table").html templates['pages/TestListPage_items'](tests:tests)
@@ -35,7 +35,7 @@ module.exports = class TestListPage extends Page
       # Fill in test names
       for test in tests
         @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
-          @$("#name_"+test._id).text(form.name if form else "???")
+          @$("#name_"+test._id).text(if form then form.name else "???")
 
   testClicked: (ev) ->
     @pager.openPage(TestPage, {_id: ev.currentTarget.id})

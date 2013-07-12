@@ -76,7 +76,7 @@ module.exports = class SourcePage extends Page
       # Fill in names
       for test in tests
         @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
-          @$("#test_name_"+test._id).text(form.name if form else "???")
+          @$("#test_name_"+test._id).text(if form then form.name else "???")
 
     # Add notes
     @db.source_notes.find({source: @source.code}).fetch (notes) => 
