@@ -10,7 +10,7 @@ class Page extends Backbone.View
     @ctx = ctx
 
     # Mix in context for convenience
-    _.extend(@, ctx) 
+    _.defaults(@, ctx) 
 
     # Store subviews
     @_subviews = []

@@ -12,7 +12,7 @@ class TestPage extends Page
     ]
 
   render: ->
-    @setTitle "Test" # TODO nicer title
+    @setTitle "Water Test"
 
     # Get test
     @db.tests.findOne {_id: @options._id}, (test) =>
@@ -31,9 +31,11 @@ class TestPage extends Page
         else
           @formView = forms.instantiateView(form.views.detail, { ctx: @ctx })
   
-        # TODO disable if non-editable
         @$el.html templates['pages/TestPage'](completed: test.completed, title: form.name)
         @$('#contents').append(@formView.el)
+
+        if not @auth.update("tests", test)
+          @$("#edit_button").hide()
 
         @formView.load @test
 

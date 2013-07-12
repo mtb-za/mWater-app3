@@ -13,5 +13,6 @@ class SettingsPage extends Page
     if confirm("Completely discard local data?")
       Database.resetDb(@db)
 
+  # TODO source code downloading
 
 module.exports = SettingsPage

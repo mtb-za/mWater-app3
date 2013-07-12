@@ -1,3 +1,10 @@
+###
+
+Database which caches locally in a localDb but pulls results
+ultimately from a RemoteDb
+
+###
+
 processFind = require('./utils').processFind
 
 module.exports = class HybridDb

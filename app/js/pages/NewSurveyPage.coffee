@@ -2,7 +2,7 @@ Page = require "../Page"
 SurveyPage = require "./SurveyPage"
 
 class NewSurveyPage extends Page
-  @canOpen: (ctx) -> ctx.auth.insert("responses")
+  @canOpen: (ctx) -> ctx.auth.insert("responses") and ctx.login.user
 
   events: 
     "click .survey" : "startSurvey"
@@ -17,11 +17,12 @@ class NewSurveyPage extends Page
     surveyCode = ev.currentTarget.id
 
     # Create response
-    # TODO Add user/org
     response = {
       type: surveyCode
       completed: null
       started: new Date().toISOString()
+      user: @login.user
+      org: @login.org
     }
     @db.responses.upsert response, (response) =>
       @pager.closePage(SurveyPage, {_id: response._id})

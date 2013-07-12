@@ -2,39 +2,46 @@ AppView = require("./AppView")
 SlideMenu = require("./SlideMenu")
 Pager = require("./Pager")
 PageMenu = require("./PageMenu")
-Database = require "./Database"
-SimpleImageManager = require './images/SimpleImageManager'
+context = require './context'
 
-# Create database
-db = Database.createDb()
+# Database = require "./Database"
 
-# Create image manager
-imageManager = new SimpleImageManager('http://data.mwater.co/apiv2/') # TODO move to new api
+# SimpleImageManager = require './images/SimpleImageManager'
+# auth = require("./auth")
 
-# Fake adding images
-imageManager.addImage = (url, success, error) ->
-  error("Not implemented")
+# # Create database
+# db = Database.createDb()
 
-# Fake camera
-camera = {
-  takePicture: (success, error) ->
-    alert("On the Android app, this would take a picture")
-}
+# # Create image manager
+# imageManager = new SimpleImageManager('http://data.mwater.co/apiv2/') # TODO move to new api
 
-# TODO create problem reporter
+# # Fake adding images
+# imageManager.addImage = (url, success, error) ->
+#   error("Not implemented")
 
-# Create error handler ### TODO
-error = (err) ->
-  console.error err
-  alert("Internal error: " + err)
+# # Fake camera
+# camera = {
+#   takePicture: (success, error) ->
+#     alert("On the Android app, this would take a picture")
+# }
 
-ctx = { 
-  db: db 
-  imageManager: imageManager
-  camera: camera
-  error: error
-  auth: new (require("./auth").NoneAuth)
-}
+# # TODO create problem reporter
+
+# # Create error handler ### TODO
+# error = (err) ->
+#   console.error err
+#   alert("Internal error: " + err)
+
+# ctx = { 
+#   db: db 
+#   imageManager: imageManager
+#   camera: camera
+#   error: error
+#   auth: new auth.AllAuth()
+#   login: { user: "demo" }
+# }
+
+ctx = context.createDemoContext()
 
 # Create pager
 pager = new Pager(ctx)

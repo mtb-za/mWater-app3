@@ -1,8 +1,8 @@
 Page = require("../Page")
+SourcePage = require("./SourcePage")
 LocationFinder = require '../LocationFinder'
 GeoJSON = require '../GeoJSON'
 
-# TODO source search
 
 # Lists nearby and unlocated sources
 # Options: onSelect - function to call with source doc when selected
@@ -30,10 +30,11 @@ module.exports = class SourceListPage extends Page
       { icon: "plus.png", click: => @addSource() }
     ]
 
-    # Query database for unlocated sources # TODO only by user
-    @db.sources.find(geo: {$exists:false}).fetch (sources) =>
-      @unlocatedSources = sources
-      @renderList()
+    # Query database for unlocated sources
+    if @login.user
+      @db.sources.find(geo: { $exists: false }, user: @login.user).fetch (sources) =>
+        @unlocatedSources = sources
+        @renderList()
 
     @performSearch()
 
@@ -47,7 +48,7 @@ module.exports = class SourceListPage extends Page
         $geometry: GeoJSON.posToPoint(pos)
 
     # Query database for near sources
-    @db.sources.find(selector).fetch (sources) =>
+    @db.sources.find(selector, { limit: 100 }).fetch (sources) =>
       @nearSources = sources
       @renderList()
 
@@ -71,7 +72,7 @@ module.exports = class SourceListPage extends Page
       onSelect = (source) =>
         @pager.closePage()
         @options.onSelect(source)
-    @pager.openPage(require("./SourcePage"), { _id: ev.currentTarget.id, onSelect: onSelect})
+    @pager.openPage(SourcePage, { _id: ev.currentTarget.id, onSelect: onSelect})
 
   search: ->
     # Prompt for search
@@ -86,7 +87,7 @@ module.exports = class SourceListPage extends Page
       if @searchText.match(/^\d+$/)
         selector = { code: @searchText }
       else
-        selector = { name: new RegExp(@searchText,"i")}
+        selector = { $or: [ { name: new RegExp(@searchText,"i") }, { desc: new RegExp(@searchText,"i") } ] }
         
       @db.sources.find(selector, {limit: 50}).fetch (sources) =>
         @searchSources = sources

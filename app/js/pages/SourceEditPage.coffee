@@ -2,12 +2,15 @@ Page = require '../Page'
 forms = require '../forms'
 
 # Allows editing of source details
-# TODO login required
 module.exports = class SourceEditPage extends Page
   @canOpen: (ctx) -> ctx.auth.update("sources")
 
   activate: ->
     @db.sources.findOne {_id: @options._id}, (source) =>
+      # Check auth
+      if not @auth.update("sources", source)
+        return @pager.closePage()
+
       @setTitle "Edit Source #{source.code}"
 
       # Create model from source

@@ -14,6 +14,7 @@ exports.Sections = Backbone.View.extend({
     },
 
     events : {
+        "click #close" : "close",
         "click .next" : "nextSection",
         "click .prev" : "prevSection",
         "click .finish" : "finish",
@@ -26,6 +27,10 @@ exports.Sections = Backbone.View.extend({
         if (section.validate()) {
             this.trigger('complete');
         }
+    },
+
+    close : function() {
+        this.trigger('close');
     },
 
     crumbSection : function(e) {

@@ -12,15 +12,12 @@ class ExistingSurveyPage extends Page
     @setTitle "Select Survey"
 
     @db.responses.find({completed:null}).fetch (responses) =>
-      # Make presentable
-      list = _.map responses, (r) ->
-        return { _id: r._id, started: r.started.substring(0,10) }
-      @$el.html templates['pages/ExistingSurveyPage'](responses:list)
+      @$el.html templates['pages/ExistingSurveyPage'](responses:responses)
 
       # Fill in survey names
       for resp in responses
-        @db.forms.findOne { code:resp.type }, (form) =>
-          @$("#name_"+resp._id).text(form.name)
+        @db.forms.findOne { code:resp.type }, { mode: "local" }, (form) =>
+          @$("#name_"+resp._id).text(form.name if form else "???")
 
   openResponse: (ev) ->
     responseId = ev.currentTarget.id

@@ -1,37 +1,30 @@
 Page = require("../Page")
+NewSurveyPage = require("./NewSurveyPage")
+NewTestPage = require("./NewTestPage")
+NewSourcePage = require("./NewSourcePage")
 
 class MainPage extends Page
-  # events: 
-  #   @"click #survey" : "survey"
-  #   "click #source_list" : "sourceList"
-
   activate: ->
     @setTitle "mWater"
     @$el.html templates['pages/MainPage']()
     
-    @setupButtonBar [
-      { icon: "plus.png", menu: [
-        { text: "Add Water Source", click: => @addSource() }
-        { text: "Start Water Test", click: => @addTest() }
-        { text: "Start Survey", click: => @addSurvey() }
-      ]}
-    ]
+    menu = []
+    if NewSourcePage.canOpen(@ctx)
+      menu.push({ text: "Add Water Source", click: => @addSource() })
+    if NewTestPage.canOpen(@ctx)
+      menu.push({ text: "Start Water Test", click: => @addTest() })
+    if NewSurveyPage.canOpen(@ctx)
+      menu.push({ text: "Start Survey", click: => @addSurvey() })
+    if menu.length > 0
+      @setupButtonBar [{ icon: "plus.png", menu: menu }]
 
   addSurvey: ->
-    @pager.openPage(require("./NewSurveyPage"))
+    @pager.openPage(NewSurveyPage)
 
   addTest: ->
-    @pager.openPage(require("./NewTestPage"))
+    @pager.openPage(NewTestPage)
 
   addSource: ->
-    @pager.openPage(require("./NewSourcePage"))
-
-  # survey: ->
-  #   #
-  #   survey = require("../survey/DemoSurvey")(@ctx);
-  #   @pager.openPage(require("./SurveyPage"), survey)
-
-  # sourceList: ->
-  #   @pager.openPage(require("./SourceListPage"))
+    @pager.openPage(NewSourcePage)
 
 module.exports = MainPage

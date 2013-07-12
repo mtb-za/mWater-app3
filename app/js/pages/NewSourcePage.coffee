@@ -3,9 +3,8 @@ forms = require '../forms'
 SourcePage = require "./SourcePage"
 
 # Allows creating of a source
-# TODO login required
 module.exports = class NewSourcePage extends Page
-  @canOpen: (ctx) -> ctx.auth.insert("sources")
+  @canOpen: (ctx) -> ctx.auth.insert("sources") and ctx.login.user
 
   activate: ->
     @setTitle "New Source"
@@ -52,6 +51,10 @@ module.exports = class NewSourcePage extends Page
     @listenTo saveCancelForm, 'save', =>
       source = _.pick(@model.toJSON(), 'name', 'desc', 'type', 'private')
       source.code = ""+Math.floor(Math.random()*1000000)  # TODO real codes
+
+      source.user = @login.user
+      source.org = @login.org
+
       @db.sources.upsert source, (source) => 
         @pager.closePage(SourcePage, { _id: source._id, setLocation: @model.get('setLocation')})
 

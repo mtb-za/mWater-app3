@@ -3,7 +3,7 @@ TestPage = require "./TestPage"
 
 # Parameter is optional source code
 class NewTestPage extends Page
-  @canOpen: (ctx) -> ctx.auth.insert("tests")
+  @canOpen: (ctx) -> ctx.auth.insert("tests") and ctx.login.user
 
   events: 
     "click .test" : "startTest"
@@ -18,14 +18,14 @@ class NewTestPage extends Page
   startTest: (ev) ->
     testCode = ev.currentTarget.id
 
-    # TODO add user/org
-
     # Create test
     test = {
       source: @options.source
       type: testCode
       completed: null
       started: new Date().toISOString()
+      user: @login.user
+      org: @login.org
     }
     @db.tests.upsert test, (test) =>
       @pager.closePage(TestPage, { _id: test._id })

@@ -1,7 +1,6 @@
 {{#each tests}}
 <tr class="tappable test" id="{{_id}}">
-  {{! TODO don't include name here directly }}
-  <td><strong>{{name}}</strong></td>
+  <td><strong><span id="test_name_{{_id}}"></span></strong></td>
   <td style="border-left:none;">{{formatDate started "%F"}}</td>
   <td>{{#if completed}}{{else}}<span class="text-warning"><b>Incomplete</b></span>{{/if}}</td>
   <td style="vertical-align:middle; border-left:none; width: 16px"><i class="icon-chevron-right"></i></td>

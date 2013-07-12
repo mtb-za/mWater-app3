@@ -25,12 +25,18 @@ class SurveyPage extends Page
         # Listen to events
         @listenTo @formView, 'change', @saveResponse
         @listenTo @formView, 'complete', @formCompleted
+        @listenTo @formView, 'close', @formClose
 
         @formView.load response.data
 
+        if @auth.remove("responses", @response)
+          @setupContextMenu [
+            { glyph: 'remove', text: "Delete Survey", click: => @removeResponse() }
+          ] 
+
   activate: ->
-    # TODO Reload data? Or do forms keep their data
-    #if @formView
+    # Do not reload as form may have launched another page
+    # and needs to keep its state
 
   deactivate: ->
     # Save to be safe
@@ -41,6 +47,9 @@ class SurveyPage extends Page
     # Let know that saved if closed incompleted
     if @response and not @response.completed
       @pager.flash "Survey saved as draft."
+
+  formClose: ->
+    @pager.closePage()
 
   saveResponse: =>
     # Save to db
@@ -55,5 +64,11 @@ class SurveyPage extends Page
     @db.responses.upsert(@response)
     @pager.closePage()
     @pager.flash "Survey submitted successfully", "success"
+
+  removeResponse: ->
+    if @auth.remove("responses", @response) and confirm("Permanently delete survey?")
+      @db.responses.remove @response._id, =>
+        @pager.closePage()
+        @pager.flash "Survey deleted", "success"
 
 module.exports = SurveyPage

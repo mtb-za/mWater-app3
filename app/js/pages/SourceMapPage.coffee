@@ -77,8 +77,8 @@ class SourceDisplay
     boundsGeoJSON = GeoJSON.latLngBoundsToGeoJSON(bounds)
     selector = { geo: { $geoIntersects: { $geometry: boundsGeoJSON } } }
 
-    # Query sources with projection TODO
-    @db.sources.find(selector, { sort: ["_id"], limit: 100 }).fetch (sources) =>
+    # Query sources with projection. Use remote mode so no caching occurs
+    @db.sources.find(selector, { sort: ["_id"], limit: 100, mode: "remote", fields: { geo: 1 } }).fetch (sources) =>
       # Find out which to add/remove
       [adds, removes] = @itemTracker.update(sources)
 
@@ -132,6 +132,10 @@ class LocationDisplay
       zoom = 15
       @map.setView(latlng, zoom)
       @zoomTo = false
+
+    # Radius larger than 1km means no location worth displaying
+    if radius > 1000
+      return
 
     # Setup marker and circle
     if not @meMarker

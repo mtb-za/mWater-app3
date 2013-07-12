@@ -1,6 +1,10 @@
 Page = require("../Page")
+TestPage = require("./TestPage")
+NewTestPage = require("./NewTestPage")
 
 module.exports = class TestListPage extends Page
+  @canOpen: (ctx) -> ctx.login.user
+
   events: 
     'click tr.tappable' : 'testClicked'
 
@@ -14,19 +18,27 @@ module.exports = class TestListPage extends Page
     ]
 
     # Query database for recent, completed tests
-    # TODO filter to recent by user
-    @db.tests.find({completed: {$ne: null}}).fetch (tests) ->
-      # TODO fill form and fix in hbs
+    recent = new Date()
+    recent.setDate(recent.getDate() - 30)
 
+    @db.tests.find({completed: { $gt:recent.toISOString() }, user: @login.user }).fetch (tests) =>
       @$("#recent_table").html templates['pages/TestListPage_items'](tests:tests)
 
-    @db.tests.find({completed: null}).fetch (tests) ->
-      # TODO fill form and fix in hbs
+      # Fill in test names
+      for test in tests
+        @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
+          @$("#name_"+test._id).text(form.name)
 
+    @db.tests.find({ completed: null, user: @login.user }).fetch (tests) =>
       @$("#incomplete_table").html templates['pages/TestListPage_items'](tests:tests)
 
+      # Fill in test names
+      for test in tests
+        @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
+          @$("#name_"+test._id).text(form.name if form else "???")
+
   testClicked: (ev) ->
-    @pager.openPage(require("./TestPage"), {_id: ev.currentTarget.id})
+    @pager.openPage(TestPage, {_id: ev.currentTarget.id})
 
   addTest: ->
-    @pager.openPage(require("./NewTestPage"))
+    @pager.openPage(NewTestPage)

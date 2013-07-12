@@ -78,6 +78,7 @@ module.exports = (syncServer, cachePath) ->
   fileSystem = null
   
   # Gets an image thumbnail, calling success with url 
+  # TODO make generic
   @getImageThumbnailUrl = (imageUid, success, error) ->
     console.log "displayImageThumbnail:" + imageUid
     loadOrDownloadImage [@cachePath + "/cached/thumbnail", @cachePath + "/cached/original", @cachePath + "/pending/original"], syncServer.getImageThumbnailUrl(imageUid), @cachePath + "/cached/thumbnail", imageUid, success, error

@@ -31,7 +31,8 @@ class Collection
         params.limit = options.limit
       if options.fields
         params.fields = JSON.stringify(options.fields)
-      params.client = @client
+      if @client
+        params.client = @client
       params.selector = JSON.stringify(selector || {})
 
       req = $.getJSON(@url, params)
@@ -50,7 +51,8 @@ class Collection
     if options.sort
       params.sort = JSON.stringify(options.sort)
     params.limit = 1
-    params.client = @client
+    if @client
+      params.client = @client
     params.selector = JSON.stringify(selector || {})
 
     req = $.getJSON(@url, params)
@@ -61,6 +63,9 @@ class Collection
         error(errorThrown)
 
   upsert: (doc, success, error) ->
+    if not @client
+      throw new Error("Client required to upsert")
+
     if not doc._id
       doc._id = createUid()
 
@@ -75,6 +80,9 @@ class Collection
         error(errorThrown)
 
   remove: (id, success, error) ->
+    if not @client
+      throw new Error("Client required to remove")
+      
     req = $.ajax(@url + "/" + id + "?client=" + @client, { type : 'DELETE'})
     req.done (data, textStatus, jqXHR) =>
       success()

@@ -6,7 +6,6 @@ forms = require '../forms'
 # _id: id of source note
 # source: code of source
 
-# TODO login required
 module.exports = class SourceNotePage extends Page
   @canOpen: (ctx) -> ctx.auth.update("source_notes") && ctx.auth.insert("source_notes") 
 
@@ -42,6 +41,9 @@ module.exports = class SourceNotePage extends Page
       # Load form from source note if exists
       if @options._id
         @db.source_notes.findOne {_id: @options._id}, (sourceNote) =>
+          if not @auth.update("source_notes", sourceNote)
+            return @pager.closePage()
+            
           @model.set(sourceNote)
       else
         # Create default entry
