@@ -7,53 +7,70 @@ forms = require '../forms'
 # source: code of source
 
 module.exports = class SourceNotePage extends Page
-  @canOpen: (ctx) -> ctx.auth.update("source_notes") && ctx.auth.insert("source_notes") 
-
   activate: ->
     # Find water source
     @db.sources.findOne {code: @options.source}, (source) =>
       @setTitle "Note for Source #{source.code}"
 
+      # Find source note
+      if @options._id
+        @db.source_notes.findOne {_id: @options._id}, (sourceNote) =>
+          @sourceNote = sourceNote
+          @render()
+      else
+        # New source note, just render
+        if not @auth.insert("source_notes")
+          return @pager.closePage()
+        @render()
+
+  render: ->
       # Create model 
       @model = new Backbone.Model()
   
       # Create questions
-      saveCancelForm = new forms.SaveCancelForm
-        contents: [
-          new forms.DateQuestion
-            id: 'date'
-            model: @model
-            prompt: 'Date of Visit'
-            required: true
-          new forms.RadioQuestion
-            id: 'status'
-            model: @model
-            prompt: 'Status of Water Source'
-            options: [['ok', 'Functional'], ['maint', 'Needs maintenance'], ['broken', 'Non-functional'], ['missing', 'No longer exists']]
-            required: true
-          new forms.TextQuestion
-            id: 'notes'
-            model: @model
-            prompt: 'Notes'
-            multiline: true
-        ]
+      readonly = @sourceNote? and not @auth.update("source_notes", @sourceNote)
+
+      questions = [
+        new forms.DateQuestion
+          id: 'date'
+          model: @model
+          prompt: 'Date of Visit'
+          required: true
+          readonly: readonly
+        new forms.RadioQuestion
+          id: 'status'
+          model: @model
+          prompt: 'Status of Water Source'
+          options: [['ok', 'Functional'], ['maint', 'Needs maintenance'], ['broken', 'Non-functional'], ['missing', 'No longer exists']]
+          required: true
+          readonly: readonly
+        new forms.TextQuestion
+          id: 'notes'
+          model: @model
+          prompt: 'Notes'
+          multiline: true
+          readonly: readonly
+      ]
+
+      # Create form
+      if readonly
+        form = new forms.QuestionGroup
+          contents: questions
+      else
+        form = new forms.SaveCancelForm
+          contents: questions
+  
+        @listenTo form, 'save', =>
+          @db.source_notes.upsert @model.toJSON(), => @pager.closePage()
+
+        @listenTo form, 'cancel', =>
+          @pager.closePage()
 
       # Load form from source note if exists
-      if @options._id
-        @db.source_notes.findOne {_id: @options._id}, (sourceNote) =>
-          if not @auth.update("source_notes", sourceNote)
-            return @pager.closePage()
-            
-          @model.set(sourceNote)
+      if @sourceNote
+          @model.set(@sourceNote)
       else
         # Create default entry
         @model.set(source: @options.source, date: new Date().toISOString().substring(0,10))
 
-      @$el.empty().append(saveCancelForm.el)
-
-      @listenTo saveCancelForm, 'save', =>
-        @db.source_notes.upsert @model.toJSON(), => @pager.closePage()
-
-      @listenTo saveCancelForm, 'cancel', =>
-        @pager.closePage()
- 
+      @$el.empty().append(form.el) 

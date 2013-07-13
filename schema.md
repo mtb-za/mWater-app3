@@ -26,7 +26,7 @@ photoset: array of { id: <image id, required>, caption: string }
 
 * _id (string, required): UUID v4 with no dashes 
 * source (sources.code, required): Source that note concerns
-* date (datetime, required): Date note was created
+* date (date, required): Date note was created
 * status (string): Status of source ('ok', 'maint', 'broken', 'missing')
 * notes (string): Notes about source visit
 * user (users.username): User who manages note

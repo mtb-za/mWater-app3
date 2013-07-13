@@ -32,9 +32,9 @@ module.exports = class SourcePage extends Page
     @setTitle "Source " + @source.code
 
     if @auth.remove("sources", @source)
-      @setupContextMenu [
-        { glyph: 'remove', text: "Delete Source", click: => @deleteSource() }
-      ]
+      @setupContextMenu [ { glyph: 'remove', text: "Delete Source", click: => @deleteSource() } ]
+    else 
+      @setupContextMenu [ ]
 
     menu = []
     if @auth.insert("tests")

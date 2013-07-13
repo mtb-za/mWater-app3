@@ -23,11 +23,12 @@ auth = require("./auth")
 collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes']
 
 exports.createDemoContext = ->
+  apiUrl = 'http://api.mwater.co/v3/'
   # No local storage
   localDb = new LocalDb() 
 
   # No client (download only)
-  remoteDb = new RemoteDb('http://api.mwater.co/v3/')
+  remoteDb = new RemoteDb(apiUrl)
 
   db = new HybridDb(localDb, remoteDb)
 
@@ -41,7 +42,7 @@ exports.createDemoContext = ->
     success()
 
   # TODO enhance to allow caching in demo mode
-  imageManager = new SimpleImageManager('http://api.mwater.co/v3/')
+  imageManager = new SimpleImageManager(apiUrl)
 
   # Fake camera
   camera = {
@@ -54,7 +55,7 @@ exports.createDemoContext = ->
     alert("Internal error: " + err)
 
   # Allow everything
-  auth = new auth.AllAuth()
+  auth = new auth.NoneAuth()
 
   # No client or org
   login = { user: "demo" }
@@ -66,4 +67,5 @@ exports.createDemoContext = ->
     error: error
     auth: auth
     login: login
+    apiUrl: apiUrl
   }

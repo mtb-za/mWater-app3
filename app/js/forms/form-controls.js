@@ -257,6 +257,8 @@ exports.RadioQuestion = exports.Question.extend({
 
     renderAnswer : function(answerEl) {
         answerEl.html(_.template('<div class="radio-group"><%=renderRadioOptions()%></div>', this));
+        if (this.options.readonly)
+            answerEl.find(".radio-group").addClass("readonly");
     },
 
     renderRadioOptions : function() {
@@ -328,9 +330,13 @@ exports.TextQuestion = exports.Question.extend({
         if (this.options.multiline) {
             answerEl.html(_.template('<textarea style="width:90%"/>', this)); // TODO make width properly
             answerEl.find("textarea").val(this.model.get(this.id));
+            if (this.options.readonly)
+                answerEl.find("textarea").attr("readonly", "readonly");
         } else {
             answerEl.html(_.template('<input type="text"/>', this));
             answerEl.find("input").val(this.model.get(this.id));
+            if (this.options.readonly)
+                answerEl.find("input").attr("readonly", "readonly");
         }
     },
 

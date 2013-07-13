@@ -2,7 +2,7 @@
 
 Question = require('./form-controls').Question
 
-module.exports = Question.extend(
+module.exports = Question.extend
   events:
     change: "changed"
 
@@ -12,12 +12,15 @@ module.exports = Question.extend(
   renderAnswer: (answerEl) ->
     answerEl.html _.template("<input class=\"needsclick\" name=\"date\" />", this)
     answerEl.find("input").val @model.get(@id)
-    answerEl.find("input").scroller
-      preset: "date"
-      theme: "ios"
-      display: "modal"
-      mode: "scroller"
-      dateOrder: "yymmD dd"
-      dateFormat: "yy-mm-dd"
 
-)
+    # Support readonly
+    if @options.readonly
+      answerEl.find("input").attr('readonly', 'readonly')
+    else
+      answerEl.find("input").scroller
+        preset: "date"
+        theme: "ios"
+        display: "modal"
+        mode: "scroller"
+        dateOrder: "yymmD dd"
+        dateFormat: "yy-mm-dd"

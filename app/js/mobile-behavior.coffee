@@ -20,12 +20,13 @@ exports.setup = ($el) ->
     $(this).toggleClass "checked"
     $(this).trigger "checked"
 
-  # Make radio buttons clickable
+  # Make radio buttons clickable if not readonly (to make readonly, add to class readonly to radiogroup)
   $el.on "click", ".radio-button", ->
-    # Find parent radiogroup
-    $(this).parents(".radio-group").find(".radio-button").removeClass "checked"
-    $(this).addClass "checked"
-    $(this).trigger "checked"
+    if not $(this).parents(".radio-group").hasClass("readonly")
+      # Find parent radiogroup
+      $(this).parents(".radio-group").find(".radio-button").removeClass "checked"
+      $(this).addClass "checked"
+      $(this).trigger "checked"
 
   # Prevent links from launching new pages
   $el.on "click", "a", ->

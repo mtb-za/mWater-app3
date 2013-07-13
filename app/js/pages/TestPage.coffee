@@ -6,17 +6,17 @@ class TestPage extends Page
 
   create: -> @render()
 
-  activate: ->
-    @setupContextMenu [
-      { glyph: 'remove', text: "Delete Test", click: => @deleteTest() }
-    ]
-
   render: ->
     @setTitle "Water Test"
 
     # Get test
     @db.tests.findOne {_id: @options._id}, (test) =>
       @test = test
+
+      if @auth.remove("tests", @test)
+        @setupContextMenu [ { glyph: 'remove', text: "Delete Test", click: => @deleteTest() } ]
+      else 
+        @setupContextMenu [ ]
 
       # Get form
       @db.forms.findOne { type: "WaterTest", code: test.type }, (form) =>
