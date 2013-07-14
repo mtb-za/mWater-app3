@@ -18,12 +18,32 @@ LocalDb = require './db/LocalDb'
 RemoteDb = require './db/RemoteDb'
 HybridDb = require './db/HybridDb'
 SimpleImageManager = require './images/SimpleImageManager'
-auth = require("./auth")
+authModule = require("./auth")
 
 collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes']
 
-exports.createDemoContext = ->
-  apiUrl = 'http://api.mwater.co/v3/'
+apiUrl = 'http://api.mwater.co/v3/'
+
+# Barebones startup context
+exports.createStartupContext = ->
+  # Fake camera # TODO use cordova where possible
+  camera = {
+    takePicture: (success, error) ->
+      alert("On the Android app, this would take a picture")
+  }
+
+  error = (err) ->
+    console.error err
+    alert("Internal error: " + err)
+
+  return { 
+    error: error
+    apiUrl: apiUrl
+    camera: camera
+  }
+
+
+exports.setupDemoContext = (ctx) ->
   # No local storage
   localDb = new LocalDb() 
 
@@ -44,28 +64,48 @@ exports.createDemoContext = ->
   # TODO enhance to allow caching in demo mode
   imageManager = new SimpleImageManager(apiUrl)
 
-  # Fake camera
-  camera = {
-    takePicture: (success, error) ->
-      alert("On the Android app, this would take a picture")
-  }
-
-  error = (err) ->
-    console.error err
-    alert("Internal error: " + err)
-
   # Allow everything
-  auth = new auth.NoneAuth()
+  auth = new authModule.AllAuth()
 
   # No client or org
   login = { user: "demo" }
 
-  return { 
+  _.extend ctx, {
     db: db 
     imageManager: imageManager
-    camera: camera
-    error: error
     auth: auth
     login: login
-    apiUrl: apiUrl
+  }
+
+# login must contain user, org, client, email members. "user" is username. "org" can be null
+# login can be obtained by posting to api /clients
+exports.setupLoginContext = (ctx, login) ->
+  apiUrl = 'http://api.mwater.co/v3/'
+
+  # TODO uploader? sync?
+  
+
+  # TODO make permanent
+  localDb = new LocalDb() 
+
+  remoteDb = new RemoteDb(apiUrl, login.client)
+
+  db = new HybridDb(localDb, remoteDb)
+
+  for col in collectionNames
+    localDb.addCollection(col)
+    remoteDb.addCollection(col)
+    db.addCollection(col)
+
+  # TODO switch to cached
+  imageManager = new SimpleImageManager(apiUrl)
+
+  # Allow everything
+  auth = new authModule.UserAuth(login.user, login.org)
+
+  _.extend ctx, {
+    db: db 
+    imageManager: imageManager
+    auth: auth
+    login: login
   }

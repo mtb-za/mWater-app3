@@ -3,7 +3,7 @@ TestPage = require("./TestPage")
 NewTestPage = require("./NewTestPage")
 
 module.exports = class TestListPage extends Page
-  @canOpen: (ctx) -> ctx.login.user?
+  @canOpen: (ctx) -> ctx.login?
 
   events: 
     'click tr.tappable' : 'testClicked'

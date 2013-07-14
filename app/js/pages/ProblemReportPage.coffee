@@ -8,9 +8,8 @@ module.exports = class ProblemReportPage extends Page
 
     # Create model
     @model = new Backbone.Model()
-    if @login.user
+    if @login
       @model.set('username', @login.user)
-    if @login.email
       @model.set('email', @login.email)
   
     questions = []
@@ -38,7 +37,7 @@ module.exports = class ProblemReportPage extends Page
 
     @listenTo saveCancelForm, 'save', =>
       # Post to api
-      url = @apiUrl + 'problem_reports' + (if @login.client? then "?client=" + @client else "")
+      url = @apiUrl + 'problem_reports' + (if (@login? and @login.client?) then "?client=" + @client else "")
       req = $.ajax(url, {
         data : JSON.stringify(@model.toJSON()),
         contentType : 'application/json',

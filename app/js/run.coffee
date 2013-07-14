@@ -3,62 +3,38 @@ SlideMenu = require("./SlideMenu")
 Pager = require("./Pager")
 PageMenu = require("./PageMenu")
 context = require './context'
+login = require './login'
+ProblemReporter = require './ProblemReporter'
 
-# Database = require "./Database"
+MainPage = require './pages/MainPage'
+LoginPage = require './pages/LoginPage'
 
-# SimpleImageManager = require './images/SimpleImageManager'
-# auth = require("./auth")
+exports.start = (options = {}) ->
+  ctx = context.createStartupContext()
+  if options.demo  
+    ctx = context.setupDemoContext(ctx)
+  else if login.getLogin()
+    ctx = context.setupLoginContext(ctx, login.getLogin())
 
-# # Create database
-# db = Database.createDb()
+  # TODO fill version
+  problemReporter = ProblemReporter.register ctx.apiUrl, "unknown", ->
+    return ctx.login
 
-# # Create image manager
-# imageManager = new SimpleImageManager('http://data.mwater.co/apiv2/') # TODO move to new api
+  # Create pager
+  pager = new Pager(ctx)
 
-# # Fake adding images
-# imageManager.addImage = (url, success, error) ->
-#   error("Not implemented")
+  # Create slide menu
+  slideMenu = new SlideMenu()
+  slideMenu.addSubmenu(pager.getContextMenu())
+  slideMenu.addSubmenu(new PageMenu(ctx: ctx))
 
-# # Fake camera
-# camera = {
-#   takePicture: (success, error) ->
-#     alert("On the Android app, this would take a picture")
-# }
+  # Create app view
+  app = new AppView(slideMenu: slideMenu, pager: pager)
+  $("body").append(app.$el)
 
-# # TODO create problem reporter
-
-# # Create error handler ### TODO
-# error = (err) ->
-#   console.error err
-#   alert("Internal error: " + err)
-
-# ctx = { 
-#   db: db 
-#   imageManager: imageManager
-#   camera: camera
-#   error: error
-#   auth: new auth.AllAuth()
-#   login: { user: "demo" }
-# }
-
-ctx = context.createDemoContext()
-
-# Create pager
-pager = new Pager(ctx)
-
-# Create slide menu
-slideMenu = new SlideMenu()
-slideMenu.addSubmenu(pager.getContextMenu())
-slideMenu.addSubmenu(new PageMenu(ctx: ctx))
-
-# Create app view
-app = new AppView(slideMenu: slideMenu, pager: pager)
-$("body").append(app.$el)
-
-$ -> 
-  pager.openPage(require("./pages/MainPage"))
-
-
-#pager.openPage(require("./pages/SourceMapPage"))
-# survey = require("./survey/DemoSurvey")(ctx);
-# pager.openPage(require("./pages/SurveyPage"), survey)
+  $ -> 
+    # If logged in, open main page
+    if ctx.login?
+      pager.openPage(MainPage)
+    else
+      pager.openPage(LoginPage)

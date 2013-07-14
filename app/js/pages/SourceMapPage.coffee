@@ -74,6 +74,10 @@ class SourceDisplay
     # Get bounds padded
     bounds = @map.getBounds().pad(0.33)
 
+    # Check for empty case
+    if bounds.getWest() == bounds.getEast()
+      return
+
     boundsGeoJSON = GeoJSON.latLngBoundsToGeoJSON(bounds)
     selector = { geo: { $geoIntersects: { $geometry: boundsGeoJSON } } }
 

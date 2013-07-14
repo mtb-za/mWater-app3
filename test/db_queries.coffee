@@ -93,6 +93,14 @@ module.exports = ->
           assert.equal 1, results.length
           done()
 
+  it 'fired change events', (done) ->
+    called = false
+    @db.once 'change', ->
+      called = true
+
+    @db.scratch.upsert { _id:"1", a:1 }, (item) =>
+      assert.isTrue called
+      done()
 
   geopoint = (lng, lat) ->
     return {

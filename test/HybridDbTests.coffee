@@ -12,10 +12,14 @@ describe 'HybridDb', ->
     @local = new LocalDb()
     @remote = new LocalDb()
     @hybrid = new HybridDb(@local, @remote)
+    @db = @hybrid
 
     @lc = @local.addCollection("scratch")
     @rc = @remote.addCollection("scratch")
     @hc = @hybrid.addCollection("scratch")
+
+  describe "passes queries", ->
+    db_queries.call(this)
 
   context "hybrid mode", ->
     it "find gives only one result if data unchanged", (done) ->

@@ -1,4 +1,4 @@
-function ProblemReporter(url, version, getClient) {
+function ProblemReporter(url, version, getLogin) {
     var history = [];
     var that = this;
 
@@ -43,13 +43,18 @@ function ProblemReporter(url, version, getClient) {
 
         console.log("Reporting problem...");
 
-        $.post(url, {
-            client : getClient(),
+        report = {
             version : version,
             user_agent : navigator.userAgent,
             log : log,
             desc : desc
-        });
+        };
+
+        login = getLogin();
+        _.extend(report, login);
+        postUrl = (login && login.client) ? url + "?client=" + login.client : url;
+
+        $.post(url, report);
     };
 
     // Capture error logs

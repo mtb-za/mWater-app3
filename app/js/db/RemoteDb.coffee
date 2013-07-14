@@ -5,10 +5,16 @@ module.exports = class RemoteDb
     @client = client
     @collections = {}
 
+    # Add events
+    _.extend(this, Backbone.Events)
+
   addCollection: (name) ->
     collection = new Collection(name, @url + name, @client)
     @[name] = collection
     @collections[name] = collection
+
+    collection.on 'change', =>
+      @trigger 'change'
 
   removeCollection: (name) ->
     delete @[name]
@@ -20,6 +26,9 @@ class Collection
     @name = name
     @url = url
     @client = client
+
+    # Add events
+    _.extend(this, Backbone.Events)
 
   find: (selector, options = {}) ->
     return fetch: (success, error) =>
@@ -74,6 +83,7 @@ class Collection
       contentType : 'application/json',
       type : 'POST'})
     req.done (data, textStatus, jqXHR) =>
+      @trigger 'change'
       success(data || null)
     req.fail (jqXHR, textStatus, errorThrown) =>
       if error
@@ -85,6 +95,7 @@ class Collection
       
     req = $.ajax(@url + "/" + id + "?client=" + @client, { type : 'DELETE'})
     req.done (data, textStatus, jqXHR) =>
+      @trigger 'change'
       success()
     req.fail (jqXHR, textStatus, errorThrown) =>
       if jqXHR.status == 404

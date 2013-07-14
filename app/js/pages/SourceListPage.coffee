@@ -31,7 +31,7 @@ module.exports = class SourceListPage extends Page
     ]
 
     # Query database for unlocated sources
-    if @login.user
+    if @login
       @db.sources.find(geo: { $exists: false }, user: @login.user).fetch (sources) =>
         @unlocatedSources = sources
         @renderList()

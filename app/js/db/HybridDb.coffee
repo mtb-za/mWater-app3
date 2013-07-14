@@ -13,10 +13,16 @@ module.exports = class HybridDb
     @remoteDb = remoteDb
     @collections = {}
 
+    # Add events
+    _.extend(this, Backbone.Events)
+
   addCollection: (name) ->
     collection = new HybridCollection(name, @localDb[name], @remoteDb[name])
     @[name] = collection
     @collections[name] = collection
+
+    collection.on 'change', =>
+      @trigger 'change'
 
   removeCollection: (name) ->
     delete @[name]
@@ -41,6 +47,9 @@ class HybridCollection
     @name = name
     @localCol = localCol
     @remoteCol = remoteCol
+
+    # Add events
+    _.extend(this, Backbone.Events)
 
   # options.mode defaults to "hybrid".
   # In "hybrid", it will return local results, then hit remote and return again if different
@@ -162,10 +171,16 @@ class HybridCollection
       throw new Error("Unknown mode")
 
   upsert: (doc, success, error) ->
-    @localCol.upsert(doc, success, error)
+    @localCol.upsert(doc, (result) =>
+      @trigger 'change'
+      success(result) if success?
+    , error)
 
   remove: (id, success, error) ->
-    @localCol.remove(id, success, error)
+    @localCol.remove(id, () =>
+      @trigger 'change'
+      success() if success?
+    , error)  
 
   upload: (success, error) ->
     uploadUpserts = (upserts, success, error) =>

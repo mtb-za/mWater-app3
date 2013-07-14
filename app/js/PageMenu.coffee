@@ -1,6 +1,8 @@
 # Lists pages to jump to
 # ctx must be passed in as option
 
+login = require './login'
+
 module.exports = class PageMenu extends Backbone.View
   initialize: (options) ->
     @pager = options.ctx.pager
@@ -8,6 +10,7 @@ module.exports = class PageMenu extends Backbone.View
   events:
     "click #home" : "gotoHome"
     "click #login" : "gotoLogin"
+    "click #logout" : "gotoLogin"
     "click #source_list" : "gotoSourceList"
     "click #source_map" : "gotoSourceMap"
     "click #settings" : "gotoSettings"
@@ -23,12 +26,19 @@ module.exports = class PageMenu extends Backbone.View
     @$("#new_survey").toggle(require("./pages/NewSurveyPage").canOpen(@options.ctx))
     @$("#existing_survey").toggle(require("./pages/ExistingSurveyPage").canOpen(@options.ctx))
 
+    @$("#login").toggle(not @options.ctx.login?)
+    @$("#logout").toggle(@options.ctx.login?)
+
   gotoHome: ->
     while @pager.multiplePages()
       @pager.closePage()
 
   gotoLogin: ->
-    @pager.openPage(require("./pages/LoginPage"))
+    login.setLogin(null)
+
+    while @pager.multiplePages()
+      @pager.closePage()
+    @pager.closePage(require("./pages/LoginPage"))
 
   gotoSourceList: ->
     while @pager.multiplePages()
