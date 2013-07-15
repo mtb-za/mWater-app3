@@ -3,8 +3,7 @@ processFind = require('./utils').processFind
 compileSort = require('./selector').compileSort
 
 class LocalDb
-  constructor: (name, options) ->
-    @name = name
+  constructor: (options) ->
     @collections = {}
 
     if options and options.namespace and window.localStorage

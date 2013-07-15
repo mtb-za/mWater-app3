@@ -26,4 +26,5 @@ class JsonServer
   teardown: ->
     @server.restore()
 
-window.JsonServer = JsonServer
+#window.JsonServer = JsonServer
+module.exports = JsonServer

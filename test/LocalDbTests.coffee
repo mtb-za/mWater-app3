@@ -4,7 +4,7 @@ db_queries = require "./db_queries"
 
 describe 'LocalDb', ->
   before ->
-    @db = new LocalDb('scratch')
+    @db = new LocalDb()
 
   beforeEach (done) ->
     @db.removeCollection('scratch')
@@ -141,7 +141,7 @@ describe 'LocalDb', ->
 
 describe 'LocalDb with local storage', ->
   before ->
-    @db = new LocalDb('scratch', { namespace: "db.scratch" })
+    @db = new LocalDb({ namespace: "db.scratch" })
 
   beforeEach (done) ->
     @db.removeCollection('scratch')
@@ -150,7 +150,7 @@ describe 'LocalDb with local storage', ->
 
   it "retains items", (done) ->
     @db.scratch.upsert { _id:1, a:"Alice" }, =>
-      db2 = new LocalDb('scratch', { namespace: "db.scratch" })
+      db2 = new LocalDb({ namespace: "db.scratch" })
       db2.addCollection 'scratch'
       db2.scratch.find({}).fetch (results) ->
         assert.equal results[0].a, "Alice"
@@ -158,7 +158,7 @@ describe 'LocalDb with local storage', ->
 
   it "retains upserts", (done) ->
     @db.scratch.upsert { _id:1, a:"Alice" }, =>
-      db2 = new LocalDb('scratch', { namespace: "db.scratch" })
+      db2 = new LocalDb({ namespace: "db.scratch" })
       db2.addCollection 'scratch'
       db2.scratch.find({}).fetch (results) ->
         db2.scratch.pendingUpserts (upserts) ->
@@ -168,7 +168,7 @@ describe 'LocalDb with local storage', ->
   it "retains removes", (done) ->
     @db.scratch.seed { _id:1, a:"Alice" }, =>
       @db.scratch.remove 1, =>
-        db2 = new LocalDb('scratch', { namespace: "db.scratch" })
+        db2 = new LocalDb({ namespace: "db.scratch" })
         db2.addCollection 'scratch'
         db2.scratch.pendingRemoves (removes) ->
           assert.deepEqual removes, [1]
@@ -176,7 +176,7 @@ describe 'LocalDb with local storage', ->
 
 describe 'LocalDb without local storage', ->
   before ->
-    @db = new LocalDb('scratch')
+    @db = new LocalDb()
 
   beforeEach (done) ->
     @db.removeCollection('scratch')
@@ -185,7 +185,7 @@ describe 'LocalDb without local storage', ->
 
   it "does not retain items", (done) ->
     @db.scratch.upsert { _id:1, a:"Alice" }, =>
-      db2 = new LocalDb('scratch')
+      db2 = new LocalDb()
       db2.addCollection 'scratch'
       db2.scratch.find({}).fetch (results) ->
         assert.equal results.length, 0
@@ -193,7 +193,7 @@ describe 'LocalDb without local storage', ->
 
   it "does not retain upserts", (done) ->
     @db.scratch.upsert { _id:1, a:"Alice" }, =>
-      db2 = new LocalDb('scratch')
+      db2 = new LocalDb()
       db2.addCollection 'scratch'
       db2.scratch.find({}).fetch (results) ->
         db2.scratch.pendingUpserts (upserts) ->
@@ -203,7 +203,7 @@ describe 'LocalDb without local storage', ->
   it "does not retain removes", (done) ->
     @db.scratch.seed { _id:1, a:"Alice" }, =>
       @db.scratch.remove 1, =>
-        db2 = new LocalDb('scratch')
+        db2 = new LocalDb()
         db2.addCollection 'scratch'
         db2.scratch.pendingRemoves (removes) ->
           assert.equal removes.length, 0

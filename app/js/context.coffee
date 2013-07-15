@@ -83,10 +83,9 @@ exports.setupLoginContext = (ctx, login) ->
   apiUrl = 'http://api.mwater.co/v3/'
 
   # TODO uploader? sync?
-  
 
-  # TODO make permanent
-  localDb = new LocalDb() 
+  # Namespace includes username to be safe
+  localDb = new LocalDb({namespace: "db.v3.#{login.user}"}) 
 
   remoteDb = new RemoteDb(apiUrl, login.client)
 
