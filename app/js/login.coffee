@@ -7,7 +7,7 @@ exports.getLogin = ->
     return JSON.parse(localStorage[loginKey])
   return null
 
-# Set current login from localstorage  TODO where to put this?
+# Set current login from localstorage 
 exports.setLogin = (login) ->
   if login?
     localStorage[loginKey] = JSON.stringify(login)

@@ -50,13 +50,19 @@ module.exports = class NewSourcePage extends Page
 
     @listenTo saveCancelForm, 'save', =>
       source = _.pick(@model.toJSON(), 'name', 'desc', 'type', 'private')
-      source.code = ""+Math.floor(Math.random()*1000000)  # TODO real codes
 
-      source.user = @login.user
-      source.org = @login.org
+      success = (code) =>
+        source.code = code
+        source.user = @login.user
+        source.org = @login.org
 
-      @db.sources.upsert source, (source) => 
-        @pager.closePage(SourcePage, { _id: source._id, setLocation: @model.get('setLocation')})
+        @db.sources.upsert source, (source) => 
+          @pager.closePage(SourcePage, { _id: source._id, setLocation: @model.get('setLocation')})
+
+      error = =>
+        alert("Unable to generate source id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range.")
+
+      @sourceCodesManager.requestCode(success, error)
 
     @listenTo saveCancelForm, 'cancel', =>
       @pager.closePage()

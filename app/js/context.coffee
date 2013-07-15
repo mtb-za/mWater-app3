@@ -19,6 +19,7 @@ RemoteDb = require './db/RemoteDb'
 HybridDb = require './db/HybridDb'
 SimpleImageManager = require './images/SimpleImageManager'
 authModule = require("./auth")
+sourcecodes = require './sourcecodes'
 
 collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes']
 
@@ -41,7 +42,6 @@ exports.createStartupContext = ->
     apiUrl: apiUrl
     camera: camera
   }
-
 
 exports.setupDemoContext = (ctx) ->
   # No local storage
@@ -70,11 +70,14 @@ exports.setupDemoContext = (ctx) ->
   # No client or org
   login = { user: "demo" }
 
+  sourceCodesManager = new sourcecodes.DemoSourceCodesManager()
+
   _.extend ctx, {
     db: db 
     imageManager: imageManager
     auth: auth
     login: login
+    sourceCodesManager: sourceCodesManager
   }
 
 # login must contain user, org, client, email members. "user" is username. "org" can be null
@@ -102,9 +105,12 @@ exports.setupLoginContext = (ctx, login) ->
   # Allow everything
   auth = new authModule.UserAuth(login.user, login.org)
 
+  sourceCodesManager = new sourcecodes.SourceCodesManager(apiUrl + "source_codes?client=#{login.client}")
+
   _.extend ctx, {
     db: db 
     imageManager: imageManager
     auth: auth
     login: login
+    sourceCodesManager: sourceCodesManager
   }

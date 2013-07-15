@@ -4,7 +4,7 @@ JsonServer = require './helpers/JsonServer'
 
 describe "Source Code Manager", ->
   beforeEach ->
-    @mgr = new sourcecodes.SourceCodeManager("source_codes")
+    @mgr = new sourcecodes.SourceCodesManager("source_codes")
     @mgr.reset()
 
     @server = new JsonServer()
@@ -68,7 +68,7 @@ describe "Source Code Manager", ->
       { code: 10014, expiry: "2013-01-01T00:00:00Z"} 
     ]
     cutoff = "2012-06-01T00:00:00Z"
-    mgr2 = new sourcecodes.SourceCodeManager()
+    mgr2 = new sourcecodes.SourceCodesManager()
     assert.equal mgr2.getNumberAvailableCodes(cutoff), 1
 
 

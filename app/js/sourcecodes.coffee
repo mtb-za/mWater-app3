@@ -18,11 +18,16 @@ exports.isValid = (code) ->
 
   return exports.seqToCode(seq) == code
 
-
-exports.SourceCodeManager = class SourceCodeManager 
+exports.SourceCodesManager = class SourceCodesManager 
   # URL to obtain more codes from
   constructor: (url) ->
     @url = url
+
+  # Default cutoff is three months in future
+  defaultCutoff = ->
+    cutoff = new Date()
+    cutoff.setDate(cutoff.getDate() + 30*3)
+    return cutoff.toISOString()
 
   # Gets list of cached source codes in form { code:<code>, expiry:<expiry in ISO datetime> }
   getLocalCodes: ->
@@ -41,7 +46,7 @@ exports.SourceCodeManager = class SourceCodeManager
   
   # Replenish codes from server to have a minimum of x available
   replenishCodes: (minNumber, success, error, cutoff) ->
-    cutoff = cutoff or (new Date()).toISOString()
+    cutoff = cutoff or defaultCutoff()
     
     # Purge old codes
     @purgeCodes cutoff
@@ -68,7 +73,7 @@ exports.SourceCodeManager = class SourceCodeManager
         error(errorThrown)
 
   getNumberAvailableCodes: (cutoff) ->
-    cutoff = cutoff or (new Date()).toISOString()
+    cutoff = cutoff or defaultCutoff()
     @purgeCodes cutoff
     @getLocalCodes().length
 
@@ -86,3 +91,18 @@ exports.SourceCodeManager = class SourceCodeManager
   # Reset all codes cached
   reset: ->
     @setLocalCodes []
+
+# Fake source codes manager that returns valid, but non-unique codes
+exports.DemoSourceCodesManager = class DemoSourceCodesManager
+  constructor: ->
+    @numAvail = 10
+
+  getNumberAvailableCodes: (cutoff) ->
+    return @numAvail
+
+  requestCode: (success, error, cutoff) ->
+    success(exports.seqToCode(Math.round(Math.random()*1000000)))
+
+  replenishCodes: (minNumber, success, error, cutoff) ->
+    @numAvail = minNumber
+    success()
