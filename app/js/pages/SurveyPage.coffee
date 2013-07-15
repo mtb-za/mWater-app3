@@ -68,6 +68,7 @@ class SurveyPage extends Page
   removeResponse: ->
     if @auth.remove("responses", @response) and confirm("Permanently delete survey?")
       @db.responses.remove @response._id, =>
+        @response = null
         @pager.closePage()
         @pager.flash "Survey deleted", "success"
 
