@@ -47,9 +47,11 @@ ProblemReporter = (url, version, getLogin) ->
     postUrl = if (login and login.client) then url + "?client=" + login.client else url
     req = $.post url, report
     req.done =>
-      success()
+      if success?
+        success()
     req.fail =>
-      error()
+      if error?
+        error()
   
   # # Capture error logs
   # debouncedReportProblem = _.debounce(@reportProblem, 5000, true)
@@ -60,11 +62,20 @@ ProblemReporter = (url, version, getLogin) ->
   
   # Capture window.onerror
   oldWindowOnError = window.onerror
+
+  # Prevent recursion
+  reportingError = false
+
   window.onerror = (errorMsg, url, lineNumber) ->
+    if reportingError 
+      console.error "Ignoring error: #{errorMsg}"
+      return
+    reportingError = true
     that.reportProblem "window.onerror:" + errorMsg + ":" + url + ":" + lineNumber
     
     # Put up alert instead of old action
     alert "Internal Error\n" + errorMsg + "\n" + url + ":" + lineNumber
+    reportingError = false
 
   @restore = ->
     _.each _.keys(_captured), (key) ->

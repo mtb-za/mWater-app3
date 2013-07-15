@@ -7,9 +7,6 @@ class LocalDb
     @name = name
     @collections = {}
 
-    # Add events
-    _.extend(this, Backbone.Events)
-
     if options and options.namespace and window.localStorage
       @namespace = options.namespace
 
@@ -20,9 +17,6 @@ class LocalDb
     collection = new Collection(name, namespace)
     @[name] = collection
     @collections[name] = collection
-
-    collection.on 'change', =>
-      @trigger 'change'
 
   removeCollection: (name) ->
     if @namespace and window.localStorage
@@ -43,9 +37,6 @@ class Collection
   constructor: (name, namespace) ->
     @name = name
     @namespace = namespace
-
-    # Add events
-    _.extend(this, Backbone.Events)
 
     @items = {}
     @upserts = {}  # Pending upserts by _id. Still in items
@@ -97,8 +88,6 @@ class Collection
     @_putItem(doc)
     @_putUpsert(doc)
 
-    @trigger 'change'
-
     if success? then success(doc)
 
   remove: (id, success, error) ->
@@ -106,8 +95,6 @@ class Collection
       @_putRemove(@items[id])
       @_deleteItem(id)
       @_deleteUpsert(id)
-
-    @trigger 'change'
 
     if success? then success()
 

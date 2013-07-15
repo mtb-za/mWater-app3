@@ -47,6 +47,8 @@ class Pager extends Backbone.View
     page.create()
     page.activate()
 
+    console.log "Opened page #{pageClass.name} (" + JSON.stringify(options) + ")"
+
     # Listen to page changes and bubble up
     @listenTo page, 'change', (options) ->
       @trigger 'change', options
@@ -61,6 +63,9 @@ class Pager extends Backbone.View
 
     # Destroy current page
     page = _.last(@stack)
+
+    console.log "Closing page #{page.constructor.name}"
+
     page.deactivate()
     page.destroy()
     page.remove()
@@ -75,7 +80,7 @@ class Pager extends Backbone.View
 
       @$el.append(page.el)
       page.activate()
-
+      
     # Indicate page change
     @trigger 'change'
 

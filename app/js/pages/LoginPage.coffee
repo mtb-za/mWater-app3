@@ -50,9 +50,6 @@ module.exports = class LoginPage extends Page
 
     req.done (data, textStatus, jqXHR) =>
       response = JSON.parse(jqXHR.responseText)
-      client = response.client
-      email = response.email
-      org = response.org
 
       # Login 
       login.setLogin(response)
