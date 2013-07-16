@@ -87,7 +87,7 @@ module.exports = class SourceListPage extends Page
       if @searchText.match(/^\d+$/)
         selector = { code: @searchText }
       else
-        selector = { $or: [ { name: new RegExp(@searchText,"i") }, { desc: new RegExp(@searchText,"i") } ] }
+        selector = { $or: [ { name: { $regex : @searchText,  $options: 'i' } }, { desc: { $regex : @searchText,  $options: 'i' } } ] }
         
       @db.sources.find(selector, {limit: 50}).fetch (sources) =>
         @searchSources = sources

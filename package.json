@@ -38,6 +38,7 @@
     "glob": "~3.2.1",
     "read": "~1.0.4",
     "request-json": "~0.3.7",
-    "synchronize": "~0.5.2"
+    "synchronize": "~0.5.2",
+    "through": "~2.3.4"
   }
 }

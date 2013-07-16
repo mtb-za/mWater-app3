@@ -75,7 +75,7 @@ class SourceDisplay
     bounds = @map.getBounds().pad(0.33)
 
     # Check for empty case
-    if bounds.getWest() == bounds.getEast()
+    if _.isEqual(bounds.getSouthWest(), bounds.getNorthEast())
       return
 
     boundsGeoJSON = GeoJSON.latLngBoundsToGeoJSON(bounds)

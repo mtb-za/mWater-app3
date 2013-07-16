@@ -51,6 +51,25 @@ exports.Repeater = class Repeater
     @inprogress = true
     @action(success2, error2)
 
+exports.Synchronizer = class Synchronizer
+  constructor: (hybridDb, imageManager, sourceCodesManager) ->
+    @hybridDb = hybridDb
+    @imageManager = imageManager
+    @sourceCodesManager = sourceCodesManager
 
+    @repeater = new Repeater(@_sync)
 
- 
+  start: (every) -> @repeater.start(every)
+  stop: -> @repeater.stop()
+
+  sync: (success, error) ->
+    @repeater.perform(success, error)
+
+  _sync: (success, error) =>
+    success1 = =>
+      success2 = =>
+        progress = =>
+          # Do nothing with progress
+        @imageManager.upload progress, success, error
+      @sourceCodesManager.replenishCodes 5, success2, error
+    @hybridDb.upload success1, error

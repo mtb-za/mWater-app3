@@ -6,7 +6,7 @@ NewSourcePage = require("./NewSourcePage")
 class MainPage extends Page
   activate: ->
     @setTitle "mWater"
-    @$el.html templates['pages/MainPage']()
+    @$el.html templates['pages/MainPage'](version: @version)
     
     menu = []
     if NewSourcePage.canOpen(@ctx)

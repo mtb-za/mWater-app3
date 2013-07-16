@@ -152,4 +152,5 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['browserify', 'concat', 'copy', 'handlebars', 'manifest', 'compile-forms']);
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
   grunt.registerTask('deploy_app', ['default', 'shell:deploy_app']);
+  grunt.registerTask('deploy', ['default', 'shell:deploy_app', 'shell:deploy_demo']);
 };

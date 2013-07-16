@@ -1,12 +1,27 @@
 var browserify = require('browserify'),
     fs = require("fs"), 
-    glob = require("glob");
+    glob = require("glob"),
+    through = require('through');
+
+// Adds version info
+var version = new Date().toISOString().substring(0,19);
+
+var versionXform = function (file) {
+    var data = '';
+    return through(write, end);
+
+    function write (buf) { data += buf }
+    function end () {
+        this.queue(data.replace("//VERSION//", version));
+        this.queue(null);
+    }
+};
 
 
 function bundleApp(done) {
     bundle = browserify();
     bundle.extension('.coffee');
-    bundle.transform('coffeeify')
+    bundle.transform(versionXform).transform('coffeeify')
     .require('./app/js/run', {expose: 'run'})
     .require('./app/js/forms', {expose: 'forms'})  // For forms
     .require('./app/js/mobile-behavior', {expose: 'mobile-behavior'})  // For tests

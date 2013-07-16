@@ -17,7 +17,7 @@ exports.start = (options = {}) ->
     ctx = context.setupLoginContext(ctx, login.getLogin())
 
   # TODO fill version
-  problemReporter = ProblemReporter.register ctx.apiUrl + 'problem_reports', "unknown", ->
+  problemReporter = ProblemReporter.register ctx.apiUrl + 'problem_reports', "//VERSION//", ->
     return ctx.login
 
   # Create pager

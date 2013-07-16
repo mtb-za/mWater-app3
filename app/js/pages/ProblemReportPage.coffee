@@ -36,10 +36,13 @@ module.exports = class ProblemReportPage extends Page
     @$el.empty().append(saveCancelForm.el)
 
     @listenTo saveCancelForm, 'save', =>
+      report = @model.toJSON()
+      report.version = @version
+      
       # Post to api
       url = @apiUrl + 'problem_reports' + (if (@login? and @login.client?) then "?client=" + @client else "")
       req = $.ajax(url, {
-        data : JSON.stringify(@model.toJSON()),
+        data : JSON.stringify(report),
         contentType : 'application/json',
         type : 'POST'})
 

@@ -41,6 +41,7 @@ exports.createStartupContext = ->
     error: error
     apiUrl: apiUrl
     camera: camera
+    version: '//VERSION//'
   }
 
 exports.setupDemoContext = (ctx) ->

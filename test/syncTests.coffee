@@ -3,8 +3,6 @@ sync = require '../app/js/sync'
 
 
 describe "Repeater", ->
-  beforeEach ->
-
   it "calls action every n milliseconds", (done) ->
     count = 0
     @repeater = new sync.Repeater (success, error) ->
@@ -109,5 +107,27 @@ describe "Repeater", ->
       assert.isFalse @repeater.lastError?
       done()
     , 100
+
+describe "Synchronizer", ->
+  before ->
+    @c1 = 0
+    @c2 = 0
+    @c3 = 0
+
+    @hybridDb = 
+      upload: (success, error) => 
+        @c1 += 1
+        success()
+    @imageManager =
+      upload: (progress, success, error) =>
+        @c1 += 1
+        success()
+    @sourceCodesManager = 
+      replenishCodes: (minNumber, success, error) -> success()
+
+  it "calls all things to be synched", (done) ->
+
+
+  it "stops"
 
 
