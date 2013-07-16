@@ -10,11 +10,12 @@ MainPage = require './pages/MainPage'
 LoginPage = require './pages/LoginPage'
 
 exports.start = (options = {}) ->
-  ctx = context.createStartupContext()
   if options.demo  
-    ctx = context.setupDemoContext(ctx)
+    ctx = context.createDemoContext(ctx)
   else if login.getLogin()
-    ctx = context.setupLoginContext(ctx, login.getLogin())
+    ctx = context.createLoginContext(login.getLogin())
+  else  
+    ctx = context.createBaseContext()
 
   # TODO fill version
   problemReporter = ProblemReporter.register ctx.apiUrl + 'problem_reports', "//VERSION//", ->

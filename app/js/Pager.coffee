@@ -4,12 +4,7 @@ class Pager extends Backbone.View
   id: 'pager'
   constructor: (ctx) ->
     super()
-
-    # Context contains pager
-    ctx.pager = this
-
-    # Save context
-    @ctx = ctx
+    @setContext(ctx)
 
     # Create empty stack
     @stack=[]
@@ -24,6 +19,13 @@ class Pager extends Backbone.View
  
       @contextMenu.$el.children().detach()
       @contextMenu.$el.append(_.last(@stack).getContextMenu().el)
+
+  setContext: (ctx) ->
+    # Context contains pager
+    ctx.pager = this
+
+    # Save context
+    @ctx = ctx
 
   # Adds a page from a constructor
   openPage: (pageClass, options) ->

@@ -54,11 +54,12 @@ module.exports = class LoginPage extends Page
       # Login 
       login.setLogin(response)
 
-      # Update context
-      context.setupLoginContext(@ctx, response)
+      # Re-create context
+      @ctx = context.createLoginContext(response)
+      @pager.setContext(@ctx)
 
       @pager.closePage(MainPage)
-      @pager.flash "Login successful", "success"
+      @pager.flash "Login as #{response.user} successful", "success"
 
     req.fail (jqXHR, textStatus, errorThrown) =>
       if jqXHR.status < 500
@@ -74,11 +75,10 @@ module.exports = class LoginPage extends Page
     return false
 
   demoClicked: ->
-    # Update context
-    context.setupDemoContext(@ctx)
+    # Re-create context
+    @ctx = context.createDemoContext()
+    @pager.setContext(@ctx)
 
     @pager.closePage(MainPage)
-    @pager.flash "Demo mode started", "warning"
+    @pager.flash "Running in Demo mode. No changes will be saved", "warning"
     return false
-
-

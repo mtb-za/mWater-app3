@@ -32,8 +32,8 @@ collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'so
 
 apiUrl = 'http://api.mwater.co/v3/'
 
-# Barebones startup context
-exports.createStartupContext = ->
+# Barebones base context
+exports.createBaseContext = ->
   # Fake camera # TODO use cordova where possible
   camera = {
     takePicture: (success, error) ->
@@ -51,7 +51,7 @@ exports.createStartupContext = ->
     version: '//VERSION//'
   }
 
-exports.setupDemoContext = (ctx) ->
+exports.createDemoContext = ->
   # No local storage
   localDb = new LocalDb() 
 
@@ -82,7 +82,7 @@ exports.setupDemoContext = (ctx) ->
 
   sync = new syncModule.DemoSynchronizer()
 
-  _.extend ctx, {
+  return _.extend exports.createBaseContext(), {
     db: db 
     imageManager: imageManager
     auth: auth
@@ -93,10 +93,8 @@ exports.setupDemoContext = (ctx) ->
 
 # login must contain user, org, client, email members. "user" is username. "org" can be null
 # login can be obtained by posting to api /clients
-exports.setupLoginContext = (ctx, login) ->
+exports.createLoginContext = (login) ->
   apiUrl = 'http://api.mwater.co/v3/'
-
-  # TODO uploader? sync?
 
   # Namespace includes username to be safe
   localDb = new LocalDb({namespace: "db.v3.#{login.user}"}) 
@@ -120,7 +118,7 @@ exports.setupLoginContext = (ctx, login) ->
 
   sync = new syncModule.Synchronizer(db, imageManager, sourceCodesManager)
 
-  _.extend ctx, {
+  return _.extend exports.createBaseContext(), {
     db: db 
     imageManager: imageManager
     auth: auth
