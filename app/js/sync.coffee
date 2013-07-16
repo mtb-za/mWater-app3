@@ -20,11 +20,12 @@ exports.Repeater = class Repeater
     if not @running
       return
 
-    success = =>
+    success = (message) =>
       @inprogress = false
       if @running
         setTimeout @performRepeat, @every
       @lastSuccessDate = new Date()
+      @lastSuccessMessage = message
       @lastError = undefined
 
     error = (err) =>
@@ -37,11 +38,12 @@ exports.Repeater = class Repeater
     @action(success, error)
 
   perform: (success, error) ->
-    success2 = =>
+    success2 = (message) =>
       @inprogress = false
+      @lastSuccessMessage = message
       @lastSuccessDate = new Date()
       @lastError = undefined
-      success() if success?
+      success(message) if success?
 
     error2 = (err) =>
       @inprogress = false
@@ -66,10 +68,19 @@ exports.Synchronizer = class Synchronizer
     @repeater.perform(success, error)
 
   _sync: (success, error) =>
-    success1 = =>
-      success2 = =>
+    successHybrid = =>
+      successSourceCodes = =>
         progress = =>
           # Do nothing with progress
-        @imageManager.upload progress, success, error
-      @sourceCodesManager.replenishCodes 5, success2, error
-    @hybridDb.upload success1, error
+        successImages = (numImagesRemaining) =>
+          success(if numImagesRemaining then "#{numImagesRemaining} images left" else "complete")
+        @imageManager.upload progress, successImages, error
+      @sourceCodesManager.replenishCodes 5, successSourceCodes, error
+    @hybridDb.upload successHybrid, error
+
+# Synchronizer that does nothing and always returns success
+exports.DemoSynchronizer = class DemoSynchronizer
+  start: -> 
+  stop: -> 
+  sync: (success, error) ->
+    success("complete")

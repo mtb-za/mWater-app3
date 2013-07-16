@@ -14,7 +14,7 @@ describe "Repeater", ->
       @repeater.stop()
 
       # Check count
-      assert.closeTo count, 10, 3
+      assert.closeTo count, 10, 6
       done()
     , 100
 
@@ -75,14 +75,17 @@ describe "Repeater", ->
     , 100
 
 
-  it "records last success date", (done) ->
+  it "records last success message and date", (done) ->
     before = new Date()
     @repeater = new sync.Repeater (success, error) ->
-      success()
+      success("some message")
 
     @repeater.start(10)
     setTimeout =>
       @repeater.stop()
+
+      # Check message
+      assert.equal @repeater.lastSuccessMessage, "some message"
 
       # Check date
       assert.isTrue new Date() > @repeater.lastSuccessDate
@@ -120,14 +123,22 @@ describe "Synchronizer", ->
         success()
     @imageManager =
       upload: (progress, success, error) =>
-        @c1 += 1
-        success()
+        @c2 += 1
+        success(3)
     @sourceCodesManager = 
-      replenishCodes: (minNumber, success, error) -> success()
+      replenishCodes: (minNumber, success, error) =>
+        @c2 += 1
+        success()
 
-  it "calls all things to be synched", (done) ->
+  it "calls all things to be synced", (done) ->
+    sync = new sync.Synchronizer(@hybridDb, @imageManager, @sourceCodesManager)
 
+    success = (message) =>
+      assert.equal message, "3 images left"
+      done()
 
-  it "stops"
+    error = ->
+      assert.fail()
 
+    sync.sync(success, error)
 

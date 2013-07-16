@@ -12,6 +12,12 @@ camera: Camera that has a single function: takePicture(success, error).
   auth: see auth module
   login: { user: <username>, org: <org code>, client: <client id> }
 
+
+stop(): must be called when context is no longer needed, or before setup of a new user
+
+TODO fill in
+TODO should bare context have placeholders?
+
 ###
 
 LocalDb = require './db/LocalDb'
@@ -20,6 +26,7 @@ HybridDb = require './db/HybridDb'
 SimpleImageManager = require './images/SimpleImageManager'
 authModule = require("./auth")
 sourcecodes = require './sourcecodes'
+syncModule = require './sync'
 
 collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes']
 
@@ -73,12 +80,15 @@ exports.setupDemoContext = (ctx) ->
 
   sourceCodesManager = new sourcecodes.DemoSourceCodesManager()
 
+  sync = new syncModule.DemoSynchronizer()
+
   _.extend ctx, {
     db: db 
     imageManager: imageManager
     auth: auth
     login: login
     sourceCodesManager: sourceCodesManager
+    sync: sync
   }
 
 # login must contain user, org, client, email members. "user" is username. "org" can be null
@@ -108,10 +118,13 @@ exports.setupLoginContext = (ctx, login) ->
 
   sourceCodesManager = new sourcecodes.SourceCodesManager(apiUrl + "source_codes?client=#{login.client}")
 
+  sync = new syncModule.Synchronizer(db, imageManager, sourceCodesManager)
+
   _.extend ctx, {
     db: db 
     imageManager: imageManager
     auth: auth
     login: login
     sourceCodesManager: sourceCodesManager
+    sync: sync
   }
