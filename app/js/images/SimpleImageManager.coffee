@@ -13,3 +13,6 @@ module.exports = class SimpleImageManager
 
   getImageUrl: (imageId, success, error) ->
     success @apiUrl + "images/" + imageId + "?h=1024"
+
+  upload: (progress, success, error) ->
+    success()

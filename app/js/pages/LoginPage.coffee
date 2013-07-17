@@ -1,6 +1,6 @@
 Page = require "../Page"
 context = require '../context'
-MainPage = require("./MainPage")
+MainPage = require './MainPage'
 login = require '../login'
 
 module.exports = class LoginPage extends Page
@@ -54,9 +54,9 @@ module.exports = class LoginPage extends Page
       # Login 
       login.setLogin(response)
 
-      # Re-create context
-      @ctx = context.createLoginContext(response)
-      @pager.setContext(@ctx)
+      # Update context, first stopping old one
+      @ctx.stop()
+      _.extend @ctx, context.createLoginContext(response)
 
       @pager.closePage(MainPage)
       @pager.flash "Login as #{response.user} successful", "success"
@@ -75,9 +75,9 @@ module.exports = class LoginPage extends Page
     return false
 
   demoClicked: ->
-    # Re-create context
-    @ctx = context.createDemoContext()
-    @pager.setContext(@ctx)
+    # Update context, first stopping old one
+    @ctx.stop()
+    _.extend @ctx, context.createDemoContext()
 
     @pager.closePage(MainPage)
     @pager.flash "Running in Demo mode. No changes will be saved", "warning"

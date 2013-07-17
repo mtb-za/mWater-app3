@@ -2,6 +2,9 @@
 
 Creates the context used for the app
 
+Note: There should only every be one context object. It should be modified, rather than creating a whole new object
+as components like the PageMenu may be depending on it. 
+
 Contexts have fixed members that have to be present.
 
 db: database (LocalDb, HybridDb or RemoteDb)
@@ -16,7 +19,7 @@ camera: Camera that has a single function: takePicture(success, error).
 stop(): must be called when context is no longer needed, or before setup of a new user
 
 TODO fill in
-TODO should bare context have placeholders?
+TODO should any items be null of context?
 
 ###
 
@@ -32,8 +35,8 @@ collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'so
 
 apiUrl = 'http://api.mwater.co/v3/'
 
-# Barebones base context
-exports.createBaseContext = ->
+# Base context
+createBaseContext = ->
   # Fake camera # TODO use cordova where possible
   camera = {
     takePicture: (success, error) ->
@@ -49,25 +52,54 @@ exports.createBaseContext = ->
     apiUrl: apiUrl
     camera: camera
     version: '//VERSION//'
+    stop: ->
+    # db: null
+    # imageManager: null
+    # auth: null 
+    # login: null
+    # sourceCodesManager: null
+    # sync: null
   }
 
-exports.createDemoContext = ->
-  # No local storage
-  localDb = new LocalDb() 
+# Setup database
+createDb = (login) ->
+  if login
+    # Namespace includes username to be safe
+    localDb = new LocalDb({namespace: "db.v3.#{login.user}"}) 
+  else
+    # No local storage
+    localDb = new LocalDb() 
 
-  # No client (download only)
-  remoteDb = new RemoteDb(apiUrl)
+  remoteDb = new RemoteDb(apiUrl, if login then login.client else undefined)
 
   db = new HybridDb(localDb, remoteDb)
 
+  # Add collections
   for col in collectionNames
     localDb.addCollection(col)
     remoteDb.addCollection(col)
     db.addCollection(col)
 
-  # Disable upload
-  db.upload = (success, error) ->
-    success()
+  return db
+
+# Anonymous context for not logged in
+exports.createAnonymousContext = ->
+  db = createDb()
+
+  # Allow nothing
+  auth = new authModule.NoneAuth()
+
+  return _.extend createBaseContext(), {
+    db: db
+    imageManager: null
+    auth: auth 
+    login: null
+    sourceCodesManager: null
+    sync: null
+  }
+
+exports.createDemoContext = ->
+  db = createDb()
 
   # TODO enhance to allow caching in demo mode
   imageManager = new SimpleImageManager(apiUrl)
@@ -79,10 +111,9 @@ exports.createDemoContext = ->
   login = { user: "demo" }
 
   sourceCodesManager = new sourcecodes.DemoSourceCodesManager()
-
   sync = new syncModule.DemoSynchronizer()
 
-  return _.extend exports.createBaseContext(), {
+  return _.extend createBaseContext(), {
     db: db 
     imageManager: imageManager
     auth: auth
@@ -94,35 +125,26 @@ exports.createDemoContext = ->
 # login must contain user, org, client, email members. "user" is username. "org" can be null
 # login can be obtained by posting to api /clients
 exports.createLoginContext = (login) ->
-  apiUrl = 'http://api.mwater.co/v3/'
-
-  # Namespace includes username to be safe
-  localDb = new LocalDb({namespace: "db.v3.#{login.user}"}) 
-
-  remoteDb = new RemoteDb(apiUrl, login.client)
-
-  db = new HybridDb(localDb, remoteDb)
-
-  for col in collectionNames
-    localDb.addCollection(col)
-    remoteDb.addCollection(col)
-    db.addCollection(col)
+  db = createDb(login)
 
   # TODO switch to cached
   imageManager = new SimpleImageManager(apiUrl)
-
-  # Allow everything
   auth = new authModule.UserAuth(login.user, login.org)
-
   sourceCodesManager = new sourcecodes.SourceCodesManager(apiUrl + "source_codes?client=#{login.client}")
-
   sync = new syncModule.Synchronizer(db, imageManager, sourceCodesManager)
 
-  return _.extend exports.createBaseContext(), {
+  # Start synchronizing
+  sync.start(30*1000)  # Every 30 seconds
+
+  stop = ->
+    sync.stop()
+
+  return _.extend createBaseContext(), {
     db: db 
     imageManager: imageManager
     auth: auth
     login: login
     sourceCodesManager: sourceCodesManager
     sync: sync
+    stop: stop
   }

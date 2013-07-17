@@ -6,6 +6,7 @@ handlebars = require 'handlebars'
 read = require 'read'
 JsonClient = require('request-json').JsonClient
 sync = require 'synchronize'
+_ = require 'underscore'
 
 compile = (dir) ->
   # Read form.json
@@ -85,12 +86,23 @@ exports.upsertAll = (callback) ->
       throw new Error(res.body)
     client = res.body.client
 
-    forms = exports.compileAll()
+    # For each form
+    for dir in fs.readdirSync(__dirname)
+      dirpath = path.resolve(__dirname, dir)
+      if not fs.statSync(dirpath).isDirectory()
+        continue
 
-    # Upsert
-    for form in forms
+      console.log "Compiling #{dir}"
+      form = compile(dirpath)
+
+      # Upsert
       res = post "forms?client=#{client}", form
       if res.status != 200
         console.error "Got #{res.status} code on upsert"
         throw new Error(res.body)
+
+      form = res.body
+
+      # Write out returned document row without views
+      fs.writeFileSync(path.resolve(dirpath, 'form.json'), JSON.stringify(_.omit(form, 'views'), null, 4))
   , callback

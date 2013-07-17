@@ -4,6 +4,12 @@ model = new Backbone.Model()
 sections = []
 questions = []
 
+questions.push new forms.SourceQuestion
+  id: 'source'
+  ctx: options.ctx
+  model: model
+  prompt: "Water Source ID"
+  
 # Facility Type 
 questions.push new forms.DropdownQuestion(
   id: "q1"

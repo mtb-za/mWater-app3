@@ -59,28 +59,54 @@ exports.Synchronizer = class Synchronizer
     @imageManager = imageManager
     @sourceCodesManager = sourceCodesManager
 
+    # Add events
+    _.extend(this, Backbone.Events)
+
     @repeater = new Repeater(@_sync)
 
   start: (every) -> @repeater.start(every)
   stop: -> @repeater.stop()
 
+  lastSuccessMessage: -> @repeater.lastSuccessMessage
+  lastSuccessDate: -> @repeater.lastSuccessDate
+  lastError: -> @repeater.lastError
+
   sync: (success, error) ->
     @repeater.perform(success, error)
 
   _sync: (success, error) =>
+    successFinal = (message) =>
+      success(message)
+
+      # Fire event
+      @trigger('success')
+
+    errorFinal = (err) =>
+      error(err)
+
+      # Fire event
+      @trigger('error')
     successHybrid = =>
       successSourceCodes = =>
         progress = =>
           # Do nothing with progress
         successImages = (numImagesRemaining) =>
-          success(if numImagesRemaining then "#{numImagesRemaining} images left" else "complete")
-        @imageManager.upload progress, successImages, error
-      @sourceCodesManager.replenishCodes 5, successSourceCodes, error
-    @hybridDb.upload successHybrid, error
+          successFinal(if numImagesRemaining then "#{numImagesRemaining} images left" else "complete")
+        @imageManager.upload progress, successImages, errorFinal
+      @sourceCodesManager.replenishCodes 5, successSourceCodes, errorFinal
+    @hybridDb.upload successHybrid, errorFinal
 
 # Synchronizer that does nothing and always returns success
 exports.DemoSynchronizer = class DemoSynchronizer
+  constructor: ->
+    # Add events
+    _.extend(this, Backbone.Events)
+
   start: -> 
   stop: -> 
   sync: (success, error) ->
     success("complete")
+
+  lastSuccessMessage: -> "complete"
+  lastSuccessDate: -> new Date()
+  lastError: -> undefined

@@ -148,6 +148,18 @@ module.exports = ->
         assert.deepEqual _.pluck(results, '_id'), ["2"]
         done()
 
+    it 'finds points within big box', (done) ->
+      selector = loc: 
+        $geoIntersects: 
+          $geometry: 
+            type: 'Polygon'
+            coordinates: [[
+              [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90]
+            ]]
+      @db.scratch.find(selector, {sort:['_id']}).fetch (results) =>
+        assert.deepEqual _.pluck(results, '_id'), ["1", "2", "3", "4"]
+        done()
+
     it 'handles undefined', (done) ->
       selector = loc: 
         $geoIntersects: 

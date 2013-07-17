@@ -121,7 +121,7 @@ module.exports = (syncServer, cachePath) ->
   
   # Upload one image to server. Progress is called with (number of images, % complete). Success is called
   # with number of images remaining.
-  @uploadImages = (progress, success, error) ->
+  @upload = (progress, success, error) ->
     
     # Copy file to pending folder
     getDirectory that.cachePath + "/pending/original", ((dirEntry) ->

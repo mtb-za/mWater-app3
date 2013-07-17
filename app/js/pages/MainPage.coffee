@@ -6,7 +6,25 @@ NewSourcePage = require("./NewSourcePage")
 class MainPage extends Page
   activate: ->
     @setTitle "mWater"
-    @$el.html templates['pages/MainPage'](version: @version)
+
+    # Rerender on error/success of sync
+    @listenTo @sync, "success error", =>
+      @render()
+
+    @render()
+
+  deactivate: ->
+    # Stop listening to events
+    @stopListening @sync
+
+  render: ->
+    data = {}
+    data.login = @login
+    data.version = @version
+    data.lastSyncDate = @sync.lastSuccessDate() if @sync?
+    data.lastSyncMessage = @sync.lastSuccessMessage() if @sync?
+
+    @$el.html templates['pages/MainPage'](data)
     
     menu = []
     if NewSourcePage.canOpen(@ctx)

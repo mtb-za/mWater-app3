@@ -9,16 +9,25 @@ exports.posToPoint = (pos) ->
 
 
 exports.latLngBoundsToGeoJSON = (bounds) ->
-  sw = bounds.getSouthWest()
-  ne = bounds.getNorthEast()
+  s = bounds.getSouth()
+  w = bounds.getWest()
+  n = bounds.getNorth()
+  e = bounds.getEast()
+
+  if s < -90 then s = -90
+  if n > 90 then n = 90
+  if w < -180 then w = -180
+  if e > 180 then e = 180
+
+  # Clip values
   return {
     type: 'Polygon',
     coordinates: [
-      [[sw.lng, sw.lat], 
-      [sw.lng, ne.lat], 
-      [ne.lng, ne.lat], 
-      [ne.lng, sw.lat],
-      [sw.lng, sw.lat]]
+      [[w, s], 
+      [w, n], 
+      [e, n], 
+      [e, s],
+      [w, s]]
     ]
   }
 

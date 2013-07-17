@@ -109,7 +109,7 @@ module.exports = class SourcePage extends Page
     @pager.openPage(require("./TestPage"), { _id: ev.currentTarget.id})
 
   addNote: ->
-    @pager.openPage(require("./SourceNotePage"), { source: @source.code})   # TODO id or code?
+    @pager.openPage(require("./SourceNotePage"), { source: @source.code })
 
   openNote: (ev) ->
     @pager.openPage(require("./SourceNotePage"), { source: @source.code, _id: ev.currentTarget.id})

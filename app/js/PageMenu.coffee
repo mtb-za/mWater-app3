@@ -10,7 +10,7 @@ module.exports = class PageMenu extends Backbone.View
   events:
     "click #home" : "gotoHome"
     "click #login" : "gotoLogin"
-    "click #logout" : "gotoLogin"
+    "click #logout" : "logout"
     "click #source_list" : "gotoSourceList"
     "click #source_map" : "gotoSourceMap"
     "click #settings" : "gotoSettings"
@@ -25,6 +25,7 @@ module.exports = class PageMenu extends Backbone.View
     @$("#new_test").toggle(require("./pages/NewTestPage").canOpen(@options.ctx))
     @$("#new_survey").toggle(require("./pages/NewSurveyPage").canOpen(@options.ctx))
     @$("#existing_survey").toggle(require("./pages/ExistingSurveyPage").canOpen(@options.ctx))
+    @$("#existing_test").toggle(require("./pages/TestListPage").canOpen(@options.ctx))
 
     @$("#login").toggle(not @options.ctx.login?)
     @$("#logout").toggle(@options.ctx.login?)
@@ -32,10 +33,18 @@ module.exports = class PageMenu extends Backbone.View
   gotoHome: ->
     while @pager.multiplePages()
       @pager.closePage()
+    @pager.closePage(require("./pages/MainPage"))
+
+  logout: ->
+    login.setLogin(null)
+    
+    # Update context, first stopping old one
+    @ctx.stop()
+    _.extend @ctx, context.createAnonymousContext()
+
+    @gotoLogin()
 
   gotoLogin: ->
-    login.setLogin(null)
-
     while @pager.multiplePages()
       @pager.closePage()
     @pager.closePage(require("./pages/LoginPage"))

@@ -71,11 +71,14 @@ ProblemReporter = (url, version, getLogin) ->
       console.error "Ignoring error: #{errorMsg}"
       return
     reportingError = true
-    that.reportProblem "window.onerror:" + errorMsg + ":" + url + ":" + lineNumber
-    
+
     # Put up alert instead of old action
     alert "Internal Error\n" + errorMsg + "\n" + url + ":" + lineNumber
-    reportingError = false
+
+    that.reportProblem "window.onerror:" + errorMsg + ":" + url + ":" + lineNumber, ->
+      reportingError = false
+    , ->
+      reportingError = false
 
   @restore = ->
     _.each _.keys(_captured), (key) ->

@@ -15,6 +15,7 @@ photoset: array of { id: <image id, required>, caption: string }
 * type (source_types.code): Type of source
 * user (users.username): User who manages source
 * org (orgs.code): User who manages source
+* private (boolean): true to make private to org or user if no org
 
 ## source_types
 

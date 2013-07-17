@@ -3,5 +3,15 @@
     "type": "WaterTest",
     "name": "3M Petrifilm E. coli/coliform",
     "desc": "1 mL direct count method for E. coli and total coliform",
-    "code": "PetrifilmEcoliColiform"
+    "code": "PetrifilmEcoliColiform",
+    "_rev": 1,
+    "created": {
+        "on": "2013-07-17T14:03:50.949Z",
+        "by": "admin"
+    },
+    "modified": {
+        "on": "2013-07-17T14:03:50.949Z",
+        "by": "admin"
+    },
+    "user": "admin"
 }

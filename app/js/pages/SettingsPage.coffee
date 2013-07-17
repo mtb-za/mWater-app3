@@ -13,7 +13,7 @@ class SettingsPage extends Page
 
   render: ->
     @$el.html templates['pages/SettingsPage'](
-      offlineSourceCodes: @sourceCodesManager.getNumberAvailableCodes()
+      offlineSourceCodes: if @sourceCodesManager then @sourceCodesManager.getNumberAvailableCodes() else null
     )
     @$("#crash").toggle(@login? and @login.user == "admin")
 

@@ -15,6 +15,19 @@ describe 'GeoJSON', ->
       ]
     }
 
+  it 'clips to reasonable values', ->
+    southWest = new L.LatLng(-120, -350)
+    northEast = new L.LatLng(120, 350)
+    bounds = new L.LatLngBounds(southWest, northEast)
+
+    json = GeoJSON.latLngBoundsToGeoJSON(bounds)
+    assert _.isEqual json, {
+      type: "Polygon",
+      coordinates: [
+        [[-180,-90],[-180,90],[180,90],[180,-90],[-180, -90]]
+      ]
+    }
+
   it 'gets relative location N', ->
     from = { type: "Point", coordinates: [10, 20]}
     to = { type: "Point", coordinates: [10, 21]}

@@ -3,5 +3,15 @@
     "type": "WaterTest",
     "name": "Arsenic (generic method)",
     "desc": "Any method for measuring arsenic in water",
-    "code": "ArsenicGeneric"
+    "code": "ArsenicGeneric",
+    "_rev": 1,
+    "created": {
+        "on": "2013-07-17T14:03:50.050Z",
+        "by": "admin"
+    },
+    "modified": {
+        "on": "2013-07-17T14:03:50.050Z",
+        "by": "admin"
+    },
+    "user": "admin"
 }

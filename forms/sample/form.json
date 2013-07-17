@@ -1,6 +1,16 @@
 {
-  "_id": "3632fce3ca60476e87abf1f901e8a507",
-  "type": "Survey",
-  "name": "Sample Survey",
-  "code": "Sample"
+    "_id": "3632fce3ca60476e87abf1f901e8a507",
+    "type": "Survey",
+    "name": "Sample Survey",
+    "code": "Sample",
+    "_rev": 1,
+    "created": {
+        "on": "2013-07-17T14:03:51.789Z",
+        "by": "admin"
+    },
+    "modified": {
+        "on": "2013-07-17T14:03:51.789Z",
+        "by": "admin"
+    },
+    "user": "admin"
 }

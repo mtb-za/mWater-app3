@@ -15,9 +15,8 @@ exports.start = (options = {}) ->
   else if login.getLogin()
     ctx = context.createLoginContext(login.getLogin())
   else  
-    ctx = context.createBaseContext()
+    ctx = context.createAnonymousContext()
 
-  # TODO fill version
   problemReporter = ProblemReporter.register ctx.apiUrl + 'problem_reports', "//VERSION//", ->
     return ctx.login
 
