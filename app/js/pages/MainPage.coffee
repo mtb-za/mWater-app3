@@ -8,14 +8,16 @@ class MainPage extends Page
     @setTitle "mWater"
 
     # Rerender on error/success of sync
-    @listenTo @sync, "success error", =>
-      @render()
+    if @sync?
+      @listenTo @sync, "success error", =>
+        @render()
 
     @render()
 
   deactivate: ->
     # Stop listening to events
-    @stopListening @sync
+    if @sync?
+      @stopListening @sync
 
   render: ->
     data = {}
