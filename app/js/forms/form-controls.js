@@ -296,35 +296,6 @@ exports.CheckQuestion = exports.Question.extend({
 
 });
 
-
-exports.MulticheckQuestion = exports.Question.extend({
-    events : {
-        "checked" : "checked",
-    },
-
-    checked : function(e) {
-        // Get all checked
-        var value = [];
-        var opts = this.options.options;
-        this.$(".checkbox").each(function(index) {
-            if ($(this).hasClass("checked"))
-                value.push(opts[index][0]);
-        });
-        this.model.set(this.id, value);
-    },
-
-    renderAnswer : function(answerEl) {
-        var i;
-        for ( i = 0; i < this.options.options.length; i++)
-            answerEl.append($(_.template('<div class="checkbox <%=checked%>" data-value="<%=position%>"><%=text%></div>', {
-                position : i,
-                text : this.options.options[i][1],
-                checked : (this.model.get(this.id) && _.contains(this.model.get(this.id), this.options.options[i][0])) ? "checked" : ""
-            })));
-    }
-
-});
-
 exports.TextQuestion = exports.Question.extend({
     renderAnswer : function(answerEl) {
         if (this.options.multiline) {

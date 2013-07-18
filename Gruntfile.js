@@ -2,6 +2,7 @@
 var browserify = require('./browserify-task');
 var compileForms = require('./compile-forms-task');
 var upsertForms = require('./upsert-forms-task');
+var seeds = require('./seeds-task');
 
 module.exports = function(grunt) {
 
@@ -138,8 +139,9 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('browserify', 'Make single file output', browserify);
-  grunt.registerTask('compile-forms', 'Make forms into js', compileForms);
   grunt.registerTask('upsert-forms', 'Upsert forms to server', upsertForms);
+  grunt.registerTask('compile-forms', 'Make forms into js', compileForms);
+  grunt.registerTask('seeds', 'Seed database with some tables', seeds);
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
@@ -149,7 +151,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
 
   // Default task(s).
-  grunt.registerTask('default', ['browserify', 'concat', 'copy', 'handlebars', 'manifest', 'compile-forms']);
+  grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy', 'handlebars', 'manifest']);
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
   grunt.registerTask('deploy_app', ['default', 'shell:deploy_app']);
   grunt.registerTask('deploy', ['default', 'shell:deploy_app', 'shell:deploy_demo']);

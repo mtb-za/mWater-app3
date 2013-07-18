@@ -45,7 +45,9 @@ createBaseContext = ->
 
   error = (err) ->
     console.error err
+    str = if err? and err.message then err.message else err
     alert("Internal error: " + err)
+    # TODO report? When is this used?
 
   return { 
     error: error
@@ -80,6 +82,12 @@ createDb = (login) ->
     remoteDb.addCollection(col)
     db.addCollection(col)
 
+  # Seed local db
+  if window.seeds
+    for col, docs of window.seeds
+      for doc in docs
+        localDb[col].seed(doc)
+
   return db
 
 # Anonymous context for not logged in
@@ -89,9 +97,11 @@ exports.createAnonymousContext = ->
   # Allow nothing
   auth = new authModule.NoneAuth()
 
+  imageManager = new SimpleImageManager(apiUrl)
+
   return _.extend createBaseContext(), {
     db: db
-    imageManager: null
+    imageManager: imageManager
     auth: auth 
     login: null
     sourceCodesManager: null

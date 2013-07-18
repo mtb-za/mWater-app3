@@ -7,6 +7,6 @@ module.exports = ->
   # Compile forms
   forms = formutils.compileAll()
 
-  fs.writeFileSync('dist/js/forms.js', 'forms=' + JSON.stringify(forms) + ';')
+  fs.writeFileSync('forms/forms.js', 'forms=' + JSON.stringify(forms) + ';')
   done()
   

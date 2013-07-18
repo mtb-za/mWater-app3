@@ -47,7 +47,7 @@ photoset: array of { id: <image id, required>, caption: string }
 * type (forms.code, required): code of form
 * started (datetime, required): when survey was started
 * data (object): data of survey
-* completed (boolean, required): true when completed TODO datetime?
+* completed (datetime, required): datetime when completed
 * user (users.username): User who manages response
 * org (orgs.code): User who manages response
 
