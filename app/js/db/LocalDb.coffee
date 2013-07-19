@@ -158,8 +158,13 @@ class Collection
     success _.pluck(@removes, "_id")
 
   resolveUpsert: (doc, success) ->
-    if @upserts[doc._id] and _.isEqual(doc, @upserts[doc._id])
-      @_deleteUpsert(doc._id)
+    if @upserts[doc._id]
+      # Only safely remove upsert if doc received back from 
+      # server is the same, excluding certain server-added fields (_rev, created, modified)
+      # or server-modified fields (user, org)
+      serverFields = ['_rev', 'created', 'modified', 'user', 'org']
+      if _.isEqual(_.omit(doc, serverFields), _.omit(@upserts[doc._id], serverFields))
+        @_deleteUpsert(doc._id)
     if success? then success()
 
   resolveRemove: (id, success) ->

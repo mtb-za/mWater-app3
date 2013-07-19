@@ -49,6 +49,9 @@ describe 'LocalDb', ->
           assert.equal results.length, 2
           done()
 
+  it "handles implicitly sorted ($near) with limit"
+  # TODO
+
   it "cache removes missing filtered", (done) ->
     @db.scratch.cache [{ _id: 1, a: 'a' }, { _id: 2, a: 'b' }, { _id: 3, a: 'c' }], {}, {}, =>
       @db.scratch.cache [{ _id: 1, a: 'a' }], {_id: {$lt:3}}, {}, =>
@@ -82,6 +85,13 @@ describe 'LocalDb', ->
   it "resolves pending upserts", (done) ->
     @db.scratch.upsert { _id: 2, a: 'banana' }, =>
       @db.scratch.resolveUpsert { _id: 2, a: 'banana' }, =>
+        @db.scratch.pendingUpserts (results) =>
+          assert.equal results.length, 0
+          done()
+
+  it "resolves pending upserts with server-added fields", (done) ->
+    @db.scratch.upsert { _id: 2, a: 'banana' }, =>
+      @db.scratch.resolveUpsert { _id: 2, a: 'banana', _rev: 1, created: { on: "2013", by: "test" }, modified: { on: "2013", by: "test" } }, =>
         @db.scratch.pendingUpserts (results) =>
           assert.equal results.length, 0
           done()
