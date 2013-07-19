@@ -38,7 +38,7 @@ module.exports = class ProblemReportPage extends Page
     @listenTo saveCancelForm, 'save', =>
       report = @model.toJSON()
       report.version = @version
-      reports.user_agent = navigator.userAgent
+      report.user_agent = navigator.userAgent
       # TODO add log
       
       # Post to api

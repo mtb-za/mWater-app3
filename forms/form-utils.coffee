@@ -69,6 +69,12 @@ exports.compileAll = ->
 exports.upsertAll = (callback) ->
   jsonClient = new JsonClient "http://api.mwater.co/v3/"
 
+  get = (path) ->
+    df = sync.defer()
+    jsonClient.get path, (err, res, body) ->
+      df(err, {res: res, body: body, status: res.statusCode})
+    return sync.await()
+
   post = (path, data) ->
     df = sync.defer()
     jsonClient.post path, data, (err, res, body) ->
@@ -94,6 +100,14 @@ exports.upsertAll = (callback) ->
 
       console.log "Compiling #{dir}"
       form = compile(dirpath)
+
+      # Get current version on server
+      res = get "forms?" + encodeURIComponent("selector=" + JSON.stringify({_id:form._id}))
+      if _.isEqual res.body, form
+        console.log "(Unchanged)"
+        continue
+
+      # TODO Why doesn't above work?
 
       # Upsert
       res = post "forms?client=#{client}", form

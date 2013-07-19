@@ -4,13 +4,13 @@
     "name": "Fluoride (generic method)",
     "desc": "Any method for measuring fluoride in water",
     "code": "FluorideGeneric",
-    "_rev": 3,
+    "_rev": 4,
     "created": {
         "on": "2013-07-17T14:03:50.726Z",
         "by": "admin"
     },
     "modified": {
-        "on": "2013-07-18T15:48:18.434Z",
+        "on": "2013-07-18T16:11:21.350Z",
         "by": "admin"
     },
     "user": "admin"
