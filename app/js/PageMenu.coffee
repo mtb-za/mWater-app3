@@ -2,6 +2,7 @@
 # ctx must be passed in as option
 
 login = require './login'
+context = require './context'
 
 module.exports = class PageMenu extends Backbone.View
   initialize: (options) ->
@@ -39,8 +40,8 @@ module.exports = class PageMenu extends Backbone.View
     login.setLogin(null)
     
     # Update context, first stopping old one
-    @ctx.stop()
-    _.extend @ctx, context.createAnonymousContext()
+    @options.ctx.stop()
+    _.extend @options.ctx, context.createAnonymousContext()
 
     @gotoLogin()
 
