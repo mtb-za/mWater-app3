@@ -18,9 +18,13 @@ class SurveyPage extends Page
           @pager.closePage()
           return
 
-        # Render form
+        # Render survey page
+        @$el.html templates['pages/SurveyPage'](form: form, response: response)
+
         @formView = forms.instantiateView(form.views.edit, { ctx: @ctx })
-        @$el.append(@formView.el)
+
+        # Add form view
+        @$("#form_view").append(@formView.el)
 
         # Listen to events
         @listenTo @formView, 'change', @saveResponse
@@ -40,7 +44,7 @@ class SurveyPage extends Page
 
   deactivate: ->
     # Save to be safe
-    if @formView
+    if @formView and @response
       @saveResponse()
 
   destroy: ->

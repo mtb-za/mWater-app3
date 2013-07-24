@@ -12,7 +12,9 @@
   {{#each responses}}
   <tr class="response tappable" id="{{_id}}">
     <td>
-      <span id="name_{{_id}}"></span> (started {{formatDate started "%F"}}) 
+      <span id="name_{{_id}}"></span> (started {{formatDate started "%F"}})
+      <br/>
+      <span class="muted">{{code}}</span>
     </td>
     <td style="vertical-align:middle; border-left:none; width: 16px"><i class="icon-chevron-right"></i></td>
   </tr>
