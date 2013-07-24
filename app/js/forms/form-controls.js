@@ -213,7 +213,8 @@ exports.Question = Backbone.View.extend({
     shouldBeVisible : function() {
         if (!this.options.conditional)
             return true;
-        return this.options.conditional(this.model);
+        // Test equality to handle undefined more gracefully
+        return this.options.conditional(this.model) == true;
     },
 
     initialize : function() {

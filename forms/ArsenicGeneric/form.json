@@ -4,13 +4,13 @@
     "name": "Arsenic (generic method)",
     "desc": "Any method for measuring arsenic in water",
     "code": "ArsenicGeneric",
-    "_rev": 7,
+    "_rev": 8,
     "created": {
         "on": "2013-07-17T14:03:50.050Z",
         "by": "admin"
     },
     "modified": {
-        "on": "2013-07-24T02:14:34.151Z",
+        "on": "2013-07-24T02:44:25.809Z",
         "by": "admin"
     },
     "user": "admin"

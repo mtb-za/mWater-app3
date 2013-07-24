@@ -129,7 +129,7 @@ createRecallQuestions = (suffix, text) ->
     prompt: "Other"
     required: true
     conditional: (m) ->
-      m.get("water_from" + suffix) == "Other"
+      m.get("water_from" + suffix)? and ("Other" in m.get("water_from" + suffix))
 
   qs.push new forms.MulticheckQuestion
     id: "water_provider" + suffix
@@ -212,7 +212,7 @@ questions.push new forms.TextQuestion
   prompt: "Other"
   required: true
   conditional: (m) ->
-    m.get("not_enough_water") == true and m.get("not_enough_water_reasons") and ("Other" in m.get("not_enough_water_reasons"))
+    m.get("not_enough_water") == true and m.get("not_enough_water_reasons")? and ("Other" in m.get("not_enough_water_reasons"))
 
 sections.push new forms.Section
   model: model
@@ -253,7 +253,7 @@ questions.push new forms.TextQuestion
   prompt: "Other"
   required: true
   conditional: (m) ->
-    m.get("home_treatment") and ("Other" in m.get("home_treatment"))
+    m.get("home_treatment")? and ("Other" in m.get("home_treatment"))
 
 sections.push new forms.Section
   model: model
