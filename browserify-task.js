@@ -3,8 +3,10 @@ var browserify = require('browserify'),
     glob = require("glob"),
     through = require('through');
 
+var pjson = require('./package.json');
+
 // Adds version info
-var version = new Date().toISOString().substring(0,19);
+var version = pjson.version;
 
 var versionXform = function (file) {
     var data = '';
