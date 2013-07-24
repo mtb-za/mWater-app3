@@ -3,12 +3,11 @@ var browserify = require('browserify'),
     glob = require("glob"),
     through = require('through');
 
-var pjson = require('./package.json');
-
 // Adds version info
-var version = pjson.version;
-
 var versionXform = function (file) {
+    pjson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+    version = pjson.version;
+
     var data = '';
     return through(write, end);
 
