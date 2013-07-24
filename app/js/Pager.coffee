@@ -74,6 +74,9 @@ class Pager extends Backbone.View
 
     @stack.pop()
 
+    # Scroll to top
+    window.scrollTo(0, 0)
+
     # Open replaceWith
     if replaceWith
       @openPage replaceWith, options

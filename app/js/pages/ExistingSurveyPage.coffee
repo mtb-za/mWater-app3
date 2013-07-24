@@ -11,7 +11,7 @@ class ExistingSurveyPage extends Page
   activate: ->
     @setTitle "Select Survey"
 
-    @db.responses.find({completed:null}).fetch (responses) =>
+    @db.responses.find({ completed:null, user: @login.user }).fetch (responses) =>
       @$el.html templates['pages/ExistingSurveyPage'](responses:responses)
 
       # Fill in survey names

@@ -8,6 +8,12 @@ questions.push new forms.TextQuestion
   id: "interpreter"
   model: model
   prompt: "Enter name of interpreter"
+  hint: "Leave blank if none"
+
+questions.push new forms.TextQuestion
+  id: "ward"
+  model: model
+  prompt: "Enter name of ward"
 
 questions.push new forms.Instructions
   html: '''
@@ -60,7 +66,7 @@ questions.push new forms.NumberQuestion
 questions.push new forms.RadioQuestion
   id: "enough_safe_sources"
   model: model
-  prompt: "Do you think you have enough safe water sources in your community?"
+  prompt: "Do you feel that you have enough water sources to choose from that are safe?"
   options: [[true, "Yes"], [false, "No"]]
 
 questions.push new forms.RadioQuestion
