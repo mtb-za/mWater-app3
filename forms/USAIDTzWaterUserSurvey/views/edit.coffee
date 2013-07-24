@@ -212,7 +212,7 @@ questions.push new forms.TextQuestion
   prompt: "Other"
   required: true
   conditional: (m) ->
-    m.get("not_enough_water") == true and m.get("not_enough_water_reasons") == "Other"
+    m.get("not_enough_water") == true and m.get("not_enough_water_reasons") and ("Other" in m.get("not_enough_water_reasons"))
 
 sections.push new forms.Section
   model: model
