@@ -4,13 +4,13 @@
     "name": "3M Petrifilm E. coli/coliform",
     "desc": "1 mL direct count method for E. coli and total coliform",
     "code": "PetrifilmEcoliColiform",
-    "_rev": 4,
+    "_rev": 6,
     "created": {
         "on": "2013-07-17T14:03:50.949Z",
         "by": "admin"
     },
     "modified": {
-        "on": "2013-07-18T16:11:21.849Z",
+        "on": "2013-07-24T01:51:53.542Z",
         "by": "admin"
     },
     "user": "admin"
