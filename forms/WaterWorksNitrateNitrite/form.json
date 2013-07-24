@@ -4,13 +4,13 @@
     "name": "WaterWorks Nitrate / Nitrite Nitrogen",
     "desc": "Test strip for nitrate (NO3) and nitrite (NO2) (manufactured by ITS)",
     "code": "WaterWorksNitrateNitrite",
-    "_rev": 6,
+    "_rev": 7,
     "created": {
         "on": "2013-07-17T14:03:51.479Z",
         "by": "admin"
     },
     "modified": {
-        "on": "2013-07-24T01:51:56.086Z",
+        "on": "2013-07-24T02:14:44.108Z",
         "by": "admin"
     },
     "user": "admin"

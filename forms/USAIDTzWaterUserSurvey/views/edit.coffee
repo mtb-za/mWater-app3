@@ -97,29 +97,29 @@ createRecallQuestions = (suffix, text) ->
       ['PipePublic', 'Public tap']
       ['NeighborTap', 'Neighbor’s tap']
       ['Water from open well']
-      ['1', 'Open well in dwelling']
-      ['2', 'Open well in yard/plot']
-      ['3', 'Open public well']
-      ['4', 'Neighbor’s open well']
+      ['OpenWellDwelling', 'Open well in dwelling']
+      ['OpenWellYardPlot', 'Open well in yard/plot']
+      ['OpenWellPublic', 'Open public well']
+      ['OpenWellNeighbor', 'Neighbor’s open well']
       ['Water from covered well']
-      ['5', 'Protected well in dwelling']
-      ['6', 'Protected well in yard/plot']
-      ['7', 'Protected public well']
-      ['8', 'Neighbor’s protected well']
+      ['ProtWellDwelling', 'Protected well in dwelling']
+      ['ProtWellYardPlot', 'Protected well in yard/plot']
+      ['ProtWellPublic', 'Protected public well']
+      ['ProtWellNeighbor', 'Neighbor’s protected well']
       ['Borehole']
-      ['9', 'Borehole in yard/plot']
-      ['10', 'Public borehole']
+      ['BoreholeYardPlot', 'Borehole in yard/plot']
+      ['BoreholePublic', 'Public borehole']
       ['Surface water']
-      ['11', 'Spring']
-      ['12', 'River / stream']
-      ['13', 'Pond']
-      ['14', 'Lake Victoria']
-      ['15', 'Dam']
+      ['Spring', 'Spring']
+      ['RiverStream', 'River / stream']
+      ['Pond', 'Pond']
+      ['LakeVictoria', 'Lake Victoria']
+      ['Dam', 'Dam']
       ['Other']
       ['Rainwater', 'Rainwater']
       ['TankerTruck', 'Tanker truck']
-      ['16', 'Water vendor']
-      ['17', 'Bottled water']
+      ['WaterVendor', 'Water vendor']
+      ['Bottled', 'Bottled water']
       ['Other', 'Other']
     ]
   
@@ -253,116 +253,12 @@ questions.push new forms.TextQuestion
   prompt: "Other"
   required: true
   conditional: (m) ->
-    m.get("home_treatment") == "Other"
+    m.get("home_treatment") and ("Other" in m.get("home_treatment"))
 
 sections.push new forms.Section
   model: model
   title: "Household storage and treatment"
   contents: questions
-
-# /* 4 */
-# {
-#     "code" : "Household",
-#     "name" : "Household storage container"
-# }
-
-# /* 5 */
-# {
-#     "code" : "Tubewell",
-#     "name" : "Tubewell"
-# }
-
-# /* 6 */
-# {
-#     "code" : "Dug",
-#     "name" : "Unprotected dug well"
-# }
-
-# /* 7 */
-# {
-#     "code" : "BoreholeHand",
-#     "name" : "Borehole with hand pump"
-# }
-
-# /* 8 */
-# {
-#     "code" : "DugProt",
-#     "name" : "Protected dug well without pump"
-# }
-
-# /* 9 */
-# {
-#     "code" : "DugProtHand",
-#     "name" : "Protected dug well with hand pump"
-
-
-# /* 11 */
-# {
-#     "code" : "Spring",
-#     "name" : "Unprotected spring"
-# }
-
-# /* 12 */
-# {
-#     "code" : "JerryCan",
-#     "name" : "Jerry Can"
-# }
-
-# /* 13 */
-# {
-#     "code" : "DugProtMech",
-#     "name" : "Protected dug well with mech pump"
-# }
-
-
-# /* 15 */
-# {
-#     "code" : "BoreholeMech",
-#     "name" : "Borehole with mechanical pump"
-# }
-
-# /* 16 */
-# {
-#     "code" : "SpringProt",
-#     "name" : "Protected spring"
-# }
-
-# /* 17 */
-# {
-#     "code" : "Surface",
-#     "name" : "Surface Water"
-# }
-
-# /* 18 */
-# {
-#     "code" : "Bottled",
-#     "name" : "Bottled Water"
-# }
-
-# /* 19 */
-# {
-#     "code" : "SupplyTank",
-#     "name" : "Supply network tank"
-# }
-
-# /* 20 */
-# {
-#     "code" : "SupplySample",
-#     "name" : "Supply network sampling point"
-# }
-
-# /* 21 */
-# {
-#     "code" : "SwimmingPool",
-#     "name" : "Swimming pool"
-# }
-
-# /* 22 */
-# {
-#     "code" : "Beach",
-#     "name" : "Beach"
-# }
-
 
 view = new forms.Sections(
   sections: sections
