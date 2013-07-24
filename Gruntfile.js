@@ -110,7 +110,8 @@ module.exports = function(grunt) {
       bump_version: {
         command: 'npm version patch',
         options: {
-          stdout: true
+          stdout: true,
+          failOnError: true
         },
       },
       deploy_demo: {
