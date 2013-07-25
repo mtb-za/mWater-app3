@@ -38,7 +38,21 @@ class ExistingSurveyPage extends Page
 
   openResponse: (ev) ->
     responseId = ev.currentTarget.id
-    @pager.closePage(SurveyPage, { _id: responseId})
+    @db.responses.findOne { _id: responseId }, (response) =>
+      if not response
+        alert("Survey not found")
+        return
+
+      if response.completed
+        if not confirm("Opening a completed survey will automatically make it a draft survey. Proceed?")
+          return
+
+        # Remove completed
+        response.completed = null
+        @db.responses.upsert response, =>
+          @pager.openPage(SurveyPage, { _id: response._id})
+      else
+        @pager.openPage(SurveyPage, { _id: responseId})
 
   addSurvey: ->
     @pager.openPage(NewSurveyPage)
