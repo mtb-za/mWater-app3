@@ -24,17 +24,19 @@ class ExistingSurveyPage extends Page
       @$("#recent_table").html templates['pages/ExistingSurveyPage_items'](responses:responses)
 
       # Fill in survey names
-      for resp in responses
-        @db.forms.findOne { code:resp.type }, { mode: "local" }, (form) =>
-          @$("#name_"+resp._id).text(if form then form.name else "???")
+      _.defer => # Defer to allow html to render
+        for resp in responses
+          @db.forms.findOne { code:resp.type }, { mode: "local" }, (form) =>
+            @$("#name_"+resp._id).text(if form then form.name else "???")
 
     @db.responses.find({ completed: null, user: @login.user }, {sort:[['started','desc']]}).fetch (responses) =>
       @$("#incomplete_table").html templates['pages/ExistingSurveyPage_items'](responses:responses)
 
       # Fill in survey names
-      for resp in responses
-        @db.forms.findOne { code:resp.type }, { mode: "local" }, (form) =>
-          @$("#name_"+resp._id).text(if form then form.name else "???")
+      _.defer => # Defer to allow html to render
+        for resp in responses
+          @db.forms.findOne { code:resp.type }, { mode: "local" }, (form) =>
+            @$("#name_"+resp._id).text(if form then form.name else "???")
 
   openResponse: (ev) ->
     responseId = ev.currentTarget.id

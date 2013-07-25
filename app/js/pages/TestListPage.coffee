@@ -25,17 +25,19 @@ module.exports = class TestListPage extends Page
       @$("#recent_table").html templates['pages/TestListPage_items'](tests:tests)
 
       # Fill in test names
-      for test in tests
-        @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
-          @$("#name_"+test._id).text(if form then form.name else "???")
+      _.defer => # Defer to allow html to render
+        for test in tests
+          @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
+            @$("#name_"+test._id).text(if form then form.name else "???")
 
     @db.tests.find({ completed: null, user: @login.user }).fetch (tests) =>
       @$("#incomplete_table").html templates['pages/TestListPage_items'](tests:tests)
 
       # Fill in test names
-      for test in tests
-        @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
-          @$("#name_"+test._id).text(if form then form.name else "???")
+      _.defer => # Defer to allow html to render
+        for test in tests
+          @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
+            @$("#name_"+test._id).text(if form then form.name else "???")
 
   testClicked: (ev) ->
     @pager.openPage(TestPage, {_id: ev.currentTarget.id})
