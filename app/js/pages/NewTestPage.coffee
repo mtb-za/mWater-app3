@@ -18,12 +18,18 @@ class NewTestPage extends Page
   startTest: (ev) ->
     testCode = ev.currentTarget.id
 
+    form = _.findWhere(@forms, { code: testCode })
+    if not form
+      @error("Form not found")
+      return
+
     # Create test
     test = {
       source: @options.source
-      type: testCode
-      completed: null
+      type: form.code
+      type_rev: form._rev
       started: new Date().toISOString()
+      completed: null
       user: @login.user
       org: @login.org
     }

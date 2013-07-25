@@ -24,8 +24,13 @@ class SourceMapPage extends Page
     # Setup map tiles
     setupMapTiles().addTo(@map)
 
-    # Setup marker display
-    @sourceDisplay = new SourceDisplay(@map, @db, @pager)
+    # Setup marker display when map is loaded
+    @map.whenReady =>
+      @sourceDisplay = new SourceDisplay(@map, @db, @pager)
+      
+      # Update on map movement
+      @map.on 'moveend', =>
+        @sourceDisplay.updateMarkers()
 
     # TODO zoom to last known bounds
     
@@ -35,6 +40,11 @@ class SourceMapPage extends Page
 
     # Setup localtion display
     @locationDisplay = new LocationDisplay(@map, not @options.initialGeo?)
+
+  activate: ->
+    # Update markers
+    if @sourceDisplay
+      @sourceDisplay.updateMarkers()
 
   destroy: ->
     $(window).off('resize', @resizeMap)
@@ -53,6 +63,7 @@ setupMapTiles = ->
   mapquestAttrib = 'Data, imagery and map information provided by <a href="http://open.mapquest.co.uk" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
   return new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: subDomains})
 
+# Displays water sources on map. Call updateMarkers to refresh
 class SourceDisplay
   constructor: (map, db, pager) ->
     @map = map
@@ -61,7 +72,6 @@ class SourceDisplay
     @itemTracker = new ItemTracker()
 
     @sourceMarkers = {}
-    @map.on('moveend', @updateMarkers)
 
     @icon = new L.icon
       iconUrl: 'img/DropMarker.png'
@@ -72,12 +82,11 @@ class SourceDisplay
   
   updateMarkers: =>
     # Get bounds padded
-    bounds = @map.getBounds().pad(0.33)
-
-    # Check for empty case
-    if _.isEqual(bounds.getSouthWest(), bounds.getNorthEast())
+    bounds = @map.getBounds()
+    if not bounds.isValid()
       return
 
+    bounds = bounds.pad(0.33)
     boundsGeoJSON = GeoJSON.latLngBoundsToGeoJSON(bounds)
 
     # Spherical Polygons must fit within a hemisphere.

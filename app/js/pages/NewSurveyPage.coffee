@@ -11,20 +11,27 @@ module.exports = class NewSurveyPage extends Page
     @setTitle "Select Survey"
 
     @db.forms.find({type:"Survey"}).fetch (forms) =>
+      @forms = forms
       @$el.html templates['pages/NewSurveyPage'](forms:forms)
 
   startSurvey: (ev) ->
     surveyCode = ev.currentTarget.id
+
+    form = _.findWhere(@forms, { code: surveyCode })
+    if not form
+      @error("Form not found")
+      return
 
     # Create code. Not unique, but unique per user if logged in once.
     code = @login.user + "-" + createBase32TimeCode(new Date())
 
     # Create response
     response = {
-      type: surveyCode
+      type: form.code
+      type_rev: form._rev
       code: code
-      completed: null
       started: new Date().toISOString()
+      completed: null
       user: @login.user
       org: @login.org
     }

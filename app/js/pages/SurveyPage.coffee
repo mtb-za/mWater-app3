@@ -67,7 +67,7 @@ class SurveyPage extends Page
 
     @db.responses.upsert(@response)
     @pager.closePage()
-    @pager.flash "Survey submitted successfully", "success"
+    @pager.flash "Survey completed successfully", "success"
 
   removeResponse: ->
     if @auth.remove("responses", @response) and confirm("Permanently delete survey?")

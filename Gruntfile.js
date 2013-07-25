@@ -137,10 +137,6 @@ module.exports = function(grunt) {
       scripts: {
         files: ['app/**/*.*'],
         tasks: ['default'],
-      },
-      forms: {
-        files: ['forms/**/*.*'],
-        tasks: ['compile-forms']
       }
     }
   });

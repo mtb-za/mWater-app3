@@ -6,7 +6,7 @@
 	font-weight: bold;
 	white-space: nowrap;
 	background-color: #f7f7f9;
-	border: 1px solid #e1e1e8;
+	border: 1px solid #d1d1d8;
 }
 .responsecode_div {
     margin-bottom: 8px;
@@ -15,8 +15,9 @@
 </style>
 
 <div class="responsecode_div">
-	<span class="muted"><b>ID: </b></span><span class="responsecode">{{response.code}}</span>
-	{{! <a href="#" class="btn" data-toggle="popover" data-placement="bottom" data-content="Survey codes are unique identifiers for each survey created" title="" data-original-title="Survey Codes"><i class="icon-question-sign"></i></a> }}
+	<span class="muted"><b>Survey </b></span>
+	<span class="responsecode">{{response.code}}</span>
+	<span class="muted"><b> of </b></span><b>{{form.name}}</b>
 </div>
 
 <div id="form_view">

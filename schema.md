@@ -45,6 +45,7 @@ photoset: array of { id: <image id, required>, caption: string }
 
 * _id (string, required): UUID v4 with no dashes 
 * type (forms.code, required): code of form
+* type_rev (forms._rev): revision of form used
 * code (string): human-readable code of response. Not strongly unique, but username+"-"+base32 of seconds since July 1, 2013
 * started (datetime, required): when survey was started
 * data (object): data of survey
@@ -56,6 +57,7 @@ photoset: array of { id: <image id, required>, caption: string }
 
 * source (sources.code): Source which test is of
 * type (forms.code): code of form
+* type_rev (forms._rev): revision of form used
 * started (datetime): Date test was started
 * completed (datetime): Date test was completed
 * user (users.username): User who manages test

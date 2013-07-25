@@ -260,6 +260,32 @@ sections.push new forms.Section
   title: "Household storage and treatment"
   contents: questions
 
+questions = []
+
+questions.push new forms.Instructions
+  html: '''
+  Note: These questions are intended to exhaustively capture the respondent’s knowledge and opinions about the subject. If the person gives a very specific response, gently prompt them to provide a general answer. 
+  Attempt to record word-for-word the entire response. At the end of an answer, politely ask, “can you tell me more?” Continue this until the person says they have nothing more to say about the subject.
+  If necessary, write down the answer in a notebook and enter into survey later to ensure that each word is recorded.
+  '''
+
+questions.push new forms.TextQuestion
+  id: "contaminated_health_problem"
+  model: model
+  prompt: "In general, do you think for your community contaminated water is a health problem?"
+  multiline: true
+
+questions.push new forms.TextQuestion
+  id: "water_sources_benefit"
+  model: model
+  prompt: "How do safe water sources benefit your community?"
+  multiline: true
+
+sections.push new forms.Section
+  model: model
+  title: "Exhaustive Questions"
+  contents: questions
+
 view = new forms.Sections(
   sections: sections
   model: model

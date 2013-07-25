@@ -20,6 +20,11 @@ module.exports = class SourcePage extends Page
 
   activate: ->
     @db.sources.findOne {_id: @options._id}, (source) =>
+      if not source
+        alert("Source not found")
+        @pager.closePage()
+        return
+
       @source = source
       @render()
 
