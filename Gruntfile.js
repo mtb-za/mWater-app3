@@ -157,5 +157,5 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy', 'handlebars', 'manifest']);
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
   grunt.registerTask('deploy_app', ['shell:bump_version', 'default', 'shell:deploy_app']);
-  grunt.registerTask('deploy', ['shell:deploy_app', 'shell:deploy_demo']);
+  grunt.registerTask('deploy', ['deploy_app', 'deploy_demo']);
 };
