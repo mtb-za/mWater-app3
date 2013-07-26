@@ -17,7 +17,7 @@ module.exports = class ImagePage extends Page
     # If remove allowed, set in button bar
     if @options.onRemove
       @setupButtonBar [
-        { icon: "delete.png", click: => @removePhoto() }
+        { icon: "delete_32x32.png", click: => @removePhoto() }
       ]
     else
       @setupButtonBar []

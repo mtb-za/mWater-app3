@@ -5,7 +5,7 @@ NewSourcePage = require("./NewSourcePage")
 
 class MainPage extends Page
   activate: ->
-    @setTitle "mWater"
+    @setTitle "Home"
 
     # Rerender on error/success of sync
     if @sync?
@@ -36,7 +36,7 @@ class MainPage extends Page
     if NewSurveyPage.canOpen(@ctx)
       menu.push({ text: "Start Survey", click: => @addSurvey() })
     if menu.length > 0
-      @setupButtonBar [{ icon: "plus.png", menu: menu }]
+      @setupButtonBar [{ icon: "plus_32x32.png", menu: menu }]
 
   addSurvey: ->
     @pager.openPage(NewSurveyPage)

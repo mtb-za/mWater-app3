@@ -26,8 +26,8 @@ module.exports = class SourceListPage extends Page
     @$("#location_msg").show()
 
     @setupButtonBar [
-      { icon: "search.png", click: => @search() }
-      { icon: "plus.png", click: => @addSource() }
+      { icon: "search_32x32.png", click: => @search() }
+      { icon: "plus_32x32.png", click: => @addSource() }
     ]
 
     # Query database for unlocated sources
