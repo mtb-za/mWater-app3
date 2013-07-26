@@ -38,7 +38,7 @@ module.exports = class NewSurveyPage extends Page
     @db.responses.upsert response, (response) =>
       @pager.closePage(SurveyPage, {_id: response._id})
 
-# Create a base32 time code to write on surbveys
+# Create a base32 time code to write on surveys
 createBase32TimeCode = (date) ->
   # Characters to use (skip 1, I, 0, O)
   chars = "23456789ABCDEFGHJLKMNPQRSTUVWXYZ"

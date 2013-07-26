@@ -12,6 +12,7 @@ module.exports = class PageMenu extends Backbone.View
     "click #home" : "gotoHome"
     "click #login" : "gotoLogin"
     "click #logout" : "logout"
+    "click #diarr_case_list" : "gotoDiarrCaseList"
     "click #source_list" : "gotoSourceList"
     "click #source_map" : "gotoSourceMap"
     "click #settings" : "gotoSettings"
@@ -49,6 +50,11 @@ module.exports = class PageMenu extends Backbone.View
     while @pager.multiplePages()
       @pager.closePage()
     @pager.closePage(require("./pages/LoginPage"))
+
+  gotoDiarrCaseList: ->
+    while @pager.multiplePages()
+      @pager.closePage()
+    @pager.openPage(require("./pages/DiarrCaseListPage"))
 
   gotoSourceList: ->
     while @pager.multiplePages()

@@ -10,15 +10,15 @@ MainPage = require './pages/MainPage'
 LoginPage = require './pages/LoginPage'
 
 exports.start = (options = {}) ->
-  if options.demo  
-    ctx = context.createDemoContext(ctx)
-  else if login.getLogin()
-    ctx = context.createLoginContext(login.getLogin())
-  else  
-    ctx = context.createAnonymousContext()
+  #if options.demo  
+  ctx = context.createDemoContext()
+  #else if login.getLogin()
+  #  ctx = context.createLoginContext(login.getLogin())
+  #else  
+  #  ctx = context.createAnonymousContext()
 
-  problemReporter = ProblemReporter.register ctx.apiUrl + 'problem_reports', "//VERSION//", ->
-    return ctx.login
+  #problemReporter = ProblemReporter.register ctx.apiUrl + 'problem_reports', "//VERSION//", ->
+  #  return ctx.login
 
   # Create pager
   pager = new Pager(ctx)
@@ -33,6 +33,18 @@ exports.start = (options = {}) ->
   $("body").append(app.$el)
 
   $ -> 
+    # pager.openPage(require("./pages/LocationMapPage"), {
+    #   geo: {
+    #     type: "Point"
+    #     properties: { accuracy: 100 }
+    #     coordinates: [100,0]
+    #   }, 
+    #   geoCallback: (geo) ->
+    #     alert("set!")
+
+    # })
+    # return
+
     # If logged in, open main page
     if ctx.login?
       pager.openPage(MainPage)

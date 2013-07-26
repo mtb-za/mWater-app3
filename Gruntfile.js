@@ -114,17 +114,8 @@ module.exports = function(grunt) {
           failOnError: true
         },
       },
-      deploy_demo: {
-        command: 's3cmd sync --acl-public --guess-mime-type * s3://demo.mwater.co',
-        options: {
-          stdout: true,
-          execOptions: {
-            cwd: 'dist'
-          }
-        },
-      },
       deploy_app: {
-        command: 's3cmd sync --acl-public --guess-mime-type * s3://app.mwater.co',
+        command: 's3cmd sync --acl-public --guess-mime-type * s3://broadstreet.mwater.co',
         options: {
           stdout: true,
           execOptions: {
@@ -154,8 +145,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
 
   // Default task(s).
-  grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy', 'handlebars', 'manifest']);
-  grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
-  grunt.registerTask('deploy_app', ['shell:bump_version', 'default', 'shell:deploy_app']);
-  grunt.registerTask('deploy', ['deploy_app', 'deploy_demo']);
+  grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy', 'handlebars']);
+  grunt.registerTask('deploy_app', ['default', 'shell:deploy_app']);
+  grunt.registerTask('deploy', ['deploy_app']);
 };

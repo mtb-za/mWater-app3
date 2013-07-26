@@ -1,0 +1,11 @@
+{{#each diarrCases}}
+<tr class="tappable" id="{{_id}}">
+  <td><strong>{{code}}</strong></td>
+  <td style="border-left:none;">{{formatDate date "%F"}}</strong></td>
+  <td style="vertical-align:middle; border-left:none; width: 16px"><i class="icon-chevron-right"></i></td>
+</tr>
+{{else}}
+<tr>
+    <td> <i>None</i> </td>
+</tr>
+{{/each}}

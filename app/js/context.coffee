@@ -31,7 +31,7 @@ authModule = require("./auth")
 sourcecodes = require './sourcecodes'
 syncModule = require './sync'
 
-collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes']
+collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes', 'diarr_cases']
 
 apiUrl = 'http://api.mwater.co/v3/'
 

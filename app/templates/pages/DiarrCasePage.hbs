@@ -1,0 +1,23 @@
+{{! Display response code }}
+<style>
+.responsecode {
+	padding: 2px 4px;
+	font-weight: bold;
+	white-space: nowrap;
+	background-color: #f7f7f9;
+	border: 1px solid #d1d1d8;
+}
+.responsecode_div {
+    margin-bottom: 8px;
+    margin-top: 4px;
+}
+</style>
+
+<div class="responsecode_div">
+	<span class="muted"><b>Case </b></span>
+	<span class="responsecode">{{diarrCase.code}}</span>
+</div>
+
+<div id="form_view">
+	{{! Form view goes here }}
+</div>
