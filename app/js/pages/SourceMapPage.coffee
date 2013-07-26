@@ -27,7 +27,7 @@ class SourceMapPage extends Page
     # Setup marker display when map is loaded
     @map.whenReady =>
       @sourceDisplay = new SourceDisplay(@map, @db, @pager)
-      
+
       # Update on map movement
       @map.on 'moveend', =>
         @sourceDisplay.updateMarkers()
@@ -84,6 +84,10 @@ class SourceDisplay
     # Get bounds padded
     bounds = @map.getBounds()
     if not bounds.isValid()
+      return
+    if bounds.getWest() == bounds.getEast()
+      return
+    if bounds.getNorth() == bounds.getSouth()
       return
 
     bounds = bounds.pad(0.33)
