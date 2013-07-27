@@ -9,7 +9,9 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
     browserify: {},
+
     concat: {
       libsjs: {
         // the files to concatenate
@@ -38,6 +40,7 @@ module.exports = function(grunt) {
           dest: 'dist/css/app.css'
       }
     },
+
     uglify: {
       options: {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
@@ -47,21 +50,23 @@ module.exports = function(grunt) {
         dest: 'dist/js/libs.min.js'
       }
     },
+
     handlebars: {
       compile: {
-      options: {
-        namespace: "templates",
-        wrapped: true,
-        processName: function(filename) {
-          var name = filename.substr('app/templates/'.length);    // cwd doesn't work
-          name = name.substr(0, name.length-4);
-          return name;
-        }
+        options: {
+          namespace: "templates",
+          wrapped: true,
+          processName: function(filename) {
+            var name = filename.substr('app/templates/'.length);    // cwd doesn't work
+            name = name.substr(0, name.length-4);
+            return name;
+          }
       },
       files: {
         "dist/js/templates.js": ["app/templates/**/*.hbs"] }
       }
     },
+
     copy: {
       apphtml: {
         expand: true,
@@ -73,22 +78,35 @@ module.exports = function(grunt) {
         expand: true,
         cwd: 'app/img/',
         src: '*',
-        dest: 'dist/img/',
+        dest: 'dist/img/'
       },
       libimages: {
         expand: true,
         cwd: 'vendor/bootstrap/img/',
         src: '*',
-        dest: 'dist/img/',
+        dest: 'dist/img/'
       },
       leafletimages: {
         expand: true,
         cwd: 'vendor/leaflet/images/',
         src: '*',
-        dest: 'dist/img/leaflet/',
+        dest: 'dist/img/leaflet/'
+      },
+      cordova_www: {
+        expand: true,
+        cwd: 'dist/',
+        src: '**',
+        dest: 'cordova/www/'
+      },  
+      cordova_config: {
+        expand: true,
+        cwd: 'cordova/',
+        src: 'config.xml',
+        dest: 'cordova/www/'
       }
     },
-   manifest: {
+
+    manifest: {
       generate: {
         options: {
           basePath: 'dist/',
@@ -106,13 +124,14 @@ module.exports = function(grunt) {
         dest: 'dist/manifest.appcache'
       }
     },
+
     shell: {
       bump_version: {
         command: 'npm version patch',
         options: {
           stdout: true,
           failOnError: true
-        },
+        }
       },
       deploy_demo: {
         command: 's3cmd sync --acl-public --guess-mime-type * s3://demo.mwater.co',
@@ -121,30 +140,41 @@ module.exports = function(grunt) {
           execOptions: {
             cwd: 'dist'
           }
-        },
+        }
       },
+
       deploy_app: {
-        command: 's3cmd sync --acl-public --guess-mime-type * s3://app.mwater.co',
+        command: [
+          's3cmd sync --acl-public --guess-mime-type * s3://app.mwater.co',
+          's3cmd put --acl-public --guess-mime-type ' +
+          '--add-header "Cache-Control: no-cache, no-store, must-revalidate" ' +
+          '--add-header "Pragma: no-cache" ' +
+          '--add-header "Expires: 0" ' + 
+          'manifest.appcache s3://app.mwater.co'
+        ].join('&&'),
         options: {
           stdout: true,
           execOptions: {
               cwd: 'dist'
           }
         }
-      },
+      }
     },
+
     watch: {
       scripts: {
         files: ['app/**/*.*'],
-        tasks: ['default'],
+        tasks: ['default']
       }
     }
+
   });
 
   grunt.registerTask('browserify', 'Make single file output', browserify);
   grunt.registerTask('upsert-forms', 'Upsert forms to server', upsertForms);
   grunt.registerTask('compile-forms', 'Make forms into js', compileForms);
   grunt.registerTask('seeds', 'Seed database with some tables', seeds);
+
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
@@ -153,8 +183,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-manifest');
   grunt.loadNpmTasks('grunt-shell');
 
-  // Default task(s).
-  grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy', 'handlebars', 'manifest']);
+  grunt.registerTask('cordova', ['copy:cordova_www', 'copy:cordova_config']);
+
+  grunt.registerTask('copy-app', ['copy:apphtml', 'copy:appimages', 'copy:libimages', 'copy:leafletimages']);
+  grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy-app', 'handlebars', 'manifest']);
+
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
   grunt.registerTask('deploy_app', ['shell:bump_version', 'default', 'shell:deploy_app']);
   grunt.registerTask('deploy', ['deploy_app', 'deploy_demo']);
