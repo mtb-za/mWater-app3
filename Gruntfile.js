@@ -100,7 +100,7 @@ module.exports = function(grunt) {
       },  
       cordova_config: {
         expand: true,
-        cwd: 'cordova/',
+        cwd: 'app/',
         src: 'config.xml',
         dest: 'cordova/www/'
       },
