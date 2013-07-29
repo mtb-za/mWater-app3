@@ -1,4 +1,4 @@
-exports.getPicture = (success, error) ->
+exports.takePicture = (success, error) ->
   unless navigator.camera
     error()
     return

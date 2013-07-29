@@ -9,7 +9,7 @@ Contexts have fixed members that have to be present.
 
 db: database (LocalDb, HybridDb or RemoteDb)
 imageManager: Simple or Cached Image manager
-camera: Camera that has a single function: getPicture(success, error). 
+camera: Camera that has a single function: takePicture(success, error). 
   success is called with url to be passed to imageManager.addImage(url, success, error)
   error: error function to be called with unexpected errors
   auth: see auth module
@@ -30,6 +30,7 @@ SimpleImageManager = require './images/SimpleImageManager'
 authModule = require("./auth")
 sourcecodes = require './sourcecodes'
 syncModule = require './sync'
+Camera = require './Camera'
 
 collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes']
 
@@ -37,12 +38,8 @@ apiUrl = 'http://api.mwater.co/v3/'
 
 # Base context
 createBaseContext = ->
-  # Fake camera # TODO use cordova where possible
-  camera = {
-    getPicture: (success, error) ->
-      alert("On the Android app, this would take a picture")
-  }
-
+  camera = if Camera? then Camera else null
+  
   error = (err) ->
     console.error err
     str = if err? and err.message then err.message else err
