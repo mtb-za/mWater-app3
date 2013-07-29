@@ -17,11 +17,23 @@ describe "AppUpdater", ->
     # Obtain temp storage
     FileUtils.getTempFileSystem (fs) =>
       @fs = fs
+      @fileTransfer = 
+        download: (source, target, successCallback, errorCallback) =>
+          $.get(source).fail(errorCallback).done (data) =>
+            fs.root.getFile target, {create: true, exclusive: false}, (fileEntry) =>
+              fileEntry.createWriter (writer) =>
+                writer.onwriteend = ->
+                  successCallback fileEntry
+                blob = new Blob([data], {type: 'text/plain'})
+                writer.write(blob)
+              , errorCallback
+            , errorCallback
+  
       done()
 
   context "clean install", ->
     beforeEach ->
-      @up = new AppUpdater("fixtures/AppUpdater/orig1/", "fixtures/AppUpdater/update1/", @fs, "Android/data/co.mwater.clientapp/updates")
+      @up = new AppUpdater(@fs, @fileTransfer, "fixtures/AppUpdater/orig1/", "fixtures/AppUpdater/update1/", "Android/data/co.mwater.clientapp/updates")
 
     it "launches orig", (done) ->
       @up.launch (url) =>
@@ -38,7 +50,7 @@ describe "AppUpdater", ->
 
   context "update available", ->
     beforeEach ->
-      @up = new AppUpdater("fixtures/AppUpdater/orig1/", "fixtures/AppUpdater/update2/", @fs, "Android/data/co.mwater.clientapp/updates")
+      @up = new AppUpdater(@fs, @fileTransfer, "fixtures/AppUpdater/orig1/", "fixtures/AppUpdater/update2/", "Android/data/co.mwater.clientapp/updates")
 
     it "launches orig", (done) ->
       @up.launch (url) =>
@@ -54,7 +66,7 @@ describe "AppUpdater", ->
 
   context "updated to 2", ->
     beforeEach (done) ->
-      @up = new AppUpdater("fixtures/AppUpdater/orig1/", "fixtures/AppUpdater/update2/", @fs, "Android/data/co.mwater.clientapp/updates")
+      @up = new AppUpdater(@fs, @fileTransfer, "fixtures/AppUpdater/orig1/", "fixtures/AppUpdater/update2/", "Android/data/co.mwater.clientapp/updates")
       @up.update (status) =>
         assert.equal status, "relaunch"
         done()
@@ -65,18 +77,35 @@ describe "AppUpdater", ->
         assert.notEqual url, "fixtures/AppUpdater/orig1/"
         assert.notEqual url, "fixtures/AppUpdater/update2/"
         done()
+      , fail
 
     it "gives updated folder", (done) ->
       @up.launch (url) =>
-        $.get url + "test.txt", (data) -> 
+        q = $.get url + "test.txt", (data) -> 
           assert.equal data, "Text2"
-          $.get url + "test2.txt", (data) -> 
+          q = $.get url + "test2.txt", (data) -> 
             assert.equal data, "Text2a"
             done()
+          q.fail fail
+        q.fail fail
+      , fail
 
+    it "does not re-update", (done) ->
+      @up.update (status) =>
+        assert.equal status, "uptodate"
+        done()
+      , fail
+
+    it "fresh orig files trump old update", (done) ->
+      @up = new AppUpdater(@fs, @fileTransfer, "fixtures/AppUpdater/orig3/", "fixtures/AppUpdater/update2/", "Android/data/co.mwater.clientapp/updates")
+      @up.launch (url) =>
+        assert.equal url, "fixtures/AppUpdater/orig3/"
+        done()
+      , fail
+    
   context "update missing", ->
     beforeEach ->
-      @up = new AppUpdater("fixtures/AppUpdater/orig1/", "fixtures/AppUpdater/MISSING/", @fs, "Android/data/co.mwater.clientapp/updates")
+      @up = new AppUpdater(@fs, @fileTransfer, "fixtures/AppUpdater/orig1/", "fixtures/AppUpdater/MISSING/", "Android/data/co.mwater.clientapp/updates")
 
     it "updates fail gently", (done) ->
       @up.update (status) =>
@@ -86,10 +115,10 @@ describe "AppUpdater", ->
 
   context "update invalid after successful one", ->
     beforeEach (done) ->
-      @up = new AppUpdater("fixtures/AppUpdater/orig1/", "fixtures/AppUpdater/update2/", @fs, "Android/data/co.mwater.clientapp/updates")
+      @up = new AppUpdater(@fs, @fileTransfer, "fixtures/AppUpdater/orig1/", "fixtures/AppUpdater/update2/", "Android/data/co.mwater.clientapp/updates")
       @up.update (status) =>
         assert.equal status, "relaunch"
-        @up = new AppUpdater("fixtures/AppUpdater/orig1/", "fixtures/AppUpdater/update_bad/", @fs, "Android/data/co.mwater.clientapp/updates")
+        @up = new AppUpdater(@fs, @fileTransfer, "fixtures/AppUpdater/orig1/", "fixtures/AppUpdater/update_bad/", "Android/data/co.mwater.clientapp/updates")
         done()
       , fail
 
@@ -109,10 +138,13 @@ describe "AppUpdater", ->
       , fail
 
     it "next update succeeds", (done) ->
-      @up = new AppUpdater("fixtures/AppUpdater/orig1/", "fixtures/AppUpdater/update3/", @fs, "Android/data/co.mwater.clientapp/updates")
+      @up = new AppUpdater(@fs, @fileTransfer, "fixtures/AppUpdater/orig1/", "fixtures/AppUpdater/update3/", "Android/data/co.mwater.clientapp/updates")
       @up.update (status) =>
         assert.equal status, "relaunch"
-        $.get url + "test.txt", (data) -> 
-          assert.equal data, "Text3"
-          done()
+        @up.launch (url) =>
+          $.get url + "test.txt", (data) -> 
+            assert.equal data, "Text3"
+            done()
+        , fail
       , fail
+
