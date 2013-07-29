@@ -1,65 +1,25 @@
 assert = chai.assert
 
 CachedImageManager = require '../app/js/images/CachedImageManager'
+FileUtils = require './helpers/FileUtils'
 
 fail = (err) ->
   console.error err
   assert.fail()
 
-createImage = (fs, name, text, success) ->
-  fs.root.getFile name, {create: true}, (fileEntry) =>
-    # Create a FileWriter object for our FileEntry 
-    fileEntry.createWriter (fileWriter) =>
-      fileWriter.onwriteend = (e) =>
-        console.log('Write completed.')
-
-      fileWriter.onerror = (e) =>
-        console.log('Write failed: ' + e.toString())
-    
-      # Create a new Blob and write it to log.txt.
-      blob = new Blob([text], {type: 'text/plain'})
-      fileWriter.write(blob)
-      success(fileEntry.toURL())
-    , fail
-  , fail
-
-readFile = (fileEntry, success) ->
-  $.get fileEntry.toURL(), (data) -> 
-    success(data)
-
-nukeList = (list, success) ->
-  if list.length == 0
-    return success()
-
-  item = _.first(list)
-  if item.isFile
-    item.remove ->
-      nukeList _.rest(list), success
-    , fail
-  else
-    item.removeRecursively ->
-      nukeList _.rest(list), success
-    , fail
-
-requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem
-resolveLocalFileSystemURI = window.resolveLocalFileSystemURI || window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL
+createImage = FileUtils.createFile
+readFileEntry = FileUtils.readFileEntry
+requestFileSystem  = FileUtils.requestFileSystem
+resolveLocalFileSystemURI = FileUtils.resolveLocalFileSystemURI
 
 describe "CachedImageManager", ->
   beforeEach (done) ->
     # Obtain temp storage
-    mode = if window.LocalFileSystem then LocalFileSystem.TEMPORARY else window.TEMPORARY
-    requestFileSystem mode, 0, (fs) =>
+    FileUtils.getTempFileSystem (fs) =>
       @fs = fs
-
-      # Clean contents
-      fs.root.createReader().readEntries (items) =>
-        nukeList items, =>
-          @fileTransfer = {}
-          @mgr = new CachedImageManager(fs, "http://api.mwater.co/v3/", "Android/data/co.mwater.clientapp/images", "1234", @fileTransfer)
-
-          done()
-      , fail
-    , fail
+      @fileTransfer = {}
+      @mgr = new CachedImageManager(fs, "http://api.mwater.co/v3/", "Android/data/co.mwater.clientapp/images", "1234", @fileTransfer)
+      done()
       
   context "added image", ->
     beforeEach (done) ->
@@ -82,7 +42,7 @@ describe "CachedImageManager", ->
       @mgr.getImageUrl @id, (url) =>
         # Get contents of url
         resolveLocalFileSystemURI url, (fileEntry) =>
-          readFile fileEntry, (data) =>
+          readFileEntry fileEntry, (data) =>
             assert.equal data, "test"
             done()
         , fail
@@ -145,7 +105,7 @@ describe "CachedImageManager", ->
 
           # Get contents of url
           resolveLocalFileSystemURI url, (fileEntry) =>
-            readFile fileEntry, (data) =>
+            readFileEntry fileEntry, (data) =>
               assert.equal data, "test"
               done()
         , fail
@@ -164,7 +124,7 @@ describe "CachedImageManager", ->
 
       # Get contents of url
       resolveLocalFileSystemURI url, (fileEntry) =>
-        readFile fileEntry, (data) =>
+        readFileEntry fileEntry, (data) =>
           assert.equal data, "downloaded"
           done()
     , fail
@@ -198,7 +158,7 @@ describe "CachedImageManager", ->
 
       # Get contents of url
       resolveLocalFileSystemURI url, (fileEntry) =>
-        readFile fileEntry, (data) =>
+        readFileEntry fileEntry, (data) =>
           assert.equal data, "downloaded"
           done()
     , fail
