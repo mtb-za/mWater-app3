@@ -24,13 +24,8 @@ createImage = (fs, name, text, success) ->
   , fail
 
 readFile = (fileEntry, success) ->
-  fileEntry.file (file) ->
-    reader = new FileReader()
-    reader.onloadend = ->
-      success(this.result)
-    reader.onerror = fail
-    reader.readAsText(file)
-  , fail
+  $.get fileEntry.toURL(), (data) -> 
+    success(data)
 
 nukeList = (list, success) ->
   if list.length == 0

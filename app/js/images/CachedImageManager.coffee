@@ -1,5 +1,3 @@
-# TODO id, not uid
-
 createId = -> 
   'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) ->
     r = Math.random()*16|0

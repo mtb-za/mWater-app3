@@ -1,4 +1,4 @@
-
+var zlib = require('zlib');
 var browserify = require('./browserify-task');
 var compileForms = require('./compile-forms-task');
 var upsertForms = require('./upsert-forms-task');
@@ -103,6 +103,12 @@ module.exports = function(grunt) {
         cwd: 'cordova/',
         src: 'config.xml',
         dest: 'cordova/www/'
+      },
+      distgz : {
+        expand: true,
+        cwd: 'dist/',
+        src: '**',
+        dest: 'distgz/'
       }
     },
 
