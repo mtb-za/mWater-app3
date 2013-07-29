@@ -1,6 +1,6 @@
 # TODO id, not uid
 
-createUid = -> 
+createId = -> 
   'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) ->
     r = Math.random()*16|0
     v = if c == 'x' then r else (r&0x3|0x8)
@@ -11,6 +11,8 @@ resolveLocalFileSystemURI = window.resolveLocalFileSystemURI || window.resolveLo
 
 # cachePath: e.g. "Android/data/co.mwater.clientapp/images" 
 # apiUrl: e.g. http://api.mwater.co/v3/
+# client: client id for uploading
+# fileTransfer: FileTransfer instance
 module.exports = class CachedImageManager
   constructor: (fs, apiUrl, cachePath, client, fileTransfer) ->
     @fs = fs
@@ -21,7 +23,7 @@ module.exports = class CachedImageManager
 
   addImage: (url, success, error) ->
     # Create an id
-    id = createUid()
+    id = createId()
 
     # Get file
     resolveLocalFileSystemURI url, (fileEntry) =>
@@ -52,56 +54,56 @@ module.exports = class CachedImageManager
       ), error
 
   # Gets an image, calling success with url 
-  getImageUrl: (imageUid, success, error) ->
-    console.log "getImageUrl:" + imageUid
+  getImageUrl: (imageId, success, error) ->
+    console.log "getImageUrl:" + imageId
     @loadOrDownloadImage [@cachePath + "/cached/1280h", @cachePath + "/cached/original", @cachePath + "/pending/original"],
-      @apiUrl + "images" + "/" + imageUid + "?h=1280", 
+      @apiUrl + "images" + "/" + imageId + "?h=1280", 
       @cachePath + "/cached/1280h", 
-      imageUid, success, error
+      imageId, success, error
 
   # Gets a thumbnail image, calling success with url 
-  getImageThumbnailUrl: (imageUid, success, error) ->
-    console.log "getImageThumbnailUrl:" + imageUid
+  getImageThumbnailUrl: (imageId, success, error) ->
+    console.log "getImageThumbnailUrl:" + imageId
     @loadOrDownloadImage [@cachePath + "/cached/160h", @cachePath + "/cached/1280h", @cachePath + "/cached/original", @cachePath + "/pending/original"],
-      @apiUrl + "images" + "/" + imageUid + "?h=160", 
+      @apiUrl + "images" + "/" + imageId + "?h=160", 
       @cachePath + "/cached/160h", 
-      imageUid, success, error
+      imageId, success, error
 
-  loadOrDownloadImage: (dirs, remoteUrl, downloadDir, imageUid, success, error) ->
+  loadOrDownloadImage: (dirs, remoteUrl, downloadDir, imageId, success, error) ->
     # If no directories left to try, call download
     if dirs.length is 0
       @getDirectory downloadDir, ((dirEntry) =>
-        @downloadImage imageUid, remoteUrl, dirEntry, success, error
+        @downloadImage imageId, remoteUrl, dirEntry, success, error
       ), error
       return
     
     # Try each directory in dirs, using recursion
-    @findImageFile _.first(dirs), imageUid, ((url) -> # Found
+    @findImageFile _.first(dirs), imageId, ((url) -> # Found
       success url
     ), ((url) => # Not found
-      @loadOrDownloadImage _.rest(dirs), remoteUrl, downloadDir, imageUid, success, error
+      @loadOrDownloadImage _.rest(dirs), remoteUrl, downloadDir, imageId, success, error
     ), error
 
-  downloadImage: (imageUid, url, dirEntry, success, error) ->
-    @fileTransfer.download encodeURI(url), dirEntry.fullPath + "/" + imageUid + ".jpg", ((entry) ->
+  downloadImage: (imageId, url, dirEntry, success, error) ->
+    @fileTransfer.download encodeURI(url), dirEntry.fullPath + "/" + imageId + ".jpg", ((entry) ->
       success entry.toURL()
     ), (err) ->
       # Delete file on disk if present
-      dirEntry.getFile imageUid + ".jpg", {}, ((imageFile) ->
+      dirEntry.getFile imageId + ".jpg", {}, ((imageFile) ->
         imageFile.remove (->
         ), ->
       ), ->
       # Call error function
       error(err)
 
-  findImageFile: (dir, imageUid, found, notfound, error) ->
+  findImageFile: (dir, imageId, found, notfound, error) ->
     console.log "checking in: " + dir
     
     # Get directory
     @getDirectory dir, ((dirEntry) ->
       
       # Get file if present
-      dirEntry.getFile imageUid + ".jpg", {}, ((imageFile) ->
+      dirEntry.getFile imageId + ".jpg", {}, ((imageFile) ->
         
         # File present, display file
         found imageFile.toURL()
