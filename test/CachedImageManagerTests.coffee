@@ -2,10 +2,11 @@ assert = chai.assert
 
 CachedImageManager = require '../app/js/images/CachedImageManager'
 
-fail = ->
+fail = (err) ->
+  console.error err
   assert.fail()
 
-createImage = (fs, name, success) ->
+createImage = (fs, name, text, success) ->
   fs.root.getFile name, {create: true}, (fileEntry) =>
     # Create a FileWriter object for our FileEntry 
     fileEntry.createWriter (fileWriter) =>
@@ -16,35 +17,228 @@ createImage = (fs, name, success) ->
         console.log('Write failed: ' + e.toString())
     
       # Create a new Blob and write it to log.txt.
-      blob = new Blob(['Lorem Ipsum'], {type: 'text/plain'})
+      blob = new Blob([text], {type: 'text/plain'})
       fileWriter.write(blob)
       success(fileEntry.toURL())
     , fail
   , fail
 
+readFile = (fileEntry, success) ->
+  fileEntry.file (file) ->
+    reader = new FileReader()
+    reader.onloadend = ->
+      success(this.result)
+    reader.onerror = fail
+    reader.readAsText(file)
+  , fail
+
+nukeList = (list, success) ->
+  if list.length == 0
+    return success()
+
+  item = _.first(list)
+  if item.isFile
+    item.remove ->
+      nukeList _.rest(list), success
+    , fail
+  else
+    item.removeRecursively ->
+      nukeList _.rest(list), success
+    , fail
+
+requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem
+resolveLocalFileSystemURI = window.resolveLocalFileSystemURI || window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL
 
 describe "CachedImageManager", ->
-  before (done) ->
+  beforeEach (done) ->
     # Obtain temp storage
-    requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem
     mode = if window.LocalFileSystem then LocalFileSystem.TEMPORARY else window.TEMPORARY
     requestFileSystem mode, 0, (fs) =>
       @fs = fs
-      @mgr = new CachedImageManager(fs, "Android/data/co.mwater.clientapp/images")
-      done()
-    , fail
 
-  it "adds an image, returning an id", (done) ->
-    assert.isNotNull @fs
-    createImage @fs, "test.jpg", (url) =>
-      @mgr.addImage url, (id) =>
-        assert.equal id.length, 32
-        done()
+      # Clean contents
+      fs.root.createReader().readEntries (items) =>
+        nukeList items, =>
+          @fileTransfer = {}
+          @mgr = new CachedImageManager(fs, "http://api.mwater.co/v3/", "Android/data/co.mwater.clientapp/images", "1234", @fileTransfer)
+
+          done()
       , fail
+    , fail
       
   context "added image", ->
-    it "recalls image"
-    it "uploads image"
-    it "retries on failure"
-    it "does not upload twice"
-    
+    beforeEach (done) ->
+      createImage @fs, "test.jpg", "test", (url) =>
+        @imgUrl = url
+        @mgr.addImage url, (id) =>
+          @id = id
+          done()
+        , fail
+
+    it "has id", ->
+      assert.equal @id.length, 32
+
+    it "removed original image", (done) ->
+      resolveLocalFileSystemURI @imgUrl, fail, ->
+        assert.isTrue true
+        done()
+
+    it "recalls image", (done) ->
+      @mgr.getImageUrl @id, (url) =>
+        # Get contents of url
+        resolveLocalFileSystemURI url, (fileEntry) =>
+          readFile fileEntry, (data) =>
+            assert.equal data, "test"
+            done()
+        , fail
+      , fail
+
+    it "uploads image", (done) ->
+      called = false
+      @fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
+        assert.equal options.fileKey, "image"
+        assert.match server, /\?client=1234$/
+        called = true
+        successCallback()
+
+      @mgr.upload (num) =>
+        assert.equal num, 0
+        assert.isTrue called
+
+        done()
+      , fail
+
+    it "retries on failure", (done) ->
+      @fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
+        @fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
+          assert.equal options.fileKey, "image"
+          assert.match server, /\?client=1234$/
+          successCallback()
+        errorCallback { http_status: 0 }
+
+      @mgr.upload (num) =>
+        assert.ok false, "Should not call success"
+      , =>
+        @mgr.upload (num) =>
+          assert.equal num, 0, "after retry"
+
+          done()
+        , fail
+
+    it "does not upload twice", (done) ->
+      @fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
+        successCallback()
+
+      @mgr.upload (num) =>
+        assert.equal num, 0
+
+        @fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
+          assert.fail()
+        @mgr.upload (num) =>
+          assert.equal num, 0
+          done()
+      , fail
+
+    it "recalls image after upload", (done) ->
+      @fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
+        successCallback()
+
+      @mgr.upload (num) =>
+        @mgr.getImageUrl @id, (url) =>
+          # Check not remote
+          assert.notMatch url, /api\.mwater\.co/
+
+          # Get contents of url
+          resolveLocalFileSystemURI url, (fileEntry) =>
+            readFile fileEntry, (data) =>
+              assert.equal data, "test"
+              done()
+        , fail
+
+  it "downloads image", (done) ->
+    id = "123abc"
+
+    @fileTransfer.download = (source, target, successCallback, errorCallback) =>
+      assert.equal source, "http://api.mwater.co/v3/images/#{id}?h=1280"
+      createImage @fs, target, "downloaded", (url) =>
+        resolveLocalFileSystemURI url, successCallback, fail
+
+    @mgr.getImageUrl id, (url) =>
+      # Check not remote
+      assert.notMatch url, /api\.mwater\.co/
+
+      # Get contents of url
+      resolveLocalFileSystemURI url, (fileEntry) =>
+        readFile fileEntry, (data) =>
+          assert.equal data, "downloaded"
+          done()
+    , fail
+
+  it "caches downloaded image", (done) ->
+    id = "123abc"
+
+    @fileTransfer.download = (source, target, successCallback, errorCallback) =>
+      assert.equal source, "http://api.mwater.co/v3/images/#{id}?h=1280"
+      createImage @fs, target, "downloaded", (url) =>
+        resolveLocalFileSystemURI url, successCallback, fail
+
+    @mgr.getImageUrl id, (url) =>
+      @fileTransfer.download = fail
+      @mgr.getImageUrl id, (url2) =>
+        assert.equal url, url2
+        done()
+    , fail
+
+  it "downloads thumbnail", (done) ->
+    id = "123abc"
+
+    @fileTransfer.download = (source, target, successCallback, errorCallback) =>
+      assert.equal source, "http://api.mwater.co/v3/images/#{id}?h=160"
+      createImage @fs, target, "downloaded", (url) =>
+        resolveLocalFileSystemURI url, successCallback, fail
+
+    @mgr.getImageThumbnailUrl id, (url) =>
+      # Check not remote
+      assert.notMatch url, /api\.mwater\.co/
+
+      # Get contents of url
+      resolveLocalFileSystemURI url, (fileEntry) =>
+        readFile fileEntry, (data) =>
+          assert.equal data, "downloaded"
+          done()
+    , fail
+
+  it "caches downloaded thumbnail", (done) ->
+    id = "123abc"
+
+    @fileTransfer.download = (source, target, successCallback, errorCallback) =>
+      assert.equal source, "http://api.mwater.co/v3/images/#{id}?h=160"
+      createImage @fs, target, "downloaded", (url) =>
+        resolveLocalFileSystemURI url, successCallback, fail
+
+    @mgr.getImageThumbnailUrl id, (url) =>
+      @fileTransfer.download = fail
+      @mgr.getImageThumbnailUrl id, (url2) =>
+        assert.equal url, url2
+        done()
+    , fail
+
+  it "calls error on error downloading image", (done) ->
+    @fileTransfer.download = (source, target, successCallback, errorCallback) =>
+      errorCallback()
+
+    @mgr.getImageUrl "123", fail, done
+
+  it "removes partial download on error", (done) ->
+    @fileTransfer.download = (source, target, successCallback, errorCallback) =>
+      # Create file and fail
+      @target = target
+      createImage @fs, target, "text", =>
+        errorCallback()
+      , fail
+
+    @mgr.getImageUrl "123", fail, =>
+      # Check that file is gone
+      @fs.root.getFile @target, fail, =>
+        done()
+
