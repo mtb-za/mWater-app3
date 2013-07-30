@@ -52,14 +52,3 @@ exports.launch = () ->
   script.onerror = error
   script.src = "cordova.js"
   document.head.appendChild(script)
-
-  # exports.createAppUpdater (appUpdater) ->
-  #   appUpdater.launch (url) ->
-  #     # Create full url to index.html
-  #     indexUrl = url + "index.html?cordova=" + origUrl
-  #     console.log("Launcher redirecting to " + indexUrl)
-  #     window.location.href = indexUrl
-  #   , (err) ->
-  #     alert("Failed to launch app: " + err)
-  # , (err) ->
-  #   alert("Failed to launch app: " + err)

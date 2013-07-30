@@ -27,6 +27,7 @@ LocalDb = require './db/LocalDb'
 RemoteDb = require './db/RemoteDb'
 HybridDb = require './db/HybridDb'
 SimpleImageManager = require './images/SimpleImageManager'
+CachedImageManager = require './images/CachedImageManager'
 authModule = require("./auth")
 sourcecodes = require './sourcecodes'
 syncModule = require './sync'
@@ -36,10 +37,18 @@ collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'so
 
 apiUrl = 'http://api.mwater.co/v3/'
 
+# TODO this is not a pretty way to set these. But it is somewhat decoupled.
+temporaryFs = null
+persistentFs = null
+
+exports.setupFileSystems = (tempFs, persFs) ->
+  temporaryFs = tempFs
+  persistentFs = persistentFs
+
 # Base context
 createBaseContext = ->
   camera = if Camera? then Camera else null
-  
+
   error = (err) ->
     console.error err
     str = if err? and err.message then err.message else err
@@ -108,8 +117,16 @@ exports.createAnonymousContext = ->
 exports.createDemoContext = ->
   db = createDb()
 
-  # TODO enhance to allow caching in demo mode
-  imageManager = new SimpleImageManager(apiUrl)
+  # Allow caching in demo mode in non-persistent storage
+  if temporaryFs
+    # Silently disable upload 
+    fileTransfer = new FileTransfer()
+    fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
+      successCallback()
+
+    imageManager = new CachedImageManager(temporaryFs, apiUrl, "images", "", fileTransfer) 
+  else
+    imageManager = new SimpleImageManager(apiUrl)
 
   # Allow everything
   auth = new authModule.AllAuth()

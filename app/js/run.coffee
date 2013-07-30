@@ -75,7 +75,17 @@ exports.start = (options = {}) ->
         updater.perform() # Do right away
       , ->
         alert("Unable to start updater")
-      phase3()
+
+      # Get file systems
+      window.requestFileSystem LocalFileSystem.PERSISTENT, 0, (persFs) ->
+        window.requestFileSystem LocalFileSystem.TEMPORARY, 0, (tempFs) ->
+          context.setupFileSystems(tempFs, persFs)
+          phase3()
+        , ->
+          alert("Failed to get filesystem")
+      , ->
+        alert("Failed to get filesystem")
+
     else
       phase3()
 
