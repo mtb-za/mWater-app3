@@ -5,7 +5,6 @@ createId = ->
     return v.toString(16)
    )
 
-resolveLocalFileSystemURI = window.resolveLocalFileSystemURI || window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL
 
 # cachePath: e.g. "Android/data/co.mwater.clientapp/images" 
 # apiUrl: e.g. http://api.mwater.co/v3/
@@ -24,6 +23,8 @@ module.exports = class CachedImageManager
     id = createId()
 
     # Get file
+    resolveLocalFileSystemURI = window.resolveLocalFileSystemURI || window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL
+
     resolveLocalFileSystemURI url, (fileEntry) =>
       # Move file
       @getDirectory @cachePath + "/pending/original", (dirEntry) ->

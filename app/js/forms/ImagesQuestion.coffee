@@ -46,8 +46,11 @@ module.exports = class ImagesQuestion extends Question
       @ctx.imageManager.addImage(url, (id) =>
         # Add to model
         images = @model.get(@id) || []
+
+        # Make copy to force a model change
+        images = images.slice(0)
         images.push { id: id }
-        @model.set(@id, images)
+        @model.set(@id, images)   
 
       , @ctx.error)
     @ctx.camera.takePicture success, (err) ->
