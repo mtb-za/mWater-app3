@@ -30,19 +30,7 @@ exports.start = (options = {}) ->
   app = new AppView(slideMenu: slideMenu, pager: pager)
   $("body").append(app.$el)
 
-  # Finish setup. Cordova loaded if needed
-  finishStart = ->
-    # Start updater if Cordova
-    if cordova?
-      launcher.createAppUpdater (appUpdater) =>
-        # Start repeating check for updates
-        updater = sync.Repeater =>
-          appUpdater.update (status) =>
-            console.log "Updater status: " + status
-        updater.start(10*60*1000)   # 10 min interval
-      , ->
-        alert("Unable to start updater")
-
+  phase3 = ->
     if options.demo  
       ctx = context.createDemoContext()
     else if login.getLogin()
@@ -67,21 +55,52 @@ exports.start = (options = {}) ->
       else
         pager.openPage(LoginPage)
 
+
+  # Finish setup. Cordova loaded if needed
+  phase2 = ->
+    if cordova?
+      # Start updater 
+      launcher.createAppUpdater (appUpdater) =>
+        # Start repeating check for updates
+        updater = new sync.Repeater (success, error) =>
+          console.log "About to update"
+          appUpdater.update (status, message) =>
+            console.log "Updater status: #{status} (#{message})"
+            success(status)
+          , (err) =>
+            console.log "Updater failed: " + err
+            success(status)
+
+        updater.start(10*60*1000)   # 10 min interval
+        updater.perform() # Do right away
+      , ->
+        alert("Unable to start updater")
+      phase3()
+    else
+      phase3()
+
+
   # If cordova in query string, parse query string to see where to load it from
   # cordova parameter indicates the base url where cordova is installed. Must end in "/"
   # or be empty
   cordova = getQueryParameterByName("cordova")
   if cordova?
-    cordova = cordova || "/"
+    cordova = cordova || ""
     console.log "Cordova: " + cordova
 
     # Load cordova.js script
-    $.getScript cordova + "cordova.js", () =>
+    script = document.createElement("script")
+    script.onload = () =>
       # Wait for device ready
       document.addEventListener 'deviceready', () =>
-        finishStart()
+        phase2()
       , false
+    script.onerror = (err) ->
+      console.error(err)
+      alert("Error loading cordova.js")
+    script.src = "cordova.js"
+    document.head.appendChild(script)
 
   else
     console.log "Not Cordova"
-    finishStart()
+    phase2()

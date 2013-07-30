@@ -1,6 +1,6 @@
 parseManifest = require "parse-appcache-manifest"
 
-# origUrl: base url of files. Must end in "/"
+# origUrl: base url of files. Must end in "/" or be ""
 # updateUrl: update url of files. Must end in "/"
 # cachePath: folder of cache. Must not end in "/"
 module.exports = class AppUpdater
@@ -34,7 +34,8 @@ module.exports = class AppUpdater
       # Dir not present, use original
       success(@origUrl)
 
-  # Update app. success will called with:
+  # Update app. success will called with (status, message)
+  # Status:
   # "noconnection": update failed
   # "uptodate": no update available
   # "relaunch": update installed, relaunch needed
@@ -42,16 +43,16 @@ module.exports = class AppUpdater
     # Get manifest from update
     q = $.get(@updateUrl + "manifest.appcache")
     q.fail =>
-      success("noconnection")
+      success("noconnection", "Failed to get: " + @updateUrl + "manifest.appcache")
     q.done (manifest) =>
       # Check if manifest changed from current
       @launch (currentUrl) =>
         q = $.get(currentUrl + "manifest.appcache")
         q.fail =>
-          error("Can't get current manifest")
+          error("Can't get current manifest: " + currentUrl + "manifest.appcache")
         q.done (manifestCurrent) =>
           if manifest == manifestCurrent
-            return success("uptodate")
+            return success("uptodate", "manifest unchanged")
 
           # Parse manifest
           list = parseManifest(manifest).cache
@@ -61,14 +62,24 @@ module.exports = class AppUpdater
 
           # Download all items
           downloadFiles @fs, list, @updateUrl, @cachePath + "/download", @fileTransfer, =>
+            console.log "Success called on download" # REMOVE
             removeSuccess = =>
               # Copy original manifest to update root folder
-              @fileTransfer.download encodeURI(@origUrl + "manifest.appcache"), @cachePath + "/manifest.appcache", =>
+              source = encodeURI(@origUrl + "manifest.appcache")
+              target = @fs.root.fullPath + "/" + @cachePath + "/manifest.appcache"
+              console.log "Copying original manifest from #{source} to #{target}..." # REMOVE
+              @fileTransfer.download source, target, =>
+
                 # Move directory download to update
+                console.log "Getting directory of download..." # REMOVE
                 @fs.root.getDirectory @cachePath + "/download", {}, (downloadDir) =>
+  
                   # Get parent dir
+                  console.log "Getting parent directory of download..." # REMOVE
                   downloadDir.getParent (parentDir) =>
+
                     # Perform move
+                    console.log "Performing move..." # REMOVE
                     downloadDir.moveTo parentDir, "update", (updateDir) =>
                       # Call success with relaunch
                       success("relaunch")
@@ -78,19 +89,21 @@ module.exports = class AppUpdater
               , error
 
             # Check that manifest is unchanged
+            console.log "Checking manifest unchanged..." # REMOVE
             q = $.get(@updateUrl + "manifest.appcache")
             q.fail =>
-              success("noconnection")
+              success("noconnection", "Failed to get (2nd time): " + @updateUrl + "manifest.appcache")
             q.done (manifest2) =>
               if manifest != manifest2
-                return success("noconnection")
+                return success("noconnection", "Manifest changed during update")
 
               # Remove update folder if present
+              console.log "Removing update folder..." # REMOVE
               @fs.root.getDirectory @cachePath + "/update", {}, (dir) =>
                 dir.removeRecursively removeSuccess, error
               , removeSuccess
-          , =>
-            success("noconnection")
+          , (err) =>
+            success("noconnection", "Download failed: " + JSON.stringify(err))
       , error
 
 createDirs = (baseDirEntry, path, success, error) ->
@@ -110,15 +123,17 @@ downloadFiles = (fs, list, source, target, fileTransfer, success, error) ->
   # Get target
   item = _.first(list)
   if not item
+    console.log "Downloads complete" # REMOVE
     return success()
 
   dest = target + "/" + item
 
+  console.log "Downloading #{item} from #{source} to #{dest}..." # REMOVE
   # Get parent dir
   parent = _.initial(dest.split("/")).join("/")
   createDirs fs.root, parent, (parentDirEntry) =>
     # Download file
-    fileTransfer.download encodeURI(source + item), dest, =>
+    fileTransfer.download encodeURI(source + item), fs.root.fullPath + "/" + dest, =>
       # Download next
       downloadFiles(fs, _.rest(list), source, target, fileTransfer, success, error)
     , error 
