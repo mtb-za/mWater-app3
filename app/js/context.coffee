@@ -27,21 +27,27 @@ LocalDb = require './db/LocalDb'
 RemoteDb = require './db/RemoteDb'
 HybridDb = require './db/HybridDb'
 SimpleImageManager = require './images/SimpleImageManager'
+CachedImageManager = require './images/CachedImageManager'
 authModule = require("./auth")
 sourcecodes = require './sourcecodes'
 syncModule = require './sync'
+Camera = require './Camera'
 
 collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes']
 
 apiUrl = 'http://api.mwater.co/v3/'
 
+# TODO this is not a pretty way to set these. But it is somewhat decoupled.
+temporaryFs = null
+persistentFs = null
+
+exports.setupFileSystems = (tempFs, persFs) ->
+  temporaryFs = tempFs
+  persistentFs = persistentFs
+
 # Base context
 createBaseContext = ->
-  # Fake camera # TODO use cordova where possible
-  camera = {
-    takePicture: (success, error) ->
-      alert("On the Android app, this would take a picture")
-  }
+  camera = if Camera? then Camera else null
 
   error = (err) ->
     console.error err
@@ -111,8 +117,16 @@ exports.createAnonymousContext = ->
 exports.createDemoContext = ->
   db = createDb()
 
-  # TODO enhance to allow caching in demo mode
-  imageManager = new SimpleImageManager(apiUrl)
+  # Allow caching in demo mode in non-persistent storage
+  if temporaryFs
+    # Silently disable upload 
+    fileTransfer = new FileTransfer()
+    fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
+      successCallback()
+
+    imageManager = new CachedImageManager(temporaryFs, apiUrl, "images", "", fileTransfer) 
+  else
+    imageManager = new SimpleImageManager(apiUrl)
 
   # Allow everything
   auth = new authModule.AllAuth()
@@ -139,6 +153,8 @@ exports.createLoginContext = (login) ->
 
   # TODO switch to cached
   imageManager = new SimpleImageManager(apiUrl)
+
+  
   auth = new authModule.UserAuth(login.user, login.org)
   sourceCodesManager = new sourcecodes.SourceCodesManager(apiUrl + "source_codes?client=#{login.client}")
   sync = new syncModule.Synchronizer(db, imageManager, sourceCodesManager)

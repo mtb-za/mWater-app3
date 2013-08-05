@@ -1,6 +1,6 @@
 {
   "name": "dbl-client",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "description": "Client for DBL",
   "main": "index.js",
   "scripts": {
@@ -39,6 +39,7 @@
     "read": "~1.0.4",
     "request-json": "~0.3.7",
     "synchronize": "~0.5.2",
-    "through": "~2.3.4"
+    "through": "~2.3.4",
+    "parse-appcache-manifest": "0.0.1"
   }
 }

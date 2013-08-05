@@ -1,0 +1,12 @@
+CACHE MANIFEST
+# Some timestamp 1
+
+CACHE:
+index.html
+test.txt
+
+NETWORK:
+*
+
+SETTINGS:
+prefer-online
