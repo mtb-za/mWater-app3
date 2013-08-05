@@ -153,6 +153,8 @@ exports.createLoginContext = (login) ->
 
   # TODO switch to cached
   imageManager = new SimpleImageManager(apiUrl)
+
+  
   auth = new authModule.UserAuth(login.user, login.org)
   sourceCodesManager = new sourcecodes.SourceCodesManager(apiUrl + "source_codes?client=#{login.client}")
   sync = new syncModule.Synchronizer(db, imageManager, sourceCodesManager)

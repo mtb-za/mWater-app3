@@ -98,9 +98,15 @@ module.exports = function(grunt) {
         src: '**',
         dest: 'cordova/www/'
       },  
-      cordova_override: {
+      cordova_override_debug: {
         expand: true,
-        cwd: 'app/cordova/',
+        cwd: 'app/cordova/debug/',
+        src: '**',
+        dest: 'cordova/www/'
+      },
+      cordova_override_release: {
+        expand: true,
+        cwd: 'app/cordova/release/',
         src: '**',
         dest: 'cordova/www/'
       },
@@ -189,7 +195,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-manifest');
   grunt.loadNpmTasks('grunt-shell');
 
-  grunt.registerTask('cordova', ['default', 'copy:cordova_www', 'copy:cordova_override']);
+  grunt.registerTask('cordova', ['default', 'copy:cordova_www', 'copy:cordova_override_debug']);
 
   grunt.registerTask('copy-app', ['copy:apphtml', 'copy:appimages', 'copy:libimages', 'copy:leafletimages']);
   grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy-app', 'handlebars', 'manifest']);

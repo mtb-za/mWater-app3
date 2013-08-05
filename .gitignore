@@ -3,4 +3,4 @@ dist
 node_modules
 test/tests.js
 forms/forms.js
-cordova
+/cordova
