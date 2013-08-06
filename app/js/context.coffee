@@ -151,9 +151,10 @@ exports.createDemoContext = ->
 exports.createLoginContext = (login) ->
   db = createDb(login)
 
-  # TODO switch to cached
-  imageManager = new SimpleImageManager(apiUrl)
-
+  if persistentFs
+    imageManager = new CachedImageManager(persistentFs, apiUrl, "images", "", fileTransfer) 
+  else
+    imageManager = new SimpleImageManager(apiUrl)
   
   auth = new authModule.UserAuth(login.user, login.org)
   sourceCodesManager = new sourcecodes.SourceCodesManager(apiUrl + "source_codes?client=#{login.client}")

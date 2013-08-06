@@ -7,6 +7,7 @@
     <author email="development@mwater.co" href="http://mwater.co">
         mWater Team
     </author>
+    <content src="index.html?cordova=" />
     <icon src="icon.png"/>
     <access origin="*" />
     <preference name="fullscreen" value="false" />
