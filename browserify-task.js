@@ -37,22 +37,6 @@ function bundleApp(done) {
     });
 }
 
-function bundleLauncher(done) {
-    bundle = browserify();
-    bundle.extension('.coffee');
-    bundle.transform(versionXform).transform('coffeeify')
-    .require('./app/js/launcher', {expose: 'launcher'})
-    .bundle({
-        debug: true
-    }, function(err, src) {
-        if (err) return console.error(err);
-
-        fs.writeFileSync("dist/js/launcher.js", src);
-        console.log("Launcher bundled");
-        done();
-    });
-}
-
 function bundleTests(done) {
     bundle = browserify();
     bundle.extension('.coffee');
@@ -81,8 +65,6 @@ function bundleTests(done) {
 module.exports = function() {
     var done = this.async();
     bundleApp(function() {
-        bundleLauncher(function() {
-            bundleTests(done);
-        });
+        bundleTests(done);
     });
 };

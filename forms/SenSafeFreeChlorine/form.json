@@ -4,13 +4,13 @@
     "name": "SenSafe Free Chlorine Water Check",
     "desc": "US EPA approved test strip for free chlorine (manufactured by ITS)",
     "code": "SenSafeFreeChlorine",
-    "_rev": 5,
+    "_rev": 10,
     "created": {
         "on": "2013-07-17T14:03:51.219Z",
         "by": "admin"
     },
     "modified": {
-        "on": "2013-07-22T16:14:40.150Z",
+        "on": "2013-08-06T14:09:14.174Z",
         "by": "admin"
     },
     "user": "admin"
