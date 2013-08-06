@@ -13,3 +13,4 @@ rm platforms/android/res/drawable-mdpi/icon.png
 rm platforms/android/res/drawable-xhdpi/icon.png
 cp ../dist/img/mwater-large.png platforms/android/res/drawable/icon.png
 rm -r www/*.*
+echo "TODO: Now update config.xml in android to run index_cordova.html?cordova= and other values not copied" 

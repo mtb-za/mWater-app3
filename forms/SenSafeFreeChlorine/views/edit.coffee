@@ -33,6 +33,7 @@ questions.push new forms.ImageQuestion
   id: 'photo'
   model: model
   prompt: "Photo"
+  ctx: options.ctx
 
 questions.push new forms.TextQuestion
   id: 'notes'

@@ -62,8 +62,10 @@ exports.start = (options = {}) ->
     # If cordova, get filesystems for context
     if isCordova
       # Get file systems
+      console.log "Getting file systems..."
       window.requestFileSystem LocalFileSystem.PERSISTENT, 0, (persFs) ->
         window.requestFileSystem LocalFileSystem.TEMPORARY, 0, (tempFs) ->
+          console.log "Got file systems"
           context.setupFileSystems(tempFs, persFs)
           step2()
         , startError
