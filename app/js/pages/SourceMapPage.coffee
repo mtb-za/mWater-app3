@@ -135,7 +135,7 @@ class SourceDisplay
       html = _.template('''
         Id: <b><%=source.code%></b><br>
         Name: <b><%=source.name%></b><br>
-        <button class="open_source" id="<%=source._id%>">Open</button>''', 
+        <button class="btn btn-mini open_source" id="<%=source._id%>">Open</button>''', 
         { source: source })
       marker.bindPopup(html)
       
