@@ -7,6 +7,9 @@ GeoJSON = require '../GeoJSON'
 # Map of water sources. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
 class SourceMapPage extends Page
+  events:
+    "click .open_source" : "openSource"
+
   create: ->
     @setTitle "Source Map"
 
@@ -56,6 +59,9 @@ class SourceMapPage extends Page
     $("#map").css("height", mapHeight + "px")
     @map.invalidateSize()
 
+  openSource: (ev) ->
+    sourceId = ev.currentTarget.id
+    @pager.openPage(SourcePage, {_id: sourceId})
 
 setupMapTiles = ->
   mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png'
@@ -105,7 +111,13 @@ class SourceDisplay
       selector = { geo: { $geoIntersects: { $geometry: boundsGeoJSON } } }
 
     # Query sources with projection. Use remote mode so no caching occurs
-    @db.sources.find(selector, { sort: ["_id"], limit: 100, mode: "remote", fields: { geo: 1 } }).fetch (sources) =>
+    queryOptions = 
+      sort: ["_id"]
+      limit: 100
+      mode: "remote"
+      fields: { name: 1, code: 1, geo: 1 }
+
+    @db.sources.find(selector, queryOptions).fetch (sources) =>
       # Find out which to add/remove
       [adds, removes] = @itemTracker.update(sources)
 
@@ -120,8 +132,12 @@ class SourceDisplay
       latlng = new L.LatLng(source.geo.coordinates[1], source.geo.coordinates[0])
       marker = new L.Marker(latlng, {icon:@icon})
       
-      marker.on 'click', =>
-        @pager.openPage(SourcePage, {_id: source._id})
+      html = _.template('''
+        Id: <b><%=source.code%></b><br>
+        Name: <b><%=source.name%></b><br>
+        <button class="open_source" id="<%=source._id%>">Open</button>''', 
+        { source: source })
+      marker.bindPopup(html)
       
       @sourceMarkers[source._id] = marker
       marker.addTo(@map)
