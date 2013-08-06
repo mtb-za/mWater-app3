@@ -1,3 +1,16 @@
 .appview_content { 
   margin-top: 40px;
 }
+
+/* Prevent image from resizing navbar */
+.navbar .brand {
+    max-height: 40px;
+    overflow: visible;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 40px;
+}
+
+.navbar .brand img {
+	margin-top: 2px;
+}
