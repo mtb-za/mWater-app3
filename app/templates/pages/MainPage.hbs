@@ -35,7 +35,7 @@
 <p class="muted">
 	Version: <b>{{version}}</b>
 
-	User: {{#if login}}{{login.user}}{{else}}Not logged in{{/if}}</b>
+	User: <b>{{#if login}}{{login.user}}{{else}}Not logged in{{/if}}</b>
 
 	{{#if lastSyncDate}}Sync: <b>{{timeago lastSyncDate}} {{lastSyncMessage}}</b>{{/if}}
 </p>
