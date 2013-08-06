@@ -1,5 +1,6 @@
 Page = require "../Page"
 SourcePage = require "./SourcePage"
+NewSourcePage = require "./NewSourcePage"
 ItemTracker = require "../ItemTracker"
 LocationFinder = require '../LocationFinder'
 GeoJSON = require '../GeoJSON'
@@ -7,9 +8,6 @@ GeoJSON = require '../GeoJSON'
 # Map of water sources. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
 class SourceMapPage extends Page
-  events:
-    "click .open_source" : "openSource"
-
   create: ->
     @setTitle "Source Map"
 
@@ -35,6 +33,8 @@ class SourceMapPage extends Page
       @map.on 'moveend', =>
         @sourceDisplay.updateMarkers()
 
+    # Setup context menu
+    contextMenu = new ContextMenu(@map, @ctx)
     # TODO zoom to last known bounds
     
     # Setup initial zoom
@@ -59,17 +59,14 @@ class SourceMapPage extends Page
     $("#map").css("height", mapHeight + "px")
     @map.invalidateSize()
 
-  openSource: (ev) ->
-    sourceId = ev.currentTarget.id
-    @pager.openPage(SourcePage, {_id: sourceId})
-
 setupMapTiles = ->
   mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png'
   subDomains = ['otile1','otile2','otile3','otile4']
   mapquestAttrib = 'Data, imagery and map information provided by <a href="http://open.mapquest.co.uk" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
   return new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: subDomains})
 
-# Displays water sources on map. Call updateMarkers to refresh
+# Displays water sources on map. Call updateMarkers to refresh. Creates popups
+# with source details. 
 class SourceDisplay
   constructor: (map, db, pager) ->
     @map = map
@@ -132,12 +129,20 @@ class SourceDisplay
       latlng = new L.LatLng(source.geo.coordinates[1], source.geo.coordinates[0])
       marker = new L.Marker(latlng, {icon:@icon})
       
+      # Create popup
       html = _.template('''
+        <div>
         Id: <b><%=source.code%></b><br>
         Name: <b><%=source.name%></b><br>
-        <button class="btn btn-mini open_source" id="<%=source._id%>">Open</button>''', 
+        <button class="btn">Open</button>
+        </div>''', 
         { source: source })
-      marker.bindPopup(html)
+
+      content = $(html)
+      content.find("button").on 'click', =>
+        @pager.openPage(SourcePage, {_id: source._id})
+
+      marker.bindPopup(content.get(0))
       
       @sourceMarkers[source._id] = marker
       marker.addTo(@map)
@@ -147,6 +152,7 @@ class SourceDisplay
       @map.removeLayer(@sourceMarkers[source._id])
 
 
+# Displays current location as a blue dot
 class LocationDisplay
   # Setup display, optionally zooming to current location
   constructor: (map, zoomTo) ->
@@ -189,5 +195,37 @@ class LocationDisplay
     else
       @meMarker.setLatLng(latlng)
       @meCircle.setLatLng(latlng).setRadius(radius)
+
+
+# Menu that displays when a right-click or long-press is detected
+class ContextMenu 
+  constructor: (map, ctx) ->
+    @map = map
+
+    # Listen for event
+    @map.on 'contextmenu', (e) =>
+      # Ignore if not logged in
+      if not NewSourcePage.canOpen(ctx)
+        return
+
+      # Get location
+      geo = {
+        type: "Point"
+        coordinates: [e.latlng.lng, e.latlng.lat]
+      }
+
+      # Create popup html
+      contents = $('<div><button class="btn">Create Water Source</button></div>')
+
+      # Create popup
+      popup = L.popup({ closeButton: false })
+        .setLatLng(e.latlng)
+        .setContent(contents.get(0))
+        .openOn(map)
+
+      contents.find('button').on 'click', ->
+        map.closePopup(popup)
+        ctx.pager.openPage(NewSourcePage, { geo: geo })
+
 
 module.exports = SourceMapPage
