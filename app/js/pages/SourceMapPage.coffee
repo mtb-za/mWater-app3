@@ -38,7 +38,7 @@ class SourceMapPage extends Page
     if @options.initialGeo and @options.initialGeo.type=="Point"
       @map.setView(L.GeoJSON.coordsToLatLng(@options.initialGeo.coordinates), 15)
 
-    # Setup localtion display
+    # Setup localion display
     @locationDisplay = new LocationDisplay(@map, not @options.initialGeo?)
 
   activate: ->
