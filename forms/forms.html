@@ -20,6 +20,10 @@
             require('mobile-behavior').setup($('body'));
             var formsModule =require('forms');
     
+            formsModule.ECPlates.isAvailable = function(success, error) {
+                success(true);
+            }
+
             _.each(forms, function(form) {
                 $('#formlist').append($("<br/>"));
                 _.each(_.keys(form.views), function(viewName){

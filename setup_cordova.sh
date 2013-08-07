@@ -7,6 +7,7 @@ cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-file.g
 cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-file-transfer.git
 cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-geolocation.git
 cordova plugin add https://github.com/mWater/cordova-plugin-camera-foreground.git
+cordova plugin add https://github.com/mWater/OpenCVActivityPlugin.git
 rm platforms/android/res/drawable-hdpi/icon.png
 rm platforms/android/res/drawable-ldpi/icon.png
 rm platforms/android/res/drawable-mdpi/icon.png

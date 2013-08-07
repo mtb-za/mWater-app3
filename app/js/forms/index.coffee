@@ -9,6 +9,7 @@ exports.SourceQuestion = require './SourceQuestion'
 exports.ImageQuestion = require './ImageQuestion'
 exports.ImagesQuestion = require './ImagesQuestion'
 exports.Instructions = require './Instructions'
+exports.ECPlates = require './ECPlates'
 
 # Must be created with model (backbone model) and contents (array of views)
 exports.FormView = class FormView extends Backbone.View

@@ -53,6 +53,44 @@ questions.push new forms.ImageQuestion
   prompt: "Photo"
   ctx: options.ctx
 
+class AutoCounter extends Backbone.View
+  events:
+    'click #auto_count' : 'autoCount'
+
+  initialize: ->
+    forms.ECPlates.isAvailable (avail) =>
+      if avail
+        # Re-render based on model changes
+        @model.on("change", @render, @)
+        @render()
+    , @options.ctx.error
+
+  render: ->
+    @$el.html('<button id="auto_count" class="btn btn-info">Perform Automatic Count</button><div id="hint" class="muted"></div>')
+
+    # Disable based on photo
+    if not @model.get('photo')
+      @$('button').attr("disabled", true)
+      @$('#hint').text("To enable automatic counting, first take a photo of the plate by tapping the camera icon.")
+
+  autoCount: ->
+    @options.ctx.imageManager.getImageUrl @model.get('photo').id, (imgUrl) =>
+      forms.ECPlates.processImage imgUrl, (args) =>
+        if args.error
+          alert("Automatic count failed: " + args.error)
+        else
+          if confirm("E.Coli: #{args.ecoli}  TC: #{args.tc}. Save counts?")
+            @model.set {
+              ecoli_count: args.ecoli
+              ecoli_tntc: false
+              tc_count: args.tc
+              tc_tntc: false
+            }
+      , @options.ctx.error
+    , @options.ctx.error
+
+questions.push new AutoCounter({ model: model, ctx: options.ctx })
+
 questions.push new forms.TextQuestion
   id: 'notes'
   model: model
