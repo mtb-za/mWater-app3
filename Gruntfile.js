@@ -86,11 +86,17 @@ module.exports = function(grunt) {
         src: '*',
         dest: 'dist/img/'
       },
-      leafletimages: {
+      // leafletimages: { We don't use default marker
+      //   expand: true,
+      //   cwd: 'vendor/leaflet/images/',
+      //   src: '*',
+      //   dest: 'dist/img/leaflet/'
+      // },
+      leafletcssimages: {
         expand: true,
         cwd: 'vendor/leaflet/images/',
-        src: '*',
-        dest: 'dist/img/leaflet/'
+        src: 'layers*',
+        dest: 'dist/css/images/'
       },
       cordova_www: {
         expand: true,
@@ -197,7 +203,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('cordova', ['default', 'copy:cordova_www', 'copy:cordova_override_debug']);
 
-  grunt.registerTask('copy-app', ['copy:apphtml', 'copy:appimages', 'copy:libimages', 'copy:leafletimages']);
+  grunt.registerTask('copy-app', ['copy:apphtml', 'copy:appimages', 'copy:libimages', 'copy:leafletcssimages']);
   grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy-app', 'handlebars', 'manifest']);
 
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);

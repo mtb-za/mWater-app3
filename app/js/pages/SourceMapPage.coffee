@@ -3,6 +3,7 @@ Page = require "../Page"
 SourceDisplay = require '../map/SourcesLayer' # TODO
 LocationDisplay = require '../map/LocationDisplay'
 ContextMenu = require '../map/ContextMenu'
+baseLayers = require '../map/baseLayers'
 
 # Map of water sources. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
@@ -21,8 +22,17 @@ class SourceMapPage extends Page
     # Recalculate on resize
     $(window).on('resize', @resizeMap)
 
-    # Setup map tiles
-    setupMapTiles().addTo(@map)
+    # Setup base layers
+    osmLayer = baseLayers.createOSMLayer()
+    satelliteLayer = baseLayers.createSatelliteLayer()
+    
+    osmLayer.addTo(@map)
+    baseLayers = 
+      "OpenStreetMap": osmLayer
+      "Satellite": satelliteLayer
+
+    # Create layer control
+    L.control.layers(baseLayers).addTo(@map)
 
     # Setup marker display when map is loaded
     @map.whenReady =>
