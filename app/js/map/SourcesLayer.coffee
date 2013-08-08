@@ -4,9 +4,9 @@ SourcePage = require "../pages/SourcePage"
 
 # Displays water sources on map. Call updateMarkers to refresh. Creates popups
 # with source details. 
-module.exports = class SourceDisplay
-  constructor: (map, db, pager) ->
-    @map = map
+module.exports = class SourcesLayer extends L.LayerGroup
+  constructor: (db, pager) ->
+    super()
     @db = db
     @pager = pager
     @itemTracker = new ItemTracker()
@@ -20,6 +20,17 @@ module.exports = class SourceDisplay
       iconAnchor: [13, 41]
       popupAnchor: [-3, -41]
   
+  onAdd: (map) ->
+    super(map)
+    @map = map
+    @map.on 'moveend', @updateMarkers
+
+    console.log "Added!"
+
+  onRemove: (map) ->
+    super(map)
+    @map.off 'moveend', @updateMarkers
+
   updateMarkers: =>
     # Get bounds padded
     bounds = @map.getBounds()
@@ -82,9 +93,9 @@ module.exports = class SourceDisplay
       marker.bindPopup(content.get(0))
       
       @sourceMarkers[source._id] = marker
-      marker.addTo(@map)
+      @addLayer(marker)
 
   removeSourceMarker: (source) ->
     if _.has(@sourceMarkers, source._id)
-      @map.removeLayer(@sourceMarkers[source._id])
+      @removeLayer(@sourceMarkers[source._id])
 

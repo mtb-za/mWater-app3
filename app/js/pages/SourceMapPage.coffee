@@ -26,11 +26,7 @@ class SourceMapPage extends Page
 
     # Setup marker display when map is loaded
     @map.whenReady =>
-      @sourceDisplay = new SourceDisplay(@map, @db, @pager)
-
-      # Update on map movement
-      @map.on 'moveend', =>
-        @sourceDisplay.updateMarkers()
+      @sourceDisplay = new SourceDisplay(@db, @pager).addTo(@map)
 
     # Setup context menu
     contextMenu = new ContextMenu(@map, @ctx)
@@ -45,8 +41,12 @@ class SourceMapPage extends Page
 
   activate: ->
     # Update markers
-    if @sourceDisplay
+    if @sourceDisplay and @needsRefresh
       @sourceDisplay.updateMarkers()
+      needsRefresh = false
+
+  deactivate: ->
+    @needsRefresh = true
 
   destroy: ->
     $(window).off('resize', @resizeMap)
