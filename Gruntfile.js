@@ -25,7 +25,8 @@ module.exports = function(grunt) {
               'vendor/mobiscroll.custom-2.5.4.min.js',
               'vendor/jquery.scrollintoview.min.js',
               'vendor/overthrow.js',
-              'vendor/leaflet/leaflet.js'],
+              'vendor/leaflet/leaflet.js',
+              'vendor/Control.OSMGeocoder.js'],
         // the location of the resulting JS file
         dest: 'dist/js/libs.js'
       },
@@ -80,9 +81,15 @@ module.exports = function(grunt) {
         src: '*',
         dest: 'dist/img/'
       },
-      libimages: {
+      libbootstrapimages: {
         expand: true,
         cwd: 'vendor/bootstrap/img/',
+        src: '*',
+        dest: 'dist/img/'
+      },
+      libimages: {
+        expand: true,
+        cwd: 'vendor/img/',
         src: '*',
         dest: 'dist/img/'
       },
@@ -203,7 +210,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('cordova', ['default', 'copy:cordova_www', 'copy:cordova_override_debug']);
 
-  grunt.registerTask('copy-app', ['copy:apphtml', 'copy:appimages', 'copy:libimages', 'copy:leafletcssimages']);
+  grunt.registerTask('copy-app', ['copy:apphtml', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapimages', 'copy:leafletcssimages']);
   grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy-app', 'handlebars', 'manifest']);
 
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);

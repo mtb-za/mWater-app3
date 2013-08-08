@@ -82,7 +82,7 @@ module.exports = class SourcesLayer extends L.LayerGroup
         <div>
         Id: <b><%=source.code%></b><br>
         Name: <b><%=source.name%></b><br>
-        <button class="btn">Open</button>
+        <button class="btn btn-block">Open</button>
         </div>''', 
         { source: source })
 

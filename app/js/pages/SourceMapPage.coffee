@@ -34,6 +34,10 @@ class SourceMapPage extends Page
     # Create layer control
     L.control.layers(baseLayers).addTo(@map)
 
+    # Create geocoder
+    osmGeocoder = new L.Control.OSMGeocoder()
+    @map.addControl(osmGeocoder)
+
     # Setup marker display when map is loaded
     @map.whenReady =>
       @sourceDisplay = new SourceDisplay(@db, @pager).addTo(@map)
