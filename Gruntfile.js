@@ -208,7 +208,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-manifest');
   grunt.loadNpmTasks('grunt-shell');
 
-  grunt.registerTask('cordova', ['default', 'copy:cordova_www', 'copy:cordova_override_debug']);
+  grunt.registerTask('cordova_debug', ['default', 'copy:cordova_www', 'copy:cordova_override_debug']);
+  grunt.registerTask('cordova_release', ['default', 'copy:cordova_www', 'copy:cordova_override_release']);
 
   grunt.registerTask('copy-app', ['copy:apphtml', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapimages', 'copy:leafletcssimages']);
   grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy-app', 'handlebars', 'manifest']);
