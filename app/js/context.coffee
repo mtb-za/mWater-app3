@@ -28,7 +28,7 @@ RemoteDb = require './db/RemoteDb'
 HybridDb = require './db/HybridDb'
 SimpleImageManager = require './images/SimpleImageManager'
 CachedImageManager = require './images/CachedImageManager'
-authModule = require("./auth")
+authModule = require './auth'
 sourcecodes = require './sourcecodes'
 syncModule = require './sync'
 Camera = require './Camera'
@@ -43,7 +43,7 @@ persistentFs = null
 
 exports.setupFileSystems = (tempFs, persFs) ->
   temporaryFs = tempFs
-  persistentFs = persistentFs
+  persistentFs = persFs
 
 # Base context
 createBaseContext = ->
