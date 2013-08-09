@@ -1,45 +1,58 @@
-ItemTracker = require "../ItemTracker"
 GeoJSON = require '../GeoJSON'
-SourcePage = require "../pages/SourcePage"
 
-# Displays water sources on map. Call updateMarkers to refresh. Creates popups
-# with source details. 
 module.exports = class SourcesLayer extends L.LayerGroup
-  constructor: (db, pager) ->
+  constructor: (sourceMarkerCreator, sourcesDb) ->
     super()
-    @db = db
-    @pager = pager
-    @itemTracker = new ItemTracker()
+    @sourceMarkerCreator = sourceMarkerCreator
+    @sourcesDb = sourcesDb
 
-    @sourceMarkers = {}
+    # Markers, by _id
+    @markers = {}
 
-    @icon = new L.icon
-      iconUrl: 'img/DropMarker.png'
-      iconRetinaUrl: 'img/DropMarker@2x.png'
-      iconSize: [27, 41],
-      iconAnchor: [13, 41]
-      popupAnchor: [-3, -41]
-  
-  onAdd: (map) ->
-    super(map)
-    @map = map
-    @map.on 'moveend', @updateMarkers
+  resetMarkers: =>
+    @clearLayers()
+    @markers = {}    
 
-  onRemove: (map) ->
-    super(map)
-    @map.off 'moveend', @updateMarkers
+  updateMarkersFromList: (sources, success, error) =>
+    for source in sources
+      # If marker exists, ignore
+      if source._id of @markers
+        continue
 
-  updateMarkers: =>
-    # Get bounds padded
-    bounds = @map.getBounds()
+      # Call creator
+      @sourceMarkerCreator.create source, (result) =>
+        # Remove marker if exists
+        if result.source._id of @markers
+          @removeLayer(@markers[result.source._id])
+          delete @markers[result.source._id]
+
+        # Add marker
+        @markers[result.source._id] = result.marker
+        @addLayer(result.marker)
+      , error
+
+    # Remove markers not present
+    sourceMap = _.object(_.pluck(sources, '_id'), sources)
+    toRemove = []
+    for id, marker of @markers
+      if not (id of sourceMap)
+        toRemove.push(id)
+
+    for id in toRemove
+      @removeLayer(@markers[id])
+      delete @markers[id]
+
+    success() if success?
+
+  updateMarkersFromBounds: (bounds, success, error) =>
+    # Success on empty/invalid bounds
     if not bounds.isValid()
+      success() if success?
       return
-    if bounds.getWest() == bounds.getEast()
-      return
-    if bounds.getNorth() == bounds.getSouth()
+    if bounds.getWest() == bounds.getEast() or bounds.getNorth() == bounds.getSouth()
+      success() if success?
       return
 
-    bounds = bounds.pad(0.33)
     boundsGeoJSON = GeoJSON.latLngBoundsToGeoJSON(bounds)
 
     # Spherical Polygons must fit within a hemisphere.
@@ -58,42 +71,7 @@ module.exports = class SourcesLayer extends L.LayerGroup
       sort: ["_id"]
       limit: 100
       mode: "remote"
-      fields: { name: 1, code: 1, geo: 1 }
+      fields: { name: 1, code: 1, geo: 1, type: 1 }
 
-    @db.sources.find(selector, queryOptions).fetch (sources) =>
-      # Find out which to add/remove
-      [adds, removes] = @itemTracker.update(sources)
-
-      # Remove old markers
-      for remove in removes
-        @removeSourceMarker(remove)
-      for add in adds
-        @addSourceMarker(add)
-
-  addSourceMarker: (source) ->
-    if source.geo?
-      latlng = new L.LatLng(source.geo.coordinates[1], source.geo.coordinates[0])
-      marker = new L.Marker(latlng, {icon:@icon})
-      
-      # Create popup
-      html = _.template('''
-        <div>
-        Id: <b><%=source.code%></b><br>
-        Name: <b><%=source.name%></b><br>
-        <button class="btn btn-block">Open</button>
-        </div>''', 
-        { source: source })
-
-      content = $(html)
-      content.find("button").on 'click', =>
-        @pager.openPage(SourcePage, {_id: source._id})
-
-      marker.bindPopup(content.get(0))
-      
-      @sourceMarkers[source._id] = marker
-      @addLayer(marker)
-
-  removeSourceMarker: (source) ->
-    if _.has(@sourceMarkers, source._id)
-      @removeLayer(@sourceMarkers[source._id])
-
+    @sourcesDb.find(selector, queryOptions).fetch (sources) =>
+      @updateMarkersFromList(sources, success, error)
