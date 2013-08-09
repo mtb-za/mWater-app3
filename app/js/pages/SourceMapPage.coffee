@@ -1,6 +1,6 @@
 Page = require "../Page"
 
-SourceDisplay = require '../map/SourcesLayer' # TODO
+SourcesLayer = require '../map/SourcesLayer'
 LocationDisplay = require '../map/LocationDisplay'
 ContextMenu = require '../map/ContextMenu'
 baseLayers = require '../map/baseLayers'
@@ -31,16 +31,16 @@ class SourceMapPage extends Page
       "OpenStreetMap": osmLayer
       "Satellite": satelliteLayer
 
-    # Create layer control
+    # Create layer control 
     L.control.layers(baseLayers).addTo(@map)
 
-    # Create geocoder
-    osmGeocoder = new L.Control.OSMGeocoder()
-    @map.addControl(osmGeocoder)
+    # # Create geocoder TODO READD
+    # osmGeocoder = new L.Control.OSMGeocoder()
+    # @map.addControl(osmGeocoder)
 
     # Setup marker display when map is loaded
     @map.whenReady =>
-      @sourceDisplay = new SourceDisplay(@db, @pager).addTo(@map)
+      @sourcesLayer = new SourcesLayer(@db, @pager).addTo(@map)
 
     # Setup context menu
     contextMenu = new ContextMenu(@map, @ctx)
@@ -55,8 +55,8 @@ class SourceMapPage extends Page
 
   activate: ->
     # Update markers
-    if @sourceDisplay and @needsRefresh
-      @sourceDisplay.updateMarkers()
+    if @sourcesLayer and @needsRefresh
+      @sourcesLayer.updateMarkers()
       needsRefresh = false
 
   deactivate: ->
