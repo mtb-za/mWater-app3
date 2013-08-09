@@ -143,8 +143,9 @@ module.exports = function(grunt) {
         src: [
           '*.html',
           'js/*.js',
-          'css/**',
-          'img/**'
+          'css/*.css',
+          'css/images/*.*',
+          'img/*.*'
         ],
         dest: 'dist/manifest.appcache'
       }
