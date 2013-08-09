@@ -7,5 +7,12 @@ class SourceMarkerCreator
 
 class EColiSourceMarkerCreator extends SourceMarkerCreator
   create: (source, success, error) ->
+    
+    success {
+      source: source
+      marker: L.circleMarker source. {
 
-exports.EColiSourceMarkerCreator = EColiSourceMarkerCreator
+      }
+    }
+
+exports.EColi = EColiSourceMarkerCreator
