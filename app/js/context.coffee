@@ -152,6 +152,7 @@ exports.createLoginContext = (login) ->
   db = createDb(login)
 
   if persistentFs
+    fileTransfer = new FileTransfer()
     imageManager = new CachedImageManager(persistentFs, apiUrl, "images", "", fileTransfer) 
   else
     imageManager = new SimpleImageManager(apiUrl)

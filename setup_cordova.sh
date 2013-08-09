@@ -3,6 +3,7 @@ rm -r cordova
 cordova create cordova co.mwater.clientapp ClientApp
 cd cordova
 cordova platform add android
+cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-device.git
 cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-file.git
 cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-file-transfer.git
 cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-geolocation.git

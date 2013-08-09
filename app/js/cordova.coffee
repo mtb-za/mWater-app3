@@ -3,6 +3,7 @@
 # Enabled by "cordova=" in query string. Put nothing after = for base launch
 
 AppUpdater = require './AppUpdater'
+sync = require './sync'
 
 # Gets a query parameter from the query string of the current page
 getQueryParameterByName = (name) ->
@@ -46,10 +47,18 @@ exports.setup = (options, success, error) ->
   # Base url is set by cordova query parameter
   baseUrl = options.baseUrl || getQueryParameterByName("cordova")
 
+  # Determine if running original install (baseUrl = "")
+  isOriginal = baseUrl == ""
+
   # If not cordova (baseUrl null or undefined), call success
   if not baseUrl?
     console.log "Not cordova"
     return success(false)
+
+  # Determine full base URL location if blank
+  if baseUrl == ""
+    match = /^(.*?)[^/]*$/.exec(window.location.href)
+    baseUrl = match[1]
 
   console.log "cordova=#{baseUrl}" 
 
@@ -70,29 +79,25 @@ exports.setup = (options, success, error) ->
 
       # Create app updater
       createAppUpdater baseUrl, (appUpdater) =>
-        # If baseUrl is not "", that means we are running update
+        # If not original, that means we are running update
         # Do not try to relaunch
-        if baseUrl != ""
+        if not isOriginal
           console.log "Running in update at #{baseUrl}"
           return startUpdater(appUpdater, success, error)
 
-        # If baseUrl is "", that means we are running original install
-        # of application from native client. Get launcher
+        # If we are running original install of application from 
+        # native client. Get launcher
         # Get launch url (base url of latest update)
         appUpdater.launch (launchUrl) =>
           console.log "Cordova launchUrl=#{launchUrl}" 
 
           # If same as current baseUrl, proceed to starting updater, since are running latest version
-          if launchUrl == baseUrl and baseUrl == ""
+          if launchUrl == baseUrl
             console.log "Running latest version"
             return startUpdater(appUpdater, success, error)
 
-          # Determine full base URL location
-          match = /^(.*?)[^/]*$/.exec(window.location.href)
-          fullBaseUrl = match[1]
-
           # Redirect, putting current full base Url in cordova
-          redir = launchUrl + "index_cordova.html?cordova=" + fullBaseUrl
+          redir = launchUrl + "index_cordova.html?cordova=" + baseUrl
           console.log "Redirecting to #{redir}"
           window.location.href = redir
         , error
