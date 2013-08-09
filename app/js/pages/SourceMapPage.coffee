@@ -3,7 +3,7 @@ Page = require "../Page"
 SourcesLayer = require '../map/SourcesLayer'
 LocationDisplay = require '../map/LocationDisplay'
 ContextMenu = require '../map/ContextMenu'
-baseLayers = require '../map/baseLayers'
+BaseLayers = require '../map/BaseLayers'
 
 # Map of water sources. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
@@ -23,8 +23,8 @@ class SourceMapPage extends Page
     $(window).on('resize', @resizeMap)
 
     # Setup base layers
-    osmLayer = baseLayers.createOSMLayer()
-    satelliteLayer = baseLayers.createSatelliteLayer()
+    osmLayer = BaseLayers.createOSMLayer()
+    satelliteLayer = BaseLayers.createSatelliteLayer()
     
     osmLayer.addTo(@map)
     baseLayers = 
@@ -64,7 +64,8 @@ class SourceMapPage extends Page
 
   destroy: ->
     $(window).off('resize', @resizeMap)
-    @locationDisplay.stop()
+    if @locationDisplay
+      @locationDisplay.stop()
 
   resizeMap: =>
     # Calculate map height

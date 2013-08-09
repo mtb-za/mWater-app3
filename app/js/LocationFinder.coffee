@@ -49,7 +49,6 @@ class LocationFinder
       @trigger 'found', pos
 
     error = (error) =>
-      console.log "### error "
       # No error if fired once
       if not lowAccuracyFired and not highAccuracyFired
         @trigger 'error', error

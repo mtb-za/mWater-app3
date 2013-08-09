@@ -25,8 +25,6 @@ module.exports = class SourcesLayer extends L.LayerGroup
     @map = map
     @map.on 'moveend', @updateMarkers
 
-    console.log "Added!"
-
   onRemove: (map) ->
     super(map)
     @map.off 'moveend', @updateMarkers
