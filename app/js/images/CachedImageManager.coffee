@@ -147,7 +147,7 @@ module.exports = class CachedImageManager
 
         # Upload file
         @fileTransfer.upload files[0].fullPath, 
-          encodeURI(@apiUrl + files[0].name.split(".")[0] + "?client=" + @client), 
+          encodeURI(@apiUrl + "images/" + files[0].name.split(".")[0] + "?client=" + @client), 
           uploadSuccess, uploadError, { fileKey: "image" }
       , error
     , error

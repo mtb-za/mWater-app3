@@ -153,7 +153,7 @@ exports.createLoginContext = (login) ->
 
   if persistentFs
     fileTransfer = new FileTransfer()
-    imageManager = new CachedImageManager(persistentFs, apiUrl, "images", "", fileTransfer) 
+    imageManager = new CachedImageManager(persistentFs, apiUrl, "images", login.client, fileTransfer)  
   else
     imageManager = new SimpleImageManager(apiUrl)
   

@@ -52,7 +52,7 @@ describe "CachedImageManager", ->
       called = false
       @fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
         assert.equal options.fileKey, "image"
-        assert.match server, /\?client=1234$/
+        assert.equal server, "http://api.mwater.co/v3/images/#{this.id}?client=1234"
         called = true
         successCallback()
 
@@ -67,7 +67,7 @@ describe "CachedImageManager", ->
       @fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
         @fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
           assert.equal options.fileKey, "image"
-          assert.match server, /\?client=1234$/
+          assert.equal server, "http://api.mwater.co/v3/images/#{this.id}?client=1234"
           successCallback()
         errorCallback { http_status: 0 }
 
