@@ -168,7 +168,6 @@ module.exports = function(grunt) {
           }
         }
       },
-
       deploy_app: {
         command: [
           's3cmd sync --acl-public --guess-mime-type * s3://app.mwater.co',
