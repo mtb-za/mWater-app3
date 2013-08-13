@@ -11,6 +11,10 @@ class TestPage extends Page
 
     # Get test
     @db.tests.findOne {_id: @options._id}, (test) =>
+      if not test
+        alert("Test not found")
+        return @pager.closePage()
+
       @test = test
 
       if @auth.remove("tests", @test)
