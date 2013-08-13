@@ -38,6 +38,26 @@ startUpdater = (appUpdater, success, error) ->
   updater.perform() # Do right away
   success(true)
 
+# Set true
+cordovaReady = false
+pendingActions = []
+
+# Call when cordova is fully ready
+markCordovaReady = () ->
+  cordovaReady = true
+
+  # Run pending actions
+  for action in pendingActions
+    action()
+  pendingActions = []
+
+# Calls action if/when cordova is setup. May be called after cordova setup
+exports.whenReady = (action) ->
+  if cordovaReady
+    action()
+  else
+    pendingActions.push(action)
+
 # Sets up cordova, loading cordova.js and updating as appropriate
 # Calls success with true for cordova, false for not
 exports.setup = (options, success, error) ->
@@ -75,6 +95,7 @@ exports.setup = (options, success, error) ->
       # If update not requested, just call success
       if not options.update
         console.log "No cordova update requested"
+        markCordovaReady()
         return success(true)
 
       # Create app updater
@@ -83,6 +104,7 @@ exports.setup = (options, success, error) ->
         # Do not try to relaunch
         if not isOriginal
           console.log "Running in update at #{baseUrl}"
+          markCordovaReady()
           return startUpdater(appUpdater, success, error)
 
         # If we are running original install of application from 
@@ -94,6 +116,7 @@ exports.setup = (options, success, error) ->
           # If same as current baseUrl, proceed to starting updater, since are running latest version
           if launchUrl == baseUrl
             console.log "Running latest version"
+            markCordovaReady()
             return startUpdater(appUpdater, success, error)
 
           # Redirect, putting current full base Url in cordova
