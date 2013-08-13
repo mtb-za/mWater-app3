@@ -1,4 +1,7 @@
 #!/bin/bash
+echo "You *MUST* update version in AndroidManifest.xml first to currently deployed version."
+echo "Only run this *immediately* after a grunt deploy"
+read
 cd cordova
 echo "Copying files"
 grunt cordova_release
