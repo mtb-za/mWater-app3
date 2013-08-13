@@ -48,6 +48,12 @@ describe "CachedImageManager", ->
         , fail
       , fail
 
+    it "returns numPendingImages", (done) ->
+      @mgr.numPendingImages (n) =>
+        assert.equal n, 1
+        done()
+      , fail
+
     it "uploads image", (done) ->
       called = false
       @fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>

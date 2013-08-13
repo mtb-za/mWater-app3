@@ -2,7 +2,8 @@
 
 <p class="muted">User:
 <b>{{#if login}}{{login.user}}{{else}}Not logged in{{/if}}</b>
-{{#if lastSyncDate}}Sync: <b>{{timeago lastSyncDate}} {{lastSyncMessage}}</b>{{/if}}
+Sync: {{#if lastSyncDate}}<b>{{timeago lastSyncDate}}</b>{{/if}}
+<span id="images_pending"></span>
 Version: <b>{{version}}</b></p>
 
 <p>mWater combines mobile technology with water testing to help ensure safe drinking water for everyone.</p>

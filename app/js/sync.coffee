@@ -9,105 +9,80 @@ exports.Repeater = class Repeater
     @running = false
     @inprogress = false
 
+    # Add events
+    _.extend(this, Backbone.Events)
+
   start: (every) ->
     @every = every
     @running = true
-    setTimeout @performRepeat, every
+    setTimeout @_performRepeat, every
 
   stop: ->
     @running = false
 
-  performRepeat: =>
+  _performRepeat: =>
     if not @running
       return
 
     success = (message) =>
       @inprogress = false
       if @running
-        setTimeout @performRepeat, @every
+        setTimeout @_performRepeat, @every
       @lastSuccessDate = new Date()
       @lastSuccessMessage = message
       @lastError = undefined
+      @trigger('success')
 
     error = (err) =>
       @inprogress = false
       if @running
-        setTimeout @performRepeat, @every
+        setTimeout @_performRepeat, @every
       @lastError = err
+      @trigger('error')
 
     @inprogress = true
     @action(success, error)
 
+  # Perform the action if not in progress. If in progress, does nothing without callback.
   perform: (success, error) ->
+    if @inprogress
+      return
+
     success2 = (message) =>
       @inprogress = false
       @lastSuccessMessage = message
       @lastSuccessDate = new Date()
       @lastError = undefined
       success(message) if success?
+      @trigger('success')
 
     error2 = (err) =>
       @inprogress = false
       @lastError = err
       error(err) if error?
+      @trigger('error')
 
     @inprogress = true
     @action(success2, error2)
 
-exports.Synchronizer = class Synchronizer
-  constructor: (hybridDb, imageManager, sourceCodesManager) ->
+exports.DataSync = class DataSync extends Repeater
+  constructor: (hybridDb, sourceCodesManager) ->
+    super(@_sync)
     @hybridDb = hybridDb
-    @imageManager = imageManager
     @sourceCodesManager = sourceCodesManager
 
-    # Add events
-    _.extend(this, Backbone.Events)
+  _sync: (success, error) =>
+    @hybridDb.upload () =>
+      @sourceCodesManager.replenishCodes 5, =>
+        success()
+      , error      
+    , error
 
-    @repeater = new Repeater(@_sync)
-
-  start: (every) -> @repeater.start(every)
-  stop: -> @repeater.stop()
-
-  lastSuccessMessage: -> @repeater.lastSuccessMessage
-  lastSuccessDate: -> @repeater.lastSuccessDate
-  lastError: -> @repeater.lastError
-
-  sync: (success, error) ->
-    @repeater.perform(success, error)
+exports.ImageSync = class ImageSync extends Repeater
+  constructor: (imageManager) ->
+    super(@_sync)
+    @imageManager = imageManager
 
   _sync: (success, error) =>
-    successFinal = (message) =>
-      success(message)
+    @imageManager.upload success, error
 
-      # Fire event
-      @trigger('success')
-
-    errorFinal = (err) =>
-      error(err)
-
-      # Fire event
-      @trigger('error')
-    successHybrid = =>
-      successSourceCodes = =>
-        progress = =>
-          # Do nothing with progress
-        successImages = (numImagesRemaining) =>
-          successFinal(if numImagesRemaining then "#{numImagesRemaining} images left" else "complete")
-        @imageManager.upload progress, successImages, errorFinal
-      @sourceCodesManager.replenishCodes 5, successSourceCodes, errorFinal
-    @hybridDb.upload successHybrid, errorFinal
-
-# Synchronizer that does nothing and always returns success
-exports.DemoSynchronizer = class DemoSynchronizer
-  constructor: ->
-    # Add events
-    _.extend(this, Backbone.Events)
-
-  start: -> 
-  stop: -> 
-  sync: (success, error) ->
-    success("complete")
-
-  lastSuccessMessage: -> "complete"
-  lastSuccessDate: -> new Date()
-  lastError: -> undefined

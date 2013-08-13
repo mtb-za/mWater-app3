@@ -183,7 +183,16 @@ module.exports = function(grunt) {
               cwd: 'dist'
           }
         }
-      }
+      },
+      cordova_run: {
+        command: 'cordova -d run',
+        options: {
+          stdout: true,
+          execOptions: {
+            cwd: 'cordova'
+          }
+        }
+      } 
     },
 
     watch: {
@@ -210,6 +219,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('cordova_debug', ['copy:cordova_www', 'copy:cordova_override_debug']);
   grunt.registerTask('cordova_release', ['copy:cordova_www', 'copy:cordova_override_release']);
+  grunt.registerTask('run_cordova_debug', ['default', 'cordova_debug', 'shell:cordova_run']);
 
   grunt.registerTask('copy-app', ['copy:apphtml', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapimages', 'copy:leafletcssimages']);
   grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy-app', 'handlebars', 'manifest']);
