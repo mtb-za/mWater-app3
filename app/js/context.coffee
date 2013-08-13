@@ -169,6 +169,10 @@ exports.createLoginContext = (login) ->
   dataSync.start(30*1000)  # Every 30 seconds
   imageSync.start(30*1000)  # Every 30 seconds
 
+  # Perform sync immediately
+  dataSync.perform()
+  imageSync.perform()
+
   stop = ->
     dataSync.stop()
     imageSync.stop()
