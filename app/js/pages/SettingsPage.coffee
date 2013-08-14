@@ -7,6 +7,7 @@ class SettingsPage extends Page
     "click #crash" : "crash"
     "click #request_source_codes": "requestSourceCodes"
     "click #test_ecplates" : "testECPlates"
+    "click #weinre" : "startWeinre"
 
   activate: ->
     @setTitle "Settings"
@@ -23,6 +24,11 @@ class SettingsPage extends Page
     ECPlates.isAvailable (available) =>
       @$("#test_ecplates").show()
     , @error
+
+    # Setup debugging buttons
+    if window.debug
+      $("#weinre_details").html("Debugging with code <b>#{window.debug.code}</b>")
+      $("#weinre").attr("disabled", true)
 
   resetDb: ->
     if confirm("Completely discard local data, logout and lose unsubmitted changes?")
@@ -53,5 +59,23 @@ class SettingsPage extends Page
           res = "E.Coli: " + args.ecoli + "\nTC: " + args.tc + "\nAlgorithm: " + args.algorithm
         alert res
       , @error
+
+  startWeinre: ->
+    if confirm("Start remote debugger (this will give developers temporary access to the app on your phone)?")
+      code = (if @login then @login.user else "anon") + Math.floor(Math.random()*1000)
+      console.log "weinre code #{code}"
+      script = document.createElement("script")
+      script.onload = () =>
+        window.debug = {
+          code: code
+          ctx: @ctx
+          require: require
+        }
+        @render()
+        alert("Debugger started with code #{code}")
+      script.onerror = ->
+        error("Failed to load weinre")
+      script.src = "http://weinre.mwater.co/target/target-script-min.js#" + code
+      document.head.appendChild(script)
 
 module.exports = SettingsPage
