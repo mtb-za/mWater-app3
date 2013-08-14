@@ -40,6 +40,7 @@ ProblemReporter = (url, version, getLogin) ->
       user_agent: navigator.userAgent
       log: log
       desc: desc
+      device: window.device
 
     login = getLogin()
     _.defaults report, login

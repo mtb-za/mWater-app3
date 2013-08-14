@@ -39,6 +39,7 @@ module.exports = class ProblemReportPage extends Page
       report = @model.toJSON()
       report.version = @version
       report.user_agent = navigator.userAgent
+      report.device = window.device
       # TODO add log
       
       # Post to api
