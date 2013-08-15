@@ -25,7 +25,6 @@ class NewTestPage extends Page
 
     # Create test
     test = {
-      source: @options.source
       type: form.code
       type_rev: form._rev
       started: new Date().toISOString()
@@ -33,6 +32,10 @@ class NewTestPage extends Page
       user: @login.user
       org: @login.org
     }
+
+    if @options.source
+      test.data = { source: @options.source }
+      
     @db.tests.upsert test, (test) =>
       @pager.closePage(TestPage, { _id: test._id })
 
