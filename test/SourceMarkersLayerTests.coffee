@@ -1,8 +1,9 @@
 assert = chai.assert
 
-SourceMarkersLayer = require '../app/js/map/SourceMarkersLayer'
+SourcesLayer = require '../app/js/map/SourcesLayer'
 
-describe "SourceMarkersLayer", ->
+# TODO Rename marker to layer
+describe "SourcesLayer", ->
   describe "updateMarkersFromList", ->
     it 'adds created markers', ->
       markers = 
@@ -13,7 +14,7 @@ describe "SourceMarkersLayer", ->
         create: (source, success, error) ->
           success(source: source, marker: markers[source._id])
       
-      sml = new SourceMarkersLayer(markerCreator)
+      sml = new SourcesLayer(markerCreator)
 
       sources = [
         { _id: "1" }

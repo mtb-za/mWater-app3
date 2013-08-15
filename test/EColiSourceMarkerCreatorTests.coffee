@@ -1,7 +1,7 @@
 assert = chai.assert
 
 LocalDb = require "../app/js/db/LocalDb"
-SourceMarkerCreators = require '../app/js/map/SourceMarkerCreators'
+SourceLayerCreators = require '../app/js/map/SourceLayerCreators'
 
 grey = "#606060"
 green = "#00D000"

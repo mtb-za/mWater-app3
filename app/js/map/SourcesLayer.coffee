@@ -1,13 +1,31 @@
 GeoJSON = require '../GeoJSON'
 
+# TODO rename marker to layer?
 module.exports = class SourcesLayer extends L.LayerGroup
-  constructor: (sourceMarkerCreator, sourcesDb) ->
+  constructor: (sourceLayerCreator, sourcesDb) ->
     super()
-    @sourceMarkerCreator = sourceMarkerCreator
+    @sourceLayerCreator = sourceLayerCreator
     @sourcesDb = sourcesDb
 
     # Markers, by _id
     @markers = {}
+
+  onAdd: (map) =>
+    super(map)
+    @map = map
+    map.on 'moveend', @moveEnd
+
+  onRemove: (map) =>
+    super(map)
+    map.off 'moveend', @moveEnd
+
+  moveEnd: =>
+    bounds = @map.getBounds()
+
+    # Pad to ensure smooth scrolling
+    bounds = bounds.pad(0.33)
+    # TODO pass error?
+    @updateMarkersFromBounds(bounds)
 
   resetMarkers: =>
     @clearLayers()
@@ -20,15 +38,15 @@ module.exports = class SourcesLayer extends L.LayerGroup
         continue
 
       # Call creator
-      @sourceMarkerCreator.create source, (result) =>
+      @sourceLayerCreator.create source, (result) =>
         # Remove marker if exists
         if result.source._id of @markers
           @removeLayer(@markers[result.source._id])
           delete @markers[result.source._id]
 
         # Add marker
-        @markers[result.source._id] = result.marker
-        @addLayer(result.marker)
+        @markers[result.source._id] = result.layer
+        @addLayer(result.layer)
       , error
 
     # Remove markers not present
