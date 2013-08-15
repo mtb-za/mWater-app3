@@ -160,7 +160,11 @@ module.exports = function(grunt) {
         }
       },
       deploy_demo: {
-        command: 's3cmd sync --acl-public --guess-mime-type * s3://demo.mwater.co',
+        command: 's3cmd sync --acl-public --guess-mime-type ' +
+          '--add-header "Cache-Control: no-cache, must-revalidate" ' +
+          '--add-header "Pragma: no-cache" ' +
+          '--add-header "Expires: 0" ' + 
+          '* s3://demo.mwater.co',
         options: {
           stdout: true,
           execOptions: {
@@ -170,7 +174,11 @@ module.exports = function(grunt) {
       },
       deploy_app: {
         command: [
-          's3cmd sync --acl-public --guess-mime-type * s3://app.mwater.co',
+          's3cmd sync --acl-public --guess-mime-type ' +
+          '--add-header "Cache-Control: no-cache, must-revalidate" ' +
+          '--add-header "Pragma: no-cache" ' +
+          '--add-header "Expires: 0" ' + 
+          '* s3://app.mwater.co',
           's3cmd put --acl-public --guess-mime-type ' +
           '--add-header "Cache-Control: no-cache, no-store, must-revalidate" ' +
           '--add-header "Pragma: no-cache" ' +
