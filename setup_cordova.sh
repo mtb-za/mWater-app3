@@ -15,8 +15,9 @@ rm platforms/android/res/drawable-hdpi/icon.png
 rm platforms/android/res/drawable-ldpi/icon.png
 rm platforms/android/res/drawable-mdpi/icon.png
 rm platforms/android/res/drawable-xhdpi/icon.png
+rm -r platforms/android/assets/www/*
 cp ../dist/img/mwater-large.png platforms/android/res/drawable/icon.png
-rm -r www/*.*
+rm -r www/*
 
 echo "key.store=/home/clayton/.ssh/mwater.keystore" >> ./platforms/android/ant.properties
 echo "key.alias=mwater" >> ./platforms/android/ant.properties
