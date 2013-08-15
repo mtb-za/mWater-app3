@@ -11,6 +11,10 @@ class TestPage extends Page
 
     # Get test
     @db.tests.findOne {_id: @options._id}, (test) =>
+      if not test
+        alert("Test not found")
+        return @pager.closePage()
+
       @test = test
 
       if @auth.remove("tests", @test)
@@ -31,13 +35,13 @@ class TestPage extends Page
         else
           @formView = forms.instantiateView(form.views.detail, { ctx: @ctx })
   
-        @$el.html templates['pages/TestPage'](completed: test.completed, title: form.name)
+        @$el.html templates['pages/TestPage'](form: form, test: test)
         @$('#contents').append(@formView.el)
 
         if not @auth.update("tests", test)
           @$("#edit_button").hide()
 
-        @formView.load @test
+        @formView.load @test.data
 
   events:
     "click #edit_button" : "edit"
@@ -54,7 +58,7 @@ class TestPage extends Page
 
   save: =>
     # Save to db
-    @test = @formView.save()
+    @test.data = @formView.save()
     @db.tests.upsert(@test)
 
   close: =>
@@ -63,6 +67,7 @@ class TestPage extends Page
 
   completed: =>
     # Mark as completed
+    @test.data = @formView.save()
     @test.completed = new Date().toISOString()
     @db.tests.upsert @test, => @render()
 

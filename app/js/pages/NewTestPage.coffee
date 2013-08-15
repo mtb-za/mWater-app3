@@ -1,8 +1,9 @@
 Page = require "../Page"
-TestPage = require "./TestPage"
+TestPage = require './TestPage'
+forms = require '../forms'
 
 # Parameter is optional source code
-class NewTestPage extends Page
+module.exports = class NewTestPage extends Page
   @canOpen: (ctx) -> ctx.auth.insert("tests")
 
   events: 
@@ -23,17 +24,22 @@ class NewTestPage extends Page
       @error("Form not found")
       return
 
+    # Create code. Not unique, but unique per user if logged in once.
+    code = @login.user + "-" + forms.createBase32TimeCode(new Date())
+
     # Create test
     test = {
-      source: @options.source
       type: form.code
       type_rev: form._rev
+      code: code
       started: new Date().toISOString()
       completed: null
       user: @login.user
       org: @login.org
     }
+
+    if @options.source
+      test.data = { source: @options.source }
+      
     @db.tests.upsert test, (test) =>
       @pager.closePage(TestPage, { _id: test._id })
-
-module.exports = NewTestPage

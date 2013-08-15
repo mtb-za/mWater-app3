@@ -8,26 +8,43 @@ class MainPage extends Page
     @setTitle "mWater"
 
     # Rerender on error/success of sync
-    if @sync?
-      @listenTo @sync, "success error", =>
+    if @dataSync?
+      @listenTo @dataSync, "success error", =>
+        @render()
+
+    if @imageSync?
+      @listenTo @imageSync, "success error", =>
         @render()
 
     @render()
 
   deactivate: ->
     # Stop listening to events
-    if @sync?
-      @stopListening @sync
+    if @dataSync?
+      @stopListening @dataSync
+    if @imageSync?
+      @stopListening @imageSync
 
   render: ->
     data = {}
     data.login = @login
     data.version = @version
-    data.lastSyncDate = @sync.lastSuccessDate() if @sync?
-    data.lastSyncMessage = @sync.lastSuccessMessage() if @sync?
+    data.baseVersion = @baseVersion
+    data.lastSyncDate = @dataSync.lastSuccessDate if @dataSync?
+
+    data.imagesRemaining = @imageSync.lastSuccessMessage if @imageSync?
 
     @$el.html templates['pages/MainPage'](data)
-    
+
+    # Display images pending
+    if @imageManager? and @imageManager.numPendingImages?
+      @imageManager.numPendingImages (num) =>
+        if num > 0
+          $("#images_pending").html("<b>#{num} images to upload</b>")
+        else
+          $("#images_pending").html("")
+      , @error
+
     menu = []
     if NewSourcePage.canOpen(@ctx)
       menu.push({ text: "Add Water Source", click: => @addSource() })

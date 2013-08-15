@@ -1,7 +1,6 @@
 assert = chai.assert
 sync = require '../app/js/sync'
 
-
 describe "Repeater", ->
   # Too time specific
   # it "calls action every n milliseconds", (done) ->
@@ -76,6 +75,23 @@ describe "Repeater", ->
       done()
     , 100
 
+  it "fires success event", (done) ->
+    @repeater = new sync.Repeater (success, error) ->
+      success()
+
+    @repeater.on "success", ->
+      done()
+
+    @repeater.perform()
+
+  it "fires error event", (done) ->
+    @repeater = new sync.Repeater (success, error) ->
+      error()
+
+    @repeater.on "error", ->
+      done()
+
+    @repeater.perform()
 
   # Too time specific
   # it "records last success message and date", (done) ->
@@ -115,39 +131,36 @@ describe "Repeater", ->
   #     done()
   #   , 100
 
-describe "Synchronizer", ->
+describe "DataSync", ->
   beforeEach ->
     @c1 = 0
     @c2 = 0
-    @c3 = 0
 
     @hybridDb = 
       upload: (success, error) => 
         @c1 += 1
         success()
-    @imageManager =
-      upload: (progress, success, error) =>
-        @c2 += 1
-        success(3)
     @sourceCodesManager = 
       replenishCodes: (minNumber, success, error) =>
         @c2 += 1
         success()
 
   it "calls all things to be synced", (done) ->
-    s = new sync.Synchronizer(@hybridDb, @imageManager, @sourceCodesManager)
+    s = new sync.DataSync(@hybridDb, @sourceCodesManager)
 
     success = (message) =>
-      assert.equal message, "3 images left"
+      assert.isUndefined(message)
+      assert.equal @c1, 1
+      assert.equal @c2, 1
       done()
 
     error = ->
       assert.fail()
 
-    s.sync(success, error)
+    s.perform(success, error)
 
   it "fires success event", (done) ->
-    s = new sync.Synchronizer(@hybridDb, @imageManager, @sourceCodesManager)
+    s = new sync.DataSync(@hybridDb, @sourceCodesManager)
 
     called = false
 
@@ -158,11 +171,11 @@ describe "Synchronizer", ->
 
     s.on "success", ->
       done()
-    s.sync(success, error)
+    s.perform(success, error)
 
   it "fires error event", (done) ->
-    s = new sync.Synchronizer(@hybridDb, @imageManager, @sourceCodesManager)
-    @imageManager.upload = (progress, success, error) =>
+    s = new sync.DataSync(@hybridDb, @sourceCodesManager)
+    @hybridDb.upload = (success, error) =>
       error("some error")
 
     called = false
@@ -176,4 +189,57 @@ describe "Synchronizer", ->
       assert.fail()
     s.on "error", ->
       done()
-    s.sync(success, error)
+    s.perform(success, error)
+
+describe "ImageSync", ->
+  beforeEach ->
+    @c1 = 0
+
+    @imageManager =
+      upload: (success, error) =>
+        @c1 += 1
+        success(3)
+
+  it "calls all things to be synced", (done) ->
+    s = new sync.ImageSync(@imageManager)
+
+    success = (message) =>
+      assert.equal message, 3
+      done()
+
+    error = ->
+      assert.fail()
+
+    s.perform(success, error)
+
+  it "fires success event", (done) ->
+    s = new sync.ImageSync(@imageManager)
+
+    called = false
+
+    success = () =>
+
+    error = ->
+      assert.fail()
+
+    s.on "success", ->
+      done()
+    s.perform(success, error)
+
+  it "fires error event", (done) ->
+    s = new sync.ImageSync(@imageManager)
+    @imageManager.upload = (success, error) =>
+      error("some error")
+
+    called = false
+
+    success = () =>
+      assert.fail()
+
+    error = ->
+
+    s.on "success", ->
+      assert.fail()
+    s.on "error", ->
+      done()
+    s.perform(success, error)

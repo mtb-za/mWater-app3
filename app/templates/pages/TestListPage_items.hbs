@@ -1,7 +1,11 @@
 {{#each tests}}
 <tr class="tappable" id="{{_id}}">
-  <td><strong><span id="name_{{_id}}"></span></strong></td>
-  <td style="border-left:none;"><strong>{{#if source}}Source {{source}}{{/if}}</strong></td>
+  <td>
+  	<strong><span id="name_{{_id}}"></span></strong>
+	<br/>
+	<span class="muted">{{code}}</span>
+  </td>
+  <td style="border-left:none;"><strong>{{#if data.source}}Source {{data.source}}{{/if}}</strong></td>
   <td style="border-left:none;">{{formatDate started "%F"}}</strong></td>
   <td style="vertical-align:middle; border-left:none; width: 16px"><i class="icon-chevron-right"></i></td>
 </tr>

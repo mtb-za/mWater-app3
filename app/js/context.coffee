@@ -12,9 +12,10 @@ imageManager: Simple or Cached Image manager
 camera: Camera that has a single function: takePicture(success, error). 
   success is called with url to be passed to imageManager.addImage(url, success, error)
   error: error function to be called with unexpected errors
-  auth: see auth module
-  login: { user: <username>, org: <org code>, client: <client id> }
-
+auth: see auth module
+login: { user: <username>, org: <org code>, client: <client id> }
+dataSync: synchronizer for data including db and source codes. Success message is to be displayed.
+imageSync: synchronizer for images. Success message is to be displayed.
 
 stop(): must be called when context is no longer needed, or before setup of a new user
 
@@ -32,6 +33,7 @@ authModule = require './auth'
 sourcecodes = require './sourcecodes'
 syncModule = require './sync'
 Camera = require './Camera'
+cordova = require './cordova'
 
 collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes']
 
@@ -60,13 +62,15 @@ createBaseContext = ->
     apiUrl: apiUrl
     camera: camera
     version: '//VERSION//'
+    baseVersion: cordova.baseVersion()
     stop: ->
     # db: null
     # imageManager: null
     # auth: null 
     # login: null
     # sourceCodesManager: null
-    # sync: null
+    # dataSync: null
+    # imageSync: null
   }
 
 # Setup database
@@ -111,7 +115,8 @@ exports.createAnonymousContext = ->
     auth: auth 
     login: null
     sourceCodesManager: null
-    sync: null
+    dataSync: null
+    imageSync: null
   }
 
 exports.createDemoContext = ->
@@ -135,7 +140,6 @@ exports.createDemoContext = ->
   login = { user: "demo" }
 
   sourceCodesManager = new sourcecodes.DemoSourceCodesManager()
-  sync = new syncModule.DemoSynchronizer()
 
   return _.extend createBaseContext(), {
     db: db 
@@ -143,7 +147,8 @@ exports.createDemoContext = ->
     auth: auth
     login: login
     sourceCodesManager: sourceCodesManager
-    sync: sync
+    dataSync: null
+    imageSync: null
   }
 
 # login must contain user, org, client, email members. "user" is username. "org" can be null
@@ -153,19 +158,26 @@ exports.createLoginContext = (login) ->
 
   if persistentFs
     fileTransfer = new FileTransfer()
-    imageManager = new CachedImageManager(persistentFs, apiUrl, "images", "", fileTransfer) 
+    imageManager = new CachedImageManager(persistentFs, apiUrl, "Android/data/co.mwater.clientapp/images", login.client, fileTransfer)  
   else
     imageManager = new SimpleImageManager(apiUrl)
   
   auth = new authModule.UserAuth(login.user, login.org)
   sourceCodesManager = new sourcecodes.SourceCodesManager(apiUrl + "source_codes?client=#{login.client}")
-  sync = new syncModule.Synchronizer(db, imageManager, sourceCodesManager)
+  dataSync = new syncModule.DataSync(db, sourceCodesManager)
+  imageSync = new syncModule.ImageSync(imageManager)
 
   # Start synchronizing
-  sync.start(30*1000)  # Every 30 seconds
+  dataSync.start(30*1000)  # Every 30 seconds
+  imageSync.start(30*1000)  # Every 30 seconds
+
+  # Perform sync immediately
+  dataSync.perform()
+  imageSync.perform()
 
   stop = ->
-    sync.stop()
+    dataSync.stop()
+    imageSync.stop()
 
   return _.extend createBaseContext(), {
     db: db 
@@ -173,6 +185,7 @@ exports.createLoginContext = (login) ->
     auth: auth
     login: login
     sourceCodesManager: sourceCodesManager
-    sync: sync
+    dataSync: dataSync
+    imageSync: imageSync
     stop: stop
   }

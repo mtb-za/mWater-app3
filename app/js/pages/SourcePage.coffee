@@ -75,7 +75,7 @@ module.exports = class SourcePage extends Page
     @$("#location").append(locationView.el)
 
     # Add tests
-    @db.tests.find({source: @source.code}).fetch (tests) =>
+    @db.tests.find({"data.source": @source.code}).fetch (tests) =>
       @$("#tests").html templates['pages/SourcePage_tests'](tests:tests)
 
       # Fill in names

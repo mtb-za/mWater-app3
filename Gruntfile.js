@@ -144,7 +144,8 @@ module.exports = function(grunt) {
           '*.html',
           'js/*.js',
           'css/*.css',
-          'img/**/*.png'
+          'css/images/*.*',
+          'img/*.*'
         ],
         dest: 'dist/manifest.appcache'
       }
@@ -159,7 +160,11 @@ module.exports = function(grunt) {
         }
       },
       deploy_demo: {
-        command: 's3cmd sync --acl-public --guess-mime-type * s3://demo.mwater.co',
+        command: 's3cmd sync --acl-public --guess-mime-type ' +
+          '--add-header "Cache-Control: no-cache, must-revalidate" ' +
+          '--add-header "Pragma: no-cache" ' +
+          '--add-header "Expires: 0" ' + 
+          '* s3://demo.mwater.co',
         options: {
           stdout: true,
           execOptions: {
@@ -167,10 +172,13 @@ module.exports = function(grunt) {
           }
         }
       },
-
       deploy_app: {
         command: [
-          's3cmd sync --acl-public --guess-mime-type * s3://app.mwater.co',
+          's3cmd sync --acl-public --guess-mime-type ' +
+          '--add-header "Cache-Control: no-cache, must-revalidate" ' +
+          '--add-header "Pragma: no-cache" ' +
+          '--add-header "Expires: 0" ' + 
+          '* s3://app.mwater.co',
           's3cmd put --acl-public --guess-mime-type ' +
           '--add-header "Cache-Control: no-cache, no-store, must-revalidate" ' +
           '--add-header "Pragma: no-cache" ' +
@@ -183,7 +191,16 @@ module.exports = function(grunt) {
               cwd: 'dist'
           }
         }
-      }
+      },
+      cordova_run: {
+        command: 'cordova -d run',
+        options: {
+          stdout: true,
+          execOptions: {
+            cwd: 'cordova'
+          }
+        }
+      } 
     },
 
     watch: {
@@ -208,13 +225,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-manifest');
   grunt.loadNpmTasks('grunt-shell');
 
-  grunt.registerTask('cordova_debug', ['default', 'copy:cordova_www', 'copy:cordova_override_debug']);
-  grunt.registerTask('cordova_release', ['default', 'copy:cordova_www', 'copy:cordova_override_release']);
+  grunt.registerTask('cordova_debug', ['copy:cordova_www', 'copy:cordova_override_debug']);
+  grunt.registerTask('cordova_release', ['copy:cordova_www', 'copy:cordova_override_release']);
+  grunt.registerTask('run_cordova_debug', ['default', 'cordova_debug', 'shell:cordova_run']);
 
   grunt.registerTask('copy-app', ['copy:apphtml', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapimages', 'copy:leafletcssimages']);
   grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy-app', 'handlebars', 'manifest']);
 
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
   grunt.registerTask('deploy_app', ['shell:bump_version', 'default', 'shell:deploy_app']);
-  grunt.registerTask('deploy', ['deploy_app', 'deploy_demo']);
+  grunt.registerTask('deploy', ['deploy_app', 'shell:deploy_demo']);
 };

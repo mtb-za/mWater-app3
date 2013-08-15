@@ -101,3 +101,24 @@ _.extend(exports, require('./form-controls'))
 
 
 # TODO figure out how to allow two surveys for differing client versions? Or just use minVersion?
+
+# Create a base32 time code to write on forms
+exports.createBase32TimeCode = (date) ->
+  # Characters to use (skip 1, I, 0, O)
+  chars = "23456789ABCDEFGHJLKMNPQRSTUVWXYZ"
+
+  # Subtract date from July 1, 2013
+  base = new Date(2013, 6, 1, 0, 0, 0, 0)
+
+  # Get seconds since
+  diff = Math.floor((date.getTime() - base.getTime()) / 1000)
+
+  # Convert to array of base 32 characters
+  code = ""
+
+  while diff >= 1
+    num = diff % 32
+    diff = Math.floor(diff / 32)
+    code = chars[num] + code
+
+  return code

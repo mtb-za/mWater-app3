@@ -21,7 +21,7 @@ module.exports = class TestListPage extends Page
     recent = new Date()
     recent.setDate(recent.getDate() - 30)
 
-    @db.tests.find({completed: { $gt:recent.toISOString() }, user: @login.user }).fetch (tests) =>
+    @db.tests.find({completed: { $gt:recent.toISOString() }, user: @login.user }, {sort:[['started','desc']]}).fetch (tests) =>
       @$("#recent_table").html templates['pages/TestListPage_items'](tests:tests)
 
       # Fill in test names
@@ -30,7 +30,7 @@ module.exports = class TestListPage extends Page
           @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
             @$("#name_"+test._id).text(if form then form.name else "???")
 
-    @db.tests.find({ completed: null, user: @login.user }).fetch (tests) =>
+    @db.tests.find({ completed: null, user: @login.user }, {sort:[['started','desc']]}).fetch (tests) =>
       @$("#incomplete_table").html templates['pages/TestListPage_items'](tests:tests)
 
       # Fill in test names

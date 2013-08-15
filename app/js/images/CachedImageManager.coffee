@@ -113,6 +113,15 @@ module.exports = class CachedImageManager
           error err
     ), error
 
+  numPendingImages: (success, error) ->
+    # Copy file to pending folder
+    @getDirectory @cachePath + "/pending/original", (dirEntry) =>
+      
+      # Get a list of all the entries in the directory
+      dirEntry.createReader().readEntries (files) =>
+        success(files.length)
+      , error
+    , error
 
   # Upload one image to server. Success is called with number of images remaining.
   upload: (success, error) ->
@@ -121,6 +130,7 @@ module.exports = class CachedImageManager
       
       # Get a list of all the entries in the directory
       dirEntry.createReader().readEntries (files) =>
+        console.log "#{files.length} images to upload"
         if files.length is 0
           success 0
           return
@@ -130,6 +140,7 @@ module.exports = class CachedImageManager
           @getDirectory @cachePath + "/cached/original", (dirEntry) ->
             files[0].moveTo dirEntry, files[0].name, ->
               # File moves, call success
+              console.log "Successful image upload"
               success files.length - 1
             , error
           , error
@@ -146,8 +157,10 @@ module.exports = class CachedImageManager
             error fileTransferError
 
         # Upload file
-        @fileTransfer.upload files[0].fullPath, 
-          encodeURI(@apiUrl + files[0].name.split(".")[0] + "?client=" + @client), 
+        fileName = files[0].fullPath
+        destUrl = encodeURI(@apiUrl + "images/" + files[0].name.split(".")[0] + "?client=" + @client)
+        console.log "About to upload image #{fileName} to #{destUrl}"
+        @fileTransfer.upload fileName, destUrl, 
           uploadSuccess, uploadError, { fileKey: "image" }
       , error
     , error

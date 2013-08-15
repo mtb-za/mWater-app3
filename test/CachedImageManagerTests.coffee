@@ -48,11 +48,17 @@ describe "CachedImageManager", ->
         , fail
       , fail
 
+    it "returns numPendingImages", (done) ->
+      @mgr.numPendingImages (n) =>
+        assert.equal n, 1
+        done()
+      , fail
+
     it "uploads image", (done) ->
       called = false
       @fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
         assert.equal options.fileKey, "image"
-        assert.match server, /\?client=1234$/
+        assert.equal server, "http://api.mwater.co/v3/images/#{this.id}?client=1234"
         called = true
         successCallback()
 
@@ -67,7 +73,7 @@ describe "CachedImageManager", ->
       @fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
         @fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
           assert.equal options.fileKey, "image"
-          assert.match server, /\?client=1234$/
+          assert.equal server, "http://api.mwater.co/v3/images/#{this.id}?client=1234"
           successCallback()
         errorCallback { http_status: 0 }
 
