@@ -35,7 +35,7 @@ class TestPage extends Page
         else
           @formView = forms.instantiateView(form.views.detail, { ctx: @ctx })
   
-        @$el.html templates['pages/TestPage'](completed: test.completed, title: form.name)
+        @$el.html templates['pages/TestPage'](form: form, test: test)
         @$('#contents').append(@formView.el)
 
         if not @auth.update("tests", test)

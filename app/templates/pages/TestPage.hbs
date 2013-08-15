@@ -1,8 +1,28 @@
-<h3>{{title}}</h3>
+{{! Display test code }}
+<style>
+.testcode {
+	padding: 2px 4px;
+	font-weight: bold;
+	white-space: nowrap;
+	background-color: #f7f7f9;
+	border: 1px solid #d1d1d8;
+}
+.testcode_div {
+    margin-bottom: 8px;
+    margin-top: 4px;
+}
+</style>
+
+<div class="testcode_div">
+	<span class="muted"><b>Test </b></span>
+	<span class="testcode">{{#if test.code}}{{test.code}}{{else}}Unnamed{{/if}}</span>
+	<span class="muted"><b> of </b></span><b>{{form.name}}</b>
+</div>
+
 
 <div id="contents"></div>
 
-{{#if completed}}
+{{#if test.completed}}
 <br/>
 <div><button id="edit_button" type="button" class="btn margined"><i class="icon-edit"></i> Edit Test</button></div>
 {{/if}}
