@@ -29,6 +29,7 @@ class MainPage extends Page
     data = {}
     data.login = @login
     data.version = @version
+    data.baseVersion = @baseVersion
     data.lastSyncDate = @dataSync.lastSuccessDate if @dataSync?
 
     data.imagesRemaining = @imageSync.lastSuccessMessage if @imageSync?

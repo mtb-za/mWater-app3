@@ -41,6 +41,7 @@ ProblemReporter = (url, version, getLogin) ->
       log: log
       desc: desc
       device: window.device
+      url: window.location.href
 
     login = getLogin()
     _.defaults report, login

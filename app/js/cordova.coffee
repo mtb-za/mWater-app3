@@ -58,6 +58,10 @@ exports.whenReady = (action) ->
   else
     pendingActions.push(action)
 
+# Gets the cordova base version. Null if not present
+exports.baseVersion = () ->
+  return getQueryParameterByName("base_version")
+
 # Sets up cordova, loading cordova.js and updating as appropriate
 # Calls success with true for cordova, false for not
 exports.setup = (options, success, error) ->
@@ -119,8 +123,8 @@ exports.setup = (options, success, error) ->
             markCordovaReady()
             return startUpdater(appUpdater, success, error)
 
-          # Redirect, putting current full base Url in cordova
-          redir = launchUrl + "index_cordova.html?cordova=" + baseUrl
+          # Redirect, putting current full base Url in cordova and including base version
+          redir = launchUrl + "index_cordova.html?cordova=" + baseUrl + "&base_version=" + "//VERSION//"
           console.log "Redirecting to #{redir}"
           window.location.href = redir
         , error

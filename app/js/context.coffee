@@ -33,6 +33,7 @@ authModule = require './auth'
 sourcecodes = require './sourcecodes'
 syncModule = require './sync'
 Camera = require './Camera'
+cordova = require './cordova'
 
 collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes']
 
@@ -61,6 +62,7 @@ createBaseContext = ->
     apiUrl: apiUrl
     camera: camera
     version: '//VERSION//'
+    baseVersion: cordova.baseVersion()
     stop: ->
     # db: null
     # imageManager: null
