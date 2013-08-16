@@ -10,7 +10,7 @@ class EColiAnalyzer
   constructor: (db) ->
     @db = db
 
-  # Returns E.Coli level / 100mL or -1 for unknown
+  # Returns E.Coli level / 100mL or 'nodata' for unknown
   analyzeSource: (source, success, error) ->
     # Get tests
     @getLastTests source, (tests) =>
@@ -20,11 +20,11 @@ class EColiAnalyzer
       # Combine
       minMax = @combineMinMax(minMaxes)
 
-      # Return max, capped at 999999. If range includes 0, return -1
+      # Return max, or 'high' if large and unknown. If range includes 0, return -1
       if minMax[0] == 0 and minMax[1] == -1
-        success(-1)
+        success('nodata')
       else if minMax[1] == -1
-        success(999999)
+        success('high')
       else
         success(minMax[1])
     , error
@@ -92,16 +92,28 @@ class EColi extends SourceLayerCreator
     @openSource = openSource
     @ecoliAnalyzer = ecoliAnalyzer
 
-  # Level is E.Coli level/100ml
+  # Level is E.Coli level/100ml. Can also be 'pending' and 'nodata' and 'high'
   createLevelLayer: (source, level) ->
-    if level >= 100
+    if level == 'pending'
+      color = "#888"
+      levelStr = "Pending..."
+    else if level == 'nodata'
+      color = "#888"
+      levelStr = "No Data"
+    else if level == 'high'
       color = "#D00"
+      levelStr = "High"
+    else if level >= 100
+      color = "#D00"
+      levelStr = level
     else if level >= 1
       color = "#DD0"
+      levelStr = level
     else if level >=0
       color = "#0D0"
-    else
-      color = "#888"
+      levelStr = level
+    else 
+      throw "Invalid level: " + level
 
     layer = L.geoJson source.geo, {
       style: (feature) =>
@@ -120,11 +132,12 @@ class EColi extends SourceLayerCreator
     # Create popup
     html = _.template('''
       <div>
-      Water source #<b><%=source.code%></b><br>
+      Water source <b><%=source.code%></b><br>
       Name: <b><%=source.name%></b><br>
+      E.Coli / 100mL: <b><%=levelStr%><br>
       <button class="btn btn-primary btn-block">Open</button>
       </div>''', 
-      { source: source })
+      { source: source, levelStr: levelStr })
 
     content = $(html)
     content.find("button").on 'click', =>
@@ -135,14 +148,10 @@ class EColi extends SourceLayerCreator
 
   createLayer: (source, success, error) =>
     # Create initial marker in no-data
-    success(source: source, layer: @createLevelLayer(source, -1))
+    success(source: source, layer: @createLevelLayer(source, 'pending'))
 
     # Call EColi analyzer to get actual level
     @ecoliAnalyzer.analyzeSource source, (level) =>
-      # If same as initial, leave untouched
-      if level == -1
-        return
-        
       success(source: source, layer: @createLevelLayer(source, level))
 
     , error

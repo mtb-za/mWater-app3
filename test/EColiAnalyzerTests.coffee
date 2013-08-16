@@ -12,9 +12,9 @@ describe "EColiAnalyzer", ->
 
     @analyzer = new SourceLayerCreators.EColiAnalyzer(@db)
 
-  it "returns -1 for no tests", (done) ->
+  it "returns nodata for no tests", (done) ->
     @analyzer.analyzeSource @source, (level) =>
-      assert.equal level, -1
+      assert.equal level, "nodata"
       done()
 
   it "gets last tests", (done) ->
@@ -101,5 +101,5 @@ describe "EColiAnalyzer", ->
     @db.tests.upsert({ type: "Aquagenx100PA", data: { source: "1", dilution: 2, ecoli_present: true }, completed: "2012-01-09T12:01:00.000Z" })
 
     @analyzer.analyzeSource @source, (level) =>
-      assert.equal level, 999999
+      assert.equal level, 'high'
       done()
