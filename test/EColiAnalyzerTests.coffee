@@ -12,7 +12,7 @@ describe "EColiAnalyzer", ->
 
     @analyzer = new SourceLayerCreators.EColiAnalyzer(@db)
 
-  it.skip "returns -1 for no tests", (done) ->
+  it "returns -1 for no tests", (done) ->
     @analyzer.analyzeSource @source, (level) =>
       assert.equal level, -1
       done()
@@ -89,4 +89,10 @@ describe "EColiAnalyzer", ->
     it "prioritizes min when conflict", ->
       assert.deepEqual @analyzer.combineMinMax([[0, 5], [10, 40]]), [10, 10]
 
-  it "correctly returns for complex example"	
+  it "correctly returns for complex example", (done) ->
+    @db.tests.upsert({ type: "ColilertMPN", data: { source: "1", dilution: 1, ecoli_present: false }, completed: "2012-01-10T12:00:00.000Z" })
+    @db.tests.upsert({ type: "Aquagenx100PA", data: { source: "1", dilution: 2, ecoli_present: true }, completed: "2012-01-09T12:01:00.000Z" })
+
+    @analyzer.analyzeSource @source, (level) =>
+      assert.equal level, 9
+      done()

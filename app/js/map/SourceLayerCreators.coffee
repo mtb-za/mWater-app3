@@ -12,17 +12,17 @@ class EColiAnalyzer
 
   # Returns E.Coli level / 100mL or -1 for unknown
   analyzeSource: (source, success, error) ->
-    setTimeout =>
-      x = Math.random() * 4
-      if x < 1
-        success -1
-      else if x < 2 
-        success 0
-      else if x < 3
-        success 10
-      else
-        success 100
-    , 1000
+    # Get tests
+    @getLastTests source, (tests) =>
+      # Analyze tests
+      minMaxes = _.map(tests, (test) => @analyzeTest(test))
+
+      # Combine
+      minMax = @combineMinMax(minMaxes)
+
+      # Return max
+      success(minMax[1])
+    , error
 
   # Gets the last clump of tests within a 24 hours window ending with the last test
   getLastTests: (source, success, error) ->

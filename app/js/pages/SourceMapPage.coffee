@@ -48,7 +48,7 @@ class SourceMapPage extends Page
     # Setup marker display when map is loaded
     @map.whenReady =>
       ecoliAnalyzer = new SourceLayerCreators.EColiAnalyzer(@db)
-      
+
       sourceLayerCreator = new SourceLayerCreators.EColi ecoliAnalyzer, (_id) =>
         @pager.openPage(SourcePage, {_id: _id})
       @sourcesLayer = new SourcesLayer(sourceLayerCreator, @db.sources).addTo(@map)
@@ -73,7 +73,8 @@ class SourceMapPage extends Page
   activate: ->
     # Update markers
     if @sourcesLayer and @needsRefresh
-      @sourcesLayer.updateMarkers()
+      @sourcesLayer.reset()
+      @sourcesLayer.update()
       needsRefresh = false
 
   deactivate: ->
