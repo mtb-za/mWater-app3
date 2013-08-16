@@ -25,7 +25,7 @@ module.exports = function(grunt) {
               'vendor/mobiscroll.custom-2.5.4.min.js',
               'vendor/jquery.scrollintoview.min.js',
               'vendor/overthrow.js',
-              'vendor/leaflet/leaflet.js',
+              'vendor/leaflet/leaflet-src.js',
               'vendor/Control.OSMGeocoder.js'],
         // the location of the resulting JS file
         dest: 'dist/js/libs.js'
