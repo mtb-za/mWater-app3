@@ -5,8 +5,12 @@ class LocationFinder
     
   getLocation: ->
     # Both failures are required to trigger error
-    locationError = _.after 2, =>
+    triggerLocationError = _.after 2, =>
       @trigger 'error'
+
+    locationError = (err) =>
+      console.error "Location error: #{err}"
+      triggerLocationError()
 
     highAccuracyFired = false
 
