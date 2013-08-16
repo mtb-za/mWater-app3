@@ -172,6 +172,19 @@ module.exports = function(grunt) {
           }
         }
       },
+      deploy_map: {
+        command: 's3cmd sync --acl-public --guess-mime-type ' +
+          '--add-header "Cache-Control: no-cache, must-revalidate" ' +
+          '--add-header "Pragma: no-cache" ' +
+          '--add-header "Expires: 0" ' + 
+          '* s3://map.mwater.co',
+        options: {
+          stdout: true,
+          execOptions: {
+            cwd: 'dist'
+          }
+        }
+      },
       deploy_app: {
         command: [
           's3cmd sync --acl-public --guess-mime-type ' +
@@ -234,5 +247,5 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
   grunt.registerTask('deploy_app', ['shell:bump_version', 'default', 'shell:deploy_app']);
-  grunt.registerTask('deploy', ['deploy_app', 'shell:deploy_demo']);
+  grunt.registerTask('deploy', ['deploy_app', 'shell:deploy_demo', 'shell:deploy_map']);
 };
