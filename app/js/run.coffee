@@ -8,6 +8,8 @@ ProblemReporter = require './ProblemReporter'
 
 MainPage = require './pages/MainPage'
 LoginPage = require './pages/LoginPage'
+SourceMapPage = require './pages/SourceMapPage'
+
 AppUpdater = require './AppUpdater'
 
 cordova = require './cordova'
@@ -51,8 +53,11 @@ exports.start = (options = {}) ->
     slideMenu.addSubmenu(new PageMenu(ctx: ctx))
 
     $ -> 
+      # If explicit page
+      if options.initialPage == "SourceMapPage"
+        pager.openPage(SourceMapPage)
       # If logged in, open main page
-      if ctx.login?
+      else if ctx.login?
         pager.openPage(MainPage)
       else
         pager.openPage(LoginPage)
