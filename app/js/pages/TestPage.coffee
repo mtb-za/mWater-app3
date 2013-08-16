@@ -2,8 +2,6 @@ Page = require "../Page"
 forms = require '../forms'
 
 class TestPage extends Page
-  @canOpen: (ctx) -> ctx.auth.update("tests") && ctx.auth.insert("tests") 
-
   create: -> @render()
 
   render: ->
@@ -24,8 +22,8 @@ class TestPage extends Page
 
       # Get form
       @db.forms.findOne { type: "WaterTest", code: test.type }, (form) =>
-        # Check if completed
-        if not test.completed
+        # Check if not completed and editable
+        if not test.completed and @auth.update("tests", test)
           @formView = forms.instantiateView(form.views.edit, { ctx: @ctx })
 
           # Listen to events

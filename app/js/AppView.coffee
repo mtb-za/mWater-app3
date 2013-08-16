@@ -40,6 +40,7 @@ class AppView extends Backbone.View
   back: ->
     @slideMenu.hide()
     @pager.closePage()
+    return false
  
 module.exports = AppView    
     
