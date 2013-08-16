@@ -8,7 +8,10 @@ class SourceLayerCreator
 class EColi extends SourceLayerCreator
   # Level is E.Coli level/100ml
   createMarker: (geo, level) ->
-    color = "#FF0000"
+    if level > 100
+      color = "#FF0000"
+    else
+      color = "#606060"
     return L.geoJson geo, {
       style: (feature) =>
         return { 
