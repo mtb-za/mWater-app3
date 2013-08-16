@@ -20,8 +20,13 @@ class EColiAnalyzer
       # Combine
       minMax = @combineMinMax(minMaxes)
 
-      # Return max
-      success(minMax[1])
+      # Return max, capped at 999999. If range includes 0, return -1
+      if minMax[0] == 0 and minMax[1] == -1
+        success(-1)
+      else if minMax[1] == -1
+        success(999999)
+      else
+        success(minMax[1])
     , error
 
   # Gets the last clump of tests within a 24 hours window ending with the last test
@@ -134,6 +139,10 @@ class EColi extends SourceLayerCreator
 
     # Call EColi analyzer to get actual level
     @ecoliAnalyzer.analyzeSource source, (level) =>
+      # If same as initial, leave untouched
+      if level == -1
+        return
+        
       success(source: source, layer: @createLevelLayer(source, level))
 
     , error

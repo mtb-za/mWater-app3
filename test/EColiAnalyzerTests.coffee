@@ -96,3 +96,10 @@ describe "EColiAnalyzer", ->
     @analyzer.analyzeSource @source, (level) =>
       assert.equal level, 9
       done()
+
+  it "correctly returns for example with no upper bound", (done) ->
+    @db.tests.upsert({ type: "Aquagenx100PA", data: { source: "1", dilution: 2, ecoli_present: true }, completed: "2012-01-09T12:01:00.000Z" })
+
+    @analyzer.analyzeSource @source, (level) =>
+      assert.equal level, 999999
+      done()
