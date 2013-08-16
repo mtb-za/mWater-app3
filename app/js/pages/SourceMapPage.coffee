@@ -47,9 +47,15 @@ class SourceMapPage extends Page
 
     # Setup marker display when map is loaded
     @map.whenReady =>
-      ecoliCreator = new SourceLayerCreators.EColi (_id) =>
+      sourceLayerCreator = new SourceLayerCreators.EColi (_id) =>
         @pager.openPage(SourcePage, {_id: _id})
-      @sourcesLayer = new SourcesLayer(ecoliCreator, @db.sources).addTo(@map)
+      @sourcesLayer = new SourcesLayer(sourceLayerCreator, @db.sources).addTo(@map)
+
+      # Add legend
+      @legend = L.control({position: 'bottomright'});
+      @legend.onAdd = (map) ->
+        return sourceLayerCreator.createLegend()
+      @legend.addTo(@map)
 
     # Setup context menu
     contextMenu = new ContextMenu(@map, @ctx)

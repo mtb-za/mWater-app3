@@ -38,7 +38,7 @@ module.exports = class SourcesLayer extends L.LayerGroup
         continue
 
       # Call creator
-      @sourceLayerCreator.create source, (result) =>
+      @sourceLayerCreator.createLayer source, (result) =>
         # Remove marker if exists
         if result.source._id of @markers
           @removeLayer(@markers[result.source._id])
