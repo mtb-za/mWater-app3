@@ -40,6 +40,30 @@ class EColiAnalyzer
       recent.setDate(recent.getDate() - 1)
       success(_.filter(tests, (test) -> test.completed >= recent.toISOString()) )
 
+  # Returns [min, max]/100mL for test. max of -1 means unlimited
+  analyzeTest: (test) ->
+    if test.type == "Aquagenx100PA"
+      if test.data.ecoli_present
+        return [test.data.dilution, -1]
+      else
+        return [0, test.data.dilution - 1]
+
+    else if test.type == "ColilertMPN"
+      if test.data.ecoli_present
+        return [test.data.dilution * 10, -1]
+      else
+        return [0, test.data.dilution * 10 - 1]
+
+    else if test.type == "CompactDryEC"
+      if test.data.ecoli_tntc
+        return [test.data.dilution * 100 * 100, -1]
+      return [test.data.ecoli_count * test.data.dilution * 100, (test.data.ecoli_count + 1) * test.data.dilution * 100 - 1]
+
+    else if test.type == "PetrifilmEcoliColiform"
+      return [test.data.ecoli_count * test.data.dilution * 100, (test.data.ecoli_count + 1) * test.data.dilution * 100 - 1]
+
+    else
+      return [0, -1]
 
 class EColi extends SourceLayerCreator
   # openSource will be called with _id of source to display

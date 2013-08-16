@@ -29,22 +29,52 @@ describe "EColiAnalyzer", ->
       assert.deepEqual _.pluck(tests, '_id'), ["2", "3"]
       done()
 
-#   it "returns grey marker for no tests", (done) ->
-#     @creator.create @source, (result) =>
-#       assert.equal result.marker.fillColor, grey
+  it "gets min/max for tests", ->
+    # Unknown test
+    assert.deepEqual @analyzer.analyzeTest({ type: "xyz" }), [0, -1]
 
-#   it "returns green marker for Aquagenx negative test", (done) ->
-#     call = 0
-#     @creator.create @source, (result) =>
-#       call = call + 1
-#       # Ignore initial call
-#       if call == 1
-#         return
+    # Aquagenx100PA
+    test = { type: "Aquagenx100PA", data: { dilution: 1, ecoli_present: true } }
+    assert.deepEqual @analyzer.analyzeTest(test), [1, -1]
 
-#       assert.equal result.marker.fillColor, green
+    test = { type: "Aquagenx100PA", data: { dilution: 5, ecoli_present: true } }
+    assert.deepEqual @analyzer.analyzeTest(test), [5, -1]
 
+    test = { type: "Aquagenx100PA", data: { dilution: 5, ecoli_present: false } }
+    assert.deepEqual @analyzer.analyzeTest(test), [0, 4]
 
+    # ColilertMPN
+    test = { type: "ColilertMPN", data: { dilution: 1, ecoli_present: true } }
+    assert.deepEqual @analyzer.analyzeTest(test), [10, -1]
 
+    test = { type: "ColilertMPN", data: { dilution: 5, ecoli_present: true } }
+    assert.deepEqual @analyzer.analyzeTest(test), [50, -1]
 
+    test = { type: "ColilertMPN", data: { dilution: 5, ecoli_present: false } }
+    assert.deepEqual @analyzer.analyzeTest(test), [0, 49]
 
-	
+    # CompactDryEC
+    test = { type: "CompactDryEC", data: { dilution: 1, ecoli_count: 2 } }
+    assert.deepEqual @analyzer.analyzeTest(test), [200, 299]
+
+    test = { type: "CompactDryEC", data: { dilution: 1, ecoli_count: 0 } }
+    assert.deepEqual @analyzer.analyzeTest(test), [0, 99]
+
+    test = { type: "CompactDryEC", data: { dilution: 2, ecoli_count: 0 } }
+    assert.deepEqual @analyzer.analyzeTest(test), [0, 199]
+
+    test = { type: "CompactDryEC", data: { dilution: 2, ecoli_count: 0, ecoli_tntc: true } }
+    assert.deepEqual @analyzer.analyzeTest(test), [20000, -1]
+
+    # PetrifilmEcoliColiform
+    test = { type: "PetrifilmEcoliColiform", data: { dilution: 2, ecoli_count: 2 } }
+    assert.deepEqual @analyzer.analyzeTest(test), [400, 599]
+
+    test = { type: "PetrifilmEcoliColiform", data: { dilution: 1, ecoli_count: 0 } }
+    assert.deepEqual @analyzer.analyzeTest(test), [0, 99]
+
+    test = { type: "PetrifilmEcoliColiform", data: { dilution: 2, ecoli_count: 0 } }
+    assert.deepEqual @analyzer.analyzeTest(test), [0, 199]
+
+  it "combines min/maxes"
+  it "correctly returns for complex example"	
