@@ -21,8 +21,9 @@ module.exports = class SourcesLayer extends L.LayerGroup
   update: =>
     bounds = @map.getBounds()
 
-    # Pad to ensure smooth scrolling
-    bounds = bounds.pad(0.33)
+    # Pad to ensure scrolling shows nearby ones
+    bounds = bounds.pad(0.1)
+    
     # TODO pass error?
     @updateFromBounds(bounds)
 
@@ -86,7 +87,7 @@ module.exports = class SourcesLayer extends L.LayerGroup
     # Query sources with projection. Use remote mode so no caching occurs
     queryOptions = 
       sort: ["_id"]
-      limit: 100
+      limit: 200
       mode: "remote"
       fields: { name: 1, code: 1, geo: 1, type: 1 }
 
