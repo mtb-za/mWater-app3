@@ -1,68 +1,67 @@
 GeoJSON = require '../GeoJSON'
 
-# TODO rename marker to layer?
 module.exports = class SourcesLayer extends L.LayerGroup
   constructor: (sourceLayerCreator, sourcesDb) ->
     super()
     @sourceLayerCreator = sourceLayerCreator
     @sourcesDb = sourcesDb
 
-    # Markers, by _id
-    @markers = {}
+    # Layers, by _id
+    @layers = {}
 
   onAdd: (map) =>
     super(map)
     @map = map
-    map.on 'moveend', @updateMarkers
+    map.on 'moveend', @update
 
   onRemove: (map) =>
     super(map)
-    map.off 'moveend', @updateMarkers
+    map.off 'moveend', @update
 
-  updateMarkers: =>
+  update: =>
     bounds = @map.getBounds()
 
     # Pad to ensure smooth scrolling
     bounds = bounds.pad(0.33)
     # TODO pass error?
-    @updateMarkersFromBounds(bounds)
+    @updateFromBounds(bounds)
 
-  resetMarkers: =>
+  reset: =>
     @clearLayers()
-    @markers = {}    
+    @layers = {}    
 
-  updateMarkersFromList: (sources, success, error) =>
+  updateFromList: (sources, success, error) =>
     for source in sources
-      # If marker exists, ignore
-      if source._id of @markers
+      # If layer exists, ignore
+      if source._id of @layers
         continue
 
       # Call creator
       @sourceLayerCreator.createLayer source, (result) =>
-        # Remove marker if exists
-        if result.source._id of @markers
-          @removeLayer(@markers[result.source._id])
-          delete @markers[result.source._id]
+        # Remove layer if exists
+        if result.source._id of @layers
+          @removeLayer(@layers[result.source._id])
+          delete @layers[result.source._id]
 
-        # Add marker
-        @markers[result.source._id] = result.layer
+        # Add layer
+        @layers[result.source._id] = result.layer
         @addLayer(result.layer)
       , error
 
-    # Remove markers not present
+    # Remove layers not present
     sourceMap = _.object(_.pluck(sources, '_id'), sources)
     toRemove = []
-    for id, marker of @markers
+    for id, layer of @layers
       if not (id of sourceMap)
         toRemove.push(id)
 
     for id in toRemove
-      @removeLayer(@markers[id])
-      delete @markers[id]
+      @removeLayer(@layers[id])
+      delete @layers[id]
 
     success() if success?
 
-  updateMarkersFromBounds: (bounds, success, error) =>
+  updateFromBounds: (bounds, success, error) =>
     # Success on empty/invalid bounds
     if not bounds.isValid()
       success() if success?
@@ -92,4 +91,4 @@ module.exports = class SourcesLayer extends L.LayerGroup
       fields: { name: 1, code: 1, geo: 1, type: 1 }
 
     @sourcesDb.find(selector, queryOptions).fetch (sources) =>
-      @updateMarkersFromList(sources, success, error)
+      @updateFromList(sources, success, error)

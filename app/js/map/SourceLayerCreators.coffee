@@ -6,29 +6,69 @@ class SourceLayerCreator
   createLegend: ->
 
 
+class EColiAnalyzer 
+  constructor: (db) ->
+    @db = db
+
+  # Returns E.Coli level / 100mL or -1 for unknown
+  analyzeSource: (source, success, error) ->
+    setTimeout =>
+      x = Math.random() * 4
+      if x < 1
+        success -1
+      else if x < 2 
+        success 0
+      else if x < 3
+        success 10
+      else
+        success 100
+    , 1000
+
+  # Gets the last clump of tests within a 24 hours window ending with the last test
+  getLastTests: (source, success, error) ->
+    queryOptions = 
+      sort: [['completed','desc']]
+      limit: 5
+      mode: "remote"
+
+    @db.tests.find({ "data.source" : source.code, completed: { $exists: true }}, queryOptions).fetch (tests) =>
+      if tests.length == 0
+        return success([])
+
+      # Keep within 24 hours of latest
+      recent = new Date(tests[0].completed)
+      recent.setDate(recent.getDate() - 1)
+      success(_.filter(tests, (test) -> test.completed >= recent.toISOString()) )
+
+
 class EColi extends SourceLayerCreator
   # openSource will be called with _id of source to display
-  constructor: (openSource) ->
+  constructor: (ecoliAnalyzer, openSource) ->
     @openSource = openSource
+    @ecoliAnalyzer = ecoliAnalyzer
 
   # Level is E.Coli level/100ml
   createLevelLayer: (source, level) ->
-    if level > 100
-      color = "#FF0000"
+    if level >= 100
+      color = "#D00"
+    else if level >= 1
+      color = "#DD0"
+    else if level >=0
+      color = "#0D0"
     else
-      color = "#606060"
+      color = "#888"
 
     layer = L.geoJson source.geo, {
       style: (feature) =>
         return { 
           fillColor: color 
-          color: "#333"
+          color: "#222"
           opacity: 1.0
-          fillOpacity: 0.7
+          fillOpacity: 1.0
         }
       pointToLayer: (data, latLng) =>
         L.circleMarker latLng, {
-          radius: 7
+          radius: 6
         }
     }
 
@@ -49,7 +89,15 @@ class EColi extends SourceLayerCreator
     return layer
 
   createLayer: (source, success, error) =>
-    success(source: source, layer: @createLevelLayer(source, Math.floor(Math.random()*200)-150))
+    # Create initial marker in no-data
+    success(source: source, layer: @createLevelLayer(source, -1))
+
+    # Call EColi analyzer to get actual level
+    @ecoliAnalyzer.analyzeSource source, (level) =>
+      success(source: source, layer: @createLevelLayer(source, level))
+
+    , error
+
 
   createLegend: ->
     html = '''
@@ -75,11 +123,11 @@ class EColi extends SourceLayerCreator
     height: 18px;
     float: left;
     margin-right: 8px;
-    opacity: 0.7;
+    opacity: 0.8;
 }
 </style>
 <div class="header">E.Coli /100mL</div>
-  <i style="background: #606060"></i> No Data<br>
+  <i style="background: #888"></i> No Data<br>
   <i style="background: #0D0"></i> &lt; 1<br>
   <i style="background: #DD0"></i> 1-99<br>
   <i style="background: #D00"></i> 100+
@@ -90,3 +138,4 @@ class EColi extends SourceLayerCreator
 
 
 exports.EColi = EColi
+exports.EColiAnalyzer = EColiAnalyzer
