@@ -13,13 +13,13 @@ module.exports = class SourcesLayer extends L.LayerGroup
   onAdd: (map) =>
     super(map)
     @map = map
-    map.on 'moveend', @moveEnd
+    map.on 'moveend', @updateMarkers
 
   onRemove: (map) =>
     super(map)
-    map.off 'moveend', @moveEnd
+    map.off 'moveend', @updateMarkers
 
-  moveEnd: =>
+  updateMarkers: =>
     bounds = @map.getBounds()
 
     # Pad to ensure smooth scrolling

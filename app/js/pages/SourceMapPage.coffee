@@ -1,5 +1,5 @@
 Page = require "../Page"
-
+SourcePage = require './SourcePage'
 SourcesLayer = require '../map/SourcesLayer'
 SourceLayerCreators = require '../map/SourceLayerCreators'
 LocationDisplay = require '../map/LocationDisplay'
@@ -47,7 +47,9 @@ class SourceMapPage extends Page
 
     # Setup marker display when map is loaded
     @map.whenReady =>
-      @sourcesLayer = new SourcesLayer(new SourceLayerCreators.EColi(), @db.sources).addTo(@map)
+      ecoliCreator = new SourceLayerCreators.EColi (_id) =>
+        @pager.openPage(SourcePage, {_id: _id})
+      @sourcesLayer = new SourcesLayer(ecoliCreator, @db.sources).addTo(@map)
 
     # Setup context menu
     contextMenu = new ContextMenu(@map, @ctx)
