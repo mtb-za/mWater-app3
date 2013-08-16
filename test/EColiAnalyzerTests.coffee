@@ -76,5 +76,17 @@ describe "EColiAnalyzer", ->
     test = { type: "PetrifilmEcoliColiform", data: { dilution: 2, ecoli_count: 0 } }
     assert.deepEqual @analyzer.analyzeTest(test), [0, 199]
 
-  it "combines min/maxes"
+  describe "combines min/maxes", ->
+    it "lowers max", ->
+      assert.deepEqual @analyzer.combineMinMax([[0, 20], [0, 40]]), [0, 20]
+
+    it "keeps max for -1", ->
+      assert.deepEqual @analyzer.combineMinMax([[0, 20], [0, -1]]), [0, 20]
+
+    it "raises min", ->
+      assert.deepEqual @analyzer.combineMinMax([[0, 20], [10, 40]]), [10, 20]
+
+    it "prioritizes min when conflict", ->
+      assert.deepEqual @analyzer.combineMinMax([[0, 5], [10, 40]]), [10, 10]
+
   it "correctly returns for complex example"	

@@ -65,6 +65,22 @@ class EColiAnalyzer
     else
       return [0, -1]
 
+  # Combines mins and maxs to get true range
+  combineMinMax: (minMaxes) ->
+    min = 0
+    max = -1
+    for minMax in minMaxes
+      if minMax[0] > min
+        min = minMax[0]
+      if minMax[1] != -1
+        if minMax[1] < max || max == -1
+          max = minMax[1]
+
+      if max != -1 and min > max
+        max = min
+
+    return [min, max]
+
 class EColi extends SourceLayerCreator
   # openSource will be called with _id of source to display
   constructor: (ecoliAnalyzer, openSource) ->
