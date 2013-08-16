@@ -6,12 +6,16 @@ class SourceLayerCreator
 
 
 class EColi extends SourceLayerCreator
+  constructor: (openSource) ->
+    @openSource = openSource
+
   # Level is E.Coli level/100ml
-  createMarker: (geo, level) ->
+  createLayer: (geo, level) ->
     if level > 100
       color = "#FF0000"
     else
       color = "#606060"
+
     return L.geoJson geo, {
       style: (feature) =>
         return { 
@@ -24,16 +28,11 @@ class EColi extends SourceLayerCreator
         L.circleMarker latLng, {
           radius: 7
         }
+      onEachFeature: (feature, layer) =>
+        layer.bindPopup();
     }
 
   create: (source, success, error) =>
-    success(source: source, layer: @createMarker(source.geo))
-
-    # success {
-    #   source: source
-    #   marker: L.circleMarker source. {
-
-    #   }
-    # }
+    success(source: source, layer: @createLayer(source.geo))
 
 exports.EColi = EColi
