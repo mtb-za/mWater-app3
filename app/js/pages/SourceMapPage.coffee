@@ -31,15 +31,15 @@ class SourceMapPage extends Page
 
     # Setup base layers
     osmLayer = BaseLayers.createOSMLayer()
-    satelliteLayer = BaseLayers.createSatelliteLayer()
+    # satelliteLayer = BaseLayers.createSatelliteLayer() # TODO re-add
     
     osmLayer.addTo(@map)
-    baseLayers = 
-      "OpenStreetMap": osmLayer
-      "Satellite": satelliteLayer
+    # baseLayers = 
+    #   "OpenStreetMap": osmLayer
+    #   "Satellite": satelliteLayer
 
-    # Create layer control 
-    L.control.layers(baseLayers).addTo(@map)
+    # # Create layer control 
+    # L.control.layers(baseLayers).addTo(@map)
 
     # # Create geocoder TODO READD
     # osmGeocoder = new L.Control.OSMGeocoder()
