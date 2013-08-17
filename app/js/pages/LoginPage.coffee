@@ -18,6 +18,18 @@ module.exports = class LoginPage extends Page
     username = @$("#signup_username").val()
     password = @$("#signup_password").val()
 
+    if not username or username.length == 0
+      alert("Username required")
+      return
+
+    if not password or password.length < 5
+      alert("Password of at least 5 characters required")
+      return
+
+    if not email or email.length == 0
+      alert("Email required")
+      return
+
     url = @apiUrl + 'users/' + username
     req = $.ajax(url, {
       data : JSON.stringify({

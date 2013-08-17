@@ -2,8 +2,16 @@ Page = require("../Page")
 NewSurveyPage = require("./NewSurveyPage")
 NewTestPage = require("./NewTestPage")
 NewSourcePage = require("./NewSourcePage")
+SourceListPage = require("./SourceListPage")
+SourceMapPage = require("./SourceMapPage")
 
 class MainPage extends Page
+  events:
+    "click #source_list" : "gotoSourceList"
+    "click #source_map" : "gotoSourceMap"
+    "click #new_test" : "addTest"
+    "click #new_survey" : "addSurvey"
+
   activate: ->
     @setTitle "mWater"
 
@@ -63,5 +71,11 @@ class MainPage extends Page
 
   addSource: ->
     @pager.openPage(NewSourcePage)
+
+  gotoSourceList: ->
+    @pager.openPage(SourceListPage)
+
+  gotoSourceMap: ->
+    @pager.openPage(SourceMapPage)
 
 module.exports = MainPage
