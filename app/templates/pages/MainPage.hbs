@@ -1,11 +1,53 @@
-<h3><img src="img/mwater-large.png" style="max-height: 64px"></img> mWater Mobile App</h3>
-
-<p class="muted">User:
+<div class="muted" style="text-align: right;">
+<small>User:
 <b>{{#if login}}{{login.user}}{{else}}Not logged in{{/if}}</b>
 Sync: {{#if lastSyncDate}}<b>{{timeago lastSyncDate}}</b>{{/if}}
 <span id="images_pending"></span>
-Version: <b>{{version}} {{#if baseVersion}}({{baseVersion}}){{/if}}</b></p>
+Version: <b>{{version}} {{#if baseVersion}}({{baseVersion}}){{/if}}</b>
+</small>
+</div>
 
+<div><img src="img/black_logo_200w.png" style="display: block; margin-left: auto; margin-right: auto;"></img></div>
+
+<style>
+td {
+	font-weight: bold;
+	font-size: 125%;
+}
+</style>
+
+<table style="width:99.5%; "> <!--height:99.5%; position:absolute;
+	<tr height="0%">
+		<td colspan="2">
+		<div id="sync_progress" class="alert alert-info" style="display:none">
+			<button id="sync_cancel" type="button" class="btn">Cancel</button>
+			&nbsp;
+			<img id="sync_spinner" src="images/ajax-loader.gif"/>
+			&nbsp;
+			<span id="sync_progress_message">Synchronizing...</span>
+		</div><div id="sync_error" class="alert alert-error" style="display:none"></div>
+		<div id="sync_success" class="alert alert-success" style="display:none">
+			Synchronization successful
+		</div></td>
+	</tr>-->
+	<tr>
+		<td align="center"><img id="sources" class="icon tappable" src="img/96x96.png"/>
+		<br/>
+		Map of Water Sources</td>
+		<td align="center"><img id="map" class="icon tappable" src="img/96x96.png"/>
+		<br/>
+		Nearby Water Sources </td>
+	</tr>
+	<tr>
+		<td align="center"><img id="tests" class="icon tappable" src="img/96x96.png"/>
+		<br/>
+		Start Water Test</td>
+		<td align="center"><img id="settings" class="icon tappable" src="img/96x96.png"/>
+		<br/>
+		Start Survey</td>
+	</tr>
+</table>
+<!--
 <p>mWater combines mobile technology with water testing to help ensure safe drinking water for everyone.</p>
 
 <p>To perform tasks, click on the menu button at the top right corner. This will show you all of the basic activities that can be performed.</p>
@@ -19,3 +61,4 @@ Version: <b>{{version}} {{#if baseVersion}}({{baseVersion}}){{/if}}</b></p>
 <p>This app works both with and without a data connection. Any changes that you make while not connected will be automatically uploaded the next time you use the app with a data connection.</p>
 
 <p>mWater includes a powerful and flexible survey engine. Start a sample survey or see the complete list of available surveys. Any work that you do on a survey is always immediately backed up, and you can leave and return to complete a survey at a later time.</p>
+-->
