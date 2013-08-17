@@ -44,6 +44,7 @@ module.exports = class LoginPage extends Page
       data : JSON.stringify({
         username: username
         password: password
+        version: @version
       }),
       contentType : 'application/json',
       type : 'POST'})
