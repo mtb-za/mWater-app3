@@ -93,41 +93,21 @@ class EColi extends SourceLayerCreator
     @ecoliAnalyzer = ecoliAnalyzer
 
   # Level is E.Coli level/100ml. Can also be 'pending' and 'nodata' and 'high'
-  createLevelLayer: (source, level) ->
+  getPopupHtmlElement: (source, level) ->
     if level == 'pending'
-      color = "#888"
       levelStr = "Pending..."
     else if level == 'nodata'
-      color = "#888"
       levelStr = "No Data"
     else if level == 'high'
-      color = "#D00"
       levelStr = "High"
     else if level >= 100
-      color = "#D00"
       levelStr = level
     else if level >= 1
-      color = "#DD0"
       levelStr = level
     else if level >=0
-      color = "#0D0"
       levelStr = level
     else 
       throw "Invalid level: " + level
-
-    layer = L.geoJson source.geo, {
-      style: (feature) =>
-        return { 
-          fillColor: color 
-          color: "#222"
-          opacity: 1.0
-          fillOpacity: 1.0
-        }
-      pointToLayer: (data, latLng) =>
-        L.circleMarker latLng, {
-          radius: 6
-        }
-    }
 
     # Create popup
     html = _.template('''
@@ -143,19 +123,61 @@ class EColi extends SourceLayerCreator
     content.find("button").on 'click', =>
       @openSource(source._id)
 
-    layer.bindPopup(content.get(0))
-    return layer
+    return content.get(0)
+
+  # Level is E.Coli level/100ml. Can also be 'pending' and 'nodata' and 'high'
+  getLevelColor: (level) ->
+    if level == 'pending'
+      color = "#888"
+    else if level == 'nodata'
+      color = "#888"
+    else if level == 'high'
+      color = "#D00"
+    else if level >= 100
+      color = "#D00"
+    else if level >= 1
+      color = "#DD0"
+    else if level >=0
+      color = "#0D0"
+    else 
+      throw "Invalid level: " + level
+
+    return color
 
   createLayer: (source, success, error) =>
-    # Create initial marker in no-data
-    success(source: source, layer: @createLevelLayer(source, 'pending'))
+    layer = L.geoJson source.geo, {
+      style: (feature) =>
+        return { 
+          fillColor: @getLevelColor('pending')
+          color: "#222"
+          opacity: 1.0
+          fillOpacity: 1.0
+        }
+      pointToLayer: (data, latLng) =>
+        L.circleMarker latLng, {
+          radius: 6
+        }
+    }
+
+    layer.bindPopup(@getPopupHtmlElement(source, 'pending'))
+
+    # Return initial layer
+    success(source: source, layer: layer)
 
     # Call EColi analyzer to get actual level
     @ecoliAnalyzer.analyzeSource source, (level) =>
-      success(source: source, layer: @createLevelLayer(source, level))
+      # Rebind popup
+      layer.bindPopup(@getPopupHtmlElement(source, level))
 
+      color = @getLevelColor(level)
+      layer.setStyle (feature) =>
+        return { 
+          fillColor: color
+          color: "#222"
+          opacity: 1.0
+          fillOpacity: 1.0
+        }
     , error
-
 
   createLegend: ->
     html = '''
