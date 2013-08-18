@@ -43,6 +43,7 @@ module.exports = class LoginPage extends Page
       # Login
       @login(username, password)
     req.fail (jqXHR, textStatus, errorThrown) =>
+      console.log "Signup failure: " + jqXHR.responseText
       if jqXHR.status < 500
         alert(JSON.parse(jqXHR.responseText).error)
       else
@@ -51,6 +52,8 @@ module.exports = class LoginPage extends Page
     return false
 
   login: (username, password) ->
+    console.log "Logging in as: #{username}/#{password}"
+
     url = @apiUrl + 'clients'
     req = $.ajax(url, {
       data : JSON.stringify({
@@ -62,6 +65,7 @@ module.exports = class LoginPage extends Page
       type : 'POST'})
 
     req.done (data, textStatus, jqXHR) =>
+      console.log "Login response: " + jqXHR.responseText
       response = JSON.parse(jqXHR.responseText)
 
       # Login 
@@ -75,6 +79,7 @@ module.exports = class LoginPage extends Page
       @pager.flash "Login as #{response.user} successful", "success"
 
     req.fail (jqXHR, textStatus, errorThrown) =>
+      console.error "Login failure: " + jqXHR.responseText
       if jqXHR.status < 500
         alert(JSON.parse(jqXHR.responseText).error)
       else
