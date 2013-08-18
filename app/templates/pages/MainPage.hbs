@@ -1,4 +1,4 @@
-<div class="muted" style="text-align: right;">
+<div class="muted">
 <small>User:
 <b>{{#if login}}{{login.user}}{{else}}Not logged in{{/if}}</b>
 Sync: {{#if lastSyncDate}}<b>{{timeago lastSyncDate}}</b>{{/if}}
@@ -7,12 +7,9 @@ Version: <b>{{version}} {{#if baseVersion}}({{baseVersion}}){{/if}}</b>
 </small>
 </div>
 
-<div><img src="img/black_logo.png" style="display: block; margin-left: auto; margin-right: auto;"></img></div>
-<br/>
 <style>
 td {
 	font-weight: bold;
-	font-size: 125%;
 	padding-bottom: 30px;
 	color: #478FCC;
 }
@@ -20,7 +17,9 @@ td {
 .main_icon {
 	width: 150px;
 	height: 150px;
-	margin-bottom: 10px;
+	margin-bottom: 6px;
+	box-shadow: 5px 5px 5px #c0c0c0;
+	border: 1px solid #F0F0F0;
 }
 </style>
 
@@ -28,10 +27,10 @@ td {
 	<tr>
 		<td id="source_map" align="center" class="tappable"><img id="sources" class="main_icon tappable" src="img/source_map_icon.png"/>
 		<br/>
-		Map of Water Sources</td>
+		Map Water Sources</td>
 		<td id="source_list" align="center" class="tappable"><img id="map" class="main_icon tappable" src="img/source_list_icon.png"/>
 		<br/>
-		List Water Sources </td>
+		List Water Sources</td>
 	</tr>
 	<tr>
 		<td id="new_test" align="center" class="tappable"><img id="tests" class="main_icon tappable" src="img/test_icon.png"/>

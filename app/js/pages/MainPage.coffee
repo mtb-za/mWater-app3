@@ -13,7 +13,7 @@ class MainPage extends Page
     "click #new_survey" : "addSurvey"
 
   activate: ->
-    @setTitle "Home"
+    @setTitle ""
 
     # Rerender on error/success of sync
     if @dataSync?

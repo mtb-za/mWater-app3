@@ -35,6 +35,10 @@ class AppView extends Backbone.View
   pageChanged: ->
     # Set title and back button
     @$("#navbar_back").css("visibility", if @pager.multiplePages() then "visible" else "hidden")
+    title = @pager.getTitle()
+
+    # Show brand logo if no title
+    @$("#brand_logo").toggle(title == "")
     @$("#navbar_title").text(@pager.getTitle())
 
   back: ->

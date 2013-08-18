@@ -10,7 +10,7 @@ module.exports = class LoginPage extends Page
     'click #demo_button' : 'demoClicked'
 
   activate: ->
-    @setTitle "mWater"
+    @setTitle ""
     @$el.html templates['pages/LoginPage']()
 
   signupClicked: ->
