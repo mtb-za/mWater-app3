@@ -93,5 +93,5 @@ module.exports = class LoginPage extends Page
     _.extend @ctx, context.createDemoContext()
 
     @pager.closePage(MainPage)
-    @pager.flash "Running in Demo mode. No changes will be saved", "warning"
+    @pager.flash "Running in Demo mode. No changes will be saved", "warning", 10000
     return false
