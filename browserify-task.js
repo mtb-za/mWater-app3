@@ -37,6 +37,22 @@ function bundleApp(done) {
     });
 }
 
+function bundlePreload(done) {
+    bundle = browserify();
+    bundle.extension('.coffee');
+    bundle.transform(versionXform).transform('coffeeify')
+    .add('./app/js/preload')
+    .bundle({
+        debug: true
+    }, function(err, src) {
+        if (err) return console.error(err);
+
+        fs.writeFileSync("dist/js/preload.js", src);
+        console.log("Preload bundled");
+        done();
+    });
+}
+
 function bundleTests(done) {
     bundle = browserify();
     bundle.extension('.coffee');
@@ -65,6 +81,8 @@ function bundleTests(done) {
 module.exports = function() {
     var done = this.async();
     bundleApp(function() {
-        bundleTests(done);
+        bundlePreload(function() {
+            bundleTests(done);
+        });
     });
 };

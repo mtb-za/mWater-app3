@@ -19,8 +19,9 @@ class SourceMapPage extends Page
 
     options = {}
     # See issue https://github.com/mWater/app-v3/issues/103
-    if navigator.userAgent.toLowerCase().indexOf('android 4.1') != -1
+    if navigator.userAgent.toLowerCase().indexOf('android 4.1.1') != -1
       options.touchZoom = false
+      options.fadeAnimation = false
 
     @map = L.map(this.$("#map")[0], options)
     L.control.scale(imperial:false).addTo(@map)
