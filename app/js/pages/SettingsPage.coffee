@@ -27,8 +27,8 @@ class SettingsPage extends Page
 
     # Setup debugging buttons
     if window.debug
-      $("#weinre_details").html("Debugging with code <b>#{window.debug.code}</b>")
-      $("#weinre").attr("disabled", true)
+      @$("#weinre_details").html("Debugging with code <b>#{window.debug.code}</b>")
+      @$("#weinre").attr("disabled", true)
 
   resetDb: ->
     if confirm("Completely discard local data, logout and lose unsubmitted changes?")
@@ -62,6 +62,9 @@ class SettingsPage extends Page
 
   startWeinre: ->
     if confirm("Start remote debugger (this will give developers temporary access to the app on your phone)?")
+      # Disable to prevent double-click
+      @$("#weinre").attr("disabled", true)
+
       code = (if @login then @login.user else "anon") + Math.floor(Math.random()*1000)
       console.log "weinre code #{code}"
       script = document.createElement("script")
@@ -75,6 +78,7 @@ class SettingsPage extends Page
         alert("Debugger started with code #{code}")
       script.onerror = ->
         error("Failed to load weinre")
+        @render()
       script.src = "http://weinre.mwater.co/target/target-script-min.js#" + code
       document.head.appendChild(script)
 
