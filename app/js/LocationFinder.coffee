@@ -80,7 +80,7 @@ class LocationFinder
       @trigger 'error'
 
     # Fire initial low-accuracy one
-    navigator.geolocation.getCurrentPosition(lowAccuracy, error, {
+    navigator.geolocation.getCurrentPosition(lowAccuracy, lowAccuracyError, {
         maximumAge : 3600,
         timeout : 30000,
         enableHighAccuracy : false
