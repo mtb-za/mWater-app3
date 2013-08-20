@@ -1,11 +1,14 @@
 # Menu which slides out from the right side
 class SlideMenu extends Backbone.View
-  className: "slidemenu overthrow"
-
   initialize: ->
     @submenus = []
     @$el.html templates['SlideMenu']()
 
+    # Android 4.0.4 doesn't work with overthrow properly
+    if navigator.userAgent.toLowerCase().indexOf('android 4.0.4') != -1
+      @el.className = "slidemenu"
+    else
+      @el.className = "slidemenu overthrow"
   events: ->
     "click": "hide"
 
