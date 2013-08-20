@@ -6,7 +6,7 @@ class MockLocationFinder
   constructor:  ->
     _.extend @, Backbone.Events
 
-  getLocation: ->
+  getLocation: (success, error) ->
   startWatch: ->
   stopWatch: ->
 
@@ -24,21 +24,27 @@ describe 'LocationView', ->
       assert.isTrue @ui.getDisabled("Map") 
 
     it 'allows setting location', ->
-      @ui.click('Set')
+      @locationFinder.getLocation = (success, error) =>
+        success({ coords: { latitude: 2, longitude: 3, accuracy: 10}})
+
       setPos = null
       @locationView.on 'locationset', (pos) ->
         setPos = pos
 
-      @locationFinder.trigger 'found', { coords: { latitude: 2, longitude: 3, accuracy: 10}}
+      @ui.click('Set')
+
       assert.equal setPos.coordinates[1], 2
 
     it 'Displays error', ->
-      @ui.click('Set')
+      @locationFinder.getLocation = (success, error) =>
+        error()
+
       setPos = null
       @locationView.on 'locationset', (pos) ->
         setPos = pos
 
-      @locationFinder.trigger 'error'
+      @ui.click('Set')
+
       assert.equal setPos, null
       assert.include(@ui.text(), 'Cannot')
 

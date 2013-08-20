@@ -21,8 +21,7 @@ module.exports = class SourceListPage extends Page
 
     # Find location
     @locationFinder = new LocationFinder()
-    @locationFinder.on('found', @locationFound).on('error', @locationError)
-    @locationFinder.getLocation()
+    @locationFinder.getLocation(@locationFound, @locationError)
     @$("#location_msg").show()
 
     @setupButtonBar [

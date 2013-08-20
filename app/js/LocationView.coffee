@@ -54,24 +54,29 @@ class LocationView extends Backbone.View
   setLocation: ->
     @settingLocation = true
     @errorFindingLocation = false
-    @locationFinder.startWatch()
-    @render()
 
-  locationFound: (pos) =>
-    if @settingLocation
+    locationSuccess = (pos) =>
       @settingLocation = false
       @errorFindingLocation = false
 
       # Set location
       @loc = GeoJSON.posToPoint(pos)
       @trigger('locationset', @loc)
+      @render()
 
+    locationError = (err) =>
+      @settingLocation = false
+      @errorFindingLocation = true
+      @render()
+
+    @locationFinder.getLocation locationSuccess, locationError
+    @render()
+
+  locationFound: (pos) =>
     @currentLoc = GeoJSON.posToPoint(pos)
     @render()
 
   locationError: =>
-    @settingLocation = false
-    @errorFindingLocation = true
     @render()
 
   mapClicked: =>

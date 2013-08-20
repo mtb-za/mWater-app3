@@ -14,10 +14,10 @@ class LocationFinder
       pos.coords.accuracy = 10000 # 10 km
       return pos
     
-  getLocation: ->
+  getLocation: (success, error) ->
     # Both failures are required to trigger error
     triggerLocationError = _.after 2, =>
-      @trigger 'error'
+      error()
 
     locationError = (err) =>
       console.error "Location error: #{err}"
@@ -30,12 +30,12 @@ class LocationFinder
       if not highAccuracyFired
         lowAccuracyFired = true
         cacheLocation(pos)
-        @trigger 'found', pos
+        success(pos)
 
     highAccuracy = (pos) =>
       highAccuracyFired = true
       cacheLocation(pos)
-      @trigger 'found', pos
+      success(pos)
 
     # Get both high and low accuracy, as low is sufficient for initial display
     navigator.geolocation.getCurrentPosition(lowAccuracy, locationError, {
@@ -54,8 +54,8 @@ class LocationFinder
     setTimeout =>
       cachedLocation = getCachedLocation()
       if cachedLocation and not lowAccuracyFired and not highAccuracyFired
-        @trigger 'found', cachedLocation
-    , 500
+        success(cachedLocation)
+    , 250
 
   startWatch: ->
     # Allow one watch at most
