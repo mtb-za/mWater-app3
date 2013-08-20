@@ -31,12 +31,12 @@ exports.SourceCodesManager = class SourceCodesManager
 
   # Gets list of cached source codes in form { code:<code>, expiry:<expiry in ISO datetime> }
   getLocalCodes: ->
-    return []  unless localStorage.getItem("sourceCodes")
-    JSON.parse localStorage.getItem("sourceCodes")
+    return []  unless localStorage.getItem("v3.sourcecodes")
+    JSON.parse localStorage.getItem("v3.sourcecodes")
   
   # Sets list of cached source codes in form { code:<code>, expiry:<expiry in ISO datetime> }
   setLocalCodes: (codes) ->
-    localStorage.setItem "sourceCodes", JSON.stringify(codes)
+    localStorage.setItem "v3.sourcecodes", JSON.stringify(codes)
   
   # Purge expired code
   purgeCodes: (cutoff) ->
