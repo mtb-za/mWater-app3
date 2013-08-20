@@ -42,6 +42,7 @@ ProblemReporter = (url, version, getLogin) ->
       desc: desc
       device: window.device
       url: window.location.href
+      date: new Date().toISOString()
 
     login = getLogin()
     _.defaults report, login
