@@ -19,7 +19,7 @@ class SourceMapPage extends Page
 
     options = {}
     # See issue https://github.com/mWater/app-v3/issues/103
-    if navigator.userAgent.toLowerCase().indexOf('android 4.1.1') != -1
+    if navigator.userAgent.toLowerCase().indexOf('android 4.1.1') != -1 or navigator.userAgent.toLowerCase().indexOf('android 4.0.4') != -1
       options.touchZoom = false
       options.fadeAnimation = false
 
