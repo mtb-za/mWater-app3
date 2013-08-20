@@ -22,7 +22,8 @@ class SettingsPage extends Page
     # Show EC plates test if available
     @$("#test_ecplates").hide()
     ECPlates.isAvailable (available) =>
-      @$("#test_ecplates").show()
+      if available
+        @$("#test_ecplates").show()
     , @error
 
     # Setup debugging buttons
