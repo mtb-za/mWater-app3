@@ -4,11 +4,15 @@ class LocationFinder
     _.extend @, Backbone.Events
 
   cacheLocation = (pos) ->
-    window.localStorage['lastPosition'] = JSON.stringify(pos)
+    window.localStorage['LocationFinder.lastPosition'] = JSON.stringify(pos)
 
   getCachedLocation = () ->
-    if window.localStorage['lastPosition']
-      return JSON.parse(window.localStorage['lastPosition'])
+    if window.localStorage['LocationFinder.lastPosition']
+      pos = JSON.parse(window.localStorage['LocationFinder.lastPosition'])
+
+      # Accuracy is down since cached
+      pos.coords.accuracy = 10000 # 10 km
+      return pos
     
   getLocation: ->
     # Both failures are required to trigger error
@@ -25,10 +29,12 @@ class LocationFinder
     lowAccuracy = (pos) =>
       if not highAccuracyFired
         lowAccuracyFired = true
+        cacheLocation(pos)
         @trigger 'found', pos
 
     highAccuracy = (pos) =>
       highAccuracyFired = true
+      cacheLocation(pos)
       @trigger 'found', pos
 
     # Get both high and low accuracy, as low is sufficient for initial display
@@ -63,6 +69,7 @@ class LocationFinder
     lowAccuracy = (pos) =>
       if not highAccuracyFired
         lowAccuracyFired = true
+        cacheLocation(pos)
         @trigger 'found', pos
 
     lowAccuracyError = (err) =>
@@ -73,6 +80,7 @@ class LocationFinder
     highAccuracy = (pos) =>
       console.log "High accuracy location: " + JSON.stringify(pos)
       highAccuracyFired = true
+      cacheLocation(pos)
       @trigger 'found', pos
 
     highAccuracyError = (err) =>
