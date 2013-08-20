@@ -20,15 +20,15 @@ module.exports = class LoginPage extends Page
 
     if not username or username.length == 0
       alert("Username required")
-      return
+      return false
 
     if not password or password.length < 5
       alert("Password of at least 5 characters required")
-      return
+      return false
 
     if not email or email.length == 0
       alert("Email required")
-      return
+      return false
 
     url = @apiUrl + 'users/' + username
     req = $.ajax(url, {
