@@ -33,7 +33,7 @@ exports.FormView = class FormView extends Backbone.View
     @model.clear()  #TODO clear or not clear? clearing removes defaults, but allows true reuse.
 
     # Apply defaults 
-    @model.set(_.defaults(_.cloneDeep(data), @options.defaults || {}))
+    @model.set(_.defaults(_.cloneDeep(data || {}), @options.defaults || {}))
 
   save: ->
     return @model.toJSON()

@@ -5,15 +5,18 @@ login = require '../login'
 
 module.exports = class LoginPage extends Page
   events:
-    'click #signup_button' : 'signupClicked'
-    'click #login_button' : 'loginClicked'
+    'submit #form_signup' : 'signupClicked'
+    'submit #form_login' : 'loginClicked'
     'click #demo_button' : 'demoClicked'
 
   activate: ->
     @setTitle ""
     @$el.html templates['pages/LoginPage']()
 
-  signupClicked: ->
+  signupClicked: (e) ->
+    # Prevent actual submit
+    e.preventDefault()
+
     email = @$("#signup_email").val()
     username = @$("#signup_username").val()
     password = @$("#signup_password").val()
@@ -43,13 +46,13 @@ module.exports = class LoginPage extends Page
       # Login
       @login(username, password)
     req.fail (jqXHR, textStatus, errorThrown) =>
-      console.log "Signup failure: " + jqXHR.responseText
-      if jqXHR.status < 500
+      console.error "Signup failure: #{jqXHR.responseText} (#{jqXHR.status})"
+      if jqXHR.status < 500 and jqXHR.status >= 400
         alert(JSON.parse(jqXHR.responseText).error)
       else
-        @error(jqXHR.responseText)
+        alert("Unable to signup. Please check that you are connected to Internet")
 
-    return false
+    return
 
   login: (username, password) ->
     console.log "Logging in as: #{username}/#{password}"
@@ -79,18 +82,21 @@ module.exports = class LoginPage extends Page
       @pager.flash "Login as #{response.user} successful", "success"
 
     req.fail (jqXHR, textStatus, errorThrown) =>
-      console.error "Login failure: " + jqXHR.responseText
-      if jqXHR.status < 500
+      console.error "Login failure: #{jqXHR.responseText} (#{jqXHR.status})"
+      if jqXHR.status < 500 and jqXHR.status >= 400
         alert(JSON.parse(jqXHR.responseText).error)
       else
-        @error(jqXHR.responseText)
+        alert("Unable to login. Please check that you are connected to Internet")
 
-  loginClicked: ->
+  loginClicked: (e) ->
+    # Prevent actual submit
+    e.preventDefault()
+
     username = @$("#login_username").val()
     password = @$("#login_password").val()
 
     @login(username, password)
-    return false
+    return
 
   demoClicked: ->
     # Update context, first stopping old one

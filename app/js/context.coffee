@@ -77,7 +77,7 @@ createBaseContext = ->
 createDb = (login) ->
   if login
     # Namespace includes username to be safe
-    localDb = new LocalDb({namespace: "db.v3.#{login.user}"}) 
+    localDb = new LocalDb({namespace: "v3.db.#{login.user}"}) 
   else
     # No local storage
     localDb = new LocalDb() 
