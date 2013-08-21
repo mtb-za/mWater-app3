@@ -164,11 +164,12 @@ module.exports = function(grunt) {
           '--add-header "Cache-Control: no-cache, must-revalidate" ' +
           '--add-header "Pragma: no-cache" ' +
           '--add-header "Expires: 0" ' + 
+          '--add-header "Content-Encoding: gzip" '+
           '* s3://demo.mwater.co',
         options: {
           stdout: true,
           execOptions: {
-            cwd: 'dist'
+            cwd: 'dist.gz'
           }
         }
       },
@@ -177,11 +178,12 @@ module.exports = function(grunt) {
           '--add-header "Cache-Control: no-cache, must-revalidate" ' +
           '--add-header "Pragma: no-cache" ' +
           '--add-header "Expires: 0" ' + 
+          '--add-header "Content-Encoding: gzip" '+
           '* s3://map.mwater.co',
         options: {
           stdout: true,
           execOptions: {
-            cwd: 'dist'
+            cwd: 'dist.gz'
           }
         }
       },
@@ -191,17 +193,19 @@ module.exports = function(grunt) {
           '--add-header "Cache-Control: no-cache, must-revalidate" ' +
           '--add-header "Pragma: no-cache" ' +
           '--add-header "Expires: 0" ' + 
+          '--add-header "Content-Encoding: gzip" '+
           '* s3://app.mwater.co',
           's3cmd put --acl-public --guess-mime-type ' +
           '--add-header "Cache-Control: no-cache, no-store, must-revalidate" ' +
           '--add-header "Pragma: no-cache" ' +
           '--add-header "Expires: 0" ' + 
+          '--add-header "Content-Encoding: gzip" '+
           'manifest.appcache s3://app.mwater.co'
         ].join('&&'),
         options: {
           stdout: true,
           execOptions: {
-              cwd: 'dist'
+              cwd: 'dist.gz'
           }
         }
       },
@@ -221,8 +225,18 @@ module.exports = function(grunt) {
         files: ['app/**/*.*'],
         tasks: ['default']
       }
-    }
+    },
 
+    compress: {
+      main: {
+        options: {
+          mode: 'gzip'
+        },
+       files: [
+          {expand: true,  cwd: 'dist/', src: ['**'], dest: 'dist.gz/', ext: ''}
+        ]
+      }
+    }
   });
 
   grunt.registerTask('browserify', 'Make single file output', browserify);
@@ -235,6 +249,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-manifest');
   grunt.loadNpmTasks('grunt-shell');
 
@@ -243,9 +258,10 @@ module.exports = function(grunt) {
   grunt.registerTask('run_cordova_debug', ['default', 'cordova_debug', 'shell:cordova_run']);
 
   grunt.registerTask('copy-app', ['copy:apphtml', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapimages', 'copy:leafletcssimages']);
-  grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy-app', 'handlebars', 'manifest']);
+  grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy-app', 'handlebars', 'manifest', 'compress']);
 
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
+  grunt.registerTask('deploy_map', ['default', 'shell:deploy_map']);
   grunt.registerTask('deploy_app', ['shell:bump_version', 'default', 'shell:deploy_app']);
   grunt.registerTask('deploy', ['deploy_app', 'shell:deploy_demo', 'shell:deploy_map']);
 };

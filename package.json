@@ -40,6 +40,7 @@
     "request-json": "~0.3.7",
     "synchronize": "~0.5.2",
     "through": "~2.3.4",
-    "parse-appcache-manifest": "0.0.1"
+    "parse-appcache-manifest": "0.0.1",
+    "grunt-contrib-compress": "~0.5.2"
   }
 }
