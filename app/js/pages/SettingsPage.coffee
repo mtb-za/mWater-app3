@@ -33,7 +33,7 @@ class SettingsPage extends Page
 
   resetDb: ->
     if confirm("Completely discard local data, logout and lose unsubmitted changes?")
-      localStorage.clear()
+      window.localStorage.clear()
       while @pager.multiplePages()
         @pager.closePage()
       @pager.closePage(require("./LoginPage"))

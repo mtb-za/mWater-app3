@@ -9,10 +9,12 @@ if navigator.userAgent.toLowerCase().indexOf('android 4.0.4') != -1
 
 # Check local storage
 getLocalStorageSupported = ->
+  if not window.localStorage
+    return false
   try
-    localStorage.setItem("test", "test");
-    localStorage.removeItem("test");
-    return 'localStorage' in window && window['localStorage'] !== null;
+    window.localStorage.setItem("test", "test")
+    window.localStorage.removeItem("test")
+    return true
   catch e
     return false
 

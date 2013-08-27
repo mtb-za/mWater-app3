@@ -20,12 +20,12 @@ class LocalDb
   removeCollection: (name) ->
     if @namespace and window.localStorage
       keys = []
-      for i in [0...localStorage.length]
-        keys.push(localStorage.key(i))
+      for i in [0...window.localStorage.length]
+        keys.push(window.localStorage.key(i))
 
       for key in keys
         if key.substring(0, @namespace.length + 1) == @namespace + "."
-          localStorage.removeItem(key)
+          window.localStorage.removeItem(key)
 
     delete @[name]
     delete @collections[name]
@@ -49,19 +49,19 @@ class Collection
     # Read items from localStorage
     @itemNamespace = @namespace + "_"
 
-    for i in [0...localStorage.length]
-      key = localStorage.key(i)
+    for i in [0...window.localStorage.length]
+      key = window.localStorage.key(i)
       if key.substring(0, @itemNamespace.length) == @itemNamespace
-        item = JSON.parse(localStorage[key])
+        item = JSON.parse(window.localStorage[key])
         @items[item._id] = item
 
     # Read upserts
-    upsertKeys = if localStorage[@namespace+"upserts"] then JSON.parse(localStorage[@namespace+"upserts"]) else []
+    upsertKeys = if window.localStorage[@namespace+"upserts"] then JSON.parse(window.localStorage[@namespace+"upserts"]) else []
     for key in upsertKeys
       @upserts[key] = @items[key]
 
     # Read removes
-    removeItems = if localStorage[@namespace+"removes"] then JSON.parse(localStorage[@namespace+"removes"]) else []
+    removeItems = if window.localStorage[@namespace+"removes"] then JSON.parse(window.localStorage[@namespace+"removes"]) else []
     @removes = _.object(_.pluck(removeItems, "_id"), removeItems)
 
   find: (selector, options) ->
@@ -100,32 +100,32 @@ class Collection
   _putItem: (doc) ->
     @items[doc._id] = doc
     if @namespace
-      localStorage[@itemNamespace + doc._id] = JSON.stringify(doc)
+      window.localStorage[@itemNamespace + doc._id] = JSON.stringify(doc)
 
   _deleteItem: (id) ->
     delete @items[id]
     if @namespace
-      localStorage.removeItem(@itemNamespace + id)
+      window.localStorage.removeItem(@itemNamespace + id)
 
   _putUpsert: (doc) ->
     @upserts[doc._id] = doc
     if @namespace
-      localStorage[@namespace+"upserts"] = JSON.stringify(_.keys(@upserts))
+      window.localStorage[@namespace+"upserts"] = JSON.stringify(_.keys(@upserts))
 
   _deleteUpsert: (id) ->
     delete @upserts[id]
     if @namespace
-      localStorage[@namespace+"upserts"] = JSON.stringify(_.keys(@upserts))
+      window.localStorage[@namespace+"upserts"] = JSON.stringify(_.keys(@upserts))
 
   _putRemove: (doc) ->
     @removes[doc._id] = doc
     if @namespace
-      localStorage[@namespace+"removes"] = JSON.stringify(_.values(@removes))
+      window.localStorage[@namespace+"removes"] = JSON.stringify(_.values(@removes))
 
   _deleteRemove: (id) ->
     delete @removes[id]
     if @namespace
-      localStorage[@namespace+"removes"] = JSON.stringify(_.values(@removes))
+      window.localStorage[@namespace+"removes"] = JSON.stringify(_.values(@removes))
 
   cache: (docs, selector, options, success, error) ->
     # Add all non-local that are not upserted or removed

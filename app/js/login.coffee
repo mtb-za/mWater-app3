@@ -3,14 +3,14 @@
 # Get current login from localstorage
 loginKey = "v3.login"
 exports.getLogin = ->
-  if localStorage[loginKey]
-    return JSON.parse(localStorage[loginKey])
+  if window.localStorage[loginKey]
+    return JSON.parse(window.localStorage[loginKey])
   return null
 
 # Set current login from localstorage 
 exports.setLogin = (login) ->
   if login?
-    localStorage[loginKey] = JSON.stringify(login)
-  else if localStorage[loginKey]
-    localStorage.removeItem(loginKey)
+    window.localStorage[loginKey] = JSON.stringify(login)
+  else if window.localStorage[loginKey]
+    window.localStorage.removeItem(loginKey)
 
