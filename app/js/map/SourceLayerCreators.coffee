@@ -155,7 +155,7 @@ class EColi extends SourceLayerCreator
         }
       pointToLayer: (data, latLng) =>
         L.circleMarker latLng, {
-          radius: 6
+          radius: 8
         }
     }
 
