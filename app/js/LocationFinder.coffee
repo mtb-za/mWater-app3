@@ -19,6 +19,11 @@ class LocationFinder
       return pos
     
   getLocation: (success, error) ->
+    # If no geolocation, send error immediately
+    if not navigator.geolocation
+      error("No geolocation available")
+      return
+
     # Both failures are required to trigger error
     triggerLocationError = _.after 2, =>
       error()
@@ -62,6 +67,11 @@ class LocationFinder
     , 250
 
   startWatch: ->
+    # If no geolocation, send error immediately
+    if not navigator.geolocation
+      error("No geolocation available")
+      return
+
     # Allow one watch at most
     if @locationWatchId?
       @stopWatch()
