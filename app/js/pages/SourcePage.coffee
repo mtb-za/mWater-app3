@@ -94,8 +94,9 @@ module.exports = class SourcePage extends Page
       ctx: @ctx
       readonly: not @auth.update("sources", @source)
       
+    # Upsert model as this.source may have changed on activate to new copy
     photosView.model.on 'change', =>
-      @db.sources.upsert @source.toJSON(), => @render()
+      @db.sources.upsert photosView.model.toJSON(), => @render()
     @$('#photos').append(photosView.el)
 
   editSource: ->
