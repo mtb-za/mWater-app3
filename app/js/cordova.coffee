@@ -138,7 +138,7 @@ exports.setup = (options, success, error) ->
           # Redirect, putting current full base Url in cordova and including base version
           redir = launchUrl + "index_cordova.html?cordova=" + baseUrl + "&base_version=" + "//VERSION//"
           console.log "Redirecting to #{redir}"
-          $("body").html("<h1>Loading...</h1>")
+          $("body").html('<div class="alert alert-info">Loading mWater...</div>')
           window.location.href = redir
         , error
       , error
