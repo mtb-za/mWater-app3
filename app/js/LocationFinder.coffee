@@ -10,6 +10,10 @@ class LocationFinder
     if window.localStorage['LocationFinder.lastPosition']
       pos = JSON.parse(window.localStorage['LocationFinder.lastPosition'])
 
+      # Check that valid position (unreproducible bug)
+      if not pos.coords
+        return
+
       # Accuracy is down since cached
       pos.coords.accuracy = 10000 # 10 km
       return pos
