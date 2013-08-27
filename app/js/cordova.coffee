@@ -23,12 +23,18 @@ createAppUpdater = (baseUrl, success, error) ->
   , error
 
 # Start an updater which checks for updates every interval
-startUpdater = (appUpdater, success, error) ->
+startUpdater = (appUpdater, success, error, relaunch) ->
   # Start repeating check for updates
   updater = new sync.Repeater (success, error) =>
     console.log "About to update"
     appUpdater.update (status, message) =>
       console.log "Updater status: #{status} (#{message})"
+
+      # Listen for relaunch
+      if status == 'relaunch'
+        if relaunch
+          relaunch()
+
       success(status)
     , (err) =>
       console.log "Updater failed: " + err
@@ -117,11 +123,17 @@ exports.setup = (options, success, error) ->
         appUpdater.launch (launchUrl) =>
           console.log "Cordova launchUrl=#{launchUrl}" 
 
+          # Function called when relaunch is needed
+          relaunch = =>
+            if confirm("A new version is available. Restart app?")
+              # Reload base url index_cordova.html
+              window.location.href = baseUrl + "index_cordova.html?cordova="
+
           # If same as current baseUrl, proceed to starting updater, since are running latest version
           if launchUrl == baseUrl
             console.log "Running latest version"
             markCordovaReady()
-            return startUpdater(appUpdater, success, error)
+            return startUpdater(appUpdater, success, error, relaunch)
 
           # Redirect, putting current full base Url in cordova and including base version
           redir = launchUrl + "index_cordova.html?cordova=" + baseUrl + "&base_version=" + "//VERSION//"
