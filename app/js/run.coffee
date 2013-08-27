@@ -32,6 +32,24 @@ exports.start = (options = {}) ->
   app = new AppView(slideMenu: slideMenu, pager: pager)
   $("body").append(app.$el)
 
+  # Check if a new cache is available on page load.
+  window.addEventListener "load", ((e) ->
+    if not window.applicationCache?
+      return
+
+    window.applicationCache.addEventListener "updateready", ((e) ->
+      if window.applicationCache.status is window.applicationCache.UPDATEREADY
+        
+        # Browser downloaded a new app cache.
+        # Swap it in and reload the page to get the new hotness.
+        window.applicationCache.swapCache()
+        window.location.reload() if confirm("A new version is available. Load it now?")
+      else
+    
+    # Manifest didn't changed. Nothing new to server.
+    ), false
+  ), false
+
   # Step 2 of setup
   step2 = ->
     # Create context
