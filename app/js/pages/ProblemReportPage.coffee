@@ -41,7 +41,7 @@ module.exports = class ProblemReportPage extends Page
       report.baseVersion = @baseVersion
       report.user_agent = navigator.userAgent
       report.device = window.device
-      reports.url = window.location.href
+      report.url = window.location.href
       # TODO add log
       
       # Post to api
