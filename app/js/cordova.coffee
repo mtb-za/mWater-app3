@@ -110,24 +110,24 @@ exports.setup = (options, success, error) ->
 
       # Create app updater
       createAppUpdater baseUrl, (appUpdater) =>
+        # Function called when relaunch is needed
+        relaunch = =>
+          if confirm("A new version is available. Restart app?")
+            # Reload base url index_cordova.html
+            window.location.href = baseUrl + "index_cordova.html?cordova="
+
         # If not original, that means we are running update
         # Do not try to relaunch
         if not isOriginal
           console.log "Running in update at #{baseUrl}"
           markCordovaReady()
-          return startUpdater(appUpdater, success, error)
+          return startUpdater(appUpdater, success, error, relaunch)
 
         # If we are running original install of application from 
         # native client. Get launcher
         # Get launch url (base url of latest update)
         appUpdater.launch (launchUrl) =>
           console.log "Cordova launchUrl=#{launchUrl}" 
-
-          # Function called when relaunch is needed
-          relaunch = =>
-            if confirm("A new version is available. Restart app?")
-              # Reload base url index_cordova.html
-              window.location.href = baseUrl + "index_cordova.html?cordova="
 
           # If same as current baseUrl, proceed to starting updater, since are running latest version
           if launchUrl == baseUrl
