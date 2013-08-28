@@ -24,12 +24,18 @@ class LocationFinder
       error("No geolocation available")
       return
 
+    console.log "Getting location"
+
     # Both failures are required to trigger error
     triggerLocationError = _.after 2, =>
       error()
 
-    locationError = (err) =>
-      console.error "Location error: #{err}"
+    lowAccuracyError = (err) =>
+      console.error "Low accuracy location error: #{err}"
+      triggerLocationError()
+
+    highAccuracyError = (err) =>
+      console.error "High accuracy location error: #{err}"
       triggerLocationError()
 
     lowAccuracyFired = false
@@ -47,14 +53,13 @@ class LocationFinder
       success(pos)
 
     # Get both high and low accuracy, as low is sufficient for initial display
-    navigator.geolocation.getCurrentPosition(lowAccuracy, locationError, {
-        maximumAge : 3600*24,
+    navigator.geolocation.getCurrentPosition(lowAccuracy, lowAccuracyError, {
+        maximumAge : 3600,
         timeout : 30000,
         enableHighAccuracy : false
     })
 
-    navigator.geolocation.getCurrentPosition(highAccuracy, locationError, {
-        maximumAge : 3600,
+    navigator.geolocation.getCurrentPosition(highAccuracy, highAccuracyError, {
         timeout : 60000,
         enableHighAccuracy : true
     })
@@ -87,12 +92,11 @@ class LocationFinder
         @trigger 'found', pos
 
     lowAccuracyError = (err) =>
-      # No error if low or high fired once
-      if not lowAccuracyFired and not highAccuracyFired
-        @trigger 'error', err
+      # Low accuracy errors are not enough to trigger final error
+      console.error "Low accuracy watch location error: #{err}"
 
     highAccuracy = (pos) =>
-      console.log "High accuracy location: " + JSON.stringify(pos)
+      console.log "High accuracy watch location: " + JSON.stringify(pos)
       highAccuracyFired = true
       cacheLocation(pos)
       @trigger 'found', pos
@@ -112,6 +116,8 @@ class LocationFinder
         enableHighAccuracy : true
     })  
 
+    console.log "Starting location watch #{this.locationWatchId}"
+
     # Fire stored one within short time
     setTimeout =>
       cachedLocation = getCachedLocation()
@@ -121,8 +127,8 @@ class LocationFinder
     , 500
 
   stopWatch: ->
-    console.log "Stopping watch"
     if @locationWatchId?
+      console.log "Stopping location watch #{this.locationWatchId}"
       navigator.geolocation.clearWatch(@locationWatchId)
       @locationWatchId = undefined
 
