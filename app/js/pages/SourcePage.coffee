@@ -19,6 +19,9 @@ module.exports = class SourcePage extends Page
     @setLocation = @options.setLocation
 
   activate: ->
+    @query()
+
+  query: ->
     @db.sources.findOne {_id: @options._id}, (source) =>
       if not source
         alert("Source not found")
@@ -96,7 +99,7 @@ module.exports = class SourcePage extends Page
       
     # Upsert model as this.source may have changed on activate to new copy
     photosView.model.on 'change', =>
-      @db.sources.upsert photosView.model.toJSON(), => @render()
+      @db.sources.upsert photosView.model.toJSON(), => @query()
     @$('#photos').append(photosView.el)
 
   editSource: ->
