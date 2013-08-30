@@ -45,7 +45,6 @@ class SourceMapPage extends Page
         @createMap()
     , 500
 
-
   createMap: (center, zoom) ->
     # Fix leaflet image path
     L.Icon.Default.imagePath = "img/leaflet"
@@ -106,8 +105,22 @@ class SourceMapPage extends Page
     @map.on 'moveend', =>
       window.localStorage['SourceMapPage.lastView'] = JSON.stringify({center: @map.getCenter(), zoom: @map.getZoom()})
 
-    # Setup localion display
+    # Setup location display
     @locationDisplay = new LocationDisplay(@map)
+
+    @setupButtonBar [
+      { icon: "goto-my-location.png", click: => @gotoMyLocation() }
+    ]
+   
+  gotoMyLocation: ->
+    # Goes to current location
+    locationFinder = new LocationFinder()
+    locationFinder.getLocation (pos) =>
+      latLng = new L.LatLng(pos.coords.latitude, pos.coords.longitude)
+      zoom = @map.getZoom()
+      @map.setView(latLng, if zoom > 15 then zoom else 15)
+    , =>
+      @pager.flash("Unable to determine location", "warning")
 
   activate: ->
     # Update markers
