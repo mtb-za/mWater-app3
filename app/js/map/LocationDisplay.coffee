@@ -3,10 +3,9 @@ LocationFinder = require '../LocationFinder'
 
 # Displays current location as a blue dot
 module.exports = class LocationDisplay
-  # Setup display, optionally zooming to current location
-  constructor: (map, zoomTo) ->
+  # Setup display
+  constructor: (map) ->
     @map = map
-    @zoomTo = zoomTo
 
     @locationFinder = new LocationFinder()
     @locationFinder.on('found', @locationFound).on('error', @locationError)
@@ -15,24 +14,26 @@ module.exports = class LocationDisplay
   stop: ->
     @locationFinder.stopWatch()
 
+  removeMarker: ->
+    # Remove marker
+    if @meMarker
+      @map.removeLayer(@meMarker)
+      @meMarker = null
+
+    if @meCircle
+      @map.removeLayer(@meCircle)
+      @meCircle = null
+
   locationError: (e) =>
-    if @zoomTo
-      @map.fitWorld()
-      @zoomTo = false
-      alert("Unable to determine location")
+    @removeMarker()
 
   locationFound: (e) =>
     radius = e.coords.accuracy
     latlng = new L.LatLng(e.coords.latitude, e.coords.longitude)
 
-    # Set position once
-    if @zoomTo
-      zoom = 15
-      @map.setView(latlng, zoom)
-      @zoomTo = false
-
     # Radius larger than 1km means no location worth displaying
     if radius > 1000
+      @removeMarker()
       return
 
     # Setup marker and circle

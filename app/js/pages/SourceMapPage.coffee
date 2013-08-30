@@ -3,6 +3,7 @@ SourcePage = require './SourcePage'
 SourcesLayer = require '../map/SourcesLayer'
 SourceLayerCreators = require '../map/SourceLayerCreators'
 LocationDisplay = require '../map/LocationDisplay'
+LocationFinder = require '../LocationFinder'
 ContextMenu = require '../map/ContextMenu'
 BaseLayers = require '../map/BaseLayers'
 
@@ -15,6 +16,38 @@ class SourceMapPage extends Page
     # Calculate height
     @$el.html templates['pages/SourceMapPage']()
 
+    # If initialGeo specified, use it
+    if @options.initialGeo and @options.initialGeo.type=="Point"
+      @createMap(L.GeoJSON.coordsToLatLng(@options.initialGeo.coordinates), 15)
+      return
+
+    # If saved view
+    if window.localStorage['SourceMapPage.lastView']
+      lastView = JSON.parse(window.localStorage['SourceMapPage.lastView'])
+      @createMap(lastView.center, lastView.zoom)
+      return
+
+    # Get current position if quickly available
+    currentLatLng = null
+    locationFinder = new LocationFinder()
+    locationFinder.getLocation (pos) =>
+      currentLatLng = new L.LatLng(pos.coords.latitude, pos.coords.longitude)
+    , ->
+      # Do nothing on error
+      currentLatLng = null
+
+    # Wait very short time for location
+    setTimeout =>
+      # If no location, create map with no location
+      if currentLatLng
+        @createMap(currentLatLng, 14)
+      else
+        @createMap()
+    , 500
+
+
+  createMap: (center, zoom) ->
+    # Fix leaflet image path
     L.Icon.Default.imagePath = "img/leaflet"
 
     options = {}
@@ -62,14 +95,19 @@ class SourceMapPage extends Page
 
     # Setup context menu
     contextMenu = new ContextMenu(@map, @ctx)
-    # TODO zoom to last known bounds
     
     # Setup initial zoom
-    if @options.initialGeo and @options.initialGeo.type=="Point"
-      @map.setView(L.GeoJSON.coordsToLatLng(@options.initialGeo.coordinates), 15)
+    if center
+      @map.setView(center, zoom)
+    else
+      @map.fitWorld()
+
+    # Save view
+    @map.on 'moveend', =>
+      window.localStorage['SourceMapPage.lastView'] = JSON.stringify({center: @map.getCenter(), zoom: @map.getZoom()})
 
     # Setup localion display
-    @locationDisplay = new LocationDisplay(@map, not @options.initialGeo?)
+    @locationDisplay = new LocationDisplay(@map)
 
   activate: ->
     # Update markers
