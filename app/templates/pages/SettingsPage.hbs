@@ -7,16 +7,31 @@
 <button id="request_source_codes" class="btn" type="button">Request more</button>
 {{/if}}
 
+{{#if admin}}
+<h5>Change user's password</h5>
+<div>
+  <input id="username" type="text" autocapitalize="off" autocorrect="off" placeholder="Username" />
+</div>
+<div>
+  <input id="new_password" type="text" placeholder="Password" />
+</div>
+<div>
+  <button id="change_password_button" type="button" class="btn">Change Password</button>
+</div>
+{{/if}}
+
 <h4>Advanced</h4>
 <div>
   <button id="reset_db" class="btn btn-danger" type="button">Reset Local Storage</button>
   <span class="help-block">This will completely reset any cached data and cause you to lose any pending changes that you have not uploaded</span>
 </div>
 
+{{#if admin}}
 <div>
   <button id="crash" class="btn btn-danger" type="button">Crash!</button>
 </div>
 <br/><br/>
+{{/if}}
 
 <div>
 	<button id="test_ecplates" class="btn" type="button">Test EC Compact Dry Plate Counter</button>

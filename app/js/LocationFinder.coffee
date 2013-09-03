@@ -102,7 +102,7 @@ class LocationFinder
       @trigger 'found', pos
 
     highAccuracyError = (err) =>
-      console.error "High accuracy location error: #{err}"
+      console.error "High accuracy watch location error: #{err}"
       @trigger 'error'
 
     # Fire initial low-accuracy one
