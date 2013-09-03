@@ -1,6 +1,6 @@
 {
   "name": "dbl-client",
-  "version": "3.0.66",
+  "version": "3.0.67",
   "description": "Client for DBL",
   "main": "index.js",
   "scripts": {
