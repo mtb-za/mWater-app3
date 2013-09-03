@@ -42,10 +42,14 @@ module.exports = class LoginPage extends Page
       contentType : 'application/json',
       type : 'PUT'})
 
+    # Disable button temporarily
+    $("#form_signup").attr("disabled", "disabled")
+
     req.done (data, textStatus, jqXHR) =>
       # Login
       @login(username, password)
     req.fail (jqXHR, textStatus, errorThrown) =>
+      $("#form_signup").removeAttr('disabled')
       console.error "Signup failure: #{jqXHR.responseText} (#{jqXHR.status})"
       if jqXHR.status < 500 and jqXHR.status >= 400
         alert(JSON.parse(jqXHR.responseText).error)
@@ -67,6 +71,9 @@ module.exports = class LoginPage extends Page
       contentType : 'application/json',
       type : 'POST'})
 
+    # Disable button temporarily
+    $("#form_login").attr("disabled", "disabled")
+
     req.done (data, textStatus, jqXHR) =>
       console.log "Login response: " + jqXHR.responseText
       response = JSON.parse(jqXHR.responseText)
@@ -82,6 +89,7 @@ module.exports = class LoginPage extends Page
       @pager.flash "Login as #{response.user} successful", "success"
 
     req.fail (jqXHR, textStatus, errorThrown) =>
+      $("#form_login").removeAttr('disabled')
       console.error "Login failure: #{jqXHR.responseText} (#{jqXHR.status})"
       if jqXHR.status < 500 and jqXHR.status >= 400
         alert(JSON.parse(jqXHR.responseText).error)
