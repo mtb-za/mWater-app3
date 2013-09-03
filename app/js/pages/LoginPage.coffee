@@ -43,13 +43,13 @@ module.exports = class LoginPage extends Page
       type : 'PUT'})
 
     # Disable button temporarily
-    $("#form_signup").attr("disabled", "disabled")
+    $("#signup_button").attr("disabled", "disabled")
 
     req.done (data, textStatus, jqXHR) =>
       # Login
       @login(username, password)
     req.fail (jqXHR, textStatus, errorThrown) =>
-      $("#form_signup").removeAttr('disabled')
+      $("#signup_button").removeAttr('disabled')
       console.error "Signup failure: #{jqXHR.responseText} (#{jqXHR.status})"
       if jqXHR.status < 500 and jqXHR.status >= 400
         alert(JSON.parse(jqXHR.responseText).error)
@@ -72,7 +72,7 @@ module.exports = class LoginPage extends Page
       type : 'POST'})
 
     # Disable button temporarily
-    $("#form_login").attr("disabled", "disabled")
+    $("#login_button").attr("disabled", "disabled")
 
     req.done (data, textStatus, jqXHR) =>
       console.log "Login response: " + jqXHR.responseText
@@ -89,7 +89,7 @@ module.exports = class LoginPage extends Page
       @pager.flash "Login as #{response.user} successful", "success"
 
     req.fail (jqXHR, textStatus, errorThrown) =>
-      $("#form_login").removeAttr('disabled')
+      $("#login_button").removeAttr('disabled')
       console.error "Login failure: #{jqXHR.responseText} (#{jqXHR.status})"
       if jqXHR.status < 500 and jqXHR.status >= 400
         alert(JSON.parse(jqXHR.responseText).error)
