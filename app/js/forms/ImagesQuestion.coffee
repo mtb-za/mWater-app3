@@ -59,11 +59,14 @@ module.exports = class ImagesQuestion extends Question
   thumbnailClick: (ev) ->
     id = ev.currentTarget.id
 
-    # Create onRemove callback
-    onRemove = () => 
-      images = @model.get(@id) || []
-      images = _.reject images, (img) =>
-        img.id == id
-      @model.set(@id, images)      
+    # Create onRemove callback if not readonly
+    if not @options.readonly
+      onRemove = () => 
+        images = @model.get(@id) || []
+        images = _.reject images, (img) =>
+          img.id == id
+        @model.set(@id, images)
+    else
+      onRemove = null
 
     @ctx.pager.openPage(ImagePage, { id: id, onRemove: onRemove })
