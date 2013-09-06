@@ -77,9 +77,18 @@ module.exports = class SourcesLayer extends L.LayerGroup
     # Any geometry specified with GeoJSON to $geoIntersects or $geoWithin queries, must fit within a single hemisphere.
     # MongoDB interprets geometries larger than half of the sphere as queries for the smaller of the complementary geometries.
     # So... don't bother intersection if large
+    # Also don't use intersection if outside of normal bounds (lat: [-90, 90], lng: [-180, 180])
     if (boundsGeoJSON.coordinates[0][2][0] - boundsGeoJSON.coordinates[0][0][0]) >= 180
       selector = {}
     else if (boundsGeoJSON.coordinates[0][2][1] - boundsGeoJSON.coordinates[0][0][1]) >= 180
+      selector = {}
+    else if boundsGeoJSON.coordinates[0][0][0] < -180 or boundsGeoJSON.coordinates[0][0][0] > 180
+      selector = {}
+    else if boundsGeoJSON.coordinates[0][2][0] < -180 or boundsGeoJSON.coordinates[0][2][0] > 180
+      selector = {}
+    else if boundsGeoJSON.coordinates[0][0][1] < -90 or boundsGeoJSON.coordinates[0][0][1] > 90
+      selector = {}
+    else if boundsGeoJSON.coordinates[0][2][1] < -90 or boundsGeoJSON.coordinates[0][2][1] > 90
       selector = {}
     else
       selector = { geo: { $geoIntersects: { $geometry: boundsGeoJSON } } }
