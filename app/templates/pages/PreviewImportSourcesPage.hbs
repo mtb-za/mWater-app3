@@ -1,0 +1,17 @@
+<h4>Sources to Import</h4>
+<button id="import" class="btn btn-primary" type="button">Import Now</button>
+<br>
+<hr>
+{{#each sources}}
+<div>Name: {{name}}</div>
+<div>Desc: {{desc}}</div>
+<div>Type: {{type}}</div>
+{{#if geo.coordinates}}<div>Latitude: {{last geo.coordinates}}</div>{{/if}}
+{{#if geo.coordinates}}<div>Longitude: {{first geo.coordinates}}</div>{{/if}}
+{{#if custom}}
+	{{#eachProperty custom}}
+	    <div class="text-info">{{key}}: {{value}}</div>
+	{{/eachProperty}}
+{{/if}}
+<hr/>
+{{/each}}
