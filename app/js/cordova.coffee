@@ -97,6 +97,12 @@ exports.setup = (options, success, error) ->
   script.onload = () =>
     console.log "cordova.js loaded"
 
+    # Force firing of DOMContentLoaded for Android 2.3.6 bug with script loading
+    # that leaves it in readyState of "loaded" instead of "interactive"
+    if window.cordova.fireDocumentEvent?
+      $ ->
+        window.cordova.fireDocumentEvent("DOMContentLoaded")
+
     # Listen for deviceready event
     document.addEventListener 'deviceready', () =>
       # Cordova is now loaded
