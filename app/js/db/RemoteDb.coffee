@@ -35,6 +35,9 @@ class Collection
         params.client = @client
       params.selector = JSON.stringify(selector || {})
 
+      # Add timestamp for Android 2.3.6 bug with caching
+      params._ = new Date().getTime()
+
       req = $.getJSON(@url, params)
       req.done (data, textStatus, jqXHR) =>
         success(data)
@@ -55,6 +58,9 @@ class Collection
       params.client = @client
     params.selector = JSON.stringify(selector || {})
 
+    # Add timestamp for Android 2.3.6 bug with caching
+    params._ = new Date().getTime()
+
     req = $.getJSON(@url, params)
     req.done (data, textStatus, jqXHR) =>
       success(data[0] || null)
@@ -69,7 +75,10 @@ class Collection
     if not doc._id
       doc._id = createUid()
 
-    req = $.ajax(@url + "?client=" + @client, {
+    # Add timestamp for Android 2.3.6 bug with caching
+    url = @url + "?client=" + @client + "&_=" + new Date().getTime()
+
+    req = $.ajax(url, {
       data : JSON.stringify(doc),
       contentType : 'application/json',
       type : 'POST'})
