@@ -8,3 +8,7 @@ exports.takePicture = (success, error) ->
   navigator.camera.getPicture success, error,
     quality: 50
     destinationType: Camera.DestinationType.FILE_URI
+
+
+exports.hasCamera = ->
+  return navigator.camera?
