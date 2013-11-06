@@ -67,3 +67,23 @@ a {
 .radio-button.checked {
   background-position-y: -112px;
 }
+
+
+/* Fixes for modals in Twitter Bootstrap */
+
+/* fix modal position for 480px devices */
+@media (max-width: 480px) 
+{
+  .modal.fade.in {
+    position: fixed; 
+    left: 10px;
+    margin: 0px;
+    right: 10px;
+    width: auto;
+  }
+
+  .modal-body { 
+    -webkit-overflow-scrolling: touch; 
+    overflow-y: auto; 
+  }
+}
