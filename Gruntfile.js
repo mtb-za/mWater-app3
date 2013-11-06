@@ -236,6 +236,18 @@ module.exports = function(grunt) {
           {expand: true,  cwd: 'dist/', src: ['**'], dest: 'dist.gz/', ext: ''}
         ]
       }
+    }, 
+
+    replace: {
+      // Reload sometimes uses cached versions of js on update. Add timestamp
+      html_js_timestamps: {
+        src: ['dist/*.html'],
+        overwrite: true,                 // overwrite matched source files
+        replacements: [{ 
+          from: /_=timestamp/g,
+          to: "_=<%= new Date().getTime() %>"
+        }]
+      }
     }
   });
 
@@ -252,12 +264,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-manifest');
   grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-text-replace');
 
   grunt.registerTask('cordova_debug', ['copy:cordova_www', 'copy:cordova_override_debug']);
   grunt.registerTask('cordova_release', ['copy:cordova_www', 'copy:cordova_override_release']);
   grunt.registerTask('run_cordova_debug', ['default', 'cordova_debug', 'shell:cordova_run']);
 
-  grunt.registerTask('copy-app', ['copy:apphtml', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapimages', 'copy:leafletcssimages']);
+  grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapimages', 'copy:leafletcssimages']);
   grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy-app', 'handlebars', 'manifest', 'compress']);
 
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
