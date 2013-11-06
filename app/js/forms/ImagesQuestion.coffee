@@ -17,7 +17,7 @@ module.exports = class ImagesQuestion extends Question
       notSupported = false
       if @options.readonly
         canAdd = false
-      else if @ctx.camera and @ctx.imageManager.addImage
+      else if @ctx.imageAcquirer
         canAdd = true
       else
         canAdd = false
@@ -40,21 +40,16 @@ module.exports = class ImagesQuestion extends Question
     @ctx.imageManager.getImageThumbnailUrl id, success, @error
 
   addClick: ->
-    # Call camera to get image
-    success = (url) =>
-      # Add image
-      @ctx.imageManager.addImage(url, (id) =>
-        # Add to model
-        images = @model.get(@id) || []
+    # Call imageAcquirer
+    @ctx.imageAcquirer.acquire (id) =>
+      # Add to model
+      images = @model.get(@id) || []
 
-        # Make copy to force a model change
-        images = images.slice(0)
-        images.push { id: id }
-        @model.set(@id, images)   
-
-      , @ctx.error)
-    @ctx.camera.takePicture success, (err) ->
-      alert("Failed to take picture")
+      # Make copy to force a model change
+      images = images.slice(0)
+      images.push { id: id }
+      @model.set(@id, images)   
+    , @ctx.error
 
   thumbnailClick: (ev) ->
     id = ev.currentTarget.id

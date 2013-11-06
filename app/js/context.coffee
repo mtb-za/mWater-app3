@@ -16,6 +16,8 @@ auth: see auth module
 login: { user: <username>, org: <org code>, client: <client id> }
 dataSync: synchronizer for data including db and source codes. Success message is to be displayed.
 imageSync: synchronizer for images. Success message is to be displayed.
+imageAcquirer: source of images (either camera or file selection). Has single function: acquire(success, error)
+  that calls success with id of image. If not present, not available.
 
 stop(): must be called when context is no longer needed, or before setup of a new user
 
@@ -34,6 +36,7 @@ sourcecodes = require './sourcecodes'
 syncModule = require './sync'
 Camera = require './Camera'
 cordova = require './cordova'
+ImageUploader = require './images/ImageUploader'
 
 collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes']
 
@@ -49,7 +52,7 @@ exports.setupFileSystems = (tempFs, persFs) ->
 
 # Base context
 createBaseContext = ->
-  camera = if Camera? then Camera else null
+  camera = if Camera.hasCamera() then Camera else null
 
   error = (err) ->
     console.error err
@@ -179,7 +182,27 @@ exports.createLoginContext = (login) ->
     dataSync.stop()
     imageSync.stop()
 
-  return _.extend createBaseContext(), {
+  baseContext = createBaseContext()
+
+  # Create image acquirer with camera and imageManager if persistentFs and camera
+  if baseContext.camera? and persistentFs
+    imageAcquirer = {
+      acquire: (success, error) ->
+        baseContext.camera.takePicture (url) ->
+          # Add image
+          imageManager.addImage url, (id) =>
+            success(id)
+        , (err) ->
+          alert("Failed to take picture")
+    }
+  else 
+    # Use ImageUploader
+    imageAcquirer = {
+      acquire: (success, error) ->
+        ImageUploader.acquire(apiUrl, login.client, success, error) 
+    }
+
+  return _.extend baseContext, {
     db: db 
     imageManager: imageManager
     auth: auth
@@ -188,4 +211,5 @@ exports.createLoginContext = (login) ->
     dataSync: dataSync
     imageSync: imageSync
     stop: stop
+    imageAcquirer: imageAcquirer
   }
