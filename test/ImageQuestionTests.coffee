@@ -10,16 +10,16 @@ class MockImageManager
   getImageUrl: (imageUid, success, error) ->
     success "images/" + imageUid + ".jpg"
 
-class MockCamera
-  takePicture: (success, error) ->
-    success("http://1234.jpg")
+class MockImageAcquirer
+  acquire: (success, error) ->
+    success("1234")
 
 describe 'ImageQuestion', ->
   beforeEach ->
     # Create model
     @model = new Backbone.Model 
 
-  context 'With a no camera', ->
+  context 'With a no image acquirer', ->
     beforeEach ->
       # Create context
       @ctx = {
@@ -59,12 +59,12 @@ describe 'ImageQuestion', ->
     it 'displays no add', ->
       assert.equal @question.$("img#add").length, 0
 
-  context 'With a camera', ->
+  context 'With an image acquirer', ->
     beforeEach ->
       # Create context
       @ctx = {
         imageManager: new MockImageManager()
-        camera: new MockCamera()
+        imageAcquirer: new MockImageAcquirer()
       }
 
       @question = new forms.ImageQuestion
@@ -72,34 +72,11 @@ describe 'ImageQuestion', ->
         id: "q1"
         ctx: @ctx
 
-    it 'displays no add if image manager has no addImage', ->
-      assert.equal @question.$("img#add").length, 0
-
-  context 'With a camera and imageManager with addImage', ->
-    beforeEach ->
-      imageManager = new MockImageManager()
-      imageManager.addImage = (url, success, error) ->
-        assert.equal url, "http://1234.jpg"
-        success "1234"
-
-      # Create context
-      @ctx = {
-        imageManager: imageManager
-        camera: new MockCamera()
-      }
-
-      @question = new forms.ImageQuestion
-        model: @model
-        id: "q1"
-        ctx: @ctx
-
-    it 'takes a photo', ->
-      @ctx.camera = new MockCamera()
+    it 'gets an image', ->
       @question.$("img#add").click()
       assert.isTrue _.isEqual(@model.get("q1"), {id:"1234"}), @model.get("q1")
 
     it 'no longer has add after taking photo', ->
-      @ctx.camera = new MockCamera()
       @question.$("img#add").click()
       assert.equal @question.$("img#add").length, 0
 
