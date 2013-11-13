@@ -4,9 +4,7 @@ ECPlates = require '../forms/ECPlates'
 class SettingsPage extends Page
   events: 
     "click #reset_db" : "resetDb"
-    "click #crash" : "crash"
     "click #request_source_codes": "requestSourceCodes"
-    "click #change_password_button": "changePassword"
     "click #test_ecplates" : "testECPlates"
     "click #weinre" : "startWeinre"
 
@@ -17,7 +15,6 @@ class SettingsPage extends Page
   render: ->
     @$el.html templates['pages/SettingsPage'](
       offlineSourceCodes: if @sourceCodesManager then @sourceCodesManager.getNumberAvailableCodes() else null
-      admin: @login? and @login.user == "admin"
     )
 
     # Show EC plates test if available
@@ -32,32 +29,12 @@ class SettingsPage extends Page
       @$("#weinre_details").html("Debugging with code <b>#{window.debug.code}</b>")
       @$("#weinre").attr("disabled", true)
 
-  changePassword: ->
-    username = @$("#username").val()
-    password = @$("#new_password").val()
-
-    # Change password
-    req = $.ajax(@apiUrl + "users/#{username}?client=#{this.login.client}", {
-      data : JSON.stringify({ password: password }),
-      contentType : 'application/json',
-      type : 'POST'})
-    req.done (data, textStatus, jqXHR) =>
-      alert("Success")
-    req.fail (jqXHR, textStatus, errorThrown) =>
-      alert("Failed: " + errorThrown)
-
   resetDb: ->
     if confirm("Completely discard local data, logout and lose unsubmitted changes?")
       window.localStorage.clear()
       while @pager.multiplePages()
         @pager.closePage()
       @pager.closePage(require("./LoginPage"))
-
-  crash: ->
-    setTimeout ->
-      x = null
-      x()
-    , 100
 
   requestSourceCodes: ->
     @sourceCodesManager.replenishCodes @sourceCodesManager.getNumberAvailableCodes() + 5, =>

@@ -21,6 +21,7 @@ module.exports = class PageMenu extends Backbone.View
     "click #existing_survey" : "gotoExistingSurvey"
     "click #report_problem" : 'gotoProblemReport'
     "click #import" : 'gotoImport'
+    "click #admin" : 'gotoAdmin'
 
   render: ->
     @$el.html templates['PageMenu']()
@@ -28,6 +29,7 @@ module.exports = class PageMenu extends Backbone.View
     @$("#new_survey").toggle(require("./pages/NewSurveyPage").canOpen(@options.ctx))
     @$("#existing_survey").toggle(require("./pages/ExistingSurveyPage").canOpen(@options.ctx))
     @$("#existing_test").toggle(require("./pages/TestListPage").canOpen(@options.ctx))
+    @$("#admin").toggle(require("./pages/AdminPage").canOpen(@options.ctx))
 
     @$("#login").toggle(not @options.ctx.login?)
     @$("#logout").toggle(@options.ctx.login?)
@@ -81,3 +83,6 @@ module.exports = class PageMenu extends Backbone.View
 
   gotoImport: ->
     @pager.openPage(require("./pages/ImportPage"))
+
+  gotoAdmin: ->
+    @pager.openPage(require("./pages/AdminPage"))
