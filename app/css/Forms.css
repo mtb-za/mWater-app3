@@ -19,13 +19,14 @@
 }
 
 .question-horizontal > .question-internal {
-    display:table-row;
+  display:table-row;
 }
 .question-horizontal > .question-internal > .prompt {
-    display:table-cell;
+  padding-right: 2px;
+  display:table-cell;
 }
 .question-horizontal > .question-internal > .answer {
-    display:table-cell;
+  display:table-cell;
 }
 
 .prompt {
@@ -39,7 +40,6 @@
 .required {
     color: Red;
     margin-left: 2px;
-    margin-right: 2px;
 }
 
 select {
