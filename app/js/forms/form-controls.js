@@ -157,13 +157,15 @@ exports.Section = Backbone.View.extend({
 });
 
 exports.Question = Backbone.View.extend({
-    className : "question",
+    className : function() {
+        return "question question-" + (this.options.style || "default");
+    },
 
-    template : _.template('<% if (options.prompt) { %><div class="prompt"><%=options.prompt%><%=renderRequired()%></div><% } %><div class="answer"></div><%=renderHint()%>'),
+    template : _.template('<div class="question-internal"><% if (options.prompt) { %><div class="prompt"><%=options.prompt%><%=renderRequired()%></div><% } %><div class="answer"></div><%=renderHint()%></div>'),
 
     renderRequired : function() {
         if (this.required)
-            return '&nbsp;<span class="required">*</span>';
+            return '<span class="required">*</span>';
         return '';
     },
 
@@ -172,6 +174,8 @@ exports.Question = Backbone.View.extend({
             return _.template('<div class="muted"><%=hint%></div>')({hint: this.options.hint});
     },
 
+    // Validate the question. Returns string of error if not valid or true if not valid but no specific error
+    // Returns falsy if no error.
     validate : function() {
         var val;
 
@@ -221,14 +225,19 @@ exports.Question = Backbone.View.extend({
         // Adjust visibility based on model
         this.model.on("change", this.updateVisibility, this);
 
-        // Re-render based on model changes
-        this.model.on("change:" + this.id, this.render, this);
+        // Update based on model changes
+        this.model.on("change:" + this.id, this.update, this);
 
         this.required = this.options.required;
 
         // Save context
         this.ctx = this.options.ctx || {};
 
+        this.render();
+    },
+
+    update: function() {
+        // Default is to re-render
         this.render();
     },
 

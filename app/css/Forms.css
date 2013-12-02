@@ -1,24 +1,47 @@
-.prompt {
-        font-weight: bold;
-        margin-bottom: 10px;
-      }
 .btn-group > .btn {
   min-width: 80px;
 }
 .section {
   margin-bottom: 15px;
 }
+
 .question {
   padding: 5px 5px 5px 5px;
-  margin-bottom: 20px;
 }
+
 .question.invalid {
     border: #C43B1D 2px solid;
     background-color: #FFE6CC;
 }
+
+.question-default {
+  margin-bottom: 20px;
+}
+
+.question-horizontal > .question-internal {
+    display:table-row;
+}
+.question-horizontal > .question-internal > .prompt {
+    display:table-cell;
+}
+.question-horizontal > .question-internal > .answer {
+    display:table-cell;
+}
+
+.prompt {
+  margin-bottom: 10px;
+}
+
+.question-default > .question-internal > .prompt {
+  font-weight: bold;
+}
+
 .required {
     color: Red;
+    margin-left: 2px;
+    margin-right: 2px;
 }
+
 select {
   width: 300px;
 }
