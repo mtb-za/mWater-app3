@@ -18,14 +18,14 @@
   margin-bottom: 20px;
 }
 
-.question-horizontal > .question-internal {
+.question-tabular > .question-internal {
   display:table-row;
 }
-.question-horizontal > .question-internal > .prompt {
+.question-tabular > .question-internal > .prompt {
   padding-right: 2px;
   display:table-cell;
 }
-.question-horizontal > .question-internal > .answer {
+.question-tabular > .question-internal > .answer {
   display:table-cell;
 }
 
