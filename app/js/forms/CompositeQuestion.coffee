@@ -3,8 +3,8 @@ Question = require('./form-controls').Question
 module.exports = Question.extend
   # Check that all questions validate
   validateInternal: ->
-    # Add subquestions
-    for q in @subquestions
+    # Add contents
+    for q in @contents
       val = q.validate()
       if val
         return val
@@ -17,7 +17,7 @@ module.exports = Question.extend
       @submodel.set(@model.get(@id) || {})
 
   renderAnswer: (answerEl) ->
-    answerEl.html _.template("<div class=\"subquestions\"></div>")
+    answerEl.html _.template("<div id=\"contents\"></div>")
 
     # Create submodel
     @submodel = new Backbone.Model(@model.get(@id))
@@ -28,10 +28,10 @@ module.exports = Question.extend
       if not _.isEqual(@model.get(@id), @submodel.toJSON())
         @model.set(@id, @submodel.toJSON())
 
-    # Create subquestions
-    @subquestions = @options.createSubquestions(@submodel)
+    # Create contents
+    @contents = @options.createContents(@submodel)
 
-    # Add subquestions
-    for q in @subquestions
-      answerEl.find(".subquestions").append(q.el)
+    # Add contents
+    for q in @contents
+      answerEl.find("#contents").append(q.el)
 
