@@ -161,7 +161,7 @@ exports.Question = Backbone.View.extend({
         return "question question-" + (this.options.style || "default");
     },
 
-    template : _.template('<div class="question-internal"><% if (options.prompt) { %><div class="prompt"><%=options.prompt%><%=renderRequired()%></div><% } %><div class="answer"></div><%=renderHint()%></div>'),
+    template : _.template('<% if (options.prompt) { %><div class="prompt"><%=options.prompt%><%=renderRequired()%></div><% } %><div class="answer"></div><%=renderHint()%>'),
 
     renderRequired : function() {
         if (this.required)
@@ -230,6 +230,9 @@ exports.Question = Backbone.View.extend({
 
         this.required = this.options.required;
 
+        // Starts visible
+        this.visible = true;
+
         // Save context
         this.ctx = this.options.ctx || {};
 
@@ -247,8 +250,11 @@ exports.Question = Backbone.View.extend({
         // Render answer
         this.renderAnswer(this.$(".answer"));
 
-        this.$el.toggle(this.shouldBeVisible());
-        this.visible = this.shouldBeVisible();
+        // TODO Tabular controls will have display:table-row replaced with block
+        if (!this.shouldBeVisible()) {
+            this.$el.hide();
+            this.visible = false;
+        }
         return this;
     }
 

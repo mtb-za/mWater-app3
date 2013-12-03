@@ -18,14 +18,14 @@
   margin-bottom: 20px;
 }
 
-.question-tabular > .question-internal {
+.question-tabular  {
   display:table-row;
 }
-.question-tabular > .question-internal > .prompt {
+.question-tabular > .prompt {
   padding-right: 2px;
   display:table-cell;
 }
-.question-tabular > .question-internal > .answer {
+.question-tabular  > .answer {
   display:table-cell;
 }
 
@@ -33,7 +33,7 @@
   margin-bottom: 10px;
 }
 
-.question-default > .question-internal > .prompt {
+.question-default  > .prompt {
   font-weight: bold;
 }
 
