@@ -10,6 +10,7 @@ class LocationView extends Backbone.View
     super()
     @loc = options.loc
     @readonly = options.readonly
+    @hideMap = options.hideMap
     @settingLocation = false
     @locationFinder = options.locationFinder || new LocationFinder()
 
@@ -26,6 +27,7 @@ class LocationView extends Backbone.View
   events:
     'click #location_map' : 'mapClicked'
     'click #location_set' : 'setLocation'
+    'click #location_clear' : 'clearLocation'
 
   remove: ->
     @locationFinder.stopWatch()
@@ -47,14 +49,20 @@ class LocationView extends Backbone.View
       @$("#location_relative").text(GeoJSON.getRelativeLocation(@currentLoc, @loc))
 
     # Hide map if hidden
-    if @options.hideMap
+    if @hideMap
       @$("#location_map").hide()
       
     # Disable map if location not set
     @$("#location_map").attr("disabled", not @loc);
 
+    # Disable clear if location not set or readonly
+    @$("#location_clear").attr("disabled", not @loc || @readonly);
+
     # Disable set if setting or readonly
     @$("#location_set").attr("disabled", @settingLocation || @readonly);    
+
+  clearLocation: ->
+    @trigger('locationset', null)
 
   setLocation: ->
     @settingLocation = true
@@ -66,6 +74,7 @@ class LocationView extends Backbone.View
 
       # Set location
       @loc = GeoJSON.posToPoint(pos)
+      @currentLoc = GeoJSON.posToPoint(pos)
       @trigger('locationset', @loc)
       @render()
 
