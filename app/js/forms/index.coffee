@@ -1,5 +1,6 @@
 
 exports.CompositeQuestion = require './CompositeQuestion'
+exports.LocationQuestion = require './LocationQuestion'
 exports.DateQuestion = require './DateQuestion'
 exports.DropdownQuestion = require './DropdownQuestion'
 exports.NumberQuestion = require './NumberQuestion'

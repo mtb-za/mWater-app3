@@ -4,6 +4,7 @@ GeoJSON = require './GeoJSON'
 # Shows the relative location of a point and allows setting it
 # Fires events locationset, map, both with 
 # options readonly makes it non-editable
+# options hideMap is true to hide map
 class LocationView extends Backbone.View
   constructor: (options) ->
     super()
@@ -45,6 +46,10 @@ class LocationView extends Backbone.View
     else
       @$("#location_relative").text(GeoJSON.getRelativeLocation(@currentLoc, @loc))
 
+    # Hide map if hidden
+    if @options.hideMap
+      @$("#location_map").hide()
+      
     # Disable map if location not set
     @$("#location_map").attr("disabled", not @loc);
 
