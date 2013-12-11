@@ -7,14 +7,17 @@ module.exports = Backbone.View.extend
     # Adjust visibility based on model
     @model.on("change", @updateVisibility, @)
 
-    #Starts visible
+    # Starts visible
     @visible = true
+    if not @shouldBeVisible()
+      @$el.hide()
+      @visible = false
 
   updateVisibility: (e) ->
       # slideUp/slideDown
       if @shouldBeVisible() and not @visible
           @$el.slideDown()
-      if @shouldBeVisible() and @visible
+      if not @shouldBeVisible() and @visible
           @$el.slideUp()
       @visible = @shouldBeVisible()
 
