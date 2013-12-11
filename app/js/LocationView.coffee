@@ -48,6 +48,11 @@ class LocationView extends Backbone.View
     else
       @$("#location_relative").text(GeoJSON.getRelativeLocation(@currentLoc, @loc))
 
+    if @loc and not @settingLocation
+      @$("#location_absolute").text("#{this.loc.coordinates[1].toFixed(6)}, #{this.loc.coordinates[0].toFixed(6)}")
+    else
+      @$("#location_absolute").text("")
+
     # Hide map if hidden
     if @hideMap
       @$("#location_map").hide()
