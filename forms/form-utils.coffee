@@ -102,12 +102,10 @@ exports.upsertAll = (callback) ->
       form = compile(dirpath)
 
       # Get current version on server
-      res = get "forms?" + encodeURIComponent("selector=" + JSON.stringify({_id:form._id}))
-      if _.isEqual res.body, form
+      res = get "forms?" + "selector=" + encodeURIComponent(JSON.stringify({_id:form._id})) + "&client=" + client
+      if res.body.length == 1 and _.isEqual res.body[0], form
         console.log "(Unchanged)"
         continue
-
-      # TODO Why doesn't above work?
 
       # Upsert
       res = post "forms?client=#{client}", form
