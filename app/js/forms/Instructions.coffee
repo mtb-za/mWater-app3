@@ -4,8 +4,9 @@ module.exports = Backbone.View.extend
       <div class="well well-small"><%=html%><%-text%></div>
       ''')(html: @options.html, text: @options.text)
 
-    # Adjust visibility based on model
-    @model.on("change", @updateVisibility, @)
+    # Adjust visibility based on model if model present
+    if @model?
+      @model.on("change", @updateVisibility, @)
 
     # Starts visible
     @visible = true
