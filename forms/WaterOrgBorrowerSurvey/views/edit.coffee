@@ -50,7 +50,10 @@ questions.push new forms.RadioQuestion
   model: model
   prompt: "Are you willing to participate in our study?"
   options: [[true, "Yes"], [false, "No"]]
-
+  validate: ->
+    if model.get("consent_given") != true
+      return "Consent required"
+    return null
 
 sections.push new forms.Section
   model: model
