@@ -15,8 +15,8 @@ module.exports = function(grunt) {
     concat: {
       libsjs: {
         // the files to concatenate
-        src: ['vendor/jquery-1.9.1.min.js', 
-              'vendor/lodash.compat.min.js', 
+        src: ['vendor/jQuery-2.0.3.min.js', 
+              'vendor/lodash.min.js', 
               'vendor/backbone.js', 
               'vendor/bootstrap/js/bootstrap.min.js', 
               'vendor/handlebars.runtime.js',
