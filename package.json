@@ -10,15 +10,11 @@
   "author": "Clayton Grassick",
   "license": "GPLv3",
   "devDependencies": {
-    "browserify-shim": "~2.0.3",
     "uglify-js": "~2.2.5",
     "coffeeify": "~0.4.0",
     "grunt-contrib-watch": "~0.3.1",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-sass": "~0.3.0",
-    "browser-resolve": "git://github.com/alexgorbatchev/node-browser-resolve.git",
-    "module-deps": "git://github.com/alexgorbatchev/module-deps.git",
-    "browserify": "git://github.com/alexgorbatchev/node-browserify.git",
     "grunt-contrib-concat": "~0.3.0",
     "testem": "~0.2.94",
     "grunt-manifest": "~0.4.0",
@@ -26,10 +22,10 @@
     "uuid": "~1.4.1",
     "handlebars": "~1.0.12",
     "grunt-shell": "~0.2.2",
-    "grunt-text-replace": "~0.3.9"
+    "grunt-text-replace": "~0.3.9",
+    "browserify": "~3.4.0"
   },
   "dependencies": {
-    "streamline": "~0.4.9",
     "underscore": "~1.4.4",
     "grunt": "~0.4.1",
     "grunt-contrib-handlebars": "~0.5.8",

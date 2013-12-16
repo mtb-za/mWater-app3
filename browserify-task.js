@@ -20,8 +20,7 @@ var versionXform = function (file) {
 
 
 function bundleApp(done) {
-    bundle = browserify();
-    bundle.extension('.coffee');
+    bundle = browserify({extensions: ".coffee"});
     bundle.transform(versionXform).transform('coffeeify')
     .require('./app/js/run', {expose: 'run'})
     .require('./app/js/forms', {expose: 'forms'})  // For forms
@@ -38,8 +37,7 @@ function bundleApp(done) {
 }
 
 function bundlePreload(done) {
-    bundle = browserify();
-    bundle.extension('.coffee');
+    bundle = browserify({extensions: ".coffee"});
     bundle.transform(versionXform).transform('coffeeify')
     .add('./app/js/preload')
     .bundle({
@@ -54,8 +52,7 @@ function bundlePreload(done) {
 }
 
 function bundleTests(done) {
-    bundle = browserify();
-    bundle.extension('.coffee');
+    bundle = browserify({extensions: ".coffee"});
     bundle.transform('coffeeify')
     .require('./app/js/forms', {expose: 'forms'});  // For forms
 
