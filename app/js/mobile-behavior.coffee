@@ -1,8 +1,9 @@
 # Setup special mobile behavior. 
+fastclick = require("fastclick")
 
 exports.setup = ($el) ->
   # Make clicks fast
-  $ => FastClick.attach($el.get(0));
+  $ => fastclick($el.get(0))
 
   # Make links and anything with class 'tappable' act on taps
   pressedElem = null
