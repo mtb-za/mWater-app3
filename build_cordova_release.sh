@@ -11,5 +11,5 @@ echo "Preparing"
 cordova -d prepare
 
 echo "Signing"
-./platforms/android/cordova/build --release
+ant release -f "./platforms/android/build.xml"
 cd ..
