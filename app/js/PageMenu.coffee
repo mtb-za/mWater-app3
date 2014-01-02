@@ -7,6 +7,7 @@ context = require './context'
 module.exports = class PageMenu extends Backbone.View
   initialize: (options) ->
     @pager = options.ctx.pager
+    @options = options || {}
 
   events:
     "click #home" : "gotoHome"
