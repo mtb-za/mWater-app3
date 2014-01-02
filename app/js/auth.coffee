@@ -43,9 +43,9 @@ exports.UserAuth = class UserAuth
       return true
 
     if doc.org and @org
-      return doc.user == @user || doc.org == @org
+      return doc.user == @user || doc.org == @org || @user == "admin"
     else
-      return doc.user == @user
+      return doc.user == @user || @user == "admin"
 
   remove: (col, doc) ->
     if not (col in @editableCols)
@@ -55,9 +55,9 @@ exports.UserAuth = class UserAuth
       return true
 
     if doc.org and @org
-      return doc.user == @user || doc.org == @org
+      return doc.user == @user || doc.org == @org || @user == "admin"
     else
-      return doc.user == @user
+      return doc.user == @user || @user == "admin" 
 
 
     
