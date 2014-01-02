@@ -38,6 +38,14 @@
         <div class="text-warning">Private</div>
         {{/if}}
         <button id="edit_source_button" class="btn"><i class="icon-edit"></i> Edit Source</button>
+        {{#if source.custom}}
+        <br/><br/>
+        <div class="well well-small">
+          {{#eachProperty source.custom}}
+            <div><span class="muted">{{key}}</span>: {{value}}</div>
+          {{/eachProperty}}
+        </div>
+        {{/if}}
     </div>
     <div class="row-fluid">
         <div class="span12">
