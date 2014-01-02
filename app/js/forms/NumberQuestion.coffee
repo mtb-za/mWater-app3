@@ -11,7 +11,7 @@ module.exports = Question.extend
   validateInternal: ->
     val = @$("input").val()
     if @options.decimal and val.length > 0
-      if parseFloat(val) == NaN
+      if isNaN(parseFloat(val))
         return "Invalid decimal number"
     else if val.length > 0
       if not val.match(/^-?\d+$/)
@@ -20,6 +20,6 @@ module.exports = Question.extend
 
   changed: ->
     val = parseFloat(@$("input").val())
-    if val == NaN
+    if isNaN(val)
       val = null
     @model.set @id, val 
