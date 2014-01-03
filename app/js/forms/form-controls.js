@@ -223,7 +223,8 @@ exports.Question = Backbone.View.extend({
 
     initialize : function() {
         // Adjust visibility based on model
-        this.model.on("change", this.updateVisibility, this);
+        if (this.options.conditional)
+            this.model.on("change", this.updateVisibility, this);
 
         // Update based on model changes
         this.model.on("change:" + this.id, this.update, this);
