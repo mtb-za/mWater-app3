@@ -61,11 +61,6 @@ class TestPage extends Page
     # Do not reload as form may have launched another page
     # and needs to keep its state
 
-  deactivate: ->
-    # Save to be safe
-    if @formView and @test
-      @save()
-
   destroy: ->
     # Let know that saved if closed incompleted
     if @test and not @test.completed

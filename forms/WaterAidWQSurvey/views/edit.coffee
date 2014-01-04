@@ -354,6 +354,8 @@ sections.push new forms.Section
   model: model
   title: "Water Test Follow-up"
   contents: questions
+  conditional: ->
+    model.get("tested") == true
 questions = []
 
 # END SECTION: Water Test Follow-up

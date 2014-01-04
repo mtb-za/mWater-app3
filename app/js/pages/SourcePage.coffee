@@ -128,7 +128,7 @@ module.exports = class SourcePage extends Page
     @pager.openPage(require("./TestPage"), { _id: ev.currentTarget.id})
 
   openSurvey: (ev) ->
-    @pager.openPage(require("./TestPage"), { _id: ev.currentTarget.id})
+    @pager.openPage(require("./SurveyPage"), { _id: ev.currentTarget.id})
 
   addNote: ->
     @pager.openPage(require("./SourceNotePage"), { source: @source.code })
