@@ -150,24 +150,18 @@ questions.push new forms.NumberQuestion
   model: model
   decimal: true
   prompt: "pH"
-  conditional: ->
-    model.get("tested") == true
 
 questions.push new forms.NumberQuestion
   id: "elec_conductivity_uS_cm"
   model: model
   decimal: true
   prompt: "Electrical conductivity (uS/cm)"
-  conditional: ->
-    model.get("tested") == true
 
 questions.push new forms.NumberQuestion
   id: "turbidity_NTU"
   model: model
   decimal: true
   prompt: "Turbidity (NTU)"
-  conditional: ->
-    model.get("tested") == true
 
 questions.push new forms.Instructions
   text: "Microbiological Parameters"
@@ -177,8 +171,6 @@ questions.push new forms.RadioQuestion
   model: model
   prompt: "Microbial test performed:"
   options: [["Ecoli", "E. coli"], ["TTC", "TTC"], ["NA","(Not tested)"]]
-  conditional: ->
-    model.get("tested") == true
 
 questions.push new forms.NumberQuestion
   id: "Ecoli_CFU_100ml"
@@ -212,8 +204,6 @@ questions.push new forms.RadioQuestion
   model: model
   prompt: "Nitrate test results reported as:"
   options: [["NO3", "Nitrate as NO3"], ["N", "Nitrate as N"], ["NA","(Not tested)"]]
-  conditional: ->
-    model.get("tested") == true
 
 questions.push new forms.NumberQuestion
   id: "Nitrate_as_NO3_mg_L"
@@ -236,70 +226,52 @@ questions.push new forms.NumberQuestion
   model: model
   decimal: true
   prompt: "Arsenic (As) (mg/L)"
-  conditional: ->
-    model.get("tested") == true
 
 questions.push new forms.NumberQuestion
   id: "fluoride"
   model: model
   decimal: true
   prompt: "Fluoride (Fl) (mg/L)"
-  conditional: ->
-    model.get("tested") == true
 
 questions.push new forms.NumberQuestion
   id: "iron"
   model: model
   decimal: true
   prompt: "Iron (Fe) (mg/L)"
-  conditional: ->
-    model.get("tested") == true
 
 questions.push new forms.NumberQuestion
   id: "manganese"
   model: model
   decimal: true
   prompt: "Manganese (Mn) (mg/L)"
-  conditional: ->
-    model.get("tested") == true
 
 questions.push new forms.NumberQuestion
   id: "sodium"
   model: model
   decimal: true
   prompt: "Sodium (Na) (mg/L)"
-  conditional: ->
-    model.get("tested") == true
 
 questions.push new forms.NumberQuestion
   id: "chloride"
   model: model
   decimal: true
   prompt: "Chloride (Cl-) (mg/L)"
-  conditional: ->
-    model.get("tested") == true
 
 questions.push new forms.NumberQuestion
   id: "sulphate"
   model: model
   decimal: true
   prompt: "Sulphate (SO2-4) (mg/L)"
-  conditional: ->
-    model.get("tested") == true
 
 questions.push new forms.TextQuestion
   id: "name_other_contaminants_tested" 
   model: model
   prompt: "Please list any other high risk contaminants tested" 
-  conditional: ->
-    model.get("tested") == true
 
 questions.push new forms.TextQuestion
   id: "result_other_contaminants_tested" 
   model: model
   prompt: "Results from other high risk contaminants tested" 
-  conditional: ->
-    model.get("tested") == true
 
 questions.push new forms.RadioQuestion
   id: "inorganics_test_site"
@@ -307,11 +279,12 @@ questions.push new forms.RadioQuestion
   prompt: "Inorganic contaminant testing performed in:"
   options: [["field", "Field"], ["lab", "Laboratory"], ["NA", "(Not tested)"]]
 
-
 sections.push new forms.Section
   model: model
   title: "Water Test Data"
   contents: questions
+  conditional: ->
+    model.get("tested") == true
 questions = []
 
 # END SECTION: Water Test Data
@@ -323,8 +296,6 @@ questions.push new forms.RadioQuestion
   model: model
   prompt: "Are all contaminants within the national limit?"
   options: [[true, "Yes (potable)"], [false, "No"]]
-  conditional: ->
-    model.get("tested") == true
 
 questions.push new forms.TextQuestion
   id: "follow_up_action_WQ" 
