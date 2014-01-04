@@ -1,4 +1,3 @@
-
 {{! Display response code }}
 <style>
 .responsecode {
@@ -20,6 +19,9 @@
 	<span class="muted"><b> of </b></span><b>{{form.name}}</b>
 </div>
 
-<div id="form_view">
-	{{! Form view goes here }}
-</div>
+<div id="contents"></div>
+
+{{#if response.completed}}
+<br/>
+<div><button id="edit_button" type="button" class="btn margined"><i class="icon-edit"></i> Edit Survey</button></div>
+{{/if}}
