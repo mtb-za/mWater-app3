@@ -16,6 +16,7 @@ module.exports = class PreviewImportSourcesPage extends Page
       return
       
     insertSources = =>
+      # TODO Assumes upsert is synchronous
       for source in @options.sources
         @db.sources.upsert source
 
@@ -32,7 +33,8 @@ module.exports = class PreviewImportSourcesPage extends Page
         source.org = @login.org
 
         if remaining.length > 1
-          process(_.rest(remaining))
+          _.defer =>
+            process(_.rest(remaining))
         else
           insertSources()
       error = =>
