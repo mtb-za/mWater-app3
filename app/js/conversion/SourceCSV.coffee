@@ -30,6 +30,11 @@ module.exports = class SourceCSV
 
       # Convert latitude longitude
       if obj.latitude and obj.longitude
+        if isNaN(obj.latitude) 
+          throw new Error("Invalid latitude: " + obj.latitude)
+        if isNaN(obj.longitude) 
+          throw new Error("Invalid longitude: " + obj.longitude)
+          
         obj.geo = {
           type: "Point"
           coordinates: [parseFloat(obj.longitude), parseFloat(obj.latitude)]
