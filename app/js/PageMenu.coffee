@@ -20,7 +20,7 @@ module.exports = class PageMenu extends Backbone.View
     "click #new_survey" : "gotoNewSurvey"
     "click #existing_survey" : "gotoExistingSurvey"
     "click #report_problem" : 'gotoProblemReport'
-    "click #import" : 'gotoImport'
+    "click #import_sources" : 'gotoImportSources'
     "click #admin" : 'gotoAdmin'
 
   render: ->
@@ -81,8 +81,8 @@ module.exports = class PageMenu extends Backbone.View
   gotoProblemReport: ->
     @pager.openPage(require("./pages/ProblemReportPage"))
 
-  gotoImport: ->
-    @pager.openPage(require("./pages/ImportPage"))
+  gotoImportSources: ->
+    @pager.openPage(require("./pages/ImportSourcesPage"))
 
   gotoAdmin: ->
     @pager.openPage(require("./pages/AdminPage"))

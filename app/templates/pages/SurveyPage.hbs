@@ -15,7 +15,9 @@
 
 <div class="responsecode_div">
 	<span class="muted"><b>Survey </b></span>
+	{{#if response.code}}
 	<span class="responsecode">{{response.code}}</span>
+	{{/if}}
 	<span class="muted"><b> of </b></span><b>{{form.name}}</b>
 </div>
 

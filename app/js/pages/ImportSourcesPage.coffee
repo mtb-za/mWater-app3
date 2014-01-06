@@ -3,15 +3,15 @@ SourceCSV = require '../conversion/SourceCSV'
 PreviewImportSourcesPage = require './PreviewImportSourcesPage'
 
 # Allows importing of data from CSV
-module.exports = class ImportPage extends Page
+module.exports = class ImportSourcesPage extends Page
   @canOpen: (ctx) -> ctx.auth.insert("sources")
 
   events:
     "click #preview_sources_csv" : "previewSourcesCSV"
 
   create: ->
-    @setTitle "Import"
-    @$el.html templates['pages/ImportPage']()
+    @setTitle "Import Sources"
+    @$el.html templates['pages/ImportSourcesPage']()
 
   previewSourcesCSV: ->
     # Get types
