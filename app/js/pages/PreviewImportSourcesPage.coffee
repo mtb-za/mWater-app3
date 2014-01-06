@@ -41,6 +41,11 @@ module.exports = class PreviewImportSourcesPage extends Page
         alert("Unable to generate source id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range.")
         @pager.closePage()
 
-      @sourceCodesManager.requestCode(success, error)
+      # Ensure enough source codes for remaining
+      @sourceCodesManager.replenishCodes remaining.length, =>
+        @sourceCodesManager.requestCode(success, error)
+      , error
           
     process(@options.sources)
+  
+    
