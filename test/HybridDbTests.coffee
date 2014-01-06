@@ -227,7 +227,7 @@ describe 'HybridDb', ->
         assert.deepEqual _.pluck(data, 'a'), [4]
         done()
     
-  it "upload applies pending upserts and deletes", (done) ->
+  it "upload applies pending upserts", (done) ->
     @lc.upsert(_id:"1", a:1)
     @lc.upsert(_id:"2", a:2)
 
@@ -240,11 +240,31 @@ describe 'HybridDb', ->
           done()
     , fail)
 
+  it "upload applies pending removes", (done) ->
+    @lc.seed(_id:"1", a:1)
+    @rc.seed(_id:"1", a:1)
+    @hc.remove("1")
+
+    @hybrid.upload(() =>
+      @lc.pendingRemoves (data) =>
+        assert.equal data.length, 0
+
+        @rc.pendingRemoves (data) =>
+          assert.deepEqual data, ["1"]
+          done()
+    , fail)
+
   it "keeps upserts and deletes if failed to apply", (done) ->
     @lc.upsert(_id:"1", a:1)
     @lc.upsert(_id:"2", a:2)
+    @lc.seed(_id:"3", a:3)
+    @rc.seed(_id:"3", a:3)
+    @hc.remove("3")
 
     @rc.upsert = (doc, success, error) =>
+      error(new Error("fail"))
+
+    @rc.remove = (id, success, error) =>
       error(new Error("fail"))
 
     @hybrid.upload(() =>
@@ -252,6 +272,9 @@ describe 'HybridDb', ->
     , ()=>
       @lc.pendingUpserts (data) =>
         assert.equal data.length, 2
+        @lc.pendingRemoves (data) =>
+          assert.equal data.length, 1
+          assert.equal data[0], "3"
         done()
     )
 
