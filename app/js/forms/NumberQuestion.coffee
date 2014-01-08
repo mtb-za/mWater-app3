@@ -2,7 +2,7 @@ Question = require('./form-controls').Question
 
 module.exports = Question.extend
   renderAnswer: (answerEl) ->
-    answerEl.html _.template("<input type=\"number\" <% if (options.decimal) {%>step=\"any\"<%}%> />", this)
+    answerEl.html _.template("<input class=\"form-control\" type=\"number\" <% if (options.decimal) {%>step=\"any\"<%}%> />", this)
     answerEl.find("input").val @model.get(@id)
 
   events:

@@ -316,12 +316,12 @@ exports.CheckQuestion = exports.Question.extend({
 exports.TextQuestion = exports.Question.extend({
     renderAnswer : function(answerEl) {
         if (this.options.multiline) {
-            answerEl.html(_.template('<textarea style="width:90%" x-webkit-speech/>', this)); // TODO make width properly
+            answerEl.html(_.template('<textarea class="form-control" rows="5" x-webkit-speech/>', this)); 
             answerEl.find("textarea").val(this.model.get(this.id));
             if (this.options.readonly)
                 answerEl.find("textarea").attr("readonly", "readonly");
         } else {
-            answerEl.html(_.template('<input type="text" x-webkit-speech/>', this));
+            answerEl.html(_.template('<input class="form-control" type="text" x-webkit-speech/>', this));
             answerEl.find("input").val(this.model.get(this.id));
             if (this.options.readonly)
                 answerEl.find("input").attr("readonly", "readonly");
