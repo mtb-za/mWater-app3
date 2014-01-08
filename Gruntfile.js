@@ -30,7 +30,8 @@ module.exports = function(grunt) {
         dest: 'dist/js/libs.js'
       },
       libscss: {
-        src: ['vendor/bootstrap/css/bootstrap.css',
+        src: ['vendor/bootstrap/css/bootstrap.min.css',
+              'vendor/bootstrap/css/bootstrap-theme.min.css',
               'vendor/*.css',
               'vendor/leaflet/leaflet.css'],
         dest: 'dist/css/libs.css'
@@ -80,11 +81,11 @@ module.exports = function(grunt) {
         src: '*',
         dest: 'dist/img/'
       },
-      libbootstrapimages: {
+      libbootstrapfonts: {
         expand: true,
-        cwd: 'vendor/bootstrap/img/',
+        cwd: 'vendor/bootstrap/fonts/',
         src: '*',
-        dest: 'dist/img/'
+        dest: 'dist/fonts/'
       },
       libimages: {
         expand: true,
@@ -269,7 +270,7 @@ module.exports = function(grunt) {
   grunt.registerTask('cordova_release', ['copy:cordova_www', 'copy:cordova_override_release']);
   grunt.registerTask('run_cordova_debug', ['default', 'cordova_debug', 'shell:cordova_run']);
 
-  grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapimages', 'copy:leafletcssimages']);
+  grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages']);
   grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy-app', 'handlebars', 'manifest', 'compress']);
 
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
