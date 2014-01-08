@@ -21,7 +21,7 @@
         <img id="photo" style="max-width: 100px; display: block; margin-left: auto; margin-right: auto"/>
     </div>-->
     {{#if select}}
-    <div><button id="select_source" class="btn btn-primary btn-large"><i class="icon-ok icon-white"></i> Select Source</button></div>
+    <div><button id="select_source" class="btn btn-primary btn-large"><span class="glyphicon glyphicon-ok"></span> Select Source</button></div>
     {{/if}}
     <h3>{{source.name}}</h3>
     <div class="margined">
@@ -37,7 +37,7 @@
         {{#if source.private}}
         <div class="text-warning">Private</div>
         {{/if}}
-        <button id="edit_source_button" class="btn"><i class="icon-edit"></i> Edit Source</button>
+        <button id="edit_source_button" class="btn"><span class="glyphicon glyphicon-edit"></span> Edit Source</button>
         {{#if source.custom}}
         <br/><br/>
         <div class="well well-small">
@@ -52,11 +52,11 @@
             <h4>Location</h4>
             <div id="location"></div>
 
-            <button id="add_test_button" class="btn pull-right margined"><i class="icon-plus-sign"></i> Add</button>
+            <button id="add_test_button" class="btn pull-right margined"><span class="glyphicon glyphicon-plus-sign"></span> Add</button>
             <h4 class="buttoned">Water Tests</h4>
             <table id="tests" class="table"></table>
 
-            <button id="add_note_button" class="btn pull-right margined"><i class="icon-plus-sign"></i> Add</button>
+            <button id="add_note_button" class="btn pull-right margined"><span class="glyphicon glyphicon-plus-sign"></span> Add</button>
             <h4 class="buttoned">Notes</h4>
             <table id="notes" class="table"></table>
     

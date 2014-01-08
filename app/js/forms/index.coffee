@@ -77,7 +77,7 @@ exports.WaterTestEditView = class WaterTestEditView extends FormView
       <div>
           <button id="close_button" type="button" class="btn margined">Save for Later</button>
           &nbsp;
-          <button id="complete_button" type="button" class="btn btn-primary margined"><span class="glyphicon glyphicon-ok"></i> Complete</button>
+          <button id="complete_button" type="button" class="btn btn-primary margined"><span class="glyphicon glyphicon-ok"></span> Complete</button>
       </div>
     ''')
 
