@@ -16,6 +16,7 @@ module.exports = class PreviewImportSourcesPage extends Page
       return
       
     insertSources = =>
+      # TODO Assumes upsert is synchronous
       for source in @options.sources
         @db.sources.upsert source
 
@@ -32,13 +33,19 @@ module.exports = class PreviewImportSourcesPage extends Page
         source.org = @login.org
 
         if remaining.length > 1
-          process(_.rest(remaining))
+          _.defer =>
+            process(_.rest(remaining))
         else
           insertSources()
       error = =>
         alert("Unable to generate source id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range.")
         @pager.closePage()
 
-      @sourceCodesManager.requestCode(success, error)
+      # Ensure enough source codes for remaining
+      @sourceCodesManager.replenishCodes remaining.length, =>
+        @sourceCodesManager.requestCode(success, error)
+      , error
           
     process(@options.sources)
+  
+    

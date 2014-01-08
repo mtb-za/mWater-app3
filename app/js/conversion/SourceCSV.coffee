@@ -30,9 +30,17 @@ module.exports = class SourceCSV
 
       # Convert latitude longitude
       if obj.latitude and obj.longitude
+        obj.latitude = parseFloat(obj.latitude)
+        obj.longitude = parseFloat(obj.longitude)
+
+        if isNaN(obj.latitude) or obj.latitude > 90 or obj.latitude < -90
+          throw new Error("Invalid latitude: " + obj.latitude)
+        if isNaN(obj.longitude) or obj.longitude > 180 or obj.longitude < -180
+          throw new Error("Invalid longitude: " + obj.longitude)
+
         obj.geo = {
           type: "Point"
-          coordinates: [parseFloat(obj.longitude), parseFloat(obj.latitude)]
+          coordinates: [obj.longitude, obj.latitude]
         }
       obj = _.omit(obj, "latitude", "longitude")
 
@@ -42,7 +50,6 @@ module.exports = class SourceCSV
       obj = _.pick(obj, knownFields)
       if _.keys(custom).length > 0
         obj.custom = custom
-
 
       sources.push(obj)
 

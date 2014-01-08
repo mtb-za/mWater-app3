@@ -13,6 +13,7 @@ module.exports = class SourcePage extends Page
     'click #add_note_button' : 'addNote'
     'click .test' : 'openTest'
     'click .note' : 'openNote'
+    'click .survey' : 'openSurvey'
     'click #select_source' : 'selectSource'
 
   create: ->
@@ -90,6 +91,15 @@ module.exports = class SourcePage extends Page
     @db.source_notes.find({source: @source.code}).fetch (notes) => 
       @$("#notes").html templates['pages/SourcePage_notes'](notes:notes)
 
+    # Add surveys
+    @db.responses.find({"data.source": @source.code}).fetch (surveys) =>
+      @$("#surveys").html templates['pages/SourcePage_surveys'](surveys:surveys)
+
+      # Fill in names
+      for survey in surveys
+        @db.forms.findOne { code:survey.type }, { mode: "local" }, (form) =>
+          @$("#survey_name_"+survey._id).text(if form then form.name else "???")
+
     # Add photos
     photosView = new forms.ImagesQuestion
       id: 'photos'
@@ -116,6 +126,9 @@ module.exports = class SourcePage extends Page
 
   openTest: (ev) ->
     @pager.openPage(require("./TestPage"), { _id: ev.currentTarget.id})
+
+  openSurvey: (ev) ->
+    @pager.openPage(require("./SurveyPage"), { _id: ev.currentTarget.id})
 
   addNote: ->
     @pager.openPage(require("./SourceNotePage"), { source: @source.code })

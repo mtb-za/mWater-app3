@@ -1,0 +1,18 @@
+{
+    "_id": "22230eccde89426eb224a9054ba65f11",
+    "type": "Survey",
+    "name": "WaterAid Water Quality Survey",
+    "code": "WaterAidWQSurvey",
+    "private": true,
+    "org": "WaterAid",
+    "_rev": 8,
+    "created": {
+        "on": "2014-01-04T18:00:26.855Z",
+        "by": "admin"
+    },
+    "modified": {
+        "on": "2014-01-06T14:21:35.326Z",
+        "by": "admin"
+    },
+    "user": "admin"
+}

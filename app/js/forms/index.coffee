@@ -31,6 +31,14 @@ exports.FormView = class FormView extends Backbone.View
     if options.save
       @save = options.save
 
+  # Remove the form view, which in turn removes all contents
+  remove: ->
+    for content in @contents
+      content.remove()
+      
+    # Call built-in remove 
+    super()
+
   load: (data) ->
     @model.clear()  #TODO clear or not clear? clearing removes defaults, but allows true reuse.
 
