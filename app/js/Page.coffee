@@ -98,7 +98,7 @@ class ButtonBar extends Backbone.View
       item.click()
 
 # Context menu to go in slide menu
-# Standard button bar. Each item "text", optional "glyph" (bootstrap glyph without icon- prefix) and "click" (action).
+# Standard button bar. Each item "text", optional "glyph" (bootstrap glyph without glyphicon- prefix) and "click" (action).
 class ContextMenu extends Backbone.View
   events: 
     "click .menuitem" : "clickMenuItem"

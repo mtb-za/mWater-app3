@@ -20,7 +20,7 @@ class AppView extends Backbone.View
     'click #navbar_slidemenu_button': 'toggleSlideMenu'
     'click #navbar_back': 'back'
     'click #navbar_title': 'back'
-    'click .brand': 'back'
+    'click .navbar-brand': 'back'
     'click #appview_content': 'hideSlideMenu'
 
   render: ->  	
