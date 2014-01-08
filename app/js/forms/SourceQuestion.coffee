@@ -5,9 +5,9 @@ sourcecodes = require '../sourcecodes'
 module.exports = Question.extend
   renderAnswer: (answerEl) ->
     answerEl.html '''
-      <div class="input-append">
+      <div class="input-group">
         <input type="tel">
-        <button class="btn" id="select" type="button">Select</button>
+        <button class="btn btn-default input-group-addon" id="select" type="button">Select</button>
       </div>'''
     answerEl.find("input").val @model.get(@id)
 

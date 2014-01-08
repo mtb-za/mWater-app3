@@ -75,7 +75,7 @@ exports.WaterTestEditView = class WaterTestEditView extends FormView
     # TODO move to template and sep file
     @$el.append $('''
       <div>
-          <button id="close_button" type="button" class="btn margined">Save for Later</button>
+          <button id="close_button" type="button" class="btn btn-default margined">Save for Later</button>
           &nbsp;
           <button id="complete_button" type="button" class="btn btn-primary margined"><span class="glyphicon glyphicon-ok"></span> Complete</button>
       </div>

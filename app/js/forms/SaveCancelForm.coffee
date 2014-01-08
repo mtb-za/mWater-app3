@@ -24,7 +24,7 @@ module.exports = Backbone.View.extend
     <div>
         <button id="save_button" type="button" class="btn btn-primary margined">Save</button>
         &nbsp;
-        <button id="cancel_button" type="button" class="btn margined">Cancel</button>
+        <button id="cancel_button" type="button" class="btn btn-default margined">Cancel</button>
     </div>'''
     
     # Add contents (questions, mostly)

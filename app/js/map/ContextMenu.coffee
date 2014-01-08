@@ -18,7 +18,7 @@ module.exports = class ContextMenu
       }
 
       # Create popup html
-      contents = $('<div><button class="btn">Create Water Source</button></div>')
+      contents = $('<div><button class="btn btn-default">Create Water Source</button></div>')
 
       # Create popup
       popup = L.popup({ closeButton: false })
