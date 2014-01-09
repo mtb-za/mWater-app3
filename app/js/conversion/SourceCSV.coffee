@@ -44,8 +44,14 @@ module.exports = class SourceCSV
         }
       obj = _.omit(obj, "latitude", "longitude")
 
+      # Convert private
+      if obj.private == "true"
+        obj.private = true
+      else if obj.private?
+        delete obj.private
+
       # Keep custom fields
-      knownFields = ["name", "desc", "geo", "code", "type", "user", "org"]
+      knownFields = ["name", "desc", "geo", "code", "type", "user", "org", "private"]
       custom = _.omit(obj, knownFields)
       obj = _.pick(obj, knownFields)
       if _.keys(custom).length > 0
