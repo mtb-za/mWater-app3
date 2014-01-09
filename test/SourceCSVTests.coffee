@@ -40,6 +40,10 @@ describe "SourceCSV import", ->
   #   sources = @sourceCSV.import('x,y\n"a","3"')
   #   assert.deepEqual sources, [{custom:{x:"a", y:3}}]
 
+  it "sets private true when true", ->
+    sources = @sourceCSV.import('private\n""\n"true"\n"false"')
+    assert.deepEqual sources, [{}, {private:true}, {}]
+
   it "strips _id", ->
     sources = @sourceCSV.import('_id\n1234')
     assert.deepEqual sources, [{}]
