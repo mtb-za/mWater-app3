@@ -1,12 +1,14 @@
-{{#each surveys}}
-<tr class="tappable survey" id="{{_id}}">
-  <td><strong><span id="survey_name_{{_id}}"></span></strong></td>
-  <td style="border-left:none;">{{formatDate started "%F"}}</td>
-  <td>{{#if completed}}{{else}}<span class="text-warning"><b>Incomplete</b></span>{{/if}}</td>
-  <td style="vertical-align:middle; border-left:none; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>
-</tr>
-{{else}}
-<tr>
-    <td> <i>None</i> </td>
-</tr>
-{{/each}}
+<tbody>
+	{{#each surveys}}
+	<tr class="tappable survey" id="{{_id}}">
+	  <td><strong><span id="survey_name_{{_id}}"></span></strong></td>
+	  <td style="border-left:none;">{{formatDate started "%F"}}</td>
+	  <td>{{#if completed}}{{else}}<span class="text-warning"><b>Incomplete</b></span>{{/if}}</td>
+	  <td style="vertical-align:middle; border-left:none; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>
+	</tr>
+	{{else}}
+	<tr>
+	    <td> <i>None</i> </td>
+	</tr>
+	{{/each}}
+</tbody>

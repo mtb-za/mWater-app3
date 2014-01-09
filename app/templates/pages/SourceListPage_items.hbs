@@ -1,14 +1,16 @@
-{{#each sources}}
-<tr class="tappable" id="{{_id}}">
-    <td><strong>{{name}}</strong> 
-    <td>{{#if geo}}{{else}}<span class="text-error"><b>Unlocated</b></span>{{/if}}</td>
-    <br/>
-    <span class="muted">{{desc}}&nbsp;</span></td>
-    <td><strong>{{code}}</strong></td>
-    <td style="vertical-align:middle; border-left:none; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>
-</tr>
-{{else}}
-<tr>
-    <td> See the map for a global view if no sources are found. </td>
-</tr>
-{{/each}}
+<tbody>
+	{{#each sources}}
+	<tr class="tappable" id="{{_id}}">
+	    <td><strong>{{name}}</strong> 
+	    <td>{{#if geo}}{{else}}<span class="text-error"><b>Unlocated</b></span>{{/if}}</td>
+	    <br/>
+	    <span class="muted">{{desc}}&nbsp;</span></td>
+	    <td><strong>{{code}}</strong></td>
+	    <td style="vertical-align:middle; border-left:none; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>
+	</tr>
+	{{else}}
+	<tr>
+	    <td> See the map for a global view if no sources are found. </td>
+	</tr>
+	{{/each}}
+</tbody>
