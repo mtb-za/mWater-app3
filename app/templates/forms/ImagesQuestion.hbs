@@ -1,19 +1,9 @@
-<ul class="thumbnails">
 {{#each images}}
-  <li>
-    <div class="thumbnail">
-      <img id="{{id}}" class="thumbnail-img" src="img/image-loading.png" style="max-height: 100px" onError="this.onerror=null;this.src='img/no-image-icon.jpg';" />
-    </div>
-  </li>
+  <img id="{{id}}" class="img-thumbnail image" src="img/image-loading.png" style="max-height: 100px" onError="this.onerror=null;this.src='img/no-image-icon.jpg';" />
 {{/each}}
 {{#if canAdd}}
-  <li>
-    <div class="thumbnail">
-      <img src="img/camera-icon-add.jpg" id="add" class="img-rounded" style="max-height: 100px"/>
-    </div>
-  </li>
+  <img src="img/camera-icon-add.jpg" id="add" class="img-rounded" style="max-height: 100px"/>
 {{/if}}
-</ul>
 
 
 {{#if noImage}}

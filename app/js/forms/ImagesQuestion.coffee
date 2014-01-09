@@ -4,7 +4,7 @@ ImagePage = require '../pages/ImagePage'
 module.exports = class ImagesQuestion extends Question
   events:
     "click #add": "addClick"
-    "click .thumbnail-img": "thumbnailClick"
+    "click .image": "thumbnailClick"
 
   renderAnswer: (answerEl) ->
     # Render image using image manager
