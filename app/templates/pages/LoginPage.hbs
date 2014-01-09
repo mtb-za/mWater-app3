@@ -1,5 +1,6 @@
 <style>
   .bigtab { font-weight: bold; }
+  .nav-tabs { margin-bottom: 15px; }
 </style>
 
 <div class="page">
@@ -19,31 +20,36 @@
       <div class="tab-pane active" id="tab1">
         <form id="form_signup">
           <div class="form-group">
+              <label for="signup_username">Username</label>
               <input class="form-control" id="signup_username" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Username" />
           </div>
           <div class="form-group">
+              <label for="signup_password">Password</label>
               <input class="form-control" id="signup_password" type="password" placeholder="Password" />
           </div>
           <br/>
           <div class="form-group">
+              <label for="signup_email">Email address</label>
               <input class="form-control" id="signup_email" type="email" placeholder="Email">
               <span class="help-block">Note: Your email address will never be shared</span>
           </div>
           <div>
-              <button id="signup_button" type="submit" class="btn btn-primary">Signup</button>
+              <button id="signup_button" type="submit" class="btn btn-primary btn-lg">Signup</button>
           </div>
        </form>
       </div>
       <div class="tab-pane" id="tab2">
         <form id="form_login">
           <div class="form-group">
+              <label for="login_username">Username</label>
               <input class="form-control" id="login_username" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Username" />
           </div>
           <div class="form-group">
+              <label for="login_password">Password</label>
               <input class="form-control" id="login_password" type="password" placeholder="Password" />
           </div>
           <div>
-              <button id="login_button" type="submit" class="btn btn-primary">Login</button>
+              <button id="login_button" type="submit" class="btn btn-primary btn-lg">Login</button>
           </div>
       </form>
       </div>

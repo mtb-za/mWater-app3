@@ -29,20 +29,20 @@ a {
 .checkbox {
   background-repeat: no-repeat;
   vertical-align: middle;
-  line-height: 25px;
+  line-height: 30px;
   padding-left: 33px;
   background-image: url('../img/checkbox.png');
-  font-size: 11pt;
+  font-size: 14pt;
   font-weight: bold;
   background-position-x: 8px;
-  background-position-y: 3px;
+  background-position-y: 6px;
   margin-bottom: 3px;
   margin-top: 3px;
   cursor: pointer;
 }
 
 .checkbox.checked {
-  background-position-y: -115px;
+  background-position-y: -112px;
 }
 
 .radio-button {
@@ -51,7 +51,7 @@ a {
   line-height: 30px;
   padding-left: 33px;
   background-image: url('../img/radio-button.png');
-  font-size: 12pt;
+  font-size: 14pt;
   font-weight: bold;
   background-position-x: 8px;
   background-position-y: 6px;
