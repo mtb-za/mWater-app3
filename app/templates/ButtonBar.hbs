@@ -3,36 +3,23 @@
   font-size: 16px;
   line-height: 26px;
 }
-
-.menuicon {
-  color:white;
-  line-height: 0px;
-  top: 5px;
-  font-size: 20px;
-}
-
 </style>
-<ul class="nav navbar-nav navbar-right">
-  {{#each items}}
+{{#each items}}
+<div style="float:right;">
   {{#if menu}}
-  <li class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown">
-      {{#if icon}}<span class="glyphicon glyphicon-{{icon}} menuicon"></span>{{/if}}
-      {{#if text}}{{text}}{{/if}}
-    </a>
-    <ul class="dropdown-menu">
+  <div data-toggle="dropdown" style="background: url(img/{{icon}}) no-repeat 0; width: 40px; margin-top: 8px; height: 35px;">
+    {{#if text}}{{text}}{{else}}&nbsp;{{/if}}
+  </div>
+  <ul class="dropdown-menu" role="menu" style="float: right; right: 0; left: auto;">
       {{#each menu}}
       <li><a id="{{id}}" class="menuitem">{{text}}</a></li>
       {{/each}}
-    </ul>
-  </li>
+  </ul>  
+  </div>
   {{else}}
-  <li>
-    <a id="{{id}}" class="menuitem">
-      {{#if icon}}<span class="glyphicon glyphicon-{{icon}} menuicon"></span>{{/if}}
-      {{#if text}}{{text}}{{/if}}
-    </a>
-  </li>
+  <div id="{{id}}" class="menuitem" style="background: url(img/{{icon}}) no-repeat 0; width: 40px; margin-top: 8px; height: 35px;">
+    {{#if text}}{{text}}{{else}}&nbsp;{{/if}}
+  </div>
   {{/if}}
-  {{/each}}
-</ul>
+</div>
+{{/each}}

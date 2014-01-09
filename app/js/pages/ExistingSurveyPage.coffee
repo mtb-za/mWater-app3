@@ -13,7 +13,7 @@ class ExistingSurveyPage extends Page
     @$el.html templates['pages/ExistingSurveyPage']()
     @setTitle "Select Survey"
 
-    @setupButtonBar [ { icon: "plus", click: => @addSurvey() } ]
+    @setupButtonBar [ { icon: "plus.png", click: => @addSurvey() } ]
 
   activate: ->
     # Query database for recent, completed surveys

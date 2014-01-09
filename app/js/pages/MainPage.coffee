@@ -61,7 +61,7 @@ class MainPage extends Page
     if NewSurveyPage.canOpen(@ctx)
       menu.push({ text: "Start Survey", click: => @addSurvey() })
     if menu.length > 0
-      @setupButtonBar [{ icon: "plus", menu: menu }]
+      @setupButtonBar [{ icon: "plus.png", menu: menu }]
 
   addSurvey: ->
     @pager.openPage(NewSurveyPage)

@@ -51,7 +51,7 @@ module.exports = class SourcePage extends Page
     if @auth.insert("source_notes")
       menu.push({ text: "Add Note", click: => @addNote() })
 
-    @setupButtonBar [ { icon: "plus", menu: menu } ]
+    @setupButtonBar [ { icon: "plus.png", menu: menu } ]
 
     # Re-render template
     @removeSubviews()

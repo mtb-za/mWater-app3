@@ -109,7 +109,7 @@ class SourceMapPage extends Page
     @locationDisplay = new LocationDisplay(@map)
 
     @setupButtonBar [
-      { icon: "screenshot", click: => @gotoMyLocation() }
+      { icon: "goto-my-location.png", click: => @gotoMyLocation() }
     ]
    
   gotoMyLocation: ->
@@ -139,7 +139,7 @@ class SourceMapPage extends Page
 
   resizeMap: =>
     # Calculate map height
-    mapHeight = $("html").height() - 40
+    mapHeight = $("html").height() - 50
     $("#map").css("height", mapHeight + "px")
     @map.invalidateSize()
 
