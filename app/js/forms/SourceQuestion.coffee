@@ -7,8 +7,9 @@ module.exports = Question.extend
     answerEl.html '''
       <div class="input-group">
         <input type="tel" class="form-control">
-        <button class="btn btn-default input-group-addon" id="select" type="button">Select</button>
-      </div>'''
+        <span class="input-group-btn"><button class="btn btn-default" id="select" type="button">Select</button></span>
+      </div>
+      '''
     answerEl.find("input").val @model.get(@id)
 
   events:
