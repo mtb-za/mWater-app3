@@ -7,11 +7,13 @@
 </style>
 
 <h4>Select type of survey to start</h4>
-<table class="table table-bordered">
-  {{#each forms}}
-  <tr class="survey tappable" id="{{code}}">
-    <td>{{name}}</a>
-    <td style="vertical-align:middle; border-left:none; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>
-  </tr>
-  {{/each}}
+<table class="table">
+  <tbody>
+    {{#each forms}}
+    <tr class="survey tappable" id="{{code}}">
+      <td>{{name}}</a>
+      <td style="vertical-align:middle; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>
+    </tr>
+    {{/each}}
+  </tbody>
 </table>

@@ -7,13 +7,15 @@
 </style>
 
 <h4>Select type of test to start</h4>
-<table class="table table-bordered">
-  {{#each forms}}
-  <tr class="test tappable" id="{{code}}">
-    <td><strong>{{name}}</strong> 
-    <br/>
-    <span class="muted">{{desc}}&nbsp;</span></td>
-    <td style="vertical-align:middle; border-left:none; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>
-  </tr>
-  {{/each}}
+<table class="table">
+  <tbody>
+    {{#each forms}}
+    <tr class="test tappable" id="{{code}}">
+      <td><strong>{{name}}</strong> 
+      <br/>
+      <span class="muted">{{desc}}&nbsp;</span></td>
+      <td style="vertical-align:middle; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>
+    </tr>
+    {{/each}}
+  </tbody>
 </table>
