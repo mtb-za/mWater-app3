@@ -109,7 +109,7 @@ class SourceMapPage extends Page
     @locationDisplay = new LocationDisplay(@map)
 
     @setupButtonBar [
-      { icon: "goto-my-location.png", click: => @gotoMyLocation() }
+      { icon: "screenshot", click: => @gotoMyLocation() }
     ]
    
   gotoMyLocation: ->

@@ -3,13 +3,22 @@
   font-size: 16px;
   line-height: 26px;
 }
+
+.menuicon {
+  color:white;
+  line-height: 0px;
+  top: 5px;
+  font-size: 20px;
+}
+
 </style>
-<ul class="nav pull-right">
+<ul class="nav navbar-nav navbar-right">
   {{#each items}}
   {{#if menu}}
   <li class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" {{#if icon}}style="background: url(img/{{icon}}) no-repeat 0; width: 6px;"{{/if}}>
-      {{#if text}}{{text}}{{else}}&nbsp;{{/if}}
+    <a class="dropdown-toggle" data-toggle="dropdown">
+      {{#if icon}}<span class="glyphicon glyphicon-{{icon}} menuicon"></span>{{/if}}
+      {{#if text}}{{text}}{{/if}}
     </a>
     <ul class="dropdown-menu">
       {{#each menu}}
@@ -19,8 +28,9 @@
   </li>
   {{else}}
   <li>
-    <a id="{{id}}" class="menuitem" {{#if icon}}style="background: url(img/{{icon}}) no-repeat 0; width: 6px;"{{/if}}>
-      {{#if text}}{{text}}{{else}}&nbsp;{{/if}}
+    <a id="{{id}}" class="menuitem">
+      {{#if icon}}<span class="glyphicon glyphicon-{{icon}} menuicon"></span>{{/if}}
+      {{#if text}}{{text}}{{/if}}
     </a>
   </li>
   {{/if}}

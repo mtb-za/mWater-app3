@@ -14,7 +14,7 @@ module.exports = exports.Question.extend(
       @model.set @id, value
 
   renderAnswer: (answerEl) ->
-    answerEl.html _.template("<select id=\"source_type\"><%=renderDropdownOptions()%></select>", this)
+    answerEl.html _.template("<select id=\"source_type\" class=\"form-control\"><%=renderDropdownOptions()%></select>", this)
 
   renderDropdownOptions: ->
     html = ""

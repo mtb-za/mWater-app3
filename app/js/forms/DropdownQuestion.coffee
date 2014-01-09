@@ -18,7 +18,7 @@ module.exports = Question.extend(
       @model.set @id, value
 
   renderAnswer: (answerEl) ->
-    answerEl.html _.template("<select id=\"source_type\"><%=renderDropdownOptions()%></select>", this)
+    answerEl.html _.template("<select id=\"source_type\" class=\"form-control\"><%=renderDropdownOptions()%></select>", this)
     # Check if answer present 
     if not _.any(@options.options, (opt) => opt[0] == @model.get(@id)) and @model.get(@id)?
       @$("select").attr('disabled', 'disabled')
