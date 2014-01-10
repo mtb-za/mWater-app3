@@ -18,7 +18,7 @@ class ImageUploaderView extends Backbone.View
     @$el.html templates['images/ImageUploader']()
 
     # Destroy when hidden
-    @$("#modal").on 'hidden', =>
+    @$("#modal").on 'hidden.bs.modal', =>
       # Destroy
       @remove()
 
