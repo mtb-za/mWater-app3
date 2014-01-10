@@ -122,7 +122,7 @@ class Pager extends Backbone.View
   # Flash a message
   flash: (text, style="info", delay=3000) ->
     # Create flash message
-    msg = $(_.template('''<div class="alert <% if (style) { %>alert-<%=style%><% } %> flash"><%=text%></div>''', { text:text, style:style }))
+    msg = $(_.template('''<div class="alert <% if (style) { %>alert-<%=style%><% } %> flash"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><%=text%></div>''', { text:text, style:style }))
 
     # Add to pager
     @$el.prepend(msg)
