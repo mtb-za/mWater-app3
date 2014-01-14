@@ -16,7 +16,7 @@ class TestPage extends Page
       @test = test
 
       if @auth.remove("tests", @test)
-        @setupContextMenu [ { glyph: 'remove', text: "Delete Test", click: => @deleteTest() } ]
+        @setupContextMenu [ { glyph: 'remove', text: "Delete Test", click: => @removeTest() } ]
       else 
         @setupContextMenu [ ]
 
@@ -48,11 +48,6 @@ class TestPage extends Page
           @$("#edit_button").hide()
 
         @formView.load @test.data
-
-        if @auth.remove("tests", @test)
-          @setupContextMenu [
-            { glyph: 'remove', text: "Delete Test", click: => @removeTest() }
-          ] 
 
   events:
     "click #edit_button" : "edit"
@@ -89,7 +84,7 @@ class TestPage extends Page
     @pager.closePage()
     @pager.flash "Test completed successfully", "success"
 
-  deleteTest: ->
+  removeTest: ->
     if @auth.remove("tests", @test) and confirm("Permanently delete test?")
       @db.tests.remove @test._id, =>
         @test = null
