@@ -25,9 +25,7 @@ function bundleApp(done) {
     .require('./app/js/run', {expose: 'run'})
     .require('./app/js/forms', {expose: 'forms'})  // For forms
     .require('./app/js/mobile-behavior', {expose: 'mobile-behavior'})  // For tests
-    .bundle({
-        debug: true
-    }, function(err, src) {
+    .bundle({}, function(err, src) {
         if (err) return console.error(err);
 
         fs.writeFileSync("dist/js/app.js", src);
@@ -40,9 +38,7 @@ function bundlePreload(done) {
     bundle = browserify({extensions: ".coffee"});
     bundle.transform(versionXform).transform('coffeeify')
     .add('./app/js/preload')
-    .bundle({
-        debug: true
-    }, function(err, src) {
+    .bundle({}, function(err, src) {
         if (err) return console.error(err);
 
         fs.writeFileSync("dist/js/preload.js", src);
