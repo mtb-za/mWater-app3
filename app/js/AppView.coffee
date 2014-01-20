@@ -26,7 +26,7 @@ class AppView extends Backbone.View
   render: ->  	
     @$el.html templates['AppView']()
     @$el.append @slideMenu.el
-    @$('.appview_content').append @pager.el
+    @$('#appview_content').append @pager.el
     this
 
   toggleSlideMenu: -> @slideMenu.toggle()
