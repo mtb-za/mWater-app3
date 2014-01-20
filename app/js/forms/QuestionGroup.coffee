@@ -1,8 +1,9 @@
 # Group of questions which validate as a unit
 
 module.exports = Backbone.View.extend
-  initialize: ->
-    @contents = @options.contents
+  initialize: (options) ->
+    @options = options || {}
+    @contents = options.contents
     @render()
 
   validate: ->

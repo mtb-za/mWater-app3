@@ -16,6 +16,9 @@ exports.ECPlates = require './ECPlates'
 # Must be created with model (backbone model) and contents (array of views)
 exports.FormView = class FormView extends Backbone.View
   initialize: (options) ->
+    # Save options
+    @options = options || {}
+
     @contents = options.contents
     
     # Add contents and listen to events
