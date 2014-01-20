@@ -18,6 +18,7 @@ dataSync: synchronizer for data including db and source codes. Success message i
 imageSync: synchronizer for images. Success message is to be displayed.
 imageAcquirer: source of images (either camera or file selection). Has single function: acquire(success, error)
   that calls success with id of image. If not present, not available.
+apiUrl: URL of API e.g. https://api.mwater.co/v3/
 
 stop(): must be called when context is no longer needed, or before setup of a new user
 

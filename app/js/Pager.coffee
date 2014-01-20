@@ -37,7 +37,6 @@ class Pager extends Backbone.View
     # Save context
     @ctx = ctx
 
-
   # Adds a page from a constructor
   openPage: (pageClass, options) ->
     # Check canOpen
@@ -102,6 +101,13 @@ class Pager extends Backbone.View
       
     # Indicate page change
     @trigger 'change'
+
+
+  # Close all pages and replace with
+  closeAllPages: (replaceWith, options) ->
+    while @multiplePages()
+      @closePage()
+    @closePage(replaceWith, options)
 
   # Get title of active page
   getTitle: ->

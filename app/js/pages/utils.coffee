@@ -1,5 +1,8 @@
 # Miscellaneous testable utilities called by pages
 
+login = require '../login'
+context = require '../context'
+
 # Sets all documents belonging to a user to another org
 exports.changeUserOrgDocs = (db, user, org, success, error) ->
     processTables = (tables, user, org, success, error) =>
@@ -22,3 +25,37 @@ exports.changeUserOrgDocs = (db, user, org, success, error) ->
     tables = ['sources', 'source_notes', 'tests', 'responses']
     processTables(tables, user, org, success, error)
 
+
+exports.login = (username, password, ctx, success, error) ->
+  console.log "Logging in as: #{username}/#{password}"
+
+  url = ctx.apiUrl + 'clients'
+  req = $.ajax(url, {
+    data : JSON.stringify({
+      username: username
+      password: password
+      version: @version
+    }),
+    contentType : 'application/json',
+    type : 'POST'})
+
+  req.done (data, textStatus, jqXHR) =>
+    console.log "Login response: " + jqXHR.responseText
+    response = JSON.parse(jqXHR.responseText)
+
+    # Login 
+    login.setLogin(response)
+
+    # Update context, first stopping old one
+    ctx.stop()
+    _.extend ctx, context.createLoginContext(response)
+
+    success()
+
+  req.fail (jqXHR, textStatus, errorThrown) =>
+    console.error "Login failure: #{jqXHR.responseText} (#{jqXHR.status})"
+    if jqXHR.status < 500 and jqXHR.status >= 400
+      alert(JSON.parse(jqXHR.responseText).error)
+    else
+      alert("Unable to login. Please check that you are connected to Internet")
+    error()

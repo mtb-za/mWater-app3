@@ -1,58 +1,28 @@
-<style>
-  .bigtab { font-weight: bold; }
-  .nav-tabs { margin-bottom: 15px; }
-</style>
-
 <div class="page">
-  <h3>Welcome to mWater</h3>
   <div>
-    <button id="demo_button" type="submit" class="btn btn-lg btn-primary">Demo</button> 
+    <button id="demo_button" type="submit" class="btn btn-lg btn-info">Demo</button> 
     <span class="glyphicon glyphicon-arrow-left"></span> Try out app
   <div>
   <br>
-  <br>
-  <div class="tabbable">
-    <ul class="nav nav-tabs">
-      <li class="active bigtab"><a href="#tab1" data-toggle="tab">Signup</a></li>
-      <li class="bigtab"><a href="#tab2" data-toggle="tab">Login</a></li>
-    </ul>
-    <div class="tab-content">
-      <div class="tab-pane active" id="tab1">
-        <form id="form_signup">
-          <div class="form-group">
-              <label for="signup_username">Username</label>
-              <input class="form-control" id="signup_username" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Username" />
-          </div>
-          <div class="form-group">
-              <label for="signup_password">Password</label>
-              <input class="form-control" id="signup_password" type="password" placeholder="Password" />
-          </div>
-          <br/>
-          <div class="form-group">
-              <label for="signup_email">Email address</label>
-              <input class="form-control" id="signup_email" type="email" placeholder="Email">
-              <span class="help-block">Note: Your email address will never be shared</span>
-          </div>
-          <div>
-              <button id="signup_button" type="submit" class="btn btn-primary btn-lg">Signup</button>
-          </div>
-       </form>
-      </div>
-      <div class="tab-pane" id="tab2">
-        <form id="form_login">
-          <div class="form-group">
-              <label for="login_username">Username</label>
-              <input class="form-control" id="login_username" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Username" />
-          </div>
-          <div class="form-group">
-              <label for="login_password">Password</label>
-              <input class="form-control" id="login_password" type="password" placeholder="Password" />
-          </div>
-          <div>
-              <button id="login_button" type="submit" class="btn btn-primary btn-lg">Login</button>
-          </div>
-      </form>
-      </div>
+  <h4>Login to mWater</h4>
+  <form id="form_login">
+    <div class="form-group">
+        <label for="login_username">Username or email</label>
+        <input class="form-control" id="login_username" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Username" />
     </div>
+    <div class="form-group">
+        <label for="login_password">Password</label>
+        <input class="form-control" id="login_password" type="password" placeholder="Password" />
+    </div>
+    <div>
+        <button id="login_button" type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+    </div>
+  </form>
+
+  <br>
+  <p class="text-center"> - or - </p>
+
+  <div>
+    <button id="signup_button" class="btn btn-lg btn-success btn-block">Signup</button>
   </div>
-</div>
+<div>
