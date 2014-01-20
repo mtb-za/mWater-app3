@@ -38,6 +38,7 @@ class TestPage extends Page
           @listenTo @formView, 'change', @save
           @listenTo @formView, 'complete', @completed
           @listenTo @formView, 'close', @close
+          @listenTo @formView, 'discard', @removeTest
         else
           @formView = forms.instantiateView(form.views.detail, { ctx: @ctx })
 
@@ -89,11 +90,11 @@ class TestPage extends Page
     @pager.closePage()
     @pager.flash "Test completed successfully", "success"
 
-  deleteTest: ->
+  removeTest: ->
     if @auth.remove("tests", @test) and confirm("Permanently delete test?")
       @db.tests.remove @test._id, =>
         @test = null
         @pager.closePage()
-        @pager.flash "Test deleted", "success"
+        @pager.flash "Test deleted", "warning"
 
 module.exports = TestPage

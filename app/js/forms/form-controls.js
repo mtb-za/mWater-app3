@@ -14,6 +14,7 @@ exports.Sections = Backbone.View.extend({
     },
 
     events : {
+        "click #discard" : "discard",
         "click #close" : "close",
         "click .next" : "nextSection",
         "click .prev" : "prevSection",
@@ -31,6 +32,10 @@ exports.Sections = Backbone.View.extend({
 
     close : function() {
         this.trigger('close');
+    },
+
+    discard : function() {
+        this.trigger('discard');
     },
 
     crumbSection : function(e) {

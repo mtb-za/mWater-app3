@@ -40,6 +40,7 @@ class SurveyPage extends Page
           @listenTo @formView, 'change', @save
           @listenTo @formView, 'complete', @completed
           @listenTo @formView, 'close', @close
+          @listenTo @formView, 'discard', @removeResponse
         else
           @formView = forms.instantiateView(form.views.detail, { ctx: @ctx })
 
@@ -96,6 +97,6 @@ class SurveyPage extends Page
       @db.responses.remove @response._id, =>
         @response = null
         @pager.closePage()
-        @pager.flash "Survey deleted", "success"
+        @pager.flash "Survey deleted", "warning"
 
 module.exports = SurveyPage

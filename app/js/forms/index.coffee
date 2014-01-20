@@ -23,6 +23,7 @@ exports.FormView = class FormView extends Backbone.View
       @$el.append(content.el);
       @listenTo content, 'close', => @trigger('close')
       @listenTo content, 'complete', => @trigger('complete')
+      @listenTo content, 'discard', => @trigger('discard')
 
     # Add listener to model
     @listenTo @model, 'change', => @trigger('change')
@@ -75,6 +76,8 @@ exports.WaterTestEditView = class WaterTestEditView extends FormView
     # TODO move to template and sep file
     @$el.append $('''
       <div>
+          <button id="discard_button" type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Discard</button>
+          &nbsp;
           <button id="close_button" type="button" class="btn btn-default margined">Save for Later</button>
           &nbsp;
           <button id="complete_button" type="button" class="btn btn-primary margined"><span class="glyphicon glyphicon-ok"></span> Complete</button>
@@ -82,6 +85,7 @@ exports.WaterTestEditView = class WaterTestEditView extends FormView
     ''')
 
   events: 
+    "click #discard_button" : "discard"
     "click #close_button" : "close"
     "click #complete_button" : "complete"
 
@@ -97,6 +101,9 @@ exports.WaterTestEditView = class WaterTestEditView extends FormView
 
   close: ->
     @trigger 'close'
+
+  discard: ->
+    @trigger 'discard'
 
   complete: ->
     if @validate()
