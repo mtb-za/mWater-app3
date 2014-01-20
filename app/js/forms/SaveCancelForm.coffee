@@ -2,7 +2,10 @@
 # Save event will only be fired if validates
 
 module.exports = Backbone.View.extend
-  initialize: ->
+  initialize: (options) ->
+    # Save options
+    @options = options || {}
+
     @contents = @options.contents
     @render()
 

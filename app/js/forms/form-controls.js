@@ -1,7 +1,10 @@
 exports.Sections = Backbone.View.extend({
     className : "survey",
 
-    initialize : function() {
+    initialize : function(options) {
+        // Save options
+        this.options = options || {}
+
         this.title = this.options.title;
         this.sections = this.options.sections;
         this.render();
@@ -122,7 +125,10 @@ exports.Section = Backbone.View.extend({
     className : "section",
     template : _.template('<div class="contents"></div>'),
 
-    initialize : function() {
+    initialize : function(options) {
+        // Save options
+        this.options = options || {}
+
         this.title = this.options.title;
         this.contents = this.options.contents;
 
@@ -163,7 +169,7 @@ exports.Section = Backbone.View.extend({
 
 exports.Question = Backbone.View.extend({
     className : function() {
-        return "question question-" + (this.options.style || "default");
+        return "question";
     },
 
     template : _.template('<% if (options.prompt) { %><div class="prompt"><%=options.prompt%><%=renderRequired()%></div><% } %><div class="answer"></div><%=renderHint()%>'),
@@ -226,7 +232,13 @@ exports.Question = Backbone.View.extend({
         return this.options.conditional(this.model) == true;
     },
 
-    initialize : function() {
+    initialize : function(options) {
+        // Save options
+        this.options = options || {};
+
+        // Set class based on style
+        this.$el.addClass("question-" + (this.options.style || "default"));
+        
         // Adjust visibility based on model
         if (this.options.conditional)
             this.model.on("change", this.updateVisibility, this);

@@ -7,6 +7,11 @@
 class Page extends Backbone.View
   constructor: (ctx, options={}) ->
     super(options)
+
+    # Save options
+    @options = options
+
+    # Save context
     @ctx = ctx
 
     # Mix in context for convenience
