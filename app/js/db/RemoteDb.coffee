@@ -101,7 +101,8 @@ class Collection
     req.done (data, textStatus, jqXHR) =>
       success()
     req.fail (jqXHR, textStatus, errorThrown) =>
-      if jqXHR.status == 404
+      # 410 means already deleted
+      if jqXHR.status == 410
         success()
       else if error
         error(errorThrown)

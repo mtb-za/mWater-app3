@@ -51,7 +51,7 @@ module.exports = class LoginPage extends Page
     req.fail (jqXHR, textStatus, errorThrown) =>
       $("#signup_button").removeAttr('disabled')
       console.error "Signup failure: #{jqXHR.responseText} (#{jqXHR.status})"
-      if jqXHR.status < 500 and jqXHR.status >= 400
+      if jqXHR.status < 500 and jqXHR.status >= 400 and jqXHR.status != 404 # 404 is no connection sometimes
         alert(JSON.parse(jqXHR.responseText).error)
       else
         alert("Unable to signup. Please check that you are connected to Internet")
@@ -91,7 +91,7 @@ module.exports = class LoginPage extends Page
     req.fail (jqXHR, textStatus, errorThrown) =>
       $("#login_button").removeAttr('disabled')
       console.error "Login failure: #{jqXHR.responseText} (#{jqXHR.status})"
-      if jqXHR.status < 500 and jqXHR.status >= 400
+      if jqXHR.status < 500 and jqXHR.status >= 400 and jqXHR.status != 404 # 404 is no connection sometimes
         alert(JSON.parse(jqXHR.responseText).error)
       else
         alert("Unable to login. Please check that you are connected to Internet")
