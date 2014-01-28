@@ -182,7 +182,7 @@ exports.Question = Backbone.View.extend({
 
     renderHint: function() {
         if (this.options.hint)
-            return _.template('<div class="muted"><%=hint%></div>')({hint: this.options.hint});
+            return _.template('<div class="text-muted"><%=hint%></div>')({hint: this.options.hint});
     },
 
     // Validate the question. Returns string of error if not valid or true if not valid but no specific error
