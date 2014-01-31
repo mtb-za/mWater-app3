@@ -1,3 +1,5 @@
+queueasync = require 'queue-async'
+
 class SourceLayerCreator 
   # Calls success with { source: source, layer: layer }
   createLayer: (source, success, error) ->
@@ -92,6 +94,9 @@ class EColi extends SourceLayerCreator
     @openSource = openSource
     @ecoliAnalyzer = ecoliAnalyzer
 
+    # Create queue of analyses to be run 
+    @taskQueue = queueasync(8)  # 8 in parallel
+
   # Level is E.Coli level/100ml. Can also be 'pending' and 'nodata' and 'high'
   getPopupHtmlElement: (source, level) ->
     if level == 'pending'
@@ -161,23 +166,44 @@ class EColi extends SourceLayerCreator
 
     layer.bindPopup(@getPopupHtmlElement(source, 'pending'))
 
+    # Override layer remove to be alerted of remove
+    superOnRemove = layer.onRemove.bind(layer)
+    layer.onRemove = (map) ->
+      # Set flag that layer was removed
+      layer.removed = true
+      superOnRemove(map)
+
     # Return initial layer
     success(source: source, layer: layer)
 
-    # Call EColi analyzer to get actual level
-    @ecoliAnalyzer.analyzeSource source, (level) =>
-      # Rebind popup
-      layer.bindPopup(@getPopupHtmlElement(source, level))
+    # Create async task to be queued
+    task = (next) =>
+      # If layer removed, skip
+      if layer.removed
+        return next()
 
-      color = @getLevelColor(level)
-      layer.setStyle (feature) =>
-        return { 
-          fillColor: color
-          color: "#222"
-          opacity: 1.0
-          fillOpacity: 1.0
-        }
-    , error
+      # Call EColi analyzer to get actual level
+      @ecoliAnalyzer.analyzeSource source, (level) =>
+        # Rebind popup
+        layer.bindPopup(@getPopupHtmlElement(source, level))
+
+        color = @getLevelColor(level)
+        layer.setStyle (feature) =>
+          return { 
+            fillColor: color
+            color: "#222"
+            opacity: 1.0
+            fillOpacity: 1.0
+          }
+        next()
+      , (err) =>
+        error(err)
+        
+        # Tell queue of error
+        # TODO keep processing in case of error?
+        next(err)
+
+    @taskQueue.defer(task)
 
   createLegend: ->
     html = '''

@@ -39,6 +39,7 @@
     "browserify": "~3.4.0",
     "fastclick": "~0.6.11",
     "lodash": "~2.4.1",
-    "csv": "~0.3.6"
+    "csv": "~0.3.6",
+    "queue-async": "~1.0.7"
   }
 }
