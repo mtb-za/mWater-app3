@@ -34,15 +34,14 @@ a {
   background-image: url('../img/checkbox.png');
   font-size: 14pt;
   font-weight: bold;
-  background-position-x: 8px;
-  background-position-y: 6px;
+  background-position: 8px 6px;
   margin-bottom: 5px;
   margin-top: 3px;
   cursor: pointer;
 }
 
 .checkbox.checked {
-  background-position-y: -112px;
+  background-position: 8px -112px;
 }
 
 .radio-button {
@@ -53,13 +52,12 @@ a {
   background-image: url('../img/radio-button.png');
   font-size: 14pt;
   font-weight: bold;
-  background-position-x: 8px;
-  background-position-y: 6px;
+  background-position: 8px 6px;
   margin-bottom: 3px;
   margin-top: 3px;
   cursor: pointer;
 }
 
 .radio-button.checked {
-  background-position-y: -112px;
+  background-position: 8px -112px;
 }
