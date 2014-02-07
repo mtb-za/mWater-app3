@@ -1,7 +1,7 @@
 Question = require('./form-controls').Question
 LocationView = require ("../LocationView")
 
-module.exports = Question.extend
+module.exports = class GPSQuestion extends Question
   renderAnswer: (answerEl) ->
     # Remove old location view
     if @locationView?
@@ -24,3 +24,9 @@ module.exports = Question.extend
         @model.unset(@id)
 
     answerEl.append(@locationView.el)
+
+  remove: ->
+    # Remove location view
+    @locationView.remove()
+
+    super()
