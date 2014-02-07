@@ -13,22 +13,6 @@ module.exports = function(grunt) {
     browserify: {},
 
     concat: {
-      libsjs: {
-        // the files to concatenate
-        src: ['vendor/jQuery-2.0.3.min.js', 
-              'vendor/lodash.min.js', 
-              'vendor/backbone-min.js', 
-              'vendor/bootstrap/js/bootstrap.min.js', 
-              'vendor/handlebars.runtime.js',
-              'vendor/swag.js',
-              'vendor/mobiscroll.custom-2.5.4.min.js',
-              'vendor/jquery.scrollintoview.min.js',
-              'vendor/overthrow.js',
-              'vendor/leaflet/leaflet-src.js',
-              'vendor/Control.OSMGeocoder.js'],
-        // the location of the resulting JS file
-        dest: 'dist/js/libs.js'
-      },
       libscss: {
         src: ['vendor/bootstrap/css/bootstrap.min.css',
               //'vendor/bootstrap/css/bootstrap-theme.min.css',
@@ -46,9 +30,21 @@ module.exports = function(grunt) {
       options: {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
-      dist: {
-        src: 'dist/js/libs.js',
-        dest: 'dist/js/libs.min.js'
+      libsjs: {
+        files: {
+          // the files to concatenate
+          'dist/js/libs.js': 
+            ['vendor/jQuery-2.0.3.min.js', 
+            'vendor/lodash.min.js', 
+            'vendor/backbone-min.js', 
+            'vendor/bootstrap/js/bootstrap.min.js', 
+            'vendor/handlebars.runtime.js',
+            'vendor/swag.js',
+            'vendor/mobiscroll.custom-2.5.4.min.js',
+            'vendor/jquery.scrollintoview.min.js',
+            'vendor/overthrow.js',
+            'vendor/leaflet/leaflet-src.js']
+        }
       }
     },
 
@@ -272,7 +268,7 @@ module.exports = function(grunt) {
   grunt.registerTask('run_cordova_debug', ['default', 'cordova_debug', 'shell:cordova_run']);
 
   grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages']);
-  grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'copy-app', 'handlebars', 'manifest', 'compress']);
+  grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'uglify', 'copy-app', 'handlebars', 'manifest', 'compress']);
 
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
   grunt.registerTask('deploy_map', ['default', 'shell:deploy_map']);
