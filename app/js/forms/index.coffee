@@ -1,4 +1,10 @@
 
+exports.Sections = require './Sections'
+exports.Section = require './Section'
+exports.Question = require './Question'
+exports.RadioQuestion = require './RadioQuestion'
+exports.CheckQuestion = require './CheckQuestion'
+exports.TextQuestion = require './TextQuestion'
 exports.CompositeQuestion = require './CompositeQuestion'
 exports.GPSQuestion = require './GPSQuestion'
 exports.DateQuestion = require './DateQuestion'
@@ -116,9 +122,6 @@ exports.WaterTestEditView = class WaterTestEditView extends FormView
 exports.instantiateView = (viewStr, options) =>
   viewFunc = new Function("options", viewStr)
   viewFunc(options)
-
-_.extend(exports, require('./form-controls'))
-
 
 # TODO figure out how to allow two surveys for differing client versions? Or just use minVersion?
 

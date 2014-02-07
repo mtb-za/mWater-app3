@@ -1,4 +1,4 @@
-Question = require('./form-controls').Question
+Question = require './Question'
 
 module.exports = Question.extend
   # Check that all questions validate

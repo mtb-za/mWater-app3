@@ -1,4 +1,4 @@
-Question = require('./form-controls').Question
+Question = require './Question'
 LocationView = require ("../LocationView")
 
 module.exports = class GPSQuestion extends Question

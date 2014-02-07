@@ -1,4 +1,4 @@
-Question = require('./form-controls').Question
+Question = require './Question'
 SourceListPage = require '../pages/SourceListPage'
 sourcecodes = require '../sourcecodes'
 
