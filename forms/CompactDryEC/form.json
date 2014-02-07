@@ -4,13 +4,13 @@
     "name": "Compact Dry EC Plate",
     "desc": "1 mL direct count plate method for E. coli and total coliform",
     "code": "CompactDryEC",
-    "_rev": 17,
+    "_rev": 18,
     "created": {
         "on": "2013-07-17T14:03:50.508Z",
         "by": "admin"
     },
     "modified": {
-        "on": "2014-01-04T18:00:22.585Z",
+        "on": "2014-02-07T16:22:06.043Z",
         "by": "admin"
     },
     "user": "admin"

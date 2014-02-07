@@ -57,7 +57,9 @@ class AutoCounter extends Backbone.View
   events:
     'click #auto_count' : 'autoCount'
 
-  initialize: ->
+  initialize: (options) ->
+    @options = options
+    
     forms.ECPlates.isAvailable (avail) =>
       if avail
         # Re-render based on model changes
