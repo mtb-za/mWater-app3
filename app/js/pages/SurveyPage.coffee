@@ -69,6 +69,10 @@ class SurveyPage extends Page
     if @response and not @response.completed
       @pager.flash "Survey saved as draft."
 
+    # Remove survey control
+    if @formView?
+      @formView.remove()
+
   edit: ->
     # Mark as incomplete
     @response.completed = null

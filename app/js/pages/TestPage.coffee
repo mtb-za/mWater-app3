@@ -62,6 +62,10 @@ class TestPage extends Page
     if @test and not @test.completed
       @pager.flash "Test saved as draft."
 
+    # Remove test control
+    if @formView?
+      @formView.remove()
+
   edit: ->
     # Mark as incomplete
     @test.completed = null
