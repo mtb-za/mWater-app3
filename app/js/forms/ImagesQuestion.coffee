@@ -1,4 +1,4 @@
-Question = require('./form-controls').Question
+Question = require './Question'
 ImagePage = require '../pages/ImagePage'
 
 module.exports = class ImagesQuestion extends Question

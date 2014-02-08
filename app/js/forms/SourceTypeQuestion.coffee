@@ -1,4 +1,4 @@
-Question = require('./form-controls').Question
+Question = require './Question'
 
 module.exports = exports.Question.extend(
   events:

@@ -1,6 +1,6 @@
 # TODO Fix to have editable YYYY-MM-DD with click to popup scroller
 
-Question = require('./form-controls').Question
+Question = require './Question'
 
 module.exports = Question.extend
   events:

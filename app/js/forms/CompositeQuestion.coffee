@@ -1,6 +1,6 @@
-Question = require('./form-controls').Question
+Question = require './Question'
 
-module.exports = Question.extend
+module.exports = class CompositeQuestion extends Backbone.View
   # Check that all questions validate
   validateInternal: ->
     # Add contents
@@ -35,3 +35,10 @@ module.exports = Question.extend
     for q in @contents
       answerEl.find("#contents").append(q.el)
 
+  # Remove all contents
+  remove: ->
+    for content in @contents
+      content.remove()
+      
+    # Call built-in remove 
+    super()
