@@ -1,6 +1,8 @@
-module.exports = Backbone.View.extend
+module.exports = class Section extends Backbone.View
   className: "section"
+
   template: _.template("<div class=\"contents\"></div>")
+
   initialize: (options) ->
     # Save options
     @options = options or {}
@@ -34,3 +36,11 @@ module.exports = Backbone.View.extend
       contentsEl.append c.$el
 
     this
+
+  # Remove all contents
+  remove: ->
+    for content in @contents
+      content.remove()
+      
+    # Call built-in remove 
+    super()

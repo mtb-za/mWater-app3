@@ -1,4 +1,4 @@
-module.exports = Backbone.View.extend
+module.exports = class Sections extends Backbone.View
   className: "survey"
 
   initialize: (options) ->
@@ -97,3 +97,10 @@ module.exports = Backbone.View.extend
 
     this
 
+  # Remove all sections
+  remove: ->
+    for section in @sections
+      section.remove()
+      
+    # Call built-in remove 
+    super()

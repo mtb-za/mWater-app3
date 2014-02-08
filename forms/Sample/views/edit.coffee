@@ -47,6 +47,12 @@ questions.push new forms.MulticheckQuestion(
   options: [[1, "Some option"], [2, "Another option"], [3, "Third option"]]
 )
 
+questions.push new forms.GPSQuestion
+  id: 'q11'
+  model: model
+  prompt: "Enter your current location"
+  ctx: options.ctx
+
 questions.push new forms.ImageQuestion
   id: 'photo'
   model: model
@@ -95,7 +101,7 @@ questions.push new forms.RadioQuestion(
 )
 
 questions.push new forms.TextQuestion(
-  id: "q2"
+  id: "q41"
   model: model
   prompt: "Enter a text value for option A"
   conditional: (m) ->
@@ -103,7 +109,7 @@ questions.push new forms.TextQuestion(
 )
 
 questions.push new forms.TextQuestion(
-  id: "q2"
+  id: "q42"
   model: model
   prompt: "Enter a different text value for option B"
   conditional: (m) ->

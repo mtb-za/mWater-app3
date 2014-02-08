@@ -1,6 +1,6 @@
 # Group of questions which validate as a unit
 
-module.exports = Backbone.View.extend
+module.exports = class QuestionGroup extends Backbone.View
   initialize: (options) ->
     @options = options || {}
     @contents = options.contents
@@ -22,3 +22,11 @@ module.exports = Backbone.View.extend
     _.each @contents, (c) => @$el.append c.$el
 
     this
+
+  # Remove all contents
+  remove: ->
+    for content in @contents
+      content.remove()
+      
+    # Call built-in remove 
+    super()
