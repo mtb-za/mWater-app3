@@ -11,7 +11,6 @@ cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-networ
 cordova plugin add https://github.com/mWater/cordova-plugin-camera-foreground.git
 cordova plugin add https://github.com/mWater/OpenCVActivityPlugin.git
 cordova plugin add https://github.com/mWater/cordova-plugin-acra.git
-cordova plugin add https://github.com/mWater/cordova-plugin-geolocation.git
 rm platforms/android/res/drawable-hdpi/icon.png
 rm platforms/android/res/drawable-ldpi/icon.png
 rm platforms/android/res/drawable-mdpi/icon.png
@@ -28,4 +27,6 @@ echo "TODO: Set versionCode and versionName in AndroidManifest.xml for EACH rele
 echo 'TODO: Add android:name="co.mwater.acraplugin.MyApplication" to application element of AndroidManifest.xml'
 echo 'TODO: Add <uses-feature android:name="android.hardware.camera" android:required="false" /> to AndroidManifest.xml'
 echo 'TODO: Remove android:debuggable="true" from AndroidManifest.xml'
+echo 'TODO: Add <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> to AndroidManifest.xml'
+echo 'TODO: Add <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> to AndroidManifest.xml'
 cd ..
