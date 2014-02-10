@@ -1,8 +1,16 @@
 Question = require './Question'
 
+# Number question with optional prefix and suffix. Set prefix option or suffix option
+# to a string to appear before/after box.
+
 module.exports = Question.extend
   renderAnswer: (answerEl) ->
-    answerEl.html _.template("<input class=\"form-control\" type=\"number\" <% if (options.decimal) {%>step=\"any\"<%}%> />", this)
+    answerEl.html templates['forms/NumberQuestion'](
+      prefix: @options.prefix, 
+      suffix: @options.suffix, 
+      decimal: @options.decimal,
+      prefixOrSuffix: @options.prefix or @options.suffix)
+
     answerEl.find("input").val @model.get(@id)
 
   events:

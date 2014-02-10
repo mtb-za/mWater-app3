@@ -20,6 +20,15 @@ questions.push new forms.NumberQuestion(
   model: model
   prompt: "Enter a number"
 )
+
+questions.push new forms.NumberQuestion(
+  id: "q6a"
+  model: model
+  prompt: "Enter a dollar amount"
+  prefix: "$"
+  decimal: true
+)
+
 questions.push new forms.DropdownQuestion(
   id: "q1"
   model: model
