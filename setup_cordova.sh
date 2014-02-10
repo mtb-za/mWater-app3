@@ -21,12 +21,10 @@ rm -r www/*
 
 echo "key.store=/home/clayton/.ssh/mwater.keystore" >> ./platforms/android/ant.properties
 echo "key.alias=mwater" >> ./platforms/android/ant.properties
-echo "TODO: Now update config.xml in android to run index_cordova.html?cordova= and other values not copied" 
+echo "TODO: Now update config.xml in cordova and in android/res/xml folder to run index_cordova.html?cordova= and other values not copied" 
 echo "TODO: Adjust minSdkVersion in AndroidManifest.xml to 8"
 echo "TODO: Set versionCode and versionName in AndroidManifest.xml for EACH release" 
 echo 'TODO: Add android:name="co.mwater.acraplugin.MyApplication" to application element of AndroidManifest.xml'
 echo 'TODO: Add <uses-feature android:name="android.hardware.camera" android:required="false" /> to AndroidManifest.xml'
 echo 'TODO: Remove android:debuggable="true" from AndroidManifest.xml'
-echo 'TODO: Add <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> to AndroidManifest.xml'
-echo 'TODO: Add <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> to AndroidManifest.xml'
 cd ..
