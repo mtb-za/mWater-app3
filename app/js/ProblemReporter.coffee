@@ -1,3 +1,7 @@
+# Reports problems (crashes) to a server. Catches window.onerror to catch unhandled
+# exceptions. Set ProblemReporter.default to the problem reporter that should be globally
+# available, if desired.
+
 ProblemReporter = (url, version, getLogin) ->
   # IE9 hack
   capture = (func) ->
@@ -89,11 +93,15 @@ ProblemReporter = (url, version, getLogin) ->
 
     window.onerror = oldWindowOnError
 
+  return
+
 ProblemReporter.register = (url, version, getLogin) ->
   ProblemReporter.instances = {}  unless ProblemReporter.instances
 
-  return  if ProblemReporter.instances[url]
+  return ProblemReporter.instances[url] if ProblemReporter.instances[url]
 
   ProblemReporter.instances[url] = new ProblemReporter(url, version, getLogin)
+
+  return ProblemReporter.instances[url] 
 
 module.exports = ProblemReporter  

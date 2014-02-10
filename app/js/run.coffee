@@ -62,6 +62,8 @@ exports.start = (options = {}) ->
 
     problemReporter = ProblemReporter.register ctx.apiUrl + 'problem_reports', "//VERSION//", ->
       return ctx.login
+      
+    ProblemReporter.default = problemReporter
 
     # Set pager context
     pager.setContext(ctx)

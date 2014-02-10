@@ -38,6 +38,7 @@ syncModule = require './sync'
 Camera = require './Camera'
 cordova = require './cordova'
 ImageUploader = require './images/ImageUploader'
+ProblemReporter = require './ProblemReporter'
 
 collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes']
 
@@ -59,7 +60,10 @@ createBaseContext = ->
     console.error err
     str = if err? and err.message then err.message else err
     alert("Internal error: " + err)
-    # TODO report? When is this used?
+    
+    # Call default problem reporter if present
+    if ProblemReporter.default?
+      ProblemReporter.default.reportProblem(err)
 
   return { 
     error: error
