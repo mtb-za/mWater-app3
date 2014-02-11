@@ -56,6 +56,13 @@ questions.push new forms.MulticheckQuestion(
   options: [[1, "Some option"], [2, "Another option"], [3, "Third option"]]
 )
 
+if forms.VariableTextsQuestion?
+  questions.push new forms.VariableTextsQuestion
+    id: "q13"
+    model: model
+    prompt: "Enter multiple text values"
+
+
 questions.push new forms.GPSQuestion
   id: 'q11'
   model: model
