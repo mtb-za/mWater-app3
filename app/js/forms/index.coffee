@@ -19,6 +19,7 @@ exports.ImagesQuestion = require './ImagesQuestion'
 exports.Instructions = require './Instructions'
 exports.ECPlates = require './ECPlates'
 exports.VariableTextsQuestion = require './VariableTextsQuestion'
+exports.UnitQuestion = require './UnitQuestion'
 
 # Must be created with model (backbone model) and contents (array of views)
 exports.FormView = class FormView extends Backbone.View

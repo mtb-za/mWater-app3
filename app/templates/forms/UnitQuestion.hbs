@@ -1,0 +1,26 @@
+<div class="row">
+	{{#if prefix}}
+	<div class="col-xs-3">
+		<select id="unit" class="form-control">
+			<option value="">Select units</option>
+			{{#each units}}
+				<option value="{{first this}}">{{last this}}</option>
+			{{/each}}
+		</select>
+	</div>
+	{{/if}}
+	<div class="col-xs-9">
+		<input id="value" class="form-control" type="number" step="any" />
+	</div>
+	{{#if prefix}}
+	{{else}}
+	<div class="col-xs-3">
+		<select id="unit" class="form-control">
+			<option value="">Select units</option>
+			{{#each units}}
+				<option value="{{first this}}">{{last this}}</option>
+			{{/each}}
+		</select>
+	</div>
+	{{/if}}
+</div>
