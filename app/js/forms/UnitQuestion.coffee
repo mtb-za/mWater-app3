@@ -1,14 +1,19 @@
 Question = require './Question'
 
 # Question that must be answered with units
+# Set units and defaultUnit if desired.
 
 module.exports = Question.extend
   events:
     "change": "changed"
 
   renderAnswer: (answerEl) ->
+    # Convert units to maps
+    units = _.map @options.units, (item) => { id: item[0], value: item[1] }
+
     answerEl.html templates['forms/UnitQuestion'](
-      units: @options.units, prefix: @options.prefix)
+      units: units, prefix: @options.prefix,
+      defaultUnit: @options.defaultUnit)
 
     # Set values
     @update()
@@ -17,7 +22,7 @@ module.exports = Question.extend
     answer = @model.get @id
     
     @$("#value").val(if answer? and answer.value? then answer.value else "")
-    @$("#unit").val(if answer? and answer.unit? then answer.unit else "")
+    @$("#unit").val(if answer? and answer.unit? then answer.unit else @options.defaultUnit)
 
   setUnits: (units) ->
     @options.units = units

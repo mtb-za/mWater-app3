@@ -69,6 +69,7 @@ if forms.UnitQuestion?
     model: model
     prompt: "Enter length of object"
     units: [['ft', "Feet"], ['m', "Meters"], ['yd', "Yards"]]
+    defaultUnit: 'm'
 
 
 questions.push new forms.GPSQuestion

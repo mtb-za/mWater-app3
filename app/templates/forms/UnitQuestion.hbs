@@ -6,9 +6,11 @@
 	{{/if}}
 	<div class="col-xs-3">
 		<select id="unit" class="form-control">
+			{{#if defaultUnit}}{{else}}
 			<option value="">Select units</option>
+			{{/if}}
 			{{#each units}}
-				<option value="{{first this}}">{{last this}}</option>
+				<option value="{{id}}">{{value}}</option>
 			{{/each}}
 		</select>
 	</div>
