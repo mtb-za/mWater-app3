@@ -1,5 +1,5 @@
 assert = chai.assert
-RemoteDb = require "../app/js/db/RemoteDb"
+RemoteDb = require("minimongo").RemoteDb
 db_queries = require "./db_queries"
 
 # To work, this must have the following server running:

@@ -1,7 +1,7 @@
 assert = chai.assert
 _ = require 'underscore'
 
-LocalDb = require "../app/js/db/LocalDb"
+LocalDb = require("minimongo").LocalDb
 SourceLayerCreators = require '../app/js/map/SourceLayerCreators'
 
 describe "EColiAnalyzer", ->

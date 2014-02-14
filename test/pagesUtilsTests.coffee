@@ -1,5 +1,5 @@
 assert = chai.assert
-LocalDb = require "../app/js/db/LocalDb"
+LocalDb = require("minimongo").LocalDb
 utils = require '../app/js/pages/utils'
 
 describe 'utils', ->
