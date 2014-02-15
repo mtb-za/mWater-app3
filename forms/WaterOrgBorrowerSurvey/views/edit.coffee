@@ -233,6 +233,13 @@ questions.push new forms.NumberQuestion
   prompt: "What was the year of the first loan you took out with the Partner organization?"
   conditional: ->
     model.get("is_first_loan") == "no"
+  validate: ->
+    val = model.get("year_first_loan")
+    if val?
+      if val < 1800 or val > 2050
+        return "Valid year required"
+    return null
+
 
 sections.push new forms.Section
   model: model
