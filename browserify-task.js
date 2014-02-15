@@ -1,7 +1,8 @@
 var browserify = require('browserify'),
     fs = require("fs"), 
     glob = require("glob"),
-    through = require('through');
+    through = require('through'), 
+    exposify = require('exposify');
 
 // Adds version info
 var versionXform = function (file) {
@@ -20,18 +21,23 @@ var versionXform = function (file) {
 
 
 function bundleApp(done) {
-    bundle = browserify({extensions: ".coffee"});
-    bundle.transform(versionXform).transform('coffeeify')
-    .require('./app/js/run', {expose: 'run'})
-    .require('./app/js/forms', {expose: 'forms'})  // For forms
-    .require('./app/js/mobile-behavior', {expose: 'mobile-behavior'})  // For tests
-    .bundle({}, function(err, src) {
-        if (err) return console.error(err);
+    // Set up exposify to handle included scripts
+    exposify.config = { jquery: '$', lodash: "_", underscore: "_"};
+    exposify.filePattern = /\.js$|\.coffee$/;
+    
+    bundle = browserify({extensions: ".coffee"})
+        .transform(versionXform).transform('coffeeify')
+        .transform(exposify)
+        .require('./app/js/run', {expose: 'run'})
+        .require('./app/js/forms', {expose: 'forms'})  // For forms
+        .require('./app/js/mobile-behavior', {expose: 'mobile-behavior'})  // For tests
+        .bundle({}, function(err, src) {
+            if (err) return console.error(err);
 
-        fs.writeFileSync("dist/js/app.js", src);
-        console.log("App bundled");
-        done();
-    });
+            fs.writeFileSync("dist/js/app.js", src);
+            console.log("App bundled");
+            done();
+        });
 }
 
 function bundlePreload(done) {
