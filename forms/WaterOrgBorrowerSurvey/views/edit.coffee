@@ -345,13 +345,15 @@ questions.push new forms.CompositeQuestion
 questions.push new forms.CompositeQuestion
   id: "loan_value"
   model: model
-  prompt: "What was the total value of your loan? (INR)"
+  prompt: "What was the total value of your loan?"
   createContents: (submodel) ->
     [
-      new forms.NumberQuestion
+      new forms.UnitQuestion
         id: "value"
         model: submodel
-        style: "tabular"
+        units: [["USD", "USD"], ["INR", "INR"]]
+        defaultUnit: "USD"
+        prefix: true
         conditional: ->
           not submodel.get("dontknow")
       new forms.CheckQuestion
@@ -400,13 +402,16 @@ questions.push new forms.RadioQuestion
 questions.push new forms.CompositeQuestion
   id: "total_loan_payment"
   model: model
-  prompt: "How much is your total loan payment? (note to interviewer: includes P+I) (INR)"
+  prompt: "How much is your total loan payment? (note to interviewer: includes P+I)"
   createContents: (submodel) ->
     [
-      new forms.NumberQuestion
+      new forms.UnitQuestion
         id: "value"
         model: submodel
         style: "tabular"
+        units: [["USD", "USD"], ["INR", "INR"]]
+        defaultUnit: "USD"
+        prefix: true
         conditional: ->
           not submodel.get("dontknow")
       new forms.CheckQuestion
@@ -421,13 +426,15 @@ questions.push new forms.CompositeQuestion
 questions.push new forms.CompositeQuestion
   id: "total_cost_product"
   model: model
-  prompt: "What was the total cost of the product? (INR)"
+  prompt: "What was the total cost of the product?"
   createContents: (submodel) ->
     [
-      new forms.NumberQuestion
+      new forms.UnitQuestion
         id: "value"
         model: submodel
-        style: "tabular"
+        units: [["USD", "USD"], ["INR", "INR"]]
+        defaultUnit: "USD"
+        prefix: true
         conditional: ->
           not submodel.get("dontknow")
       new forms.CheckQuestion
@@ -514,13 +521,14 @@ questions.push new forms.TextQuestion
   conditional: ->
     model.get("spouse_has_income") == "yes"
 
-questions.push new forms.NumberQuestion
+questions.push new forms.UnitQuestion
   id: "total_monthly_income"
   model: model
   decimal: true
-  prompt: "Total amount of monthly income? (USD)"
-
-# !!! Do we really mean to be switching currencies to USD here, or is it typo?
+  prompt: "Total amount of monthly income?"
+  units: [["USD", "USD"], ["INR", "INR"]]
+  defaultUnit: "USD"
+  prefix: true
 
 
 questions.push new forms.CompositeQuestion
