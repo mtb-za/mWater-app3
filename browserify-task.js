@@ -4,6 +4,9 @@ var browserify = require('browserify'),
     through = require('through'), 
     exposify = require('exposify');
 
+exposify.config = { jquery: '$', lodash: "_", underscore: "_"};
+exposify.filePattern = /\.js$|\.coffee$/;
+
 // Adds version info
 var versionXform = function (file) {
     pjson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
@@ -21,10 +24,7 @@ var versionXform = function (file) {
 
 
 function bundleApp(done) {
-    // Set up exposify to handle included scripts
-    exposify.config = { jquery: '$', lodash: "_", underscore: "_"};
-    exposify.filePattern = /\.js$|\.coffee$/;
-    
+    // Set up exposify to handle included scripts    
     bundle = browserify({extensions: ".coffee"})
         .transform(versionXform).transform('coffeeify')
         .transform(exposify)
@@ -56,7 +56,8 @@ function bundlePreload(done) {
 function bundleTests(done) {
     bundle = browserify({extensions: ".coffee"});
     bundle.transform('coffeeify')
-    .require('./app/js/forms', {expose: 'forms'});  // For forms
+        .transform(exposify)
+        .require('./app/js/forms', {expose: 'forms'});  // For forms
 
     // Add tests
     files = glob.sync('./test/*.coffee');
