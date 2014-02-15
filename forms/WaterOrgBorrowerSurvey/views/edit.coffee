@@ -146,6 +146,11 @@ questions.push new forms.DateQuestion
   model: model
   prompt: "Date"
 
+questions.push new forms.TextQuestion
+  id: "comments_basic" 
+  model: model
+  prompt: "Comments"
+  multiline: true
 
 sections.push new forms.Section
   model: model
@@ -240,6 +245,11 @@ questions.push new forms.NumberQuestion
         return "Valid year required"
     return null
 
+questions.push new forms.TextQuestion
+  id: "comments_borrower_profile" 
+  model: model
+  prompt: "Comments"
+  multiline: true
 
 sections.push new forms.Section
   model: model
@@ -968,6 +978,11 @@ questions.push new forms.RadioQuestion
   prompt: "Is the payment information up to date?"
   options: [["yes", "Yes"], ["no", "No"]]
 
+questions.push new forms.TextQuestion
+  id: "comments_general_questions" 
+  model: model
+  prompt: "Comments"
+  multiline: true
 
 sections.push new forms.Section
   model: model
@@ -1358,6 +1373,11 @@ questions.push new forms.RadioQuestion
     model.get("construction_completed") == "yes" and model.get("is_water_loan") == "yes"
 
 
+questions.push new forms.TextQuestion
+  id: "comments_water_loans" 
+  model: model
+  prompt: "Comments"
+  multiline: true
 
 
 sections.push new forms.Section
@@ -1659,6 +1679,11 @@ questions.push new forms.RadioQuestion
     model.get("is_sanitation_loan") == "yes" and model.get("construction_completed") == "yes"
 
 
+questions.push new forms.TextQuestion
+  id: "comments_sanitation_loans" 
+  model: model
+  prompt: "Comments"
+  multiline: true
 
 sections.push new forms.Section
   model: model
@@ -1668,7 +1693,17 @@ questions = []
 
 # END SECTION: Questions for sanitation loans
 
+questions.push new forms.TextQuestion
+  id: "comments_final" 
+  model: model
+  prompt: "Do you have any additional comments about the borrower or the loan?"
+  multiline: true
 
+sections.push new forms.Section
+  model: model
+  title: "Final Comments"
+  contents: questions
+questions = []
 
 
 # END HERE ENTIRE SURVEY
