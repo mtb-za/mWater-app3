@@ -1,11 +1,7 @@
 var browserify = require('browserify'),
     fs = require("fs"), 
     glob = require("glob"),
-    through = require('through'), 
-    exposify = require('exposify');
-
-exposify.config = { jquery: '$', lodash: "_", underscore: "_"};
-exposify.filePattern = /\.js$|\.coffee$/;
+    through = require('through');
 
 // Adds version info
 var versionXform = function (file) {
@@ -22,12 +18,12 @@ var versionXform = function (file) {
     }
 };
 
-
 function bundleApp(done) {
     // Set up exposify to handle included scripts    
     bundle = browserify({extensions: ".coffee"})
         .transform(versionXform).transform('coffeeify')
-        .transform(exposify)
+        .require('./app/js/jquery-shim', {expose: 'jquery'})
+        .require('./app/js/lodash-shim', {expose: 'lodash'})
         .require('./app/js/run', {expose: 'run'})
         .require('./app/js/forms', {expose: 'forms'})  // For forms
         .require('./app/js/mobile-behavior', {expose: 'mobile-behavior'})  // For tests
@@ -56,7 +52,6 @@ function bundlePreload(done) {
 function bundleTests(done) {
     bundle = browserify({extensions: ".coffee"});
     bundle.transform('coffeeify')
-        .transform(exposify)
         .require('./app/js/forms', {expose: 'forms'});  // For forms
 
     // Add tests
