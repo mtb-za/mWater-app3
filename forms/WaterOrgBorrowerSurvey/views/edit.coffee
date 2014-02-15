@@ -270,7 +270,7 @@ questions.push new forms.CompositeQuestion
   createContents: (submodel) ->
     [
       new forms.DropdownQuestion
-        id: "values"
+        id: "value"
         model: submodel
         style: "tabular"
         options: [
@@ -285,10 +285,8 @@ questions.push new forms.CompositeQuestion
         style: "tabular"
         prompt: "Please Specify: "
         conditional: ->
-          "other" in (submodel.get("values") or [])
+          submodel.get("value") == "other"
     ]
-
-# !!!!!!!!!!!!! OTHER NOT WORKING HERE
 
 
 questions.push new forms.TextQuestion
@@ -1384,6 +1382,8 @@ sections.push new forms.Section
   model: model
   title: "Questions for water loans"
   contents: questions
+  conditional: ->
+    model.get("loan_purpose") and model.get("loan_purpose").value in ['WaterConnection', 'WaterAndSanitation']
 questions = []
 
 # END SECTION: Questions for water loans
@@ -1689,6 +1689,8 @@ sections.push new forms.Section
   model: model
   title: "Questions for sanitation loans"
   contents: questions
+  conditional: ->
+    model.get("loan_purpose") and model.get("loan_purpose").value in ['Toilet', 'WaterAndSanitation']
 questions = []
 
 # END SECTION: Questions for sanitation loans
