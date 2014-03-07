@@ -389,6 +389,7 @@ questions.push new forms.CompositeQuestion
         id: "value"
         model: submodel
         style: "tabular"
+        decimal: true
         conditional: ->
           not submodel.get("dontknow")
       new forms.CheckQuestion
@@ -469,6 +470,7 @@ questions.push new forms.NumberQuestion
   id: "paid_above_loan_amt"
   model: model
   prompt: "How much more did you pay above the loan amount?"
+  decimal: true
   conditional: ->
     model.get("cover_construct_cost") == "no"
 
