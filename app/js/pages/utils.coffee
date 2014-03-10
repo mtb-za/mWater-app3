@@ -27,7 +27,7 @@ exports.changeUserOrgDocs = (db, user, org, success, error) ->
 
 
 exports.login = (username, password, ctx, success, error) ->
-  console.log "Logging in as: #{username}/#{password}"
+  console.log "Logging in as: #{username}/###"
 
   url = ctx.apiUrl + 'clients'
   req = $.ajax(url, {
