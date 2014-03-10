@@ -182,7 +182,7 @@ module.exports = function(grunt) {
           '--add-header "Pragma: no-cache" ' +
           '--add-header "Expires: 0" ' + 
           '--add-header "Content-Encoding: gzip" '+
-          '* s3://map.mwater.org']
+          '* s3://map.mwater.org'],
         options: {
           stdout: true,
           execOptions: {
