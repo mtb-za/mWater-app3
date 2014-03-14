@@ -24,7 +24,7 @@ class SourceMapPage extends Page
     # If saved view
     if window.localStorage['SourceMapPage.lastView']
       lastView = JSON.parse(window.localStorage['SourceMapPage.lastView'])
-      @createMap(lastView.center, lastView.zoom)
+      @createMap(lastView.center, lastView.zoom, lastView.scope)
       return
 
     # Get current position if quickly available
@@ -45,7 +45,9 @@ class SourceMapPage extends Page
         @createMap()
     , 500
 
-  createMap: (center, zoom) ->
+
+
+  createMap: (center, zoom, scope) ->
     # Fix leaflet image path
     L.Icon.Default.imagePath = "img/leaflet"
 
@@ -85,7 +87,6 @@ class SourceMapPage extends Page
       sourceLayerCreator = new SourceLayerCreators.EColi ecoliAnalyzer, (_id) =>
         @pager.openPage(SourcePage, {_id: _id})
       @sourcesLayer = new SourcesLayer(sourceLayerCreator, @db.sources).addTo(@map)
-
       # Add legend
       @legend = L.control({position: 'bottomright'});
       @legend.onAdd = (map) ->
@@ -102,16 +103,52 @@ class SourceMapPage extends Page
       @map.fitWorld()
 
     # Save view
-    @map.on 'moveend', =>
-      window.localStorage['SourceMapPage.lastView'] = JSON.stringify({center: @map.getCenter(), zoom: @map.getZoom()})
+    @map.on 'moveend', @saveView
+
+
 
     # Setup location display
     @locationDisplay = new LocationDisplay(@map)
 
+    menu = @sourceScopeOptions.map((option, index) =>
+      text: option.display
+      id: "source-scope-" + index
+      click: =>
+        #Update UI
+        $(".dropdown-menu li").removeClass("active")
+        $("#source-scope-" + index).closest("li").addClass("active")
+        #Update map
+        @updateSourceScope option.value
+    )
+
     @setupButtonBar [
+      { icon: "plus.png", menu: menu }
       { icon: "goto-my-location.png", click: => @gotoMyLocation() }
     ]
-   
+
+    if scope
+      @updateSourceScope scope
+
+  sourceScopeOptions: [
+      { display: "All Sources", value: {} }
+      { display: "Only My Organization", value: { org: "Mwanza" } }
+      { display: "Only Mine", value: { user: "Amandus M" } }
+    ]
+
+  updateSourceScope: (scope) => 
+    @sourcesLayer.scope = scope
+    @saveView
+    @sourcesLayer.update()
+    return
+
+  saveView: => 
+    window.localStorage['SourceMapPage.lastView'] = JSON.stringify({
+      center: @map.getCenter() 
+      zoom: @map.getZoom()
+      scope: @sourcesLayer.scope
+    })
+    console.log window.localStorage['SourceMapPage.lastView']
+
   gotoMyLocation: ->
     # Goes to current location
     locationFinder = new LocationFinder()
