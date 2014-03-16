@@ -45,8 +45,6 @@ class SourceMapPage extends Page
         @createMap()
     , 500
 
-
-
   createMap: (center, zoom, scope) ->
     # Fix leaflet image path
     L.Icon.Default.imagePath = "img/leaflet"
@@ -86,7 +84,7 @@ class SourceMapPage extends Page
 
       sourceLayerCreator = new SourceLayerCreators.EColi ecoliAnalyzer, (_id) =>
         @pager.openPage(SourcePage, {_id: _id})
-      @sourcesLayer = new SourcesLayer(sourceLayerCreator, @db.sources).addTo(@map)
+      @sourcesLayer = new SourcesLayer(sourceLayerCreator, @db.sources, scope).addTo(@map)
       # Add legend
       @legend = L.control({position: 'bottomright'});
       @legend.onAdd = (map) ->
@@ -110,35 +108,47 @@ class SourceMapPage extends Page
     # Setup location display
     @locationDisplay = new LocationDisplay(@map)
 
-    menu = @sourceScopeOptions.map((option, index) =>
-      text: option.display
-      id: "source-scope-" + index
-      click: =>
-        #Update UI
-        $(".dropdown-menu li").removeClass("active")
-        $("#source-scope-" + index).closest("li").addClass("active")
-        #Update map
-        @updateSourceScope option.value
+    # Create a dropdown menu using the Source Scope Options
+    menu = @sourceScopeOptions.map((scope) =>
+      text: scope.display
+      id: "source-scope-" + scope.type
+      click: => @updateSourceScope scope
     )
 
     @setupButtonBar [
-      { icon: "plus.png", menu: menu }
+      { icon: "gear.png", menu: menu }
       { icon: "goto-my-location.png", click: => @gotoMyLocation() }
     ]
 
-    if scope
-      @updateSourceScope scope
+    #TODO: Put this in Backbone's DOM ready event handler
+    #Set active sources scope dropdown item
+    selector = "source-scope-"
+    if scope.user
+      selector += "user"
+    else if scope.org 
+      selector += "org"
+    else 
+      selector += "all"
+    $(selector).closest("li").addClass "active";
 
+  # TODO: Replace hardcoded user and org with current user's
+  # Options for the dropdown menu
   sourceScopeOptions: [
-      { display: "All Sources", value: {} }
-      { display: "Only My Organization", value: { org: "Mwanza" } }
-      { display: "Only Mine", value: { user: "Amandus M" } }
+      { display: "All Sources", type: "all", value: {} }
+      { display: "Only My Organization", type: "org", value: { org: "Mwanza" } }
+      { display: "Only Mine", type: "user", value: { user: "Amandus M" } }
     ]
 
+  #Filter the sources by all, org, or user
   updateSourceScope: (scope) => 
-    @sourcesLayer.scope = scope
-    @saveView
+    #Update UI
+    $(".dropdown-menu li").removeClass("active")
+    $("#source-scope-" + scope.type).closest("li").addClass("active")
+    #Update Map
+    @sourcesLayer.scope = scope.value
     @sourcesLayer.update()
+    #Persist the view
+    @saveView()
     return
 
   saveView: => 
@@ -147,7 +157,6 @@ class SourceMapPage extends Page
       zoom: @map.getZoom()
       scope: @sourcesLayer.scope
     })
-    console.log window.localStorage['SourceMapPage.lastView']
 
   gotoMyLocation: ->
     # Goes to current location

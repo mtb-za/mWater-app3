@@ -1,15 +1,13 @@
 GeoJSON = require '../GeoJSON'
 
 module.exports = class SourcesLayer extends L.LayerGroup
-  constructor: (sourceLayerCreator, sourcesDb) ->
+  constructor: (sourceLayerCreator, sourcesDb, scope) ->
     super()
     @sourceLayerCreator = sourceLayerCreator
     @sourcesDb = sourcesDb
-
+    @scope = scope || {}
     # Layers, by _id
     @layers = {}
-
-  scope: {}
 
   onAdd: (map) =>
     super(map)
@@ -20,11 +18,15 @@ module.exports = class SourcesLayer extends L.LayerGroup
     super(map)
     map.off 'moveend', @update
 
+  # Builds a selector based on bounds and scope (all, org, user)
+  # then queries the database
   update: =>
+    selector = {}
     # Pad to ensure scrolling shows nearby ones
     bounds = @map.getBounds().pad(0.1)
-    selector = {}
+    # add bounds to the selector
     @boundsQuery bounds, selector
+    # add scope to the selector
     @scopeQuery @scope, selector
     # TODO pass error?
     @getSources selector, @updateFromList
@@ -64,6 +66,7 @@ module.exports = class SourcesLayer extends L.LayerGroup
 
     success() if success?
 
+  # Query the db
   getSources: (selector, success, error) =>
     _this = this
     queryOptions =
@@ -80,13 +83,15 @@ module.exports = class SourcesLayer extends L.LayerGroup
 
     @sourcesDb.find(selector, queryOptions).fetch success, error
 
+  # Update the selector to filter by scope
   scopeQuery: (scope, selector) =>
     return unless scope
     if scope.user
       selector.user = scope.user
     else selector.org = scope.org  if scope.org
     return
-
+  
+  # Update the selector to filter by bounds
   boundsQuery: (bounds, selector) =>
     return  unless bounds.isValid()
     return  if bounds.getWest() is bounds.getEast() or bounds.getNorth() is bounds.getSouth()
@@ -107,44 +112,3 @@ module.exports = class SourcesLayer extends L.LayerGroup
       selector.geo = $geoIntersects:
         $geometry: boundsGeoJSON
     return
-
-  updateFromBounds: (bounds, success, error) =>
-    # Success on empty/invalid bounds
-    if not bounds.isValid()
-      success() if success?
-      return
-    if bounds.getWest() == bounds.getEast() or bounds.getNorth() == bounds.getSouth()
-      success() if success?
-      return
-
-    boundsGeoJSON = GeoJSON.latLngBoundsToGeoJSON(bounds)
-
-    # Spherical Polygons must fit within a hemisphere.
-    # Any geometry specified with GeoJSON to $geoIntersects or $geoWithin queries, must fit within a single hemisphere.
-    # MongoDB interprets geometries larger than half of the sphere as queries for the smaller of the complementary geometries.
-    # So... don't bother intersection if large
-    # Also don't use intersection if outside of normal bounds (lat: [-90, 90], lng: [-180, 180])
-    if (boundsGeoJSON.coordinates[0][2][0] - boundsGeoJSON.coordinates[0][0][0]) >= 180
-      selector = {}
-    else if (boundsGeoJSON.coordinates[0][2][1] - boundsGeoJSON.coordinates[0][0][1]) >= 180
-      selector = {}
-    else if boundsGeoJSON.coordinates[0][0][0] < -180 or boundsGeoJSON.coordinates[0][0][0] > 180
-      selector = {}
-    else if boundsGeoJSON.coordinates[0][2][0] < -180 or boundsGeoJSON.coordinates[0][2][0] > 180
-      selector = {}
-    else if boundsGeoJSON.coordinates[0][0][1] < -90 or boundsGeoJSON.coordinates[0][0][1] > 90
-      selector = {}
-    else if boundsGeoJSON.coordinates[0][2][1] < -90 or boundsGeoJSON.coordinates[0][2][1] > 90
-      selector = {}
-    else
-      selector = { geo: { $geoIntersects: { $geometry: boundsGeoJSON } } }
-
-    # Query sources with projection. Use remote mode so no caching occurs
-    queryOptions = 
-      sort: ["_id"]
-      limit: 200
-      mode: "remote"
-      fields: { name: 1, code: 1, geo: 1, type: 1, org: 1, user: 1 }
-
-    @sourcesDb.find(selector, queryOptions).fetch (sources) =>
-      @updateFromList(sources, success, error)
