@@ -1,6 +1,6 @@
 Question = require './Question'
 
-module.exports = class CompositeQuestion extends Backbone.View
+module.exports = class CompositeQuestion extends Question
   # Check that all questions validate
   validateInternal: ->
     # Add contents

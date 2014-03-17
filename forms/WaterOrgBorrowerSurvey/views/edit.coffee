@@ -146,6 +146,11 @@ questions.push new forms.DateQuestion
   model: model
   prompt: "Date"
 
+questions.push new forms.TextQuestion
+  id: "comments_basic" 
+  model: model
+  prompt: "Comments"
+  multiline: true
 
 sections.push new forms.Section
   model: model
@@ -233,6 +238,18 @@ questions.push new forms.NumberQuestion
   prompt: "What was the year of the first loan you took out with the Partner organization?"
   conditional: ->
     model.get("is_first_loan") == "no"
+  validate: ->
+    val = model.get("year_first_loan")
+    if val?
+      if val < 1800 or val > 2050
+        return "Valid year required"
+    return null
+
+questions.push new forms.TextQuestion
+  id: "comments_borrower_profile" 
+  model: model
+  prompt: "Comments"
+  multiline: true
 
 sections.push new forms.Section
   model: model
@@ -253,7 +270,7 @@ questions.push new forms.CompositeQuestion
   createContents: (submodel) ->
     [
       new forms.DropdownQuestion
-        id: "values"
+        id: "value"
         model: submodel
         style: "tabular"
         options: [
@@ -268,10 +285,8 @@ questions.push new forms.CompositeQuestion
         style: "tabular"
         prompt: "Please Specify: "
         conditional: ->
-          "other" in (submodel.get("values") or [])
+          submodel.get("value") == "other"
     ]
-
-# !!!!!!!!!!!!! OTHER NOT WORKING HERE
 
 
 questions.push new forms.TextQuestion
@@ -345,13 +360,15 @@ questions.push new forms.CompositeQuestion
 questions.push new forms.CompositeQuestion
   id: "loan_value"
   model: model
-  prompt: "What was the total value of your loan? (INR)"
+  prompt: "What was the total value of your loan?"
   createContents: (submodel) ->
     [
-      new forms.NumberQuestion
+      new forms.UnitQuestion
         id: "value"
         model: submodel
-        style: "tabular"
+        units: [["USD", "USD"], ["INR", "INR"]]
+        defaultUnit: "USD"
+        prefix: true
         conditional: ->
           not submodel.get("dontknow")
       new forms.CheckQuestion
@@ -372,6 +389,7 @@ questions.push new forms.CompositeQuestion
         id: "value"
         model: submodel
         style: "tabular"
+        decimal: true
         conditional: ->
           not submodel.get("dontknow")
       new forms.CheckQuestion
@@ -400,13 +418,16 @@ questions.push new forms.RadioQuestion
 questions.push new forms.CompositeQuestion
   id: "total_loan_payment"
   model: model
-  prompt: "How much is your total loan payment? (note to interviewer: includes P+I) (INR)"
+  prompt: "How much is your total loan payment? (note to interviewer: includes P+I)"
   createContents: (submodel) ->
     [
-      new forms.NumberQuestion
+      new forms.UnitQuestion
         id: "value"
         model: submodel
         style: "tabular"
+        units: [["USD", "USD"], ["INR", "INR"]]
+        defaultUnit: "USD"
+        prefix: true
         conditional: ->
           not submodel.get("dontknow")
       new forms.CheckQuestion
@@ -421,13 +442,15 @@ questions.push new forms.CompositeQuestion
 questions.push new forms.CompositeQuestion
   id: "total_cost_product"
   model: model
-  prompt: "What was the total cost of the product? (INR)"
+  prompt: "What was the total cost of the product?"
   createContents: (submodel) ->
     [
-      new forms.NumberQuestion
+      new forms.UnitQuestion
         id: "value"
         model: submodel
-        style: "tabular"
+        units: [["USD", "USD"], ["INR", "INR"]]
+        defaultUnit: "USD"
+        prefix: true
         conditional: ->
           not submodel.get("dontknow")
       new forms.CheckQuestion
@@ -447,6 +470,7 @@ questions.push new forms.NumberQuestion
   id: "paid_above_loan_amt"
   model: model
   prompt: "How much more did you pay above the loan amount?"
+  decimal: true
   conditional: ->
     model.get("cover_construct_cost") == "no"
 
@@ -514,13 +538,14 @@ questions.push new forms.TextQuestion
   conditional: ->
     model.get("spouse_has_income") == "yes"
 
-questions.push new forms.NumberQuestion
+questions.push new forms.UnitQuestion
   id: "total_monthly_income"
   model: model
   decimal: true
-  prompt: "Total amount of monthly income? (USD)"
-
-# !!! Do we really mean to be switching currencies to USD here, or is it typo?
+  prompt: "Total amount of monthly income?"
+  units: [["USD", "USD"], ["INR", "INR"]]
+  defaultUnit: "USD"
+  prefix: true
 
 
 questions.push new forms.CompositeQuestion
@@ -953,6 +978,11 @@ questions.push new forms.RadioQuestion
   prompt: "Is the payment information up to date?"
   options: [["yes", "Yes"], ["no", "No"]]
 
+questions.push new forms.TextQuestion
+  id: "comments_general_questions" 
+  model: model
+  prompt: "Comments"
+  multiline: true
 
 sections.push new forms.Section
   model: model
@@ -1343,12 +1373,19 @@ questions.push new forms.RadioQuestion
     model.get("construction_completed") == "yes" and model.get("is_water_loan") == "yes"
 
 
+questions.push new forms.TextQuestion
+  id: "comments_water_loans" 
+  model: model
+  prompt: "Comments"
+  multiline: true
 
 
 sections.push new forms.Section
   model: model
   title: "Questions for water loans"
   contents: questions
+  conditional: ->
+    model.get("loan_purpose") and model.get("loan_purpose").value in ['WaterConnection', 'WaterAndSanitation']
 questions = []
 
 # END SECTION: Questions for water loans
@@ -1644,16 +1681,33 @@ questions.push new forms.RadioQuestion
     model.get("is_sanitation_loan") == "yes" and model.get("construction_completed") == "yes"
 
 
+questions.push new forms.TextQuestion
+  id: "comments_sanitation_loans" 
+  model: model
+  prompt: "Comments"
+  multiline: true
 
 sections.push new forms.Section
   model: model
   title: "Questions for sanitation loans"
   contents: questions
+  conditional: ->
+    model.get("loan_purpose") and model.get("loan_purpose").value in ['Toilet', 'WaterAndSanitation']
 questions = []
 
 # END SECTION: Questions for sanitation loans
 
+questions.push new forms.TextQuestion
+  id: "comments_final" 
+  model: model
+  prompt: "Do you have any additional comments about the borrower or the loan?"
+  multiline: true
 
+sections.push new forms.Section
+  model: model
+  title: "Final Comments"
+  contents: questions
+questions = []
 
 
 # END HERE ENTIRE SURVEY
