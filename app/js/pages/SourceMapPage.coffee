@@ -108,19 +108,6 @@ class SourceMapPage extends Page
     # Setup location display
     @locationDisplay = new LocationDisplay(@map)
 
-    # Create a dropdown menu using the Source Scope Options
-    menu = @getSourceScopeOptions().map((scope) =>
-      text: scope.display
-      id: "source-scope-" + scope.type
-      click: => @updateSourceScope scope
-    )
-
-    @setupButtonBar [
-      { icon: "gear.png", menu: menu }
-      { icon: "goto-my-location.png", click: => @gotoMyLocation() }
-    ]
-
-  # TODO: Replace hardcoded user and org with current user's
   # Options for the dropdown menu
   getSourceScopeOptions: =>
     options = [{ display: "All Sources", type: "all", value: {} }]
@@ -161,16 +148,20 @@ class SourceMapPage extends Page
       @pager.flash("Unable to determine location", "warning")
 
   activate: ->
-    #Set active sources scope dropdown item
-    selector = "#source-scope-"
-    if @sourcesLayer and @sourcesLayer.scope and @sourcesLayer.scope.user
-        selector += "user"
-    else if @sourcesLayer and @sourcesLayer.scope and @sourcesLayer.scope.org 
-      selector += "org"
-    else
-      selector += "all"
+    # Get the current scope to be used to set the active dropdown item
+    currentScope = if @sourcesLayer and @sourcesLayer.scope then @sourcesLayer.scope else {}
+    # Create a dropdown menu using the Source Scope Options
+    menu = @getSourceScopeOptions().map((scope) =>
+      text: scope.display
+      id: "source-scope-" + scope.type
+      click: => @updateSourceScope scope
+      checked: (JSON.stringify(currentScope) == JSON.stringify(scope.value))      
+    )
 
-    @getButtonBar().$(selector).addClass "active";
+    @setupButtonBar [
+      { icon: "gear.png", menu: menu }
+      { icon: "goto-my-location.png", click: => @gotoMyLocation() }
+    ]
     
     # Update markers
     if @sourcesLayer and @needsRefresh

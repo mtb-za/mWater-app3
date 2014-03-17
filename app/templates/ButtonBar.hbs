@@ -18,7 +18,7 @@
   </div>
   <ul class="dropdown-menu" role="menu" style="right: 0; left: auto;">
       {{#each menu}}
-      <li><a id="{{id}}" class="menuitem"><span class="glyphicon glyphicon-ok"></span> {{text}}</a></li>
+      <li><a id="{{id}}" class="menuitem {{#if checked }}active{{/if}}"><span class="glyphicon glyphicon-ok"></span> {{text}}</a></li>
       {{/each}}
   </ul>  
   </div>
