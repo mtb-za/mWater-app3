@@ -134,8 +134,8 @@ class SourceMapPage extends Page
   #Filter the sources by all, org, or user
   updateSourceScope: (scope) => 
     #Update UI
-    @getButtonBar().$(".dropdown-menu li.menuitem").removeClass("active")
-    @getButtonBar().$("#source-scope-" + scope.type).closest("li.menuitem").addClass("active")
+    @getButtonBar().$(".dropdown-menu .menuitem.active").removeClass("active")
+    @getButtonBar().$("#source-scope-" + scope.type).addClass("active")
     #Update Map
     @sourcesLayer.setScope scope.value
     @sourcesLayer.update()
@@ -162,15 +162,15 @@ class SourceMapPage extends Page
 
   activate: ->
     #Set active sources scope dropdown item
-    if @sourcesLayer and @sourcesLayer.scope
-      selector = "#source-scope-"
-      if @sourcesLayer.scope.user
+    selector = "#source-scope-"
+    if @sourcesLayer and @sourcesLayer.scope and @sourcesLayer.scope.user
         selector += "user"
-      else if @sourcesLayer.scope.org 
-        selector += "org"
-      else 
-        selector += "all"
-      @getButtonBar().$(selector).closest("li").addClass "active";
+    else if @sourcesLayer and @sourcesLayer.scope and @sourcesLayer.scope.org 
+      selector += "org"
+    else
+      selector += "all"
+
+    @getButtonBar().$(selector).addClass "active";
     
     # Update markers
     if @sourcesLayer and @needsRefresh
