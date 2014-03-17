@@ -13,7 +13,7 @@ Browser support: IE10+ and all other modern browsers.
 
 1. Clone this repository
 1. Ensure you have Node.js version >= 0.10 installed
-1. Ensure you have grunt and browserify installed globally
+1. Ensure you have grunt-cli, browserify and cordova installed globally.
 1. Run `npm install` in root folder
 1. Run `grunt`
 1. Run `node server`
