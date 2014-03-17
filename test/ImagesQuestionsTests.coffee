@@ -37,13 +37,13 @@ describe 'ImagesQuestion', ->
 
     it 'displays one image', ->
       @model.set(q1: [{id: "1234"}])
-      assert.equal @question.$("img.thumbnail-img").attr("src"), "images/1234.jpg"
+      assert.equal @question.$("img.img-thumbnail").attr("src"), "images/1234.jpg"
 
     it 'opens page', ->
       @model.set(q1: [{id: "1234"}])
       spy = sinon.spy()
       @ctx.pager = { openPage: spy }
-      @question.$("img.thumbnail-img").click()
+      @question.$("img.img-thumbnail").click()
 
       assert.isTrue spy.calledOnce
       assert.equal spy.args[0][1].id, "1234"
@@ -54,7 +54,7 @@ describe 'ImagesQuestion', ->
         openPage: (page, options) =>
           options.onRemove()
       }
-      @question.$("img.thumbnail-img").click()
+      @question.$("img.img-thumbnail").click()
       assert.equal @question.$("img#add").length, 0
 
     it 'displays no add', ->
