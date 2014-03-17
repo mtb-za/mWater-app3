@@ -112,7 +112,7 @@ describe "SourcesLayer", ->
       sl = new SourcesLayer();
       sl.boundsQuery(bounds, selector)
 
-      assert.deepEqual @sel, {
+      assert.deepEqual selector, {
         geo: { $geoIntersects: { $geometry: 
           type: 'Polygon',
           coordinates: [
@@ -135,17 +135,17 @@ describe "SourcesLayer", ->
     it "should add a user filter if a user is set", ->
       scope = { user: "test" }
       sl.scopeQuery(scope, selector)
-      assert.equal(selector, scope)
+      assert.deepEqual(selector, scope)
 
     it "should add a org filter if an org is set", ->
       scope = {org: "test" }
       sl.scopeQuery(scope, selector)
-      assert.equal(selector, scope)
+      assert.deepEqual(selector, scope)
 
     it "should not set anyting if there is no user or org", ->
       scope = {}
       sl.scopeQuery(scope, selector)
-      assert.equal(selector, scope)
+      assert.deepEqual(selector, scope)
 
   describe "update", ->
     it "queries bounds and scope", ->
@@ -169,19 +169,10 @@ describe "SourcesLayer", ->
       sl.scope = { user: "test" }
       sl.update()
 
-      assert.deepEqual @sel, {
-        user: "test",
-        geo: { $geoIntersects: { $geometry: 
-          type: 'Polygon',
-          coordinates: [
-            [[110, 10], 
-            [110, 20], 
-            [120, 20], 
-            [120, 10],
-            [110, 10]]
-          ]
-        } } 
-      }
+      assert.property(@sel, "user")
+      assert.equal(@sel.user, sl.scope.user)
+      assert.property(@sel, "geo")
+      
 
 
 

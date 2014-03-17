@@ -18,6 +18,8 @@ module.exports = class SourcesLayer extends L.LayerGroup
     super(map)
     map.off 'moveend', @update
 
+  setScope: (scope) => 
+    @scope = scope
   # Builds a selector based on bounds and scope (all, org, user)
   # then queries the database
   update: =>

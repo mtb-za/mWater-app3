@@ -109,7 +109,7 @@ class SourceMapPage extends Page
     @locationDisplay = new LocationDisplay(@map)
 
     # Create a dropdown menu using the Source Scope Options
-    menu = @sourceScopeOptions.map((scope) =>
+    menu = @getSourceScopeOptions().map((scope) =>
       text: scope.display
       id: "source-scope-" + scope.type
       click: => @updateSourceScope scope
@@ -120,32 +120,24 @@ class SourceMapPage extends Page
       { icon: "goto-my-location.png", click: => @gotoMyLocation() }
     ]
 
-    #TODO: Put this in Backbone's DOM ready event handler
-    #Set active sources scope dropdown item
-    selector = "source-scope-"
-    if scope.user
-      selector += "user"
-    else if scope.org 
-      selector += "org"
-    else 
-      selector += "all"
-    $(selector).closest("li").addClass "active";
-
   # TODO: Replace hardcoded user and org with current user's
   # Options for the dropdown menu
-  sourceScopeOptions: [
-      { display: "All Sources", type: "all", value: {} }
-      { display: "Only My Organization", type: "org", value: { org: "Mwanza" } }
-      { display: "Only Mine", type: "user", value: { user: "Amandus M" } }
-    ]
+  getSourceScopeOptions: =>
+    options = [{ display: "All Sources", type: "all", value: {} }]
+    # Only show Organization choice if user has an org
+    if @login.org
+      options.push { display: "Only My Organization", type: "org", value: { org: @login.org } }
+    
+    options.push { display: "Only Mine", type: "user", value: { user: @login.user } }
+    return options
 
   #Filter the sources by all, org, or user
   updateSourceScope: (scope) => 
     #Update UI
-    $(".dropdown-menu li").removeClass("active")
-    $("#source-scope-" + scope.type).closest("li").addClass("active")
+    @getButtonBar().$(".dropdown-menu li.menuitem").removeClass("active")
+    @getButtonBar().$("#source-scope-" + scope.type).closest("li.menuitem").addClass("active")
     #Update Map
-    @sourcesLayer.scope = scope.value
+    @sourcesLayer.setScope scope.value
     @sourcesLayer.update()
     #Persist the view
     @saveView()
@@ -169,6 +161,17 @@ class SourceMapPage extends Page
       @pager.flash("Unable to determine location", "warning")
 
   activate: ->
+    #Set active sources scope dropdown item
+    if @sourcesLayer and @sourcesLayer.scope
+      selector = "#source-scope-"
+      if @sourcesLayer.scope.user
+        selector += "user"
+      else if @sourcesLayer.scope.org 
+        selector += "org"
+      else 
+        selector += "all"
+      @getButtonBar().$(selector).closest("li").addClass "active";
+    
     # Update markers
     if @sourcesLayer and @needsRefresh
       @sourcesLayer.reset()
