@@ -40,7 +40,6 @@ Camera = require './Camera'
 cordova = require './cordova'
 ImageUploader = require './images/ImageUploader'
 ProblemReporter = require './ProblemReporter'
-Localizer = require './localization/Localizer'
 
 collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes']
 
@@ -49,12 +48,6 @@ apiUrl = 'https://api.mwater.co/v3/'
 # TODO this is not a pretty way to set these. But it is somewhat decoupled.
 temporaryFs = null
 persistentFs = null
-
-# Setup localizer
-localizationData = require './localization/localizations.json'
-localizer = new Localizer(localizationData, "en")
-localizer.makeGlobal()
-localizer.restoreCurrentLocale()
 
 exports.setupFileSystems = (tempFs, persFs) ->
   temporaryFs = tempFs
@@ -67,7 +60,7 @@ createBaseContext = ->
   error = (err) ->
     console.error err
     str = if err? and err.message then err.message else err
-    alert("Internal error: " + err)
+    alert(T("Internal error") + ": " + err)
     
     # Call default problem reporter if present
     if ProblemReporter.default?
@@ -79,7 +72,7 @@ createBaseContext = ->
     camera: camera
     version: '//VERSION//'
     baseVersion: cordova.baseVersion()
-    localizer: localizer
+    localizer: T.localizer
     stop: ->
     # db: null
     # imageManager: null
@@ -207,7 +200,7 @@ exports.createLoginContext = (login) ->
           imageManager.addImage url, (id) =>
             success(id)
         , (err) ->
-          alert("Failed to take picture")
+          alert(T("Failed to take picture"))
     }
   else 
     # Use ImageUploader

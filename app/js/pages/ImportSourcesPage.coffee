@@ -10,7 +10,7 @@ module.exports = class ImportSourcesPage extends Page
     "click #preview_sources_csv" : "previewSourcesCSV"
 
   create: ->
-    @setTitle "Import Sources"
+    @setTitle T("Import Sources")
     @$el.html templates['pages/ImportSourcesPage']()
 
   previewSourcesCSV: ->
@@ -22,4 +22,4 @@ module.exports = class ImportSourcesPage extends Page
         sources = sourceCSV.import($("#sources_csv").val())
         @pager.openPage(PreviewImportSourcesPage, { sources: sources })
       catch error
-        alert("Error in data\n" + error.message)
+        alert(T("Error in data") + "\n" + error.message)

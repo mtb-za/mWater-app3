@@ -57,7 +57,7 @@ exports.login = (username, password, ctx, success, error) ->
     if jqXHR.status < 500 and jqXHR.status >= 400 and jqXHR.status != 404 # 404 means no connection sometimes
       alert(JSON.parse(jqXHR.responseText).error)
     else
-      alert("Unable to login. Please check that you are connected to Internet")
+      alert(T("Unable to login. Please check that you are connected to Internet"))
     error()
 
   

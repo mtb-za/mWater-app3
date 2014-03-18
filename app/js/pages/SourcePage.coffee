@@ -25,7 +25,7 @@ module.exports = class SourcePage extends Page
   query: ->
     @db.sources.findOne {_id: @options._id}, (source) =>
       if not source
-        alert("Source not found")
+        alert(T("Source not found"))
         @pager.closePage()
         return
 
@@ -41,15 +41,15 @@ module.exports = class SourcePage extends Page
     @setTitle "Source " + @source.code
 
     if @auth.remove("sources", @source)
-      @setupContextMenu [ { glyph: 'remove', text: "Delete Source", click: => @deleteSource() } ]
+      @setupContextMenu [ { glyph: 'remove', text: T("Delete Source"), click: => @deleteSource() } ]
     else 
       @setupContextMenu [ ]
 
     menu = []
     if @auth.insert("tests")
-      menu.push({ text: "Start Water Test", click: => @addTest() })
+      menu.push({ text: T("Start Water Test"), click: => @addTest() })
     if @auth.insert("source_notes")
-      menu.push({ text: "Add Note", click: => @addNote() })
+      menu.push({ text: T("Add Note"), click: => @addNote() })
 
     @setupButtonBar [ { icon: "plus.png", menu: menu } ]
 
@@ -116,10 +116,10 @@ module.exports = class SourcePage extends Page
     @pager.openPage(require("./SourceEditPage"), { _id: @source._id})
 
   deleteSource: ->
-    if @auth.remove("sources", @source) and confirm("Permanently delete source?")
+    if @auth.remove("sources", @source) and confirm(T("Permanently delete source?"))
       @db.sources.remove @source._id, =>
         @pager.closePage()
-        @pager.flash "Source deleted", "success"
+        @pager.flash T("Source deleted"), "success"
 
   addTest: ->
     @pager.openPage(require("./NewTestPage"), { source: @source.code})

@@ -24,15 +24,15 @@ module.exports = class SignupPage extends Page
     password = @$("#signup_password").val()
 
     if not username or username.length == 0
-      alert("Username required")
+      alert(T("Username required"))
       return
 
     if not password or password.length < 5
-      alert("Password of at least 5 characters required")
+      alert(T("Password of at least 5 characters required"))
       return
 
     if not email or email.length == 0
-      alert("Email required")
+      alert(T("Email required"))
       return
 
     url = @apiUrl + 'users/' + username
@@ -56,14 +56,14 @@ module.exports = class SignupPage extends Page
       if jqXHR.status < 500 and jqXHR.status >= 400 and jqXHR.status != 404 # 404 means no connection sometimes
         alert(JSON.parse(jqXHR.responseText).error)
       else
-        alert("Unable to signup. Please check that you are connected to Internet")
+        alert(T("Unable to signup. Please check that you are connected to Internet"))
 
     return
 
   login: (username, password) ->
     success = =>
       @pager.closeAllPages(MainPage)
-      @pager.flash "Login as #{username} successful", "success"
+      @pager.flash T("Login as {0} successful", username), "success"
 
     error = =>
       $("#login_button").removeAttr('disabled')

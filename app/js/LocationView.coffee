@@ -42,13 +42,13 @@ class LocationView extends Backbone.View
   render: ->
     # Set location string
     if @errorFindingLocation
-      @$("#location_relative").text("Cannot find location")
+      @$("#location_relative").text(T("Cannot find location"))
     else if not @loc and not @settingLocation 
-      @$("#location_relative").text("Unspecified location")
+      @$("#location_relative").text(T("Unspecified location"))
     else if @settingLocation
-      @$("#location_relative").text("Setting location...")
+      @$("#location_relative").text(T("Setting location..."))
     else if not @currentLoc
-      @$("#location_relative").text("Waiting for GPS...")
+      @$("#location_relative").text(T("Waiting for GPS..."))
     else
       @$("#location_relative").text(GeoJSON.getRelativeLocation(@currentLoc, @loc))
 
@@ -116,10 +116,10 @@ class LocationView extends Backbone.View
 
   saveEditLocation: ->
     if isNaN(parseFloat(@$("#latitude").val()))
-      alert("Invalid latitude")
+      alert(T("Invalid latitude"))
       return
     if isNaN(parseFloat(@$("#longitude").val()))
-      alert("Invalid longitude")
+      alert(T("Invalid longitude"))
       return
 
     # Set location

@@ -4,7 +4,7 @@ forms = require '../forms'
 # Allows creating of a source
 module.exports = class ProblemReportPage extends Page
   activate: ->
-    @setTitle "Report Problem"
+    @setTitle T("Report Problem")
 
     # Create model
     @model = new Backbone.Model()
@@ -17,17 +17,17 @@ module.exports = class ProblemReportPage extends Page
     questions.push new forms.TextQuestion
       id: 'username'
       model: @model
-      prompt: 'Enter username'
+      prompt: T('Enter username')
 
     questions.push new forms.TextQuestion
       id: 'email'
       model: @model
-      prompt: 'Enter email address'
+      prompt: T('Enter email address')
     
     questions.push new forms.TextQuestion
       id: 'desc'
       model: @model
-      prompt: 'Describe the problem'
+      prompt: T('Describe the problem')
       multiline: true
 
     saveCancelForm = new forms.SaveCancelForm
@@ -53,7 +53,7 @@ module.exports = class ProblemReportPage extends Page
 
       req.done (data, textStatus, jqXHR) =>
         @pager.closePage()
-        @pager.flash "Report sent", "success"
+        @pager.flash T("Report sent"), "success"
       req.fail (jqXHR, textStatus, errorThrown) =>
         @error(textStatus)
 

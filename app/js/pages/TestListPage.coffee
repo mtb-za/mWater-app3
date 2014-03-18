@@ -10,7 +10,7 @@ module.exports = class TestListPage extends Page
 
   create: ->
     @$el.html templates['pages/TestListPage']()
-    @setTitle 'Recent Tests'
+    @setTitle T('Recent Tests')
 
   activate: ->
     @setupButtonBar [

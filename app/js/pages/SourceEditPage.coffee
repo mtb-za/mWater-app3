@@ -11,7 +11,7 @@ module.exports = class SourceEditPage extends Page
       if not @auth.update("sources", source)
         return @pager.closePage()
 
-      @setTitle "Edit Source #{source.code}"
+      @setTitle T("Edit Source {0}", source.code)
 
       # Create model from source
       @model = new Backbone.Model(source)
@@ -20,7 +20,7 @@ module.exports = class SourceEditPage extends Page
       sourceTypesQuestion = new forms.DropdownQuestion
         id: 'type'
         model: @model
-        prompt: 'Enter Source Type'
+        prompt: T('Enter Source Type')
         options: []
       @db.source_types.find({}).fetch (sourceTypes) =>
         # Fill source types
@@ -32,17 +32,17 @@ module.exports = class SourceEditPage extends Page
           new forms.TextQuestion
             id: 'name'
             model: @model
-            prompt: 'Enter optional name'
+            prompt: T('Enter optional name')
           new forms.TextQuestion
             id: 'desc'
             model: @model
-            prompt: 'Enter optional description'
+            prompt: T('Enter optional description')
           new forms.CheckQuestion
             id: 'private'
             model: @model
-            prompt: "Privacy"
-            text: 'Water source is private'
-            hint: 'This should only be used for sources that are not publically accessible'
+            prompt: T("Privacy")
+            text: T('Water source is private')
+            hint: T('This should only be used for sources that are not publically accessible')
         ]
 
       @$el.empty().append(saveCancelForm.el)

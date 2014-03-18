@@ -11,7 +11,7 @@ class AdminPage extends Page
     "click #set_org_button": "setOrg"
 
   activate: ->
-    @setTitle "Admin"
+    @setTitle T("Admin")
     @render()
 
   render: ->

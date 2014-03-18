@@ -11,7 +11,7 @@ BaseLayers = require '../map/BaseLayers'
 # initialGeo: Geometry to zoom to. Point only supported.
 class SourceMapPage extends Page
   create: ->
-    @setTitle "Source Map"
+    @setTitle T("Source Map")
 
     # Calculate height
     @$el.html templates['pages/SourceMapPage']()
@@ -108,14 +108,14 @@ class SourceMapPage extends Page
 
   # Options for the dropdown menu
   getSourceScopeOptions: =>
-    options = [{ display: "All Sources", type: "all", value: {} }]
+    options = [{ display: T("All Sources"), type: "all", value: {} }]
     # Only show Organization choice if user has an org
     if @login?
       if @login.org?
-        options.push { display: "Only My Organization", type: "org", value: { org: @login.org } }
+        options.push { display: T("Only My Organization"), type: "org", value: { org: @login.org } }
 
       if @login.user?
-        options.push { display: "Only Mine", type: "user", value: { user: @login.user } }
+        options.push { display: T("Only Mine"), type: "user", value: { user: @login.user } }
     return options
 
   #Filter the sources by all, org, or user
@@ -145,7 +145,7 @@ class SourceMapPage extends Page
       zoom = @map.getZoom()
       @map.setView(latLng, if zoom > 15 then zoom else 15)
     , =>
-      @pager.flash("Unable to determine location", "warning")
+      @pager.flash(T("Unable to determine location"), "warning")
 
   activate: ->
     # Get the current scope to be used to set the active dropdown item

@@ -31,7 +31,7 @@ class SettingsPage extends Page
 
     # Setup debugging buttons
     if window.debug
-      @$("#weinre_details").html("Debugging with code <b>#{window.debug.code}</b>")
+      @$("#weinre_details").html(T("Debugging with code <b>{0}</b>", window.debug.code))
       @$("#weinre").attr("disabled", true)
 
   setLocale: ->
@@ -40,7 +40,7 @@ class SettingsPage extends Page
     @render()
 
   resetDb: ->
-    if confirm("Completely discard local data, logout and lose unsubmitted changes?")
+    if confirm(T("Completely discard local data, logout and lose unsubmitted changes?"))
       window.localStorage.clear()
       while @pager.multiplePages()
         @pager.closePage()
@@ -57,14 +57,14 @@ class SettingsPage extends Page
     navigator.camera.getPicture (imgUrl) ->
       ECPlates.processImage imgUrl, (args) =>
         if args.error
-          res = "Error: " + args.error
+          res = T("Error") + ": " + args.error
         else
-          res = "E.Coli: " + args.ecoli + "\nTC: " + args.tc + "\nAlgorithm: " + args.algorithm
+          res = T("E.Coli") + ": " + args.ecoli + "\n" + T("TC") + ": " + args.tc + "\n" + T("Algorithm") + ": " + args.algorithm
         alert res
       , @error
 
   startWeinre: ->
-    if confirm("Start remote debugger (this will give developers temporary access to the app on your phone)?")
+    if confirm(T("Start remote debugger (this will give developers temporary access to the app on your phone)?"))
       # Disable to prevent double-click
       @$("#weinre").attr("disabled", true)
 
@@ -78,9 +78,9 @@ class SettingsPage extends Page
           require: require
         }
         @render()
-        alert("Debugger started with code #{code}")
+        alert(T("Debugger started with code {0}", code))
       script.onerror = ->
-        error("Failed to load weinre")
+        error(T("Failed to load weinre"))
         @render()
       script.src = "http://weinre.mwater.co/target/target-script-min.js#" + code
       document.head.appendChild(script)

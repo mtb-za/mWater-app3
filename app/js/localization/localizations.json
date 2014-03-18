@@ -24,7 +24,7 @@
     },
     {
       "en": "Start Survey",
-      "es": "Empieze Encuesta"
+      "es": ""
     },
     {
       "en": "User:",
@@ -44,6 +44,770 @@
     },
     {
       "en": "List Water Sources",
+      "es": ""
+    },
+    {
+      "en": "Language:",
+      "es": ""
+    },
+    {
+      "en": "Advanced",
+      "es": ""
+    },
+    {
+      "en": "Reset Local Storage",
+      "es": ""
+    },
+    {
+      "en": "This will completely reset any cached data and cause you to lose any pending changes that you have not uploaded",
+      "es": ""
+    },
+    {
+      "en": "N",
+      "es": ""
+    },
+    {
+      "en": "NE",
+      "es": ""
+    },
+    {
+      "en": "E",
+      "es": ""
+    },
+    {
+      "en": "SE",
+      "es": ""
+    },
+    {
+      "en": "S",
+      "es": ""
+    },
+    {
+      "en": "SW",
+      "es": ""
+    },
+    {
+      "en": "W",
+      "es": ""
+    },
+    {
+      "en": "NW",
+      "es": ""
+    },
+    {
+      "en": "No geolocation available",
+      "es": ""
+    },
+    {
+      "en": "Cannot find location",
+      "es": ""
+    },
+    {
+      "en": "Unspecified location",
+      "es": ""
+    },
+    {
+      "en": "Setting location...",
+      "es": ""
+    },
+    {
+      "en": "Waiting for GPS...",
+      "es": ""
+    },
+    {
+      "en": "Invalid latitude",
+      "es": ""
+    },
+    {
+      "en": "Invalid longitude",
+      "es": ""
+    },
+    {
+      "en": "Internal Error",
+      "es": ""
+    },
+    {
+      "en": "Internal error",
+      "es": ""
+    },
+    {
+      "en": "Failed to take picture",
+      "es": ""
+    },
+    {
+      "en": "A new version is available. Restart app?",
+      "es": ""
+    },
+    {
+      "en": "Loading mWater...",
+      "es": ""
+    },
+    {
+      "en": "Images not available",
+      "es": ""
+    },
+    {
+      "en": "Save",
+      "es": ""
+    },
+    {
+      "en": "Cancel",
+      "es": ""
+    },
+    {
+      "en": "Discard",
+      "es": ""
+    },
+    {
+      "en": "Save for Later",
+      "es": ""
+    },
+    {
+      "en": "Complete",
+      "es": ""
+    },
+    {
+      "en": "Image must be a jpeg file",
+      "es": ""
+    },
+    {
+      "en": "Upload failed: {0}",
+      "es": ""
+    },
+    {
+      "en": "Error uploading file",
+      "es": ""
+    },
+    {
+      "en": "Upload cancelled",
+      "es": ""
+    },
+    {
+      "en": "Create Water Source",
+      "es": ""
+    },
+    {
+      "en": "Pending...",
+      "es": ""
+    },
+    {
+      "en": "No Data",
+      "es": ""
+    },
+    {
+      "en": "High",
+      "es": ""
+    },
+    {
+      "en": "Water source",
+      "es": ""
+    },
+    {
+      "en": "Name",
+      "es": ""
+    },
+    {
+      "en": "E.Coli / 100mL",
+      "es": ""
+    },
+    {
+      "en": "Open",
+      "es": ""
+    },
+    {
+      "en": "Admin",
+      "es": ""
+    },
+    {
+      "en": "Select Survey",
+      "es": ""
+    },
+    {
+      "en": "Image",
+      "es": ""
+    },
+    {
+      "en": "Remove image?",
+      "es": ""
+    },
+    {
+      "en": "Import Sources",
+      "es": ""
+    },
+    {
+      "en": "Error in data",
+      "es": ""
+    },
+    {
+      "en": "Login as {0} successful",
+      "es": ""
+    },
+    {
+      "en": "Running in Demo mode. No changes will be saved",
+      "es": ""
+    },
+    {
+      "en": "New Source",
+      "es": ""
+    },
+    {
+      "en": "Enter Source Type",
+      "es": ""
+    },
+    {
+      "en": "Enter optional name",
+      "es": ""
+    },
+    {
+      "en": "Enter optional description",
+      "es": ""
+    },
+    {
+      "en": "Privacy",
+      "es": ""
+    },
+    {
+      "en": "Water source is private",
+      "es": ""
+    },
+    {
+      "en": "This should only be used for sources that are not publically accessible",
+      "es": ""
+    },
+    {
+      "en": "Set to current location?",
+      "es": ""
+    },
+    {
+      "en": "Unable to generate source id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range.",
+      "es": ""
+    },
+    {
+      "en": "Form not found",
+      "es": ""
+    },
+    {
+      "en": "Select Test",
+      "es": ""
+    },
+    {
+      "en": "Preview Sources",
+      "es": ""
+    },
+    {
+      "en": "Import sources? This cannot be undone.",
+      "es": ""
+    },
+    {
+      "en": "{0} sources inserted",
+      "es": ""
+    },
+    {
+      "en": "Report Problem",
+      "es": ""
+    },
+    {
+      "en": "Enter username",
+      "es": ""
+    },
+    {
+      "en": "Enter email address",
+      "es": ""
+    },
+    {
+      "en": "Describe the problem",
+      "es": ""
+    },
+    {
+      "en": "Report sent",
+      "es": ""
+    },
+    {
+      "en": "Debugging with code <b>{0}</b>",
+      "es": ""
+    },
+    {
+      "en": "Completely discard local data, logout and lose unsubmitted changes?",
+      "es": ""
+    },
+    {
+      "en": "Error",
+      "es": ""
+    },
+    {
+      "en": "E.Coli",
+      "es": ""
+    },
+    {
+      "en": "TC",
+      "es": ""
+    },
+    {
+      "en": "Algorithm",
+      "es": ""
+    },
+    {
+      "en": "Start remote debugger (this will give developers temporary access to the app on your phone)?",
+      "es": ""
+    },
+    {
+      "en": "Debugger started with code {0}",
+      "es": ""
+    },
+    {
+      "en": "Failed to load weinre",
+      "es": ""
+    },
+    {
+      "en": "Username required",
+      "es": ""
+    },
+    {
+      "en": "Password of at least 5 characters required",
+      "es": ""
+    },
+    {
+      "en": "Email required",
+      "es": ""
+    },
+    {
+      "en": "Unable to signup. Please check that you are connected to Internet",
+      "es": ""
+    },
+    {
+      "en": "Edit Source {0}",
+      "es": ""
+    },
+    {
+      "en": "Nearby Sources",
+      "es": ""
+    },
+    {
+      "en": "Unable to determine location",
+      "es": ""
+    },
+    {
+      "en": "Enter search text or ID of water source",
+      "es": ""
+    },
+    {
+      "en": "Source Map",
+      "es": ""
+    },
+    {
+      "en": "All Sources",
+      "es": ""
+    },
+    {
+      "en": "Only My Organization",
+      "es": ""
+    },
+    {
+      "en": "Only Mine",
+      "es": ""
+    },
+    {
+      "en": "Note for Source {0}",
+      "es": ""
+    },
+    {
+      "en": "Date of Visit",
+      "es": ""
+    },
+    {
+      "en": "Status of Water Source",
+      "es": ""
+    },
+    {
+      "en": "Functional",
+      "es": ""
+    },
+    {
+      "en": "Needs maintenance",
+      "es": ""
+    },
+    {
+      "en": "Non-functional",
+      "es": ""
+    },
+    {
+      "en": "No longer exists",
+      "es": ""
+    },
+    {
+      "en": "Notes",
+      "es": ""
+    },
+    {
+      "en": "Source not found",
+      "es": ""
+    },
+    {
+      "en": "Delete Source",
+      "es": ""
+    },
+    {
+      "en": "Add Note",
+      "es": ""
+    },
+    {
+      "en": "Permanently delete source?",
+      "es": ""
+    },
+    {
+      "en": "Source deleted",
+      "es": ""
+    },
+    {
+      "en": "Survey",
+      "es": ""
+    },
+    {
+      "en": "Test not found",
+      "es": ""
+    },
+    {
+      "en": "Delete Survey",
+      "es": ""
+    },
+    {
+      "en": "Survey form {0} not found",
+      "es": ""
+    },
+    {
+      "en": "Survey saved as draft.",
+      "es": ""
+    },
+    {
+      "en": "Survey completed successfully",
+      "es": ""
+    },
+    {
+      "en": "Permanently delete survey?",
+      "es": ""
+    },
+    {
+      "en": "Survey deleted",
+      "es": ""
+    },
+    {
+      "en": "Recent Tests",
+      "es": ""
+    },
+    {
+      "en": "Water Test",
+      "es": ""
+    },
+    {
+      "en": "Delete Test",
+      "es": ""
+    },
+    {
+      "en": "Test form {0} not found",
+      "es": ""
+    },
+    {
+      "en": "Test saved as draft.",
+      "es": ""
+    },
+    {
+      "en": "Test completed successfully",
+      "es": ""
+    },
+    {
+      "en": "Permanently delete test?",
+      "es": ""
+    },
+    {
+      "en": "Test deleted",
+      "es": ""
+    },
+    {
+      "en": "Unable to login. Please check that you are connected to Internet",
+      "es": ""
+    },
+    {
+      "en": "Latitude",
+      "es": ""
+    },
+    {
+      "en": "Longitude",
+      "es": ""
+    },
+    {
+      "en": "Home",
+      "es": ""
+    },
+    {
+      "en": "Login",
+      "es": ""
+    },
+    {
+      "en": "List of Sources",
+      "es": ""
+    },
+    {
+      "en": "Map of Sources",
+      "es": ""
+    },
+    {
+      "en": "Start New Water Test",
+      "es": ""
+    },
+    {
+      "en": "Recent Water Tests",
+      "es": ""
+    },
+    {
+      "en": "Start New Survey",
+      "es": ""
+    },
+    {
+      "en": "Recent Surveys",
+      "es": ""
+    },
+    {
+      "en": "Settings",
+      "es": ""
+    },
+    {
+      "en": "Report a Problem",
+      "es": ""
+    },
+    {
+      "en": "Logout",
+      "es": ""
+    },
+    {
+      "en": "Back",
+      "es": ""
+    },
+    {
+      "en": "Next",
+      "es": ""
+    },
+    {
+      "en": "Finish",
+      "es": ""
+    },
+    {
+      "en": "Upload Image",
+      "es": ""
+    },
+    {
+      "en": "Close",
+      "es": ""
+    },
+    {
+      "en": "Upload",
+      "es": ""
+    },
+    {
+      "en": "Change user's password",
+      "es": ""
+    },
+    {
+      "en": "Change Password",
+      "es": ""
+    },
+    {
+      "en": "Set user's organization",
+      "es": ""
+    },
+    {
+      "en": "Move user's existing data to new organization",
+      "es": ""
+    },
+    {
+      "en": "Change Organization",
+      "es": ""
+    },
+    {
+      "en": "Crash!",
+      "es": ""
+    },
+    {
+      "en": "Incomplete Surveys",
+      "es": ""
+    },
+    {
+      "en": "Recent Completed Surveys",
+      "es": ""
+    },
+    {
+      "en": "Loading image",
+      "es": ""
+    },
+    {
+      "en": "Paste CSV here",
+      "es": ""
+    },
+    {
+      "en": "Fields are all optional",
+      "es": ""
+    },
+    {
+      "en": "name: name of source",
+      "es": ""
+    },
+    {
+      "en": "desc: description of source",
+      "es": ""
+    },
+    {
+      "en": "type: type of source (see http://api.mwater.co/v3/source_types)",
+      "es": ""
+    },
+    {
+      "en": "latitude: latitude of source",
+      "es": ""
+    },
+    {
+      "en": "longitude: longitude of source",
+      "es": ""
+    },
+    {
+      "en": "private: \"true\" if source should be private",
+      "es": ""
+    },
+    {
+      "en": "org: organization to upload as (available to admin only)",
+      "es": ""
+    },
+    {
+      "en": "Other fields will be added as custom fields and preserved.",
+      "es": ""
+    },
+    {
+      "en": "Preview",
+      "es": ""
+    },
+    {
+      "en": "Demo",
+      "es": ""
+    },
+    {
+      "en": "Try out app",
+      "es": ""
+    },
+    {
+      "en": "Login to mWater",
+      "es": ""
+    },
+    {
+      "en": "Username or Email",
+      "es": ""
+    },
+    {
+      "en": "Username",
+      "es": ""
+    },
+    {
+      "en": "Password",
+      "es": ""
+    },
+    {
+      "en": "or",
+      "es": ""
+    },
+    {
+      "en": "Signup",
+      "es": ""
+    },
+    {
+      "en": "Select type of survey to start",
+      "es": ""
+    },
+    {
+      "en": "Select type of test to start",
+      "es": ""
+    },
+    {
+      "en": "Sources to Import",
+      "es": ""
+    },
+    {
+      "en": "Import Now",
+      "es": ""
+    },
+    {
+      "en": "Test EC Compact Dry Plate Counter",
+      "es": ""
+    },
+    {
+      "en": "Start Remote Debugger",
+      "es": ""
+    },
+    {
+      "en": "Signup with mWater",
+      "es": ""
+    },
+    {
+      "en": "Note: Your username is visible on water sources you create",
+      "es": ""
+    },
+    {
+      "en": "Email address",
+      "es": ""
+    },
+    {
+      "en": "Email",
+      "es": ""
+    },
+    {
+      "en": "Note: Your email address will never be shared",
+      "es": ""
+    },
+    {
+      "en": "Waiting for GPS location...",
+      "es": ""
+    },
+    {
+      "en": "Search results for:",
+      "es": ""
+    },
+    {
+      "en": "ID:",
+      "es": ""
+    },
+    {
+      "en": "Type:",
+      "es": ""
+    },
+    {
+      "en": "Edit Source",
+      "es": ""
+    },
+    {
+      "en": "Location",
+      "es": ""
+    },
+    {
+      "en": "Add",
+      "es": ""
+    },
+    {
+      "en": "Water Tests",
+      "es": ""
+    },
+    {
+      "en": "Surveys",
+      "es": ""
+    },
+    {
+      "en": "Photos",
+      "es": ""
+    },
+    {
+      "en": "Incomplete Tests",
+      "es": ""
+    },
+    {
+      "en": "Test",
+      "es": ""
+    },
+    {
+      "en": "of",
       "es": ""
     }
   ]

@@ -10,7 +10,7 @@ module.exports = class NewTestPage extends Page
     "click .test" : "startTest"
 
   activate: ->
-    @setTitle "Select Test"
+    @setTitle T("Select Test")
 
     @db.forms.find({type:"WaterTest"}).fetch (forms) =>
       @forms = forms
@@ -21,7 +21,7 @@ module.exports = class NewTestPage extends Page
 
     form = _.findWhere(@forms, { code: testCode })
     if not form
-      @error("Form not found")
+      @error(T("Form not found"))
       return
 
     # Create code. Not unique, but unique per user if logged in once.

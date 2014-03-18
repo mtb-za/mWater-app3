@@ -59,7 +59,7 @@ exports.getRelativeLocation = (from, to) ->
   
   # Get approximate direction
   compassDir = (Math.floor((angle + 22.5) / 45)) % 8
-  compassStrs = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+  compassStrs = [T("N"), T("NE"), T("E"), T("SE"), T("S"), T("SW"), T("W"), T("NW")]
   if dist > 1000
     (dist / 1000).toFixed(1) + "km " + compassStrs[compassDir]
   else

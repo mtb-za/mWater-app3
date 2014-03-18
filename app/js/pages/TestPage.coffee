@@ -5,25 +5,25 @@ class TestPage extends Page
   create: -> @render()
 
   render: ->
-    @setTitle "Water Test"
+    @setTitle T("Water Test")
 
     # Get test
     @db.tests.findOne {_id: @options._id}, (test) =>
       if not test
-        alert("Test not found")
+        alert(T("Test not found"))
         return @pager.closePage()
 
       @test = test
 
       if @auth.remove("tests", @test)
-        @setupContextMenu [ { glyph: 'remove', text: "Delete Test", click: => @removeTest() } ]
+        @setupContextMenu [ { glyph: 'remove', text: T("Delete Test"), click: => @removeTest() } ]
       else 
         @setupContextMenu [ ]
 
       # Get form
       @db.forms.findOne { type: "WaterTest", code: test.type }, (form) =>
         if not form
-          alert "Test form #{response.type} not found"
+          alert T("Test form {0} not found", response.type)
           @pager.closePage()
           return
 
@@ -60,7 +60,7 @@ class TestPage extends Page
   destroy: ->
     # Let know that saved if closed incompleted
     if @test and not @test.completed
-      @pager.flash "Test saved as draft."
+      @pager.flash T("Test saved as draft.")
 
     # Remove test control
     if @formView?
@@ -87,13 +87,13 @@ class TestPage extends Page
 
     @db.tests.upsert @test, => @render()
     @pager.closePage()
-    @pager.flash "Test completed successfully", "success"
+    @pager.flash T("Test completed successfully"), "success"
 
   removeTest: ->
-    if @auth.remove("tests", @test) and confirm("Permanently delete test?")
+    if @auth.remove("tests", @test) and confirm(T("Permanently delete test?"))
       @db.tests.remove @test._id, =>
         @test = null
         @pager.closePage()
-        @pager.flash "Test deleted", "warning"
+        @pager.flash T("Test deleted"), "warning"
 
 module.exports = TestPage
