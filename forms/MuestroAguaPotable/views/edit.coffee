@@ -1,6 +1,7 @@
 forms = require("forms")
 model = new Backbone.Model()
 
+sections = []
 questions = []
 
 # Location information 
@@ -13,6 +14,66 @@ questions.push new forms.SourceQuestion
   model: model
   prompt: "Seleccione el código de la fuente de agua"
   ctx: options.ctx
+
+questions.push new forms.TextQuestion
+  id: "colonia"
+  model: model
+  prompt: "Colonia"
+
+questions.push new forms.TextQuestion
+  id: "delgacion"
+  model: model
+  prompt: "Delgación"
+
+questions.push new forms.TextQuestion
+  id: "clave_colonia"
+  model: model
+  prompt: "Clave Colonia"
+
+questions.push new forms.TextQuestion
+  id: "initial_portfolio"
+  model: model
+  prompt: "Initial Portfolio"
+
+questions.push new forms.TextQuestion
+  id: "final_portfolio"
+  model: model
+  prompt: "Final Portfolio"
+
+
+questions.push new forms.DateQuestion
+  id: "fecha"
+  model: model
+  prompt: "Fecha"
+
+
+questions.push new forms.TextQuestion
+  id: "clave_crucero" 
+  model: model
+  prompt: "Clave Crucero" 
+
+questions.push new forms.TextQuestion
+  id: "calle_1" 
+  model: model
+  prompt: "Calle 1" 
+
+questions.push new forms.TextQuestion
+  id: "calle_2" 
+  model: model
+  prompt: "Calle 2" 
+
+questions.push new forms.TextQuestion
+  id: "hora" 
+  model: model
+  prompt: "Hora" 
+
+
+sections.push new forms.Section
+  model: model
+  title: "Información de la ubicación"
+  contents: questions
+questions = []
+
 
 #Water Quality
 
@@ -43,9 +104,30 @@ questions.push new forms.NumberQuestion
 questions.push new forms.NumberQuestion
   id: "temperatura"
   model: model
-  prompt: "Temperatura (°C)"
+  prompt: "Temperatura"
   decimal: true
 
-return new forms.WaterTestEditView
+
+
+questions.push new forms.TextQuestion
+  id: "folio"
   model: model
+  prompt: "Folio"
+
+
+sections.push new forms.Section
+  model: model
+  title: "Calidad del Agua"
   contents: questions
+questions = []
+
+
+
+# END HERE
+view = new forms.Sections
+  sections: sections
+  model: model
+
+return new forms.SurveyView
+  model: model
+  contents: [view]
