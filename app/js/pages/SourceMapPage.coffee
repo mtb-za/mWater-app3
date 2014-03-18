@@ -103,8 +103,6 @@ class SourceMapPage extends Page
     # Save view
     @map.on 'moveend', @saveView
 
-
-
     # Setup location display
     @locationDisplay = new LocationDisplay(@map)
 
@@ -112,10 +110,12 @@ class SourceMapPage extends Page
   getSourceScopeOptions: =>
     options = [{ display: "All Sources", type: "all", value: {} }]
     # Only show Organization choice if user has an org
-    if @login.org
-      options.push { display: "Only My Organization", type: "org", value: { org: @login.org } }
-    
-    options.push { display: "Only Mine", type: "user", value: { user: @login.user } }
+    if @login?
+      if @login.org?
+        options.push { display: "Only My Organization", type: "org", value: { org: @login.org } }
+
+      if @login.user?
+        options.push { display: "Only Mine", type: "user", value: { user: @login.user } }
     return options
 
   #Filter the sources by all, org, or user

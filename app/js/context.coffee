@@ -13,7 +13,7 @@ camera: Camera that has a single function: takePicture(success, error).
   success is called with url to be passed to imageManager.addImage(url, success, error)
   error: error function to be called with unexpected errors
 auth: see auth module
-login: { user: <username>, org: <org code>, client: <client id> }
+login: { user: <username>, org: <org code>, client: <client id> }. Can be null if not logged in.
 dataSync: synchronizer for data including db and source codes. Success message is to be displayed.
 imageSync: synchronizer for images. Success message is to be displayed.
 imageAcquirer: source of images (either camera or file selection). Has single function: acquire(success, error)
