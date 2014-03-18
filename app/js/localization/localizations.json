@@ -1,0 +1,56 @@
+{
+  "locales": [
+    {
+      "code": "en",
+      "name": "English"
+    },
+    {
+      "code": "es",
+      "name": "Espanol"
+    }
+  ],
+  "strings": [
+    {
+      "en": "<b>{0} images to upload</b>",
+      "es": ""
+    },
+    {
+      "en": "Add Water Source",
+      "es": ""
+    },
+    {
+      "en": "Start Water Test"
+    },
+    {
+      "en": "Start Survey"
+    },
+    {
+      "en": "User:",
+      "es": ""
+    },
+    {
+      "en": "Sync:",
+      "es": ""
+    },
+    {
+      "en": "Version:",
+      "es": ""
+    },
+    {
+      "en": "Map Water Sources",
+      "es": ""
+    },
+    {
+      "en": "List Water Sources",
+      "es": ""
+    },
+    {
+      "en": "Start Water Test",
+      "es": ""
+    },
+    {
+      "en": "Start Survey",
+      "es": ""
+    }
+  ]
+}

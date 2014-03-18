@@ -9,7 +9,9 @@
   "repository": "git@github.com:mWater/app-v3.git",
   "author": "Clayton Grassick",
   "license": "GPLv3",
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "~1.9.0"
+  },
   "dependencies": {
     "underscore": "~1.5.2",
     "grunt": "~0.4.1",
@@ -29,7 +31,7 @@
     "synchronize": "~0.5.2",
     "through": "~2.3.4",
     "parse-appcache-manifest": "~0.2.0",
-    "uglify-js": "~2.4.7",
+    "uglify-js": "~2.4.13",
     "handlebars": "~1.1.2",
     "coffeeify": "~0.6.0",
     "grunt-contrib-copy": "~0.4.1",
@@ -40,6 +42,7 @@
     "fastclick": "~0.6.11",
     "lodash": "~2.4.1",
     "csv": "~0.3.6",
-    "queue-async": "~1.0.7"
+    "queue-async": "~1.0.7",
+    "minimist": "0.0.8"
   }
 }
