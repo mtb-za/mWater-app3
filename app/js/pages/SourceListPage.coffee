@@ -38,7 +38,13 @@ module.exports = class SourceListPage extends Page
     @performSearch()
 
   addSource: ->
-    @pager.openPage(require("./NewSourcePage"))
+    # Wrap onSelect
+    onSelect = undefined
+    if @options.onSelect
+      onSelect = (source) =>
+        @pager.closePage()
+        @options.onSelect(source)
+    @pager.openPage(require("./NewSourcePage"), {onSelect: onSelect})
     
   locationFound: (pos) =>
     @$("#location_msg").hide()
