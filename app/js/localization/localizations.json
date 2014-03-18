@@ -19,10 +19,12 @@
       "es": ""
     },
     {
-      "en": "Start Water Test"
+      "en": "Start Water Test",
+      "es": ""
     },
     {
-      "en": "Start Survey"
+      "en": "Start Survey",
+      "es": "Empieze Encuesta"
     },
     {
       "en": "User:",
@@ -42,14 +44,6 @@
     },
     {
       "en": "List Water Sources",
-      "es": ""
-    },
-    {
-      "en": "Start Water Test",
-      "es": ""
-    },
-    {
-      "en": "Start Survey",
       "es": ""
     }
   ]

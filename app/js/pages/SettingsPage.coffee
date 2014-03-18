@@ -7,6 +7,7 @@ class SettingsPage extends Page
     "click #request_source_codes": "requestSourceCodes"
     "click #test_ecplates" : "testECPlates"
     "click #weinre" : "startWeinre"
+    "change #locale": "setLocale"
 
   activate: ->
     @setTitle "Settings"
@@ -15,7 +16,11 @@ class SettingsPage extends Page
   render: ->
     @$el.html templates['pages/SettingsPage'](
       offlineSourceCodes: if @sourceCodesManager then @sourceCodesManager.getNumberAvailableCodes() else null
+      locales: @localizer.getLocales()
     )
+
+    # Select current locale
+    @$("#locale").val(@localizer.locale)
 
     # Show EC plates test if available
     @$("#test_ecplates").hide()
@@ -28,6 +33,11 @@ class SettingsPage extends Page
     if window.debug
       @$("#weinre_details").html("Debugging with code <b>#{window.debug.code}</b>")
       @$("#weinre").attr("disabled", true)
+
+  setLocale: ->
+    @localizer.locale = @$("#locale").val()
+    @localizer.saveCurrentLocale()
+    @render()
 
   resetDb: ->
     if confirm("Completely discard local data, logout and lose unsubmitted changes?")

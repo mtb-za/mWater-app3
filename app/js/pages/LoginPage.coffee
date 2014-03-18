@@ -9,10 +9,22 @@ module.exports = class LoginPage extends Page
     'click #signup_button' : 'signupClicked'
     'submit #form_login' : 'loginClicked'
     'click #demo_button' : 'demoClicked'
+    "change #locale": "setLocale"
 
   activate: ->
     @setTitle ""
-    @$el.html templates['pages/LoginPage']()
+    @render()
+
+  render: ->
+    @$el.html templates['pages/LoginPage'](locales: @localizer.getLocales())
+
+    # Select current locale
+    @$("#locale").val(@localizer.locale)
+
+  setLocale: ->
+    @localizer.locale = @$("#locale").val()
+    @localizer.saveCurrentLocale()
+    @render()
 
   signupClicked: ->
     # Open signup form

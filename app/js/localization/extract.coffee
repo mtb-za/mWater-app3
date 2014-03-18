@@ -4,6 +4,11 @@ path = require 'path'
 localizationExtractor = require './localizationExtractor'
 
 argv = require('minimist')(process.argv.slice(2))
+
+if argv._.length < 1
+  console.log "Parameters are <directory to scan> <localization file>?"
+  return
+
 dir = argv._[0]
 datafile = argv._[1] || "localizations.json"
 strs = []
@@ -43,11 +48,11 @@ for str in strs
       if loc.code != "en"
         string[loc.code] = ""
     localizations.strings.push string
+    map[string.en] = string
   else
     # Just add missing languages
     for loc in localizations.locales
-      if loc.code != "en" and not map[str][loc.code]
+      if loc.code != "en" and not map[str][loc.code]?
         map[str][loc.code] = ""
-
 
 fs.writeFileSync(datafile, JSON.stringify(localizations, null, 2), 'utf-8')

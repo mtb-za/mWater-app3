@@ -1,3 +1,13 @@
+<h5>Language</h5>
+<div class="row">
+	<div class="col-xs-4">
+		<select class="form-control" id="locale">
+			{{#each locales}}
+			<option value="{{code}}">{{name}}</option>
+			{{/each}}
+		</select>
+	</div>
+</div>
 
 {{#if offlineSourceCodes}}
 <h5>Offline Source Creation</h5>

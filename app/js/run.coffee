@@ -9,7 +9,6 @@ ProblemReporter = require './ProblemReporter'
 MainPage = require './pages/MainPage'
 LoginPage = require './pages/LoginPage'
 SourceMapPage = require './pages/SourceMapPage'
-Localizer = require './localization/Localizer'
 
 AppUpdater = require './AppUpdater'
 
@@ -23,10 +22,6 @@ exports.start = (options = {}) ->
 
   # Create pager
   pager = new Pager()
-
-  # Setup localizer
-  localizer = new Localizer()
-  localizer.makeGlobal()
 
   # Create slide menu
   slideMenu = new SlideMenu()

@@ -1,4 +1,11 @@
 <div class="page">
+  <div class="pull-right">
+    <select class="form-control" id="locale" style="width: auto">
+      {{#each locales}}
+      <option value="{{code}}">{{name}}</option>
+      {{/each}}
+    </select>
+  </div>
   <div>
     <button id="demo_button" type="submit" class="btn btn-lg btn-info">Demo</button> 
     <span class="glyphicon glyphicon-arrow-left"></span> Try out app

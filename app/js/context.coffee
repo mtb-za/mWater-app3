@@ -19,6 +19,7 @@ imageSync: synchronizer for images. Success message is to be displayed.
 imageAcquirer: source of images (either camera or file selection). Has single function: acquire(success, error)
   that calls success with id of image. If not present, not available.
 apiUrl: URL of API e.g. https://api.mwater.co/v3/
+localizer: Localizer class, already registered as global T
 
 stop(): must be called when context is no longer needed, or before setup of a new user
 
@@ -39,6 +40,7 @@ Camera = require './Camera'
 cordova = require './cordova'
 ImageUploader = require './images/ImageUploader'
 ProblemReporter = require './ProblemReporter'
+Localizer = require './localization/Localizer'
 
 collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes']
 
@@ -47,6 +49,12 @@ apiUrl = 'https://api.mwater.co/v3/'
 # TODO this is not a pretty way to set these. But it is somewhat decoupled.
 temporaryFs = null
 persistentFs = null
+
+# Setup localizer
+localizationData = require './localization/localizations.json'
+localizer = new Localizer(localizationData, "en")
+localizer.makeGlobal()
+localizer.restoreCurrentLocale()
 
 exports.setupFileSystems = (tempFs, persFs) ->
   temporaryFs = tempFs
@@ -71,6 +79,7 @@ createBaseContext = ->
     camera: camera
     version: '//VERSION//'
     baseVersion: cordova.baseVersion()
+    localizer: localizer
     stop: ->
     # db: null
     # imageManager: null
