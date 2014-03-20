@@ -24,14 +24,16 @@ findInHbsProgramNode = (node) ->
     if stat.type == "mustache" and stat.id.string == "T"
       items.push stat.params[0].string
     if stat.type == "block"
-      items = items.concat(findInHbsProgramNode(stat.program))
+      if stat.program
+        items = items.concat(findInHbsProgramNode(stat.program))
+      if stat.inverse
+        items = items.concat(findInHbsProgramNode(stat.inverse))
   return items
 
 exports.findInHbs = (hbs) ->
   items = []
 
   tree = handlebars.parse(hbs)
-
   return findInHbsProgramNode(tree)
 
 exports.findInFile = (filename, contents) ->

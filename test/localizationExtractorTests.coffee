@@ -64,4 +64,16 @@ $ ->
       assert.deepEqual localizationExtractor.findInHbs(code), 
         []
 
+    it "finds strings in else clauses", ->
+      code = '''
+        {{#if x}}
+          {{T 'some string'}}
+        {{else}}
+          {{T "another string"}}
+        {{/if}}
+      '''
+      assert.deepEqual localizationExtractor.findInHbs(code), 
+        ['some string', 'another string']
+
+
 

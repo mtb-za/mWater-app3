@@ -809,6 +809,66 @@
     {
       "en": "of",
       "es": "de"
+    },
+    {
+      "en": "No images present",
+      "es": ""
+    },
+    {
+      "en": "Taking photos not supported on this platform",
+      "es": ""
+    },
+    {
+      "en": "started",
+      "es": ""
+    },
+    {
+      "en": "Completed",
+      "es": ""
+    },
+    {
+      "en": "Desc",
+      "es": ""
+    },
+    {
+      "en": "Type",
+      "es": ""
+    },
+    {
+      "en": "Offline Source Creation",
+      "es": ""
+    },
+    {
+      "en": "Number of sources that can be created offline:",
+      "es": ""
+    },
+    {
+      "en": "Request more",
+      "es": ""
+    },
+    {
+      "en": "Select Source",
+      "es": ""
+    },
+    {
+      "en": "Private",
+      "es": ""
+    },
+    {
+      "en": "Needs repair",
+      "es": ""
+    },
+    {
+      "en": "Edit Survey",
+      "es": ""
+    },
+    {
+      "en": "Source",
+      "es": ""
+    },
+    {
+      "en": "Edit Test",
+      "es": ""
     }
   ]
 }
