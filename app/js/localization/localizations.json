@@ -220,7 +220,7 @@
     },
     {
       "en": "Select Survey",
-      "es": "Seleccione tasación"
+      "es": "Seleccione encuesta"
     },
     {
       "en": "Image",
@@ -460,7 +460,7 @@
     },
     {
       "en": "Survey",
-      "es": "Tasación"
+      "es": "Encuesta"
     },
     {
       "en": "Test not found",
@@ -468,27 +468,27 @@
     },
     {
       "en": "Delete Survey",
-      "es": "Eliminar Tasación"
+      "es": "Eliminar Encuesta"
     },
     {
       "en": "Survey form {0} not found",
-      "es": "Formulario de tasación {0} no encontrado"
+      "es": "Formulario de encuesta {0} no encontrado"
     },
     {
       "en": "Survey saved as draft.",
-      "es": "Tasación guardada como borrador"
+      "es": "Encuesta guardada como borrador"
     },
     {
       "en": "Survey completed successfully",
-      "es": "Tasación completada con éxito"
+      "es": "Encuesta completada con éxito"
     },
     {
       "en": "Permanently delete survey?",
-      "es": "Eliminar tasación permanentemente?"
+      "es": "Eliminar encuesta permanentemente?"
     },
     {
       "en": "Survey deleted",
-      "es": "Tasación eliminada"
+      "es": "Encuesta eliminada"
     },
     {
       "en": "Recent Tests",
@@ -560,11 +560,11 @@
     },
     {
       "en": "Start New Survey",
-      "es": "Comenzar Tasación Nueva"
+      "es": "Comenzar Encuesta Nueva"
     },
     {
       "en": "Recent Surveys",
-      "es": "Tasaciónes Recientes"
+      "es": "Encuestas Recientes"
     },
     {
       "en": "Settings",
@@ -628,11 +628,11 @@
     },
     {
       "en": "Incomplete Surveys",
-      "es": "Tasaciónes Incompletadas"
+      "es": "Encuestas Incompletadas"
     },
     {
       "en": "Recent Completed Surveys",
-      "es": "Tasaciónes Completadas Recientes"
+      "es": "Encuestas Completadas Recientes"
     },
     {
       "en": "Loading image",
@@ -716,7 +716,7 @@
     },
     {
       "en": "Select type of survey to start",
-      "es": "Seleccione el tipo de tasación para comenzar"
+      "es": "Seleccione el tipo de encuesta para comenzar"
     },
     {
       "en": "Select type of test to start",
@@ -792,7 +792,7 @@
     },
     {
       "en": "Surveys",
-      "es": "Tasaciónes"
+      "es": "Encuestas"
     },
     {
       "en": "Photos",
