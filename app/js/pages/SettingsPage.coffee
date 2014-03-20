@@ -10,7 +10,7 @@ class SettingsPage extends Page
     "change #locale": "setLocale"
 
   activate: ->
-    @setTitle "Settings"
+    @setTitle T("Settings")
     @render()
 
   render: ->

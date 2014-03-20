@@ -668,7 +668,7 @@
     },
     {
       "en": "private: \"true\" if source should be private",
-      "es": "privado:  si fuente debe de ser privada"
+      "es": "privado: \"true\" si fuente debe de ser privada"
     },
     {
       "en": "org: organization to upload as (available to admin only)",
@@ -812,63 +812,115 @@
     },
     {
       "en": "No images present",
-      "es": ""
+      "es": "Sin imágenes"
     },
     {
       "en": "Taking photos not supported on this platform",
-      "es": ""
+      "es": "Esta plataforma no suporta la toma de fotografias"
     },
     {
       "en": "started",
-      "es": ""
+      "es": "empezado"
     },
     {
       "en": "Completed",
-      "es": ""
+      "es": "Completado"
     },
     {
       "en": "Desc",
-      "es": ""
+      "es": "Descripción"
     },
     {
       "en": "Type",
-      "es": ""
+      "es": "Tipo"
     },
     {
       "en": "Offline Source Creation",
-      "es": ""
+      "es": "Creación de Fuente sin Conexión"
     },
     {
       "en": "Number of sources that can be created offline:",
-      "es": ""
+      "es": "Número de fuentes que se pueden crear sin conexión"
     },
     {
       "en": "Request more",
-      "es": ""
+      "es": "Pedir más"
     },
     {
       "en": "Select Source",
-      "es": ""
+      "es": "Seleccionar fuente"
     },
     {
       "en": "Private",
-      "es": ""
+      "es": "Privado"
     },
     {
       "en": "Needs repair",
-      "es": ""
+      "es": "Necesidades reparadas"
     },
     {
       "en": "Edit Survey",
-      "es": ""
+      "es": "Editar Encuesta"
     },
     {
       "en": "Source",
-      "es": ""
+      "es": "Fuente"
     },
     {
       "en": "Edit Test",
-      "es": ""
+      "es": "Editar Prueba"
+    },
+    {
+      "en": "Select units",
+      "es": "Seleccionar unidades"
+    },
+    {
+      "en": "Draft",
+      "es": "Borrador"
+    },
+    {
+      "en": "None",
+      "es": "Ninguna"
+    },
+    {
+      "en": "Not logged in",
+      "es": "No iniciado"
+    },
+    {
+      "en": "Unlocated",
+      "es": "Sin localizar"
+    },
+    {
+      "en": "See the map for a global view if no sources are found.",
+      "es": "Vea el mapa para obtener una vista global si no encuentra fuentes"
+    },
+    {
+      "en": "Incomplete",
+      "es": "Incompleto"
+    },
+    {
+      "en": "unnamed",
+      "es": "sin nombre"
+    },
+    {
+      "en": "Set",
+      "es": "Fijar"
+    },
+    {
+      "en": "Clear",
+      "es": "Borrar"
+    },
+    {
+      "en": "Map",
+      "es": "Mapa"
+    },
+    {
+      "en": "Edit",
+      "es": "Editar"
+    },
+    {
+      "en": "Source {0}",
+      "es": "Fuente {0}"
     }
   ]
 }

@@ -38,7 +38,7 @@ module.exports = class SourcePage extends Page
       @$("#add_note_button").toggle(@auth.insert("source_notes"))
 
   render: ->
-    @setTitle "Source " + @source.code
+    @setTitle T("Source {0}", @source.code)
 
     if @auth.remove("sources", @source)
       @setupContextMenu [ { glyph: 'remove', text: T("Delete Source"), click: => @deleteSource() } ]
