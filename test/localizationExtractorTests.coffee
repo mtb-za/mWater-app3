@@ -44,3 +44,24 @@ $ ->
       assert.deepEqual localizationExtractor.findInHbs(code), 
         ['some string', 'another string']
 
+    it "finds strings in clauses", ->
+      code = '''
+        {{#if x}}
+          {{T 'some string'}}
+          {{#each y}}
+            {{T "another string"}}
+          {{/each}}
+        {{/if}}
+      '''
+      assert.deepEqual localizationExtractor.findInHbs(code), 
+        ['some string', 'another string']
+
+    it "allows empty clauses", ->
+      code = '''
+        {{#if x}}{{/if}}
+        {{#each y}}{{/each}}
+      '''
+      assert.deepEqual localizationExtractor.findInHbs(code), 
+        []
+
+

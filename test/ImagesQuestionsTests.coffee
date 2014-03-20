@@ -3,6 +3,9 @@ forms = require('forms')
 UIDriver = require './helpers/UIDriver'
 ImagePage = require '../app/js/pages/ImagePage'
 
+Localizer = require '../app/js/localization/Localizer'
+new Localizer().makeGlobal()
+
 class MockImageManager 
   getImageThumbnailUrl: (imageUid, success, error) ->
     success "images/" + imageUid + ".jpg"

@@ -4,14 +4,15 @@
 # Helper "T" maps to Localizer "localizeString" function
 
 module.exports = class Localizer
-  constructor: (data, locale) ->
+  constructor: (data, locale = "en") ->
     @data = data
     @locale = locale
 
-    # Index strings by English 
+    # Index strings by English if data present
     @englishMap = {}
-    for str in @data.strings
-      @englishMap[str.en] = str
+    if data?
+      for str in @data.strings
+        @englishMap[str.en] = str
 
   setLocale: (code) ->
     @locale = code

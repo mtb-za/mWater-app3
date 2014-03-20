@@ -17,15 +17,22 @@ exports.findInCoffee = (cs) ->
   js = coffee.compile(cs)
   return exports.findInJs(js)
 
+findInHbsProgramNode = (node) ->
+  items = []
+
+  for stat in node.statements
+    if stat.type == "mustache" and stat.id.string == "T"
+      items.push stat.params[0].string
+    if stat.type == "block"
+      items = items.concat(findInHbsProgramNode(stat.program))
+  return items
+
 exports.findInHbs = (hbs) ->
   items = []
 
   tree = handlebars.parse(hbs)
 
-  for stat in tree.statements
-    if stat.type == "mustache" and stat.id.string == "T"
-      items.push stat.params[0].string
-  return items
+  return findInHbsProgramNode(tree)
 
 exports.findInFile = (filename, contents) ->
   return []
