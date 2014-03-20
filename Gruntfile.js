@@ -170,6 +170,20 @@ module.exports = function(grunt) {
           }
         }
       },
+      deploy_beta2: {
+        command: 's3cmd sync --acl-public --guess-mime-type ' +
+          '--add-header "Cache-Control: no-cache, must-revalidate" ' +
+          '--add-header "Pragma: no-cache" ' +
+          '--add-header "Expires: 0" ' + 
+          '--add-header "Content-Encoding: gzip" '+
+          '* s3://beta2.mwater.co',
+        options: {
+          stdout: true,
+          execOptions: {
+            cwd: 'dist.gz'
+          }
+        }
+      },      
       deploy_map: {
         command: ['s3cmd sync --acl-public --guess-mime-type ' +
           '--add-header "Cache-Control: no-cache, must-revalidate" ' +
