@@ -1,8 +1,10 @@
 GeoJSON = require '../GeoJSON'
 
 module.exports = class SourcesLayer extends L.LayerGroup
+
   constructor: (sourceLayerCreator, sourcesDb, scope) ->
     super()
+    @MAX_SOURCES_RETURNED = 200
     @sourceLayerCreator = sourceLayerCreator
     @sourcesDb = sourcesDb
     @scope = scope || {}
@@ -13,6 +15,10 @@ module.exports = class SourcesLayer extends L.LayerGroup
     super(map)
     @map = map
     map.on 'moveend', @update
+    @zoomToSeeMoreMsgDisplayed = false
+    @ZoomToSeeMoreMsg = L.control({position: 'topleft'});
+    @ZoomToSeeMoreMsg.onAdd = (map) =>
+      return @createZoomInToSeeMore()
 
   onRemove: (map) =>
     super(map)
@@ -38,6 +44,17 @@ module.exports = class SourcesLayer extends L.LayerGroup
     @layers = {}    
 
   updateFromList: (sources, success, error) =>
+    # Display "zoom to see more" warning when there is 200 sources
+    # To make this 100% clean, we would need to deal with the special case when the result was not truncated
+    # and actually contained 200 sources.
+    if sources.length == @MAX_SOURCES_RETURNED
+      if not @zoomToSeeMoreMsgDisplayed
+        @zoomToSeeMoreMsgDisplayed = true
+        @map.addControl(@ZoomToSeeMoreMsg)
+    else if @zoomToSeeMoreMsgDisplayed
+      @zoomToSeeMoreMsgDisplayed = false
+      @map.removeControl(@ZoomToSeeMoreMsg)
+
     for source in sources
       # If layer exists, ignore
       if source._id of @layers
@@ -73,7 +90,7 @@ module.exports = class SourcesLayer extends L.LayerGroup
     _this = this
     queryOptions =
       sort: ["_id"]
-      limit: 200
+      limit: @MAX_SOURCES_RETURNED
       mode: "remote"
       fields:
         name: 1
@@ -114,3 +131,24 @@ module.exports = class SourcesLayer extends L.LayerGroup
       selector.geo = $geoIntersects:
         $geometry: boundsGeoJSON
     return
+
+  createZoomInToSeeMore: ->
+    html = '''
+<div class="warning legend">
+<style>
+.warning {
+  padding: 6px 8px;
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  background: yellow;
+  background: rgba(255,255,0,0.8);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+}
+.legend {
+    line-height: 18px;
+    color: #555;
+}
+</style>
+<b>''' + T('Zoom in to see more') + '''</b>
+'''
+    return $(html).get(0)
