@@ -55,6 +55,8 @@ class SourceMapPage extends Page
       options.touchZoom = false
       options.fadeAnimation = false
 
+    options.maxBounds = L.latLngBounds( L.latLng( -90, -180), L.latLng( 90, 180) )
+
     @map = L.map(this.$("#map")[0], options)
     L.control.scale(imperial:false).addTo(@map)
     @resizeMap()
