@@ -11,7 +11,9 @@ exports.changeUserOrgDocs = (db, user, org, success, error) ->
 
       # Get first table
       table = db[_.first(tables)]
-      table.find({ user: user }).fetch (rows) =>
+      queryOptions =
+        mode: "remote"
+      table.find({ user: user }, queryOptions).fetch (rows) =>
         processRows = (rows) =>
           if rows.length == 0
             return processTables(_.rest(tables), user, org, success, error)
