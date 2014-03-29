@@ -24,6 +24,7 @@ function bundleApp(done) {
         .transform(versionXform).transform('coffeeify')
         .require('./app/js/jquery-shim', {expose: 'jquery'})
         .require('./app/js/lodash-shim', {expose: 'lodash'})
+        .require('./app/js/lodash-shim', {expose: 'underscore'})
         .require('./app/js/run', {expose: 'run'})
         .require('./app/js/forms', {expose: 'forms'})  // For forms
         .require('./app/js/mobile-behavior', {expose: 'mobile-behavior'})  // For tests
