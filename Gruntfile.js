@@ -1,5 +1,4 @@
 var zlib = require('zlib');
-var browserify = require('./browserify-task');
 var compileForms = require('./compile-forms-task');
 var upsertForms = require('./upsert-forms-task');
 var seeds = require('./seeds-task');
@@ -17,8 +16,8 @@ module.exports = function(grunt) {
           'dist/js/preload.js': ['./app/js/preload']
         },
         options: {
-          extensions: [ '.coffee', '.js' ],
           transform: [require('./versionXform')],
+          browserifyOptions: { extensions: [ '.coffee', '.js' ] },
           alias: [
             './app/js/run.coffee:run',
             './app/js/forms:forms',
