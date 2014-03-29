@@ -74,7 +74,7 @@ class LocationFinder
   startWatch: ->
     # If no geolocation, send error immediately
     if not navigator.geolocation
-      error("No geolocation available")
+      error(T("No geolocation available"))
       return
 
     # Allow one watch at most

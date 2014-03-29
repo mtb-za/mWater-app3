@@ -100,11 +100,11 @@ class EColi extends SourceLayerCreator
   # Level is E.Coli level/100ml. Can also be 'pending' and 'nodata' and 'high'
   getPopupHtmlElement: (source, level) ->
     if level == 'pending'
-      levelStr = "Pending..."
+      levelStr = T("Pending...")
     else if level == 'nodata'
-      levelStr = "No Data"
+      levelStr = T("No Data")
     else if level == 'high'
-      levelStr = "High"
+      levelStr = T("High")
     else if level >= 100
       levelStr = level
     else if level >= 1
@@ -117,10 +117,10 @@ class EColi extends SourceLayerCreator
     # Create popup
     html = _.template('''
       <div>
-      Water source <b><%=source.code%></b><br>
-      Name: <b><%=source.name%></b><br>
-      E.Coli / 100mL: <b><%=levelStr%><br>
-      <button class="btn btn-primary btn-block">Open</button>
+      ''' + T("Water source") + ''' <b><%=source.code%></b><br>
+      ''' + T("Name") + ''': <b><%=source.name%></b><br>
+      ''' + T("E.Coli / 100mL") + ''': <b><%=levelStr%><br>
+      <button class="btn btn-primary btn-block">''' + T("Open") + '''</button>
       </div>''', 
       { source: source, levelStr: levelStr })
 

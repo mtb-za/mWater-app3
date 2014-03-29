@@ -3,12 +3,12 @@
 	<tr class="tappable test" id="{{_id}}">
 	  <td><strong><span id="test_name_{{_id}}"></span></strong></td>
 	  <td style="border-left:none;">{{formatDate started "%F"}}</td>
-	  <td>{{#if completed}}{{else}}<span class="text-warning"><b>Incomplete</b></span>{{/if}}</td>
+	  <td>{{#if completed}}{{else}}<span class="text-warning"><b>{{T "Incomplete"}}</b></span>{{/if}}</td>
 	  <td style="vertical-align:middle; border-left:none; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>
 	</tr>
 	{{else}}
 	<tr>
-	    <td> <i>None</i> </td>
+	    <td> <i>{{T "None"}}</i> </td>
 	</tr>
 	{{/each}}
 </tbody>

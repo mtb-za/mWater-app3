@@ -1,28 +1,35 @@
 <div class="page">
+  <div class="pull-right">
+    <select class="form-control" id="locale" style="width: auto">
+      {{#each locales}}
+      <option value="{{code}}">{{name}}</option>
+      {{/each}}
+    </select>
+  </div>
   <div>
-    <button id="demo_button" type="submit" class="btn btn-lg btn-info">Demo</button> 
-    <span class="glyphicon glyphicon-arrow-left"></span> Try out app
+    <button id="demo_button" type="submit" class="btn btn-lg btn-info">{{T "Demo"}}</button> 
+    <span class="glyphicon glyphicon-arrow-left"></span> {{T "Try out app"}}
   <div>
   <br>
-  <h3>Login to mWater</h3>
+  <h3>{{T "Login to mWater"}}</h3>
   <form id="form_login">
     <div class="form-group">
-        <label for="login_username">Username or Email</label>
-        <input class="form-control" id="login_username" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Username" />
+        <label for="login_username">{{T "Username or Email"}}</label>
+        <input class="form-control" id="login_username" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="{{T "Username"}}" />
     </div>
     <div class="form-group">
-        <label for="login_password">Password</label>
-        <input class="form-control" id="login_password" type="password" placeholder="Password" />
+        <label for="login_password">{{T "Password"}}</label>
+        <input class="form-control" id="login_password" type="password" placeholder="{{T "Password"}}" />
     </div>
     <div>
-        <button id="login_button" type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+        <button id="login_button" type="submit" class="btn btn-primary btn-lg btn-block">{{T "Login"}}</button>
     </div>
   </form>
 
   <br>
-  <p class="text-center"> - or - </p>
+  <p class="text-center"> - {{T "or"}} - </p>
 
   <div>
-    <button id="signup_button" class="btn btn-lg btn-success btn-block">Signup</button>
+    <button id="signup_button" class="btn btn-lg btn-success btn-block">{{T "Signup"}}</button>
   </div>
 <div>

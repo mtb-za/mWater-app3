@@ -9,7 +9,7 @@ module.exports = class NewSurveyPage extends Page
     "click .survey" : "startSurvey"
 
   activate: ->
-    @setTitle "Select Survey"
+    @setTitle T("Select Survey")
 
     @db.forms.find({type:"Survey"}).fetch (forms) =>
       @forms = forms
@@ -20,7 +20,7 @@ module.exports = class NewSurveyPage extends Page
 
     form = _.findWhere(@forms, { code: surveyCode })
     if not form
-      @error("Form not found")
+      @error(T("Form not found"))
       return
 
     # Create code. Not unique, but unique per user if logged in once.

@@ -12,7 +12,7 @@ module.exports = class SourceListPage extends Page
     'click #search_cancel' : 'cancelSearch'
 
   create: ->
-    @setTitle 'Nearby Sources'
+    @setTitle T('Nearby Sources')
 
   activate: ->
     @$el.html templates['pages/SourceListPage']()
@@ -38,7 +38,13 @@ module.exports = class SourceListPage extends Page
     @performSearch()
 
   addSource: ->
-    @pager.openPage(require("./NewSourcePage"))
+    # Wrap onSelect
+    onSelect = undefined
+    if @options.onSelect
+      onSelect = (source) =>
+        @pager.closePage()
+        @options.onSelect(source)
+    @pager.openPage(require("./NewSourcePage"), {onSelect: onSelect})
     
   locationFound: (pos) =>
     @$("#location_msg").hide()
@@ -62,7 +68,7 @@ module.exports = class SourceListPage extends Page
 
   locationError: (pos) =>
     @$("#location_msg").hide()
-    @pager.flash "Unable to determine location", "error"
+    @pager.flash T("Unable to determine location"), "error"
 
   sourceClicked: (ev) ->
     # Wrap onSelect
@@ -75,7 +81,7 @@ module.exports = class SourceListPage extends Page
 
   search: ->
     # Prompt for search
-    @searchText = prompt("Enter search text or ID of water source")
+    @searchText = prompt(T("Enter search text or ID of water source"))
     @performSearch()
 
   performSearch: ->

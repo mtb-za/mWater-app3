@@ -1,11 +1,13 @@
 GeoJSON = require '../GeoJSON'
 
 module.exports = class SourcesLayer extends L.LayerGroup
-  constructor: (sourceLayerCreator, sourcesDb) ->
+
+  constructor: (sourceLayerCreator, sourcesDb, scope) ->
     super()
+    @maxSourcesReturned = 200
     @sourceLayerCreator = sourceLayerCreator
     @sourcesDb = sourcesDb
-
+    @scope = scope || {}
     # Layers, by _id
     @layers = {}
 
@@ -13,25 +15,46 @@ module.exports = class SourcesLayer extends L.LayerGroup
     super(map)
     @map = map
     map.on 'moveend', @update
+    @zoomToSeeMoreMsgDisplayed = false
+    @zoomToSeeMoreMsg = L.control({position: 'topleft'});
+    @zoomToSeeMoreMsg.onAdd = (map) =>
+      return @createZoomInToSeeMore()
 
   onRemove: (map) =>
     super(map)
     map.off 'moveend', @update
 
+  setScope: (scope) => 
+    @scope = scope
+  # Builds a selector based on bounds and scope (all, org, user)
+  # then queries the database
   update: =>
-    bounds = @map.getBounds()
-
+    selector = {}
     # Pad to ensure scrolling shows nearby ones
-    bounds = bounds.pad(0.1)
-    
+    bounds = @map.getBounds().pad(0.1)
+    # add bounds to the selector
+    @boundsQuery bounds, selector
+    # add scope to the selector
+    @scopeQuery @scope, selector
     # TODO pass error?
-    @updateFromBounds(bounds)
+    @getSources selector, @updateFromList
 
   reset: =>
     @clearLayers()
     @layers = {}    
 
   updateFromList: (sources, success, error) =>
+    # Display "zoom to see more" warning when there is 200 sources
+    # To make this 100% clean, we would need to deal with the special case when the result was not truncated
+    # and actually contained 200 sources.
+    if sources.length == @maxSourcesReturned
+      if not @zoomToSeeMoreMsgDisplayed
+        @zoomToSeeMoreMsgDisplayed = true
+        @map.addControl(@zoomToSeeMoreMsg)
+    else if @zoomToSeeMoreMsgDisplayed
+      @zoomToSeeMoreMsgDisplayed = false
+      @map.removeControl(@zoomToSeeMoreMsg)
+
     for source in sources
       # If layer exists, ignore
       if source._id of @layers
@@ -62,43 +85,70 @@ module.exports = class SourcesLayer extends L.LayerGroup
 
     success() if success?
 
-  updateFromBounds: (bounds, success, error) =>
-    # Success on empty/invalid bounds
-    if not bounds.isValid()
-      success() if success?
-      return
-    if bounds.getWest() == bounds.getEast() or bounds.getNorth() == bounds.getSouth()
-      success() if success?
-      return
-
-    boundsGeoJSON = GeoJSON.latLngBoundsToGeoJSON(bounds)
-
-    # Spherical Polygons must fit within a hemisphere.
-    # Any geometry specified with GeoJSON to $geoIntersects or $geoWithin queries, must fit within a single hemisphere.
-    # MongoDB interprets geometries larger than half of the sphere as queries for the smaller of the complementary geometries.
-    # So... don't bother intersection if large
-    # Also don't use intersection if outside of normal bounds (lat: [-90, 90], lng: [-180, 180])
-    if (boundsGeoJSON.coordinates[0][2][0] - boundsGeoJSON.coordinates[0][0][0]) >= 180
-      selector = {}
-    else if (boundsGeoJSON.coordinates[0][2][1] - boundsGeoJSON.coordinates[0][0][1]) >= 180
-      selector = {}
-    else if boundsGeoJSON.coordinates[0][0][0] < -180 or boundsGeoJSON.coordinates[0][0][0] > 180
-      selector = {}
-    else if boundsGeoJSON.coordinates[0][2][0] < -180 or boundsGeoJSON.coordinates[0][2][0] > 180
-      selector = {}
-    else if boundsGeoJSON.coordinates[0][0][1] < -90 or boundsGeoJSON.coordinates[0][0][1] > 90
-      selector = {}
-    else if boundsGeoJSON.coordinates[0][2][1] < -90 or boundsGeoJSON.coordinates[0][2][1] > 90
-      selector = {}
-    else
-      selector = { geo: { $geoIntersects: { $geometry: boundsGeoJSON } } }
-
-    # Query sources with projection. Use remote mode so no caching occurs
-    queryOptions = 
+  # Query the db
+  getSources: (selector, success, error) =>
+    _this = this
+    queryOptions =
       sort: ["_id"]
-      limit: 200
+      limit: @maxSourcesReturned
       mode: "remote"
-      fields: { name: 1, code: 1, geo: 1, type: 1 }
+      fields:
+        name: 1
+        code: 1
+        geo: 1
+        type: 1
+        org: 1
+        user: 1
 
-    @sourcesDb.find(selector, queryOptions).fetch (sources) =>
-      @updateFromList(sources, success, error)
+    @sourcesDb.find(selector, queryOptions).fetch success, error
+
+  # Update the selector to filter by scope
+  scopeQuery: (scope, selector) =>
+    return unless scope
+    if scope.user
+      selector.user = scope.user
+    else selector.org = scope.org  if scope.org
+    return
+  
+  # Update the selector to filter by bounds
+  boundsQuery: (bounds, selector) =>
+    return  unless bounds.isValid()
+    return  if bounds.getWest() is bounds.getEast() or bounds.getNorth() is bounds.getSouth()
+    boundsGeoJSON = GeoJSON.latLngBoundsToGeoJSON(bounds)
+    if (boundsGeoJSON.coordinates[0][2][0] - boundsGeoJSON.coordinates[0][0][0]) >= 180
+      return
+    else if (boundsGeoJSON.coordinates[0][2][1] - boundsGeoJSON.coordinates[0][0][1]) >= 180
+      return
+    else if boundsGeoJSON.coordinates[0][0][0] < -180 or boundsGeoJSON.coordinates[0][0][0] > 180
+      return
+    else if boundsGeoJSON.coordinates[0][2][0] < -180 or boundsGeoJSON.coordinates[0][2][0] > 180
+      return
+    else if boundsGeoJSON.coordinates[0][0][1] < -90 or boundsGeoJSON.coordinates[0][0][1] > 90
+      return
+    else if boundsGeoJSON.coordinates[0][2][1] < -90 or boundsGeoJSON.coordinates[0][2][1] > 90
+      return
+    else
+      selector.geo = $geoIntersects:
+        $geometry: boundsGeoJSON
+    return
+
+  createZoomInToSeeMore: ->
+    html = '''
+<div class="warning legend">
+<style>
+.warning {
+  padding: 6px 8px;
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  background: yellow;
+  background: rgba(255,255,0,0.8);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+}
+.legend {
+    line-height: 18px;
+    color: #555;
+}
+</style>
+<b>''' + T('Zoom in to see more') + '''</b>
+'''
+    return $(html).get(0)

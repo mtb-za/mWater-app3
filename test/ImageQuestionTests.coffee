@@ -3,6 +3,9 @@ forms = require('forms')
 UIDriver = require './helpers/UIDriver'
 ImagePage = require '../app/js/pages/ImagePage'
 
+Localizer = require '../app/js/localization/Localizer'
+new Localizer().makeGlobal()
+
 class MockImageManager 
   getImageThumbnailUrl: (imageUid, success, error) ->
     success "images/" + imageUid + ".jpg"
@@ -36,13 +39,13 @@ describe 'ImageQuestion', ->
 
     it 'displays one image', ->
       @model.set(q1: {id: "1234"})
-      assert.equal @question.$("img.thumbnail-img").attr("src"), "images/1234.jpg"
+      assert.equal @question.$("img.img-thumbnail").attr("src"), "images/1234.jpg"
 
     it 'opens page', ->
       @model.set(q1: {id: "1234"})
       spy = sinon.spy()
       @ctx.pager = { openPage: spy }
-      @question.$("img.thumbnail-img").click()
+      @question.$("img.img-thumbnail").click()
 
       assert.isTrue spy.calledOnce
       assert.equal spy.args[0][1].id, "1234"
@@ -53,7 +56,7 @@ describe 'ImageQuestion', ->
         openPage: (page, options) =>
           options.onRemove()
       }
-      @question.$("img.thumbnail-img").click()
+      @question.$("img.img-thumbnail").click()
       assert.equal @model.get("q1"), null
 
     it 'displays no add', ->

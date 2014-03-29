@@ -11,7 +11,7 @@ class ExistingSurveyPage extends Page
 
   create: ->
     @$el.html templates['pages/ExistingSurveyPage']()
-    @setTitle "Select Survey"
+    @setTitle T("Select Survey")
 
     @setupButtonBar [ { icon: "plus.png", click: => @addSurvey() } ]
 

@@ -118,7 +118,7 @@ exports.setup = (options, success, error) ->
       createAppUpdater baseUrl, (appUpdater) =>
         # Function called when relaunch is needed
         relaunch = =>
-          if confirm("A new version is available. Restart app?")
+          if confirm(T("A new version is available. Restart app?"))
             # Reload base url index_cordova.html
             window.location.href = baseUrl + "index_cordova.html?cordova="
 
@@ -144,7 +144,7 @@ exports.setup = (options, success, error) ->
           # Redirect, putting current full base Url in cordova and including base version
           redir = launchUrl + "index_cordova.html?cordova=" + baseUrl + "&base_version=" + "//VERSION//"
           console.log "Redirecting to #{redir}"
-          $("body").html('<div class="alert alert-info">Loading mWater...</div>')
+          $("body").html('<div class="alert alert-info">' + T("Loading mWater...") + '</div>')
           window.location.href = redir
         , error
       , error

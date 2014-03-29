@@ -12,7 +12,7 @@ module.exports = class ImagePage extends Page
     , @error)
 
   activate: ->
-    @setTitle "Image"
+    @setTitle T("Image")
 
     # If remove allowed, set in button bar
     if @options.onRemove
@@ -23,6 +23,6 @@ module.exports = class ImagePage extends Page
       @setupButtonBar []
 
   removePhoto: ->
-    if confirm("Remove image?")
+    if confirm(T("Remove image?"))
       @options.onRemove()
       @pager.closePage()

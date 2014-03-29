@@ -34,7 +34,7 @@ class ImageUploaderView extends Backbone.View
     file = @$("#fileToUpload").get(0).files[0]
     if file
       if file.type != "image/jpeg"
-        alert("Image must be a jpeg file")
+        alert(T("Image must be a jpeg file"))
         return
 
       # Allow upload
@@ -73,15 +73,15 @@ class ImageUploaderView extends Backbone.View
       @$("#modal").modal('hide')
       @uploaded()
     else
-      alert "Upload failed: #{evt.target.responseText}"
+      alert T("Upload failed: {0}", evt.target.responseText)
       @$("#modal").modal('hide')
 
   uploadFailed: (evt) =>
-    alert "Error uploading file"
+    alert T("Error uploading file")
     @$("#modal").modal('hide')
 
   uploadCanceled: (evt) =>
-    alert "Upload cancelled"      
+    alert T("Upload cancelled")
     @$("#modal").modal('hide')
 
 createId = -> 

@@ -7,25 +7,25 @@ class SurveyPage extends Page
   create: -> @render()
 
   render: ->
-    @setTitle "Survey"
+    @setTitle T("Survey")
 
     # Get response
     @db.responses.findOne {_id: @options._id}, (response) =>
       if not response
-        alert("Test not found")
+        alert(T("Test not found"))
         return @pager.closePage()
 
       @response = response
 
       if @auth.remove("responses", @response)
-        @setupContextMenu [ { glyph: 'remove', text: "Delete Survey", click: => @deleteSurvey() } ]
+        @setupContextMenu [ { glyph: 'remove', text: T("Delete Survey"), click: => @deleteSurvey() } ]
       else 
         @setupContextMenu [ ]
 
       # Get form
       @db.forms.findOne { type: "Survey", code: response.type}, (form) =>
         if not form
-          alert "Survey form #{response.type} not found"
+          alert T("Survey form {0} not found", response.type)
           @pager.closePage()
           return
 
@@ -54,7 +54,7 @@ class SurveyPage extends Page
 
         if @auth.remove("responses", @response)
           @setupContextMenu [
-            { glyph: 'remove', text: "Delete Survey", click: => @removeResponse() }
+            { glyph: 'remove', text: T("Delete Survey"), click: => @removeResponse() }
           ] 
 
   events:
@@ -67,7 +67,7 @@ class SurveyPage extends Page
   destroy: ->
     # Let know that saved if closed incompleted
     if @response and not @response.completed
-      @pager.flash "Survey saved as draft."
+      @pager.flash T("Survey saved as draft.")
 
     # Remove survey control
     if @formView?
@@ -94,13 +94,13 @@ class SurveyPage extends Page
 
     @db.responses.upsert(@response)
     @pager.closePage()
-    @pager.flash "Survey completed successfully", "success"
+    @pager.flash T("Survey completed successfully"), "success"
 
   removeResponse: ->
-    if @auth.remove("responses", @response) and confirm("Permanently delete survey?")
+    if @auth.remove("responses", @response) and confirm(T("Permanently delete survey?"))
       @db.responses.remove @response._id, =>
         @response = null
         @pager.closePage()
-        @pager.flash "Survey deleted", "warning"
+        @pager.flash T("Survey deleted"), "warning"
 
 module.exports = SurveyPage

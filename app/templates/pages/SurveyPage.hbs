@@ -14,7 +14,7 @@
 </style>
 
 <div class="responsecode_div">
-	<span class="text-muted"><b>Survey </b></span>
+	<span class="text-muted"><b>{{T "Survey"}} </b></span>
 	{{#if response.code}}
 	<span class="responsecode">{{response.code}}</span>
 	{{/if}}
@@ -25,5 +25,5 @@
 
 {{#if response.completed}}
 <br/>
-<div><button id="edit_button" type="button" class="btn btn-default margined"><span class="glyphicon glyphicon-edit"></span> Edit Survey</button></div>
+<div><button id="edit_button" type="button" class="btn btn-default margined"><span class="glyphicon glyphicon-edit"></span> {{T "Edit Survey"}}</button></div>
 {{/if}}

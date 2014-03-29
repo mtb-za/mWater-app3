@@ -2,8 +2,8 @@
 	{{#each responses}}
 	<tr class="response tappable" id="{{_id}}">
 		<td>
-			<span id="name_{{_id}}"></span> (started {{formatDate started "%F"}})
-			{{#if completed}}<span class="label label-success">Completed</span>{{else}}<span class="label label-warning">Draft</span>{{/if}}
+			<span id="name_{{_id}}"></span> ({{T "started"}} {{formatDate started "%F"}})
+			{{#if completed}}<span class="label label-success">{{T "Completed"}}</span>{{else}}<span class="label label-warning">{{T "Draft"}}</span>{{/if}}
 			<br/>
 			<span class="text-muted">{{code}}</span>
 		</td>
@@ -11,7 +11,7 @@
 	</tr>
 	{{else}}
 	<tr>
-	    <td> <i>None</i> </td>
+	    <td> <i>{{T "None"}}</i> </td>
 	</tr>
 	{{/each}}
 </tbody>

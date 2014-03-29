@@ -1,9 +1,9 @@
 <div class="text-muted">
-<small>User:
-<b>{{#if login}}{{login.user}}{{else}}Not logged in{{/if}}</b>
-Sync: {{#if lastSyncDate}}<b>{{timeago lastSyncDate}}</b>{{/if}}
+<small>{{T "User:"}}
+<b>{{#if login}}{{login.user}}{{else}}{{T "Not logged in"}}{{/if}}</b>
+{{T "Sync:"}} {{#if lastSyncDate}}<b>{{timeago lastSyncDate}}</b>{{/if}}
 <span id="images_pending"></span>
-Version: <b>{{version}} {{#if baseVersion}}({{baseVersion}}){{/if}}</b>
+{{T "Version:"}} <b>{{version}} {{#if baseVersion}}({{baseVersion}}){{/if}}</b>
 </small>
 </div>
 
@@ -28,17 +28,17 @@ td {
 	<tr>
 		<td id="source_map" align="center" class="tappable"><img id="sources" class="main_icon tappable" src="img/source_map_icon.png"/>
 		<br/>
-		Map Water Sources</td>
+		{{T "Map Water Sources"}}</td>
 		<td id="source_list" align="center" class="tappable"><img id="map" class="main_icon tappable" src="img/source_list_icon.png"/>
 		<br/>
-		List Water Sources</td>
+		{{T "List Water Sources"}}</td>
 	</tr>
 	<tr>
 		<td id="new_test" align="center" class="tappable"><img id="tests" class="main_icon tappable" src="img/test_icon.png"/>
 		<br/>
-		Start Water Test</td>
+		{{T "Start Water Test"}}</td>
 		<td id="new_survey" align="center" class="tappable"><img id="settings" class="main_icon tappable" src="img/survey_icon.png"/>
 		<br/>
-		Start Survey</td>
+		{{T "Start Survey"}}</td>
 	</tr>
 </table>

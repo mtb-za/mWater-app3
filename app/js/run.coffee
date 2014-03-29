@@ -5,6 +5,7 @@ PageMenu = require("./PageMenu")
 context = require './context'
 login = require './login'
 ProblemReporter = require './ProblemReporter'
+Localizer = require './localization/Localizer'
 
 MainPage = require './pages/MainPage'
 LoginPage = require './pages/LoginPage'
@@ -19,6 +20,12 @@ startError = (err) ->
 
 exports.start = (options = {}) ->
   _.defaults(options, { update: true })
+  
+  # Setup localizer
+  localizationData = require './localization/localizations.json'
+  localizer = new Localizer(localizationData, "en")
+  localizer.makeGlobal()
+  localizer.restoreCurrentLocale()
 
   # Create pager
   pager = new Pager()

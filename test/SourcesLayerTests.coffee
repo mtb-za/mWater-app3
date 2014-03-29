@@ -102,24 +102,17 @@ describe "SourcesLayer", ->
         @sl.reset()
         assert.equal @sl.getLayers().length, 0
 
-  describe "updateFromBounds", ->
-    it "queries bounds", ->
-      sourcesDb = 
-        find: (sel, opt) =>
-          @sel = sel
-          @opt = opt
-          return { fetch: -> }
-
-      sl = new SourcesLayer(null, sourcesDb)
-
+  describe "boundsQuery", ->
+    it "adds a geo filter to a mongo query object", ->
+      selector = {}
       southWest = new L.LatLng(10, 110)
       northEast = new L.LatLng(20, 120)
       bounds = new L.LatLngBounds(southWest, northEast)
 
-      sl.updateFromList = ->
-      sl.updateFromBounds(bounds)
+      sl = new SourcesLayer();
+      sl.boundsQuery(bounds, selector)
 
-      assert.deepEqual @sel, {
+      assert.deepEqual selector, {
         geo: { $geoIntersects: { $geometry: 
           type: 'Polygon',
           coordinates: [
@@ -131,6 +124,55 @@ describe "SourcesLayer", ->
           ]
         } } 
       }
+
+  describe "scopeQuery", ->
+    selector = {}
+    sl = new SourcesLayer()
+
+    beforeEach ->
+      selector = {}
+
+    it "should add a user filter if a user is set", ->
+      scope = { user: "test" }
+      sl.scopeQuery(scope, selector)
+      assert.deepEqual(selector, scope)
+
+    it "should add a org filter if an org is set", ->
+      scope = {org: "test" }
+      sl.scopeQuery(scope, selector)
+      assert.deepEqual(selector, scope)
+
+    it "should not set anyting if there is no user or org", ->
+      scope = {}
+      sl.scopeQuery(scope, selector)
+      assert.deepEqual(selector, scope)
+
+  describe "update", ->
+    it "queries bounds and scope", ->
+      sourcesDb = 
+        find: (sel, opt) =>
+          @sel = sel
+          @opt = opt
+          return { fetch: -> }
+
+      sl = new SourcesLayer(null, sourcesDb)
+
+      southWest = new L.LatLng(10, 110)
+      northEast = new L.LatLng(20, 120)
+      bounds = new L.LatLngBounds(southWest, northEast)
+      sl.map = {};
+      sl.map.getBounds = -> 
+        bounds
+
+      sl.updateFromList = ->
+
+      sl.scope = { user: "test" }
+      sl.update()
+
+      assert.property(@sel, "user")
+      assert.equal(@sel.user, sl.scope.user)
+      assert.property(@sel, "geo")
+      
 
 
 

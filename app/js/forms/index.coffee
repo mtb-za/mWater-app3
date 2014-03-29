@@ -87,11 +87,11 @@ exports.WaterTestEditView = class WaterTestEditView extends FormView
     # TODO move to template and sep file
     @$el.append $('''
       <div>
-          <button id="discard_button" type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Discard</button>
+          <button id="discard_button" type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> ''' + T('Discard') + '''</button>
           &nbsp;
-          <button id="close_button" type="button" class="btn btn-default margined">Save for Later</button>
+          <button id="close_button" type="button" class="btn btn-default margined">''' + T("Save for Later") + '''</button>
           &nbsp;
-          <button id="complete_button" type="button" class="btn btn-primary margined"><span class="glyphicon glyphicon-ok"></span> Complete</button>
+          <button id="complete_button" type="button" class="btn btn-primary margined"><span class="glyphicon glyphicon-ok"></span> ''' + T("Complete") + '''</button>
       </div>
     ''')
 

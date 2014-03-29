@@ -11,7 +11,7 @@ BaseLayers = require '../map/BaseLayers'
 # initialGeo: Geometry to zoom to. Point only supported.
 class SourceMapPage extends Page
   create: ->
-    @setTitle "Source Map"
+    @setTitle T("Source Map")
 
     # Calculate height
     @$el.html templates['pages/SourceMapPage']()
@@ -24,7 +24,7 @@ class SourceMapPage extends Page
     # If saved view
     if window.localStorage['SourceMapPage.lastView']
       lastView = JSON.parse(window.localStorage['SourceMapPage.lastView'])
-      @createMap(lastView.center, lastView.zoom)
+      @createMap(lastView.center, lastView.zoom, lastView.scope)
       return
 
     # Get current position if quickly available
@@ -45,7 +45,7 @@ class SourceMapPage extends Page
         @createMap()
     , 500
 
-  createMap: (center, zoom) ->
+  createMap: (center, zoom, scope) ->
     # Fix leaflet image path
     L.Icon.Default.imagePath = "img/leaflet"
 
@@ -54,6 +54,8 @@ class SourceMapPage extends Page
     if navigator.userAgent.toLowerCase().indexOf('android 4.1.1') != -1 or navigator.userAgent.toLowerCase().indexOf('android 4.0.4') != -1
       options.touchZoom = false
       options.fadeAnimation = false
+
+    options.maxBounds = L.latLngBounds( L.latLng( -90, -180), L.latLng( 90, 180) )
 
     @map = L.map(this.$("#map")[0], options)
     L.control.scale(imperial:false).addTo(@map)
@@ -84,8 +86,7 @@ class SourceMapPage extends Page
 
       sourceLayerCreator = new SourceLayerCreators.EColi ecoliAnalyzer, (_id) =>
         @pager.openPage(SourcePage, {_id: _id})
-      @sourcesLayer = new SourcesLayer(sourceLayerCreator, @db.sources).addTo(@map)
-
+      @sourcesLayer = new SourcesLayer(sourceLayerCreator, @db.sources, scope).addTo(@map)
       # Add legend
       @legend = L.control({position: 'bottomright'});
       @legend.onAdd = (map) ->
@@ -102,16 +103,42 @@ class SourceMapPage extends Page
       @map.fitWorld()
 
     # Save view
-    @map.on 'moveend', =>
-      window.localStorage['SourceMapPage.lastView'] = JSON.stringify({center: @map.getCenter(), zoom: @map.getZoom()})
+    @map.on 'moveend', @saveView
 
     # Setup location display
     @locationDisplay = new LocationDisplay(@map)
 
-    @setupButtonBar [
-      { icon: "goto-my-location.png", click: => @gotoMyLocation() }
-    ]
-   
+  # Options for the dropdown menu
+  getSourceScopeOptions: =>
+    options = [{ display: T("All Sources"), type: "all", value: {} }]
+    # Only show Organization choice if user has an org
+    if @login?
+      if @login.org?
+        options.push { display: T("Only My Organization"), type: "org", value: { org: @login.org } }
+
+      if @login.user?
+        options.push { display: T("Only Mine"), type: "user", value: { user: @login.user } }
+    return options
+
+  #Filter the sources by all, org, or user
+  updateSourceScope: (scope) => 
+    #Update UI
+    @getButtonBar().$(".dropdown-menu .menuitem.active").removeClass("active")
+    @getButtonBar().$("#source-scope-" + scope.type).addClass("active")
+    #Update Map
+    @sourcesLayer.setScope scope.value
+    @sourcesLayer.update()
+    #Persist the view
+    @saveView()
+    return
+
+  saveView: => 
+    window.localStorage['SourceMapPage.lastView'] = JSON.stringify({
+      center: @map.getCenter() 
+      zoom: @map.getZoom()
+      scope: @sourcesLayer.scope
+    })
+
   gotoMyLocation: ->
     # Goes to current location
     locationFinder = new LocationFinder()
@@ -120,9 +147,24 @@ class SourceMapPage extends Page
       zoom = @map.getZoom()
       @map.setView(latLng, if zoom > 15 then zoom else 15)
     , =>
-      @pager.flash("Unable to determine location", "warning")
+      @pager.flash(T("Unable to determine location"), "warning")
 
   activate: ->
+    # Get the current scope to be used to set the active dropdown item
+    currentScope = if @sourcesLayer and @sourcesLayer.scope then @sourcesLayer.scope else {}
+    # Create a dropdown menu using the Source Scope Options
+    menu = @getSourceScopeOptions().map((scope) =>
+      text: scope.display
+      id: "source-scope-" + scope.type
+      click: => @updateSourceScope scope
+      checked: (JSON.stringify(currentScope) == JSON.stringify(scope.value))      
+    )
+
+    @setupButtonBar [
+      { icon: "gear.png", menu: menu }
+      { icon: "goto-my-location.png", click: => @gotoMyLocation() }
+    ]
+    
     # Update markers
     if @sourcesLayer and @needsRefresh
       @sourcesLayer.reset()

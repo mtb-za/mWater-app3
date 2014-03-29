@@ -1,16 +1,16 @@
 {
   "name": "mWater-App",
-  "version": "3.2.15",
+  "version": "3.2.26",
   "description": "Client of mWater App",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "",
+  "repository": "git@github.com:mWater/app-v3.git",
   "author": "Clayton Grassick",
   "license": "GPLv3",
   "devDependencies": {
-    "exposify": "~0.1.3"
+    "chai": "~1.9.0"
   },
   "dependencies": {
     "underscore": "~1.5.2",
@@ -31,7 +31,7 @@
     "synchronize": "~0.5.2",
     "through": "~2.3.4",
     "parse-appcache-manifest": "~0.2.0",
-    "uglify-js": "~2.4.7",
+    "uglify-js": "~2.4.13",
     "handlebars": "~1.1.2",
     "coffeeify": "~0.6.0",
     "grunt-contrib-copy": "~0.4.1",
@@ -43,6 +43,7 @@
     "lodash": "~2.4.1",
     "csv": "~0.3.6",
     "queue-async": "~1.0.7",
-    "minimongo": "~0.2.2"
+    "minimongo": "~0.2.2",
+    "minimist": "0.0.8"
   }
 }

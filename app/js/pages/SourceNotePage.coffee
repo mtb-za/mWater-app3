@@ -10,7 +10,7 @@ module.exports = class SourceNotePage extends Page
   activate: ->
     # Find water source
     @db.sources.findOne {code: @options.source}, (source) =>
-      @setTitle "Note for Source #{source.code}"
+      @setTitle T("Note for Source {0}", source.code)
 
       # Find source note
       if @options._id
@@ -34,20 +34,20 @@ module.exports = class SourceNotePage extends Page
         new forms.DateQuestion
           id: 'date'
           model: @model
-          prompt: 'Date of Visit'
+          prompt: T('Date of Visit')
           required: true
           readonly: readonly
         new forms.RadioQuestion
           id: 'status'
           model: @model
-          prompt: 'Status of Water Source'
-          options: [['ok', 'Functional'], ['maint', 'Needs maintenance'], ['broken', 'Non-functional'], ['missing', 'No longer exists']]
+          prompt: T('Status of Water Source')
+          options: [['ok', T('Functional')], ['maint', T('Needs maintenance')], ['broken', T('Non-functional')], ['missing', T('No longer exists')]]
           required: true
           readonly: readonly
         new forms.TextQuestion
           id: 'notes'
           model: @model
-          prompt: 'Notes'
+          prompt: T('Notes')
           multiline: true
           readonly: readonly
       ]

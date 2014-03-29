@@ -9,10 +9,22 @@ module.exports = class LoginPage extends Page
     'click #signup_button' : 'signupClicked'
     'submit #form_login' : 'loginClicked'
     'click #demo_button' : 'demoClicked'
+    "change #locale": "setLocale"
 
   activate: ->
     @setTitle ""
-    @$el.html templates['pages/LoginPage']()
+    @render()
+
+  render: ->
+    @$el.html templates['pages/LoginPage'](locales: @localizer.getLocales())
+
+    # Select current locale
+    @$("#locale").val(@localizer.locale)
+
+  setLocale: ->
+    @localizer.locale = @$("#locale").val()
+    @localizer.saveCurrentLocale()
+    @render()
 
   signupClicked: ->
     # Open signup form
@@ -21,7 +33,7 @@ module.exports = class LoginPage extends Page
   login: (username, password) ->
     success = =>
       @pager.closeAllPages(MainPage)
-      @pager.flash "Login as #{username} successful", "success"
+      @pager.flash T("Login as {0} successful", username), "success"
 
     error = =>
       $("#login_button").removeAttr('disabled')
@@ -47,4 +59,4 @@ module.exports = class LoginPage extends Page
     _.extend @ctx, context.createDemoContext()
 
     @pager.closePage(MainPage)
-    @pager.flash "Running in Demo mode. No changes will be saved", "warning", 10000
+    @pager.flash T("Running in Demo mode. No changes will be saved"), "warning", 10000

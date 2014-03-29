@@ -11,7 +11,9 @@ exports.changeUserOrgDocs = (db, user, org, success, error) ->
 
       # Get first table
       table = db[_.first(tables)]
-      table.find({ user: user }).fetch (rows) =>
+      queryOptions =
+        mode: "remote"
+      table.find({ user: user }, queryOptions).fetch (rows) =>
         processRows = (rows) =>
           if rows.length == 0
             return processTables(_.rest(tables), user, org, success, error)
@@ -27,7 +29,7 @@ exports.changeUserOrgDocs = (db, user, org, success, error) ->
 
 
 exports.login = (username, password, ctx, success, error) ->
-  console.log "Logging in as: #{username}/#{password}"
+  console.log "Logging in as: #{username}/###"
 
   url = ctx.apiUrl + 'clients'
   req = $.ajax(url, {
@@ -57,5 +59,7 @@ exports.login = (username, password, ctx, success, error) ->
     if jqXHR.status < 500 and jqXHR.status >= 400 and jqXHR.status != 404 # 404 means no connection sometimes
       alert(JSON.parse(jqXHR.responseText).error)
     else
-      alert("Unable to login. Please check that you are connected to Internet")
+      alert(T("Unable to login. Please check that you are connected to Internet"))
     error()
+
+  

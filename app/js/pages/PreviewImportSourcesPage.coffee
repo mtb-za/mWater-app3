@@ -8,11 +8,11 @@ module.exports = class PreviewImportSourcesPage extends Page
     "click #import" : "import"
 
   create: ->
-    @setTitle "Preview Sources"
+    @setTitle T("Preview Sources")
     @$el.html templates['pages/PreviewImportSourcesPage'](sources:@options.sources)
 
   import: ->
-    if not confirm("Import sources? This cannot be undone.")
+    if not confirm(T("Import sources? This cannot be undone."))
       return
       
     insertSources = =>
@@ -20,7 +20,7 @@ module.exports = class PreviewImportSourcesPage extends Page
       for source in @options.sources
         @db.sources.upsert source
 
-      alert("#{this.options.sources.length} sources inserted")
+      alert(T("{0} sources inserted", @options.sources.length))
       @pager.closePage()
       @pager.closePage()
 
@@ -38,7 +38,7 @@ module.exports = class PreviewImportSourcesPage extends Page
         else
           insertSources()
       error = =>
-        alert("Unable to generate source id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range.")
+        alert(T("Unable to generate source id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range."))
         @pager.closePage()
 
       # Ensure enough source codes for remaining

@@ -48,18 +48,18 @@ class MainPage extends Page
     if @imageManager? and @imageManager.numPendingImages?
       @imageManager.numPendingImages (num) =>
         if num > 0
-          $("#images_pending").html("<b>#{num} images to upload</b>")
+          $("#images_pending").html(T("<b>{0} images to upload</b>", num))
         else
           $("#images_pending").html("")
       , @error
 
     menu = []
     if NewSourcePage.canOpen(@ctx)
-      menu.push({ text: "Add Water Source", click: => @addSource() })
+      menu.push({ text: T("Add Water Source"), click: => @addSource() })
     if NewTestPage.canOpen(@ctx)
-      menu.push({ text: "Start Water Test", click: => @addTest() })
+      menu.push({ text: T("Start Water Test"), click: => @addTest() })
     if NewSurveyPage.canOpen(@ctx)
-      menu.push({ text: "Start Survey", click: => @addSurvey() })
+      menu.push({ text: T("Start Survey"), click: => @addSurvey() })
     if menu.length > 0
       @setupButtonBar [{ icon: "plus.png", menu: menu }]
 

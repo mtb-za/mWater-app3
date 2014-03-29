@@ -80,7 +80,7 @@ ProblemReporter = (url, version, getLogin) ->
     reportingError = true
 
     # Put up alert instead of old action
-    alert "Internal Error\n" + errorMsg + "\n" + url + ":" + lineNumber
+    alert T("Internal Error") + "\n" + errorMsg + "\n" + url + ":" + lineNumber
 
     that.reportProblem "window.onerror:" + errorMsg + ":" + url + ":" + lineNumber, ->
       reportingError = false

@@ -6,13 +6,13 @@
 		<br/>
 		<span class="text-muted">{{code}}</span>
 	  </td>
-	  <td style="border-left:none;"><strong>{{#if data.source}}Source {{data.source}}{{/if}}</strong></td>
+	  <td style="border-left:none;"><strong>{{#if data.source}}{{T "Source"}} {{data.source}}{{/if}}</strong></td>
 	  <td style="border-left:none;">{{formatDate started "%F"}}</strong></td>
 	  <td style="vertical-align:middle; border-left:none; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>
 	</tr>
 	{{else}}
 	<tr>
-	    <td> <i>None</i> </td>
+	    <td> <i>{{T "None"}}</i> </td>
 	</tr>
 	{{/each}}
 </tbody>

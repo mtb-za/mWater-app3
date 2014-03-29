@@ -3,6 +3,12 @@
   font-size: 16px;
   line-height: 26px;
 }
+.dropdown-menu .menuitem .glyphicon-ok {
+  display:none;
+}
+.dropdown-menu .menuitem.active .glyphicon-ok {
+  display:inline;
+}
 </style>
 {{#each items}}
 <div style="float:right; position:relative;">
@@ -12,7 +18,7 @@
   </div>
   <ul class="dropdown-menu" role="menu" style="right: 0; left: auto;">
       {{#each menu}}
-      <li><a id="{{id}}" class="menuitem">{{text}}</a></li>
+      <li><a id="{{id}}" class="menuitem {{#if checked }}active{{/if}}"><span class="glyphicon glyphicon-ok"></span> {{text}}</a></li>
       {{/each}}
   </ul>  
   </div>

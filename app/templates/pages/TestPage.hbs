@@ -14,9 +14,9 @@
 </style>
 
 <div class="testcode_div">
-	<span class="text-muted"><b>Test </b></span>
-	<span class="testcode">{{#if test.code}}{{test.code}}{{else}}unnamed{{/if}}</span>
-	<span class="text-muted"><b> of </b></span><b>{{form.name}}</b>
+	<span class="text-muted"><b>{{T "Test"}} </b></span>
+	<span class="testcode">{{#if test.code}}{{test.code}}{{else}}{{T "unnamed"}}{{/if}}</span>
+	<span class="text-muted"><b> {{T "of"}} </b></span><b>{{form.name}}</b>
 </div>
 
 
@@ -24,5 +24,5 @@
 
 {{#if test.completed}}
 <br/>
-<div><button id="edit_button" type="button" class="btn btn-default margined"><span class="glyphicon glyphicon-edit"></span> Edit Test</button></div>
+<div><button id="edit_button" type="button" class="btn btn-default margined"><span class="glyphicon glyphicon-edit"></span> {{T "Edit Test"}}</button></div>
 {{/if}}
