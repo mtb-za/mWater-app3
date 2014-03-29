@@ -21,6 +21,9 @@ startError = (err) ->
 exports.start = (options = {}) ->
   _.defaults(options, { update: true })
   
+  # Setup handlebars helpers
+  Swag.registerHelpers()
+  
   # Setup localizer
   localizationData = require './localization/localizations.json'
   localizer = new Localizer(localizationData, "en")

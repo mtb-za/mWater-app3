@@ -1,5 +1,5 @@
 assert = chai.assert
-_ = require 'underscore'
+_ = require 'lodash'
 
 LocalDb = require("minimongo").LocalDb
 SourceLayerCreators = require '../app/js/map/SourceLayerCreators'

@@ -1,0 +1,29 @@
+{
+    "framework": "mocha+chai",
+    "serve_files": [ 
+        "bower_components/jquery/dist/jquery.js",
+        "bower_components/lodash/dist/lodash.js",
+        "bower_components/backbone/backbone.js",
+        "vendor/sinon-1.7.1.js",
+        "dist/js/libs.js", 
+        "dist/js/templates.js",
+        "test/browserified.js"
+     ],
+    "src_files": [
+        "app/js/**/.js",
+        "app/js/**/*.coffee",
+        "test/*Tests.coffee"
+    ],
+    "launchers": {
+    },
+    "before_tests": "grunt uglify:libsjs handlebars && browserify --extension=.coffee -r ./app/js/forms:forms --debug test/*Tests.coffee -o test/browserified.js",
+    "on_exit": "rm test/browserified.js",
+    "launch_in_dev": [ "chrome" ],
+    "routes": {
+        "/dist": "dist",
+        "/vendor": "vendor",
+        "/images": "test/images",
+        "/img": "dist/img",
+        "/fixtures": "test/fixtures"
+    }
+}

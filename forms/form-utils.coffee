@@ -6,7 +6,7 @@ handlebars = require 'handlebars'
 read = require 'read'
 JsonClient = require('request-json').JsonClient
 sync = require 'synchronize'
-_ = require 'underscore'
+_ = require 'lodash'
 
 compile = (dir) ->
   # Read form.json

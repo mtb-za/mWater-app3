@@ -13,13 +13,15 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         files: {
-          'dist/js/app.js': []
+          'dist/js/app.js': [],
+          'dist/js/preload.js': ['./app/js/preload']
         },
         options: {
           extensions: [ '.coffee', '.js' ],
-          transform: ['coffeeify', 'hbsfy'],
+          transform: [require('./versionXform')],
           alias: [
             './app/js/run.coffee:run',
+            './app/js/forms:forms',
             './app/js/jquery-shim:jquery',
             './app/js/lodash-shim:lodash',
             './app/js/lodash-shim:underscore',
