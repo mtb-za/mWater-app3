@@ -10,7 +10,8 @@
   "author": "Clayton Grassick",
   "license": "GPLv3",
   "devDependencies": {
-    "chai": "~1.9.0"
+    "chai": "~1.9.0",
+    "grunt-browserify": "^2.0.1"
   },
   "dependencies": {
     "underscore": "~1.5.2",

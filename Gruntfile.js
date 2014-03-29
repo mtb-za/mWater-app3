@@ -10,7 +10,24 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    browserify: {},
+    browserify: {
+      dist: {
+        files: {
+          'dist/js/app.js': []
+        },
+        options: {
+          extensions: [ '.coffee', '.js' ],
+          transform: ['coffeeify', 'hbsfy'],
+          alias: [
+            './app/js/run.coffee:run',
+            './app/js/jquery-shim:jquery',
+            './app/js/lodash-shim:lodash',
+            './app/js/lodash-shim:underscore',
+            './app/js/backbone-shim:backbone'
+            ]
+        }
+      }
+    },
 
     concat: {
       libscss: {
@@ -279,7 +296,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('browserify', 'Make single file output', browserify);
+  //grunt.registerTask('browserify', 'Make single file output', browserify);
   grunt.registerTask('upsert-forms', 'Upsert forms to server', upsertForms);
   grunt.registerTask('compile-forms', 'Make forms into js', compileForms);
   grunt.registerTask('seeds', 'Seed database with some tables', seeds);
@@ -293,6 +310,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-manifest');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-text-replace');
+  grunt.loadNpmTasks('grunt-browserify');
 
   grunt.registerTask('cordova_debug', ['copy:cordova_www', 'copy:cordova_override_debug']);
   grunt.registerTask('cordova_release', ['copy:cordova_www', 'copy:cordova_override_release']);
