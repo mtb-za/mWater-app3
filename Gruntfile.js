@@ -55,29 +55,12 @@ module.exports = function(grunt) {
             'bower_components/lodash/dist/lodash.min.js', 
             'bower_components/backbone/backbone.js', 
             'vendor/bootstrap/js/bootstrap.min.js',  // Custom bootstrap with larger fonts
-            'bower_components/handlebars/handlebars.runtime.min.js',
             'bower_components/swag/lib/swag.min.js',
             'bower_components/overthrow-dist/overthrow.js',
             'vendor/mobiscroll.custom-2.5.4.min.js',
             'vendor/jquery.scrollintoview.min.js',
             'vendor/leaflet/leaflet-src.js']
         }
-      }
-    },
-
-    handlebars: {
-      compile: {
-        options: {
-          namespace: "templates",
-          wrapped: true,
-          processName: function(filename) {
-            var name = filename.substr('app/templates/'.length);    // cwd doesn't work
-            name = name.substr(0, name.length-4);
-            return name;
-          }
-      },
-      files: {
-        "dist/js/templates.js": ["app/templates/**/*.hbs"] }
       }
     },
 
@@ -305,7 +288,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-handlebars');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-manifest');
@@ -318,7 +300,7 @@ module.exports = function(grunt) {
   grunt.registerTask('run_cordova_debug', ['default', 'cordova_debug', 'shell:cordova_run']);
 
   grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages']);
-  grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'uglify', 'copy-app', 'handlebars', 'manifest', 'compress']);
+  grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
 
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
   grunt.registerTask('deploy_map', ['default', 'shell:deploy_map']);

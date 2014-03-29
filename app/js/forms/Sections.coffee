@@ -72,7 +72,7 @@ module.exports = class Sections extends Backbone.View
     visibleSections = _.filter(_.first(@sections, index + 1), (s) ->
       s.shouldBeVisible()
     )
-    @$(".breadcrumb").html templates["forms/Sections_breadcrumbs"](
+    @$(".breadcrumb").html require('./Sections_breadcrumbs.hbs')(
       sections: _.initial(visibleSections)
       lastSection: _.last(visibleSections)
     )
@@ -88,7 +88,7 @@ module.exports = class Sections extends Backbone.View
     @$(".finish").toggle not @getNextSectionIndex()?
 
   render: ->
-    @$el.html templates["forms/Sections"]()
+    @$el.html require('./Sections.hbs')()
     
     # Add sections
     sectionsEl = @$(".sections")

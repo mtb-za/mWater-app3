@@ -34,10 +34,10 @@ module.exports = class Localizer
     return locstr
 
   # Makes this localizer global
-  makeGlobal: (str, args...) ->
+  makeGlobal: (handlebars) ->
     global.T = @localizeString
     global.T.localizer = this
-    Handlebars.registerHelper 'T', @localizeString
+    handlebars.registerHelper 'T', @localizeString
 
   # Saves current locale to localstorage
   saveCurrentLocale: ->

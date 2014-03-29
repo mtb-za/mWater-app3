@@ -42,7 +42,7 @@ class MainPage extends Page
 
     data.imagesRemaining = @imageSync.lastSuccessMessage if @imageSync?
 
-    @$el.html templates['pages/MainPage'](data)
+    @$el.html require('./MainPage.hbs')(data)
 
     # Display images pending
     if @imageManager? and @imageManager.numPendingImages?

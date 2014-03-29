@@ -14,7 +14,7 @@ class SourceMapPage extends Page
     @setTitle T("Source Map")
 
     # Calculate height
-    @$el.html templates['pages/SourceMapPage']()
+    @$el.html require('./SourceMapPage.hbs')()
 
     # If initialGeo specified, use it
     if @options.initialGeo and @options.initialGeo.type=="Point"

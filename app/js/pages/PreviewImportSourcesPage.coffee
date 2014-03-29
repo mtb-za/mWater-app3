@@ -9,7 +9,7 @@ module.exports = class PreviewImportSourcesPage extends Page
 
   create: ->
     @setTitle T("Preview Sources")
-    @$el.html templates['pages/PreviewImportSourcesPage'](sources:@options.sources)
+    @$el.html require('./PreviewImportSourcesPage.hbs')(sources:@options.sources)
 
   import: ->
     if not confirm(T("Import sources? This cannot be undone."))

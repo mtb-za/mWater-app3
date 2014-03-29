@@ -3,7 +3,7 @@ Page = require "../Page"
 # Displays an image. Options: uid: uid of image
 module.exports = class ImagePage extends Page
   create: ->
-    @$el.html templates['pages/ImagePage']()
+    @$el.html require('./ImagePage.hbs')()
 
     # Get image url
     @imageManager.getImageUrl(@options.id, (url) =>

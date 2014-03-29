@@ -15,7 +15,7 @@ module.exports = class SourceListPage extends Page
     @setTitle T('Nearby Sources')
 
   activate: ->
-    @$el.html templates['pages/SourceListPage']()
+    @$el.html require('./SourceListPage.hbs')()
     @nearSources = []
     @unlocatedSources = []
 
@@ -64,7 +64,7 @@ module.exports = class SourceListPage extends Page
     else
       sources = @searchSources
 
-    @$("#table").html templates['pages/SourceListPage_items'](sources:sources)
+    @$("#table").html require('./SourceListPage_items.hbs')(sources:sources)
 
   locationError: (pos) =>
     @$("#location_msg").hide()

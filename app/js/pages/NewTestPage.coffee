@@ -14,7 +14,7 @@ module.exports = class NewTestPage extends Page
 
     @db.forms.find({type:"WaterTest"}).fetch (forms) =>
       @forms = forms
-      @$el.html templates['pages/NewTestPage'](forms:forms)
+      @$el.html require('./NewTestPage.hbs')(forms:forms)
 
   startTest: (ev) ->
     testCode = ev.currentTarget.id

@@ -94,7 +94,7 @@ class ButtonBar extends Backbone.View
     @render()
 
   render: ->
-    @$el.html templates['ButtonBar'](items: @items)
+    @$el.html require('./ButtonBar.hbs')(items: @items)
 
   clickMenuItem: (e) ->
     id = e.currentTarget.id
@@ -123,7 +123,7 @@ class ContextMenu extends Backbone.View
     @render()
 
   render: ->
-    @$el.html templates['ContextMenu'](items: @items)
+    @$el.html require('./ContextMenu.hbs')(items: @items)
 
   clickMenuItem: (e) ->
     id = e.currentTarget.id

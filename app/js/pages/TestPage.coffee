@@ -28,7 +28,7 @@ class TestPage extends Page
           return
 
         # Render test page
-        @$el.html templates['pages/TestPage'](form: form, test: test)
+        @$el.html require('./TestPage.hbs')(form: form, test: test)
 
         # Check if not completed and editable
         if not test.completed and @auth.update("tests", test)

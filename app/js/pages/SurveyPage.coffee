@@ -30,7 +30,7 @@ class SurveyPage extends Page
           return
 
         # Render survey page
-        @$el.html templates['pages/SurveyPage'](form: form, response: response)
+        @$el.html require('./SurveyPage.hbs')(form: form, response: response)
 
         # Check if not completed and editable
         if not response.completed and @auth.update("responses", response)
