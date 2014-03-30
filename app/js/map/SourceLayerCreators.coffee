@@ -173,6 +173,26 @@ class EColi extends SourceLayerCreator
       layer.removed = true
       superOnRemove(map)
 
+    layer.fitIntoBounds = (bounds) ->
+      layers = layer.getLayers()
+      circleMarker = layers[0]
+      if circleMarker?
+        #console.log("marker?")
+        latLng = circleMarker.getLatLng()
+        lng = latLng.lng
+        if bounds
+          west = bounds.getWest()
+          east = bounds.getEast()
+          while(lng < west)
+            lng += 360
+          while(lng > east)
+            lng -= 360
+
+        latLng2 = L.latLng(latLng.lat, lng);
+        circleMarker.setLatLng(latLng2)
+      #else
+      #  console.log("no marker?")
+
     # Return initial layer
     success(source: source, layer: layer)
 

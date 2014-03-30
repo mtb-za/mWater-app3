@@ -16,10 +16,7 @@ exports.latLngBoundsToGeoJSON = (bounds) ->
 
   if s < -90 then s = -90
   if n > 90 then n = 90
-  if w < -180 then w = -180
-  if e > 180 then e = 180
 
-  # Clip values
   return {
     type: 'Polygon',
     coordinates: [
@@ -39,7 +36,24 @@ exports.pointInPolygon = (point, polygon) ->
 
   # Get bounds
   bounds = new L.LatLngBounds(_.map(polygon.coordinates[0], (coord) -> new L.LatLng(coord[1], coord[0])))
-  return bounds.contains(new L.LatLng(point.coordinates[1], point.coordinates[0]))
+  east = bounds.getEast()
+  west = bounds.getWest()
+
+  pointLng = point.coordinates[0]
+  pointLat = point.coordinates[1]
+
+  if east - west >= 360
+    return pointLat <= bounds.getNorth() and pointLat >= bounds.getSouth()
+  else if east - west > 180
+    #the bounds support values outside the -180 to 180 range (unlike $geoIntersects)
+    newWest = east
+    newEast = west + 360
+    bounds = new L.LatLngBounds(new L.LatLng(bounds.getSouth(), newWest), new L.LatLng(bounds.getNorth(), newEast))
+    if pointLng < 0
+      pointLng += 360
+
+  return bounds.contains(new L.LatLng(pointLat, pointLng))
+
 
 exports.getRelativeLocation = (from, to) ->
   x1 = from.coordinates[0]
