@@ -28,9 +28,9 @@ TODO should any items be null of context?
 
 ###
 
-LocalDb = require './db/LocalDb'
-RemoteDb = require './db/RemoteDb'
-HybridDb = require './db/HybridDb'
+LocalDb = require('minimongo').LocalDb
+RemoteDb = require('minimongo').RemoteDb
+HybridDb = require('minimongo').HybridDb
 SimpleImageManager = require './images/SimpleImageManager'
 CachedImageManager = require './images/CachedImageManager'
 authModule = require './auth'

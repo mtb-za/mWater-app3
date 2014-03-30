@@ -5,7 +5,7 @@ module.exports = class SourcesLayer extends L.LayerGroup
 
   constructor: (sourceLayerCreator, sourcesDb, scope) ->
     super()
-    @MAX_SOURCES_RETURNED = 200
+    @maxSourcesReturned = 200
     @sourceLayerCreator = sourceLayerCreator
     @sourcesDb = sourcesDb
     @scope = scope || {}
@@ -17,8 +17,8 @@ module.exports = class SourcesLayer extends L.LayerGroup
     @map = map
     map.on 'moveend', @update
     @zoomToSeeMoreMsgDisplayed = false
-    @ZoomToSeeMoreMsg = L.control({position: 'topleft'});
-    @ZoomToSeeMoreMsg.onAdd = (map) =>
+    @zoomToSeeMoreMsg = L.control({position: 'topleft'});
+    @zoomToSeeMoreMsg.onAdd = (map) =>
       return @createZoomInToSeeMore()
 
   onRemove: (map) =>
@@ -48,13 +48,13 @@ module.exports = class SourcesLayer extends L.LayerGroup
     # Display "zoom to see more" warning when there is 200 sources
     # To make this 100% clean, we would need to deal with the special case when the result was not truncated
     # and actually contained 200 sources.
-    if sources.length == @MAX_SOURCES_RETURNED
+    if sources.length == @maxSourcesReturned
       if not @zoomToSeeMoreMsgDisplayed
         @zoomToSeeMoreMsgDisplayed = true
-        @map.addControl(@ZoomToSeeMoreMsg)
+        @map.addControl(@zoomToSeeMoreMsg)
     else if @zoomToSeeMoreMsgDisplayed
       @zoomToSeeMoreMsgDisplayed = false
-      @map.removeControl(@ZoomToSeeMoreMsg)
+      @map.removeControl(@zoomToSeeMoreMsg)
 
     for source in sources
       # If layer exists, ignore
@@ -94,7 +94,7 @@ module.exports = class SourcesLayer extends L.LayerGroup
     _this = this
     queryOptions =
       sort: ["_id"]
-      limit: @MAX_SOURCES_RETURNED
+      limit: @maxSourcesReturned
       mode: "remote"
       fields:
         name: 1
