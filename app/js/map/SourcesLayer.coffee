@@ -1,4 +1,5 @@
 GeoJSON = require '../GeoJSON'
+normalizeLng = require('./utils').normalizeLng
 
 module.exports = class SourcesLayer extends L.LayerGroup
 
@@ -83,6 +84,9 @@ module.exports = class SourcesLayer extends L.LayerGroup
       @removeLayer(@layers[id])
       delete @layers[id]
 
+    for id, layer of @layers
+      layer.fitIntoBounds(@map.getBounds())
+
     success() if success?
 
   # Query the db
@@ -114,19 +118,33 @@ module.exports = class SourcesLayer extends L.LayerGroup
   boundsQuery: (bounds, selector) =>
     return  unless bounds.isValid()
     return  if bounds.getWest() is bounds.getEast() or bounds.getNorth() is bounds.getSouth()
-    boundsGeoJSON = GeoJSON.latLngBoundsToGeoJSON(bounds)
-    if (boundsGeoJSON.coordinates[0][2][0] - boundsGeoJSON.coordinates[0][0][0]) >= 180
+
+    east = bounds.getEast()
+    west = bounds.getWest()
+
+    if east - west >= 360
+      # No geo query
       return
-    else if (boundsGeoJSON.coordinates[0][2][1] - boundsGeoJSON.coordinates[0][0][1]) >= 180
+
+    # for querying more than 180 degrees the $geoIntersects result needs to be inversed
+    # (Needs to be evaluated before normalizing)
+    inverse = false
+    if east - west >= 180
+      #inverse = true
+      # No geo query until $not $geoIntersects has been fixed
       return
-    else if boundsGeoJSON.coordinates[0][0][0] < -180 or boundsGeoJSON.coordinates[0][0][0] > 180
-      return
-    else if boundsGeoJSON.coordinates[0][2][0] < -180 or boundsGeoJSON.coordinates[0][2][0] > 180
-      return
-    else if boundsGeoJSON.coordinates[0][0][1] < -90 or boundsGeoJSON.coordinates[0][0][1] > 90
-      return
-    else if boundsGeoJSON.coordinates[0][2][1] < -90 or boundsGeoJSON.coordinates[0][2][1] > 90
-      return
+
+    east = normalizeLng(east)
+    west = normalizeLng(west)
+
+    southWest = L.latLng(bounds.getSouth(), west)
+    northEast = L.latLng(bounds.getNorth(), east)
+    normalizedBounds = L.latLngBounds( southWest, northEast )
+    boundsGeoJSON = GeoJSON.latLngBoundsToGeoJSON(normalizedBounds)
+
+    if inverse
+      selector.geo = $not: $geoIntersects:
+        $geometry: boundsGeoJSON
     else
       selector.geo = $geoIntersects:
         $geometry: boundsGeoJSON

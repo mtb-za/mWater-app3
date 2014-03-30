@@ -1,4 +1,5 @@
 NewSourcePage = require "../pages/NewSourcePage"
+normalizeLng = require('./utils').normalizeLng
 
 # Menu that displays when a right-click or long-press is detected
 module.exports = class ContextMenu 
@@ -14,7 +15,7 @@ module.exports = class ContextMenu
       # Get location
       geo = {
         type: "Point"
-        coordinates: [e.latlng.lng, e.latlng.lat]
+        coordinates: [normalizeLng(e.latlng.lng), e.latlng.lat]
       }
 
       # Create popup html
