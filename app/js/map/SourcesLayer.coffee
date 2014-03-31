@@ -84,8 +84,9 @@ module.exports = class SourcesLayer extends L.LayerGroup
       @removeLayer(@layers[id])
       delete @layers[id]
 
-    for id, layer of @layers
-      layer.fitIntoBounds(@map.getBounds())
+    if @map?
+      for id, layer of @layers
+        layer.fitIntoBounds(@map.getBounds())
 
     success() if success?
 
