@@ -103,6 +103,7 @@ module.exports = class SourcesLayer extends L.LayerGroup
         type: 1
         org: 1
         user: 1
+        photos: 1
 
     @sourcesDb.find(selector, queryOptions).fetch success, error
 

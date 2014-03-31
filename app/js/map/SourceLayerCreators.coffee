@@ -115,12 +115,19 @@ class EColi extends SourceLayerCreator
       throw "Invalid level: " + level
 
     # Create popup
+    thumbnail = "" 
+    if source.photos and source.photos.length 
+      thumbnail = "<img class='thumb' src='https://api.mwater.co/v3/images/" + source.photos[0].id + "?h=100' >"
+
     html = _.template('''
       <div>
-      ''' + T("Water source") + ''' <b><%=source.code%></b><br>
-      ''' + T("Name") + ''': <b><%=source.name%></b><br>
-      ''' + T("E.Coli / 100mL") + ''': <b><%=levelStr%><br>
-      <button class="btn btn-primary btn-block">''' + T("Open") + '''</button>
+        ''' + thumbnail + '''
+        <div class='data'>
+          ''' + T("Name") + ''' <b><%=source.name%></b><br>
+          ''' + T("Water source") + ''' <b><%=source.code%></b><br>
+          ''' + T("E.Coli / 100mL") + ''': <b><%=levelStr%></b><br>
+        </div>
+        <button class="btn btn-primary btn-block">''' + T("Open") + '''</button>
       </div>''', 
       { source: source, levelStr: levelStr })
 
