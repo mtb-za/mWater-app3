@@ -17,18 +17,58 @@ describe 'GeoJSON', ->
       ]
     }
 
-  it 'clips to reasonable values', ->
-    southWest = new L.LatLng(-120, -350)
-    northEast = new L.LatLng(120, 350)
+  it 'clips lat to reasonable values', ->
+    southWest = new L.LatLng(-120, -190)
+    northEast = new L.LatLng(120, -170)
     bounds = new L.LatLngBounds(southWest, northEast)
 
     json = GeoJSON.latLngBoundsToGeoJSON(bounds)
     assert _.isEqual json, {
       type: "Polygon",
       coordinates: [
-        [[-180,-90],[-180,90],[180,90],[180,-90],[-180, -90]]
+        [[-190,-90],[-190,90],[-170,90],[-170,-90],[-190, -90]]
       ]
     }
+
+  it 'validates that the point is inside the polygon', ->
+    southWest = new L.LatLng(-10, -70)
+    northEast = new L.LatLng(10, 70)
+    bounds = new L.LatLngBounds(southWest, northEast)
+    polygon = GeoJSON.latLngBoundsToGeoJSON(bounds)
+
+    point = {
+      type: "Point",
+      coordinates: [-65, 0]
+    }
+
+    assert GeoJSON.pointInPolygon(point, polygon)
+
+  it 'validates that the point is outside the polygon', ->
+    southWest = new L.LatLng(-10, -70)
+    northEast = new L.LatLng(10, 70)
+    bounds = new L.LatLngBounds(southWest, northEast)
+    polygon = GeoJSON.latLngBoundsToGeoJSON(bounds)
+
+    point = {
+      type: "Point",
+      coordinates: [-75, 0]
+    }
+
+    assert not GeoJSON.pointInPolygon(point, polygon)
+
+  it 'pointInPolygon behaves like $geoInsersects with bounds larger than 180 degrees', ->
+    southWest = new L.LatLng(-10, -170)
+    northEast = new L.LatLng(10, 170)
+    bounds = new L.LatLngBounds(southWest, northEast)
+    polygon = GeoJSON.latLngBoundsToGeoJSON(bounds)
+
+    point = {
+      type: "Point",
+      coordinates: [-175, 0]
+    }
+
+    assert GeoJSON.pointInPolygon(point, polygon)
+
 
   it 'gets relative location N', ->
     from = { type: "Point", coordinates: [10, 20]}
