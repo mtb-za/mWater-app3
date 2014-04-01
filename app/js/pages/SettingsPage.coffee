@@ -14,7 +14,7 @@ class SettingsPage extends Page
     @render()
 
   render: ->
-    @$el.html templates['pages/SettingsPage'](
+    @$el.html require('./SettingsPage.hbs')(
       offlineSourceCodes: if @sourceCodesManager then @sourceCodesManager.getNumberAvailableCodes() else null
       locales: @localizer.getLocales()
     )

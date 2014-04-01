@@ -55,7 +55,7 @@ module.exports = class SourcePage extends Page
 
     # Re-render template
     @removeSubviews()
-    @$el.html templates['pages/SourcePage'](source: @source, select: @options.onSelect?)
+    @$el.html require('./SourcePage.hbs')(source: @source, select: @options.onSelect?)
 
     # Set source type
     if @source.type?
@@ -80,7 +80,7 @@ module.exports = class SourcePage extends Page
 
     # Add tests
     @db.tests.find({"data.source": @source.code}).fetch (tests) =>
-      @$("#tests").html templates['pages/SourcePage_tests'](tests:tests)
+      @$("#tests").html require('./SourcePage_tests.hbs')(tests:tests)
 
       # Fill in names
       for test in tests
@@ -89,11 +89,11 @@ module.exports = class SourcePage extends Page
 
     # Add notes
     @db.source_notes.find({source: @source.code}).fetch (notes) => 
-      @$("#notes").html templates['pages/SourcePage_notes'](notes:notes)
+      @$("#notes").html require('./SourcePage_notes.hbs')(notes:notes)
 
     # Add surveys
     @db.responses.find({"data.source": @source.code}).fetch (surveys) =>
-      @$("#surveys").html templates['pages/SourcePage_surveys'](surveys:surveys)
+      @$("#surveys").html require('./SourcePage_surveys.hbs')(surveys:surveys)
 
       # Fill in names
       for survey in surveys

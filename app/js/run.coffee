@@ -15,16 +15,21 @@ AppUpdater = require './AppUpdater'
 
 cordova = require './cordova'
 
+handlebars = require("hbsfy/runtime")
+
 startError = (err) ->
   alert("Failed to start app: " + JSON.stringify(err))
 
 exports.start = (options = {}) ->
   _.defaults(options, { update: true })
+
+  # Setup handlebars helpers
+  Swag.registerHelpers(handlebars)
   
   # Setup localizer
   localizationData = require './localization/localizations.json'
   localizer = new Localizer(localizationData, "en")
-  localizer.makeGlobal()
+  localizer.makeGlobal(handlebars)
   localizer.restoreCurrentLocale()
 
   # Create pager

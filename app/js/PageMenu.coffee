@@ -25,7 +25,7 @@ module.exports = class PageMenu extends Backbone.View
     "click #admin" : 'gotoAdmin'
 
   render: ->
-    @$el.html templates['PageMenu']()
+    @$el.html require('./PageMenu.hbs')()
     @$("#new_test").toggle(require("./pages/NewTestPage").canOpen(@options.ctx))
     @$("#new_survey").toggle(require("./pages/NewSurveyPage").canOpen(@options.ctx))
     @$("#existing_survey").toggle(require("./pages/ExistingSurveyPage").canOpen(@options.ctx))

@@ -15,7 +15,7 @@ class AdminPage extends Page
     @render()
 
   render: ->
-    @$el.html templates['pages/AdminPage']()
+    @$el.html require('./AdminPage.hbs')()
 
   changePassword: ->
     username = @$("#password_username").val()

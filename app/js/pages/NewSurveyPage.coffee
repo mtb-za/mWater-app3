@@ -13,7 +13,7 @@ module.exports = class NewSurveyPage extends Page
 
     @db.forms.find({type:"Survey"}).fetch (forms) =>
       @forms = forms
-      @$el.html templates['pages/NewSurveyPage'](forms:forms)
+      @$el.html require('./NewSurveyPage.hbs')(forms:forms)
 
   startSurvey: (ev) ->
     surveyCode = ev.currentTarget.id

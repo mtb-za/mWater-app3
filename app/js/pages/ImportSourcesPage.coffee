@@ -11,7 +11,7 @@ module.exports = class ImportSourcesPage extends Page
 
   create: ->
     @setTitle T("Import Sources")
-    @$el.html templates['pages/ImportSourcesPage']()
+    @$el.html require('./ImportSourcesPage.hbs')()
 
   previewSourcesCSV: ->
     # Get types

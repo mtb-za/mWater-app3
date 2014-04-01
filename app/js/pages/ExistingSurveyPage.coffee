@@ -10,7 +10,7 @@ class ExistingSurveyPage extends Page
     "click .response" : "openResponse"
 
   create: ->
-    @$el.html templates['pages/ExistingSurveyPage']()
+    @$el.html require('./ExistingSurveyPage.hbs')()
     @setTitle T("Select Survey")
 
     @setupButtonBar [ { icon: "plus.png", click: => @addSurvey() } ]
@@ -21,7 +21,7 @@ class ExistingSurveyPage extends Page
     recent.setDate(recent.getDate() - 30)
 
     @db.responses.find({ completed: { $gt:recent.toISOString() }, user: @login.user }, {sort:[['started','desc']], limit: 100}).fetch (responses) =>
-      @$("#recent_table").html templates['pages/ExistingSurveyPage_items'](responses:responses)
+      @$("#recent_table").html require('./ExistingSurveyPage_items.hbs')(responses:responses)
 
       # Fill in survey names
       _.defer => # Defer to allow html to render
@@ -30,7 +30,7 @@ class ExistingSurveyPage extends Page
             @$("#name_"+resp._id).text(if form then form.name else "???")
 
     @db.responses.find({ completed: null, user: @login.user }, {sort:[['started','desc']], limit: 100}).fetch (responses) =>
-      @$("#incomplete_table").html templates['pages/ExistingSurveyPage_items'](responses:responses)
+      @$("#incomplete_table").html require('./ExistingSurveyPage_items.hbs')(responses:responses)
 
       # Fill in survey names
       _.defer => # Defer to allow html to render

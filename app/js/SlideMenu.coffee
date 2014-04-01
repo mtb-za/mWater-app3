@@ -2,7 +2,7 @@
 class SlideMenu extends Backbone.View
   initialize: ->
     @submenus = []
-    @$el.html templates['SlideMenu']()
+    @$el.html require('./SlideMenu.hbs')()
 
     # Android 4.0.4 doesn't work with overthrow properly
     if navigator.userAgent.toLowerCase().indexOf('android 4.0.4') != -1

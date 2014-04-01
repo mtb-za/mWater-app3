@@ -16,7 +16,7 @@ module.exports = class LoginPage extends Page
     @render()
 
   render: ->
-    @$el.html templates['pages/LoginPage'](locales: @localizer.getLocales())
+    @$el.html require('./LoginPage.hbs')(locales: @localizer.getLocales())
 
     # Select current locale
     @$("#locale").val(@localizer.locale)

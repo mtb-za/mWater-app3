@@ -27,7 +27,7 @@ module.exports = class ImageQuestion extends Question
       noImage = not canAdd and not image and not notSupported
 
       # Render images
-      answerEl.html templates['forms/ImageQuestion'](image: image, canAdd: canAdd, noImage: noImage, notSupported: notSupported)
+      answerEl.html require('./ImageQuestion.hbs')(image: image, canAdd: canAdd, noImage: noImage, notSupported: notSupported)
 
       # Set source
       if image

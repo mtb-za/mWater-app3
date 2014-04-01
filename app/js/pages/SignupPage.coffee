@@ -10,7 +10,7 @@ module.exports = class SignupPage extends Page
 
   activate: ->
     @setTitle ""
-    @$el.html templates['pages/SignupPage']()
+    @$el.html require('./SignupPage.hbs')()
 
   cancelClicked: ->
     @pager.closePage()

@@ -24,7 +24,7 @@ class AppView extends Backbone.View
     'click #appview_content': 'hideSlideMenu'
 
   render: ->  	
-    @$el.html templates['AppView']()
+    @$el.html require('./AppView.hbs')()
     @$el.append @slideMenu.el
     @$('#appview_content').append @pager.el
     this

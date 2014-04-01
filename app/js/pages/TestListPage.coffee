@@ -9,7 +9,7 @@ module.exports = class TestListPage extends Page
     'click tr.tappable' : 'testClicked'
 
   create: ->
-    @$el.html templates['pages/TestListPage']()
+    @$el.html require('./TestListPage.hbs')()
     @setTitle T('Recent Tests')
 
   activate: ->
@@ -22,7 +22,7 @@ module.exports = class TestListPage extends Page
     recent.setDate(recent.getDate() - 30)
 
     @db.tests.find({completed: { $gt:recent.toISOString() }, user: @login.user }, {sort:[['started','desc']]}).fetch (tests) =>
-      @$("#recent_table").html templates['pages/TestListPage_items'](tests:tests)
+      @$("#recent_table").html require('./TestListPage_items.hbs')(tests:tests)
 
       # Fill in test names
       _.defer => # Defer to allow html to render
@@ -31,7 +31,7 @@ module.exports = class TestListPage extends Page
             @$("#name_"+test._id).text(if form then form.name else "???")
 
     @db.tests.find({ completed: null, user: @login.user }, {sort:[['started','desc']]}).fetch (tests) =>
-      @$("#incomplete_table").html templates['pages/TestListPage_items'](tests:tests)
+      @$("#incomplete_table").html require('./TestListPage_items.hbs')(tests:tests)
 
       # Fill in test names
       _.defer => # Defer to allow html to render
