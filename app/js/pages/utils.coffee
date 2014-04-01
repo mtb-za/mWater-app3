@@ -29,7 +29,7 @@ exports.changeUserOrgDocs = (db, user, org, success, error) ->
 
 
 exports.login = (username, password, ctx, success, error) ->
-  console.log "Logging in as: #{username}/###"
+  console.log "Logging in as: #{username}"
 
   url = ctx.apiUrl + 'clients'
   req = $.ajax(url, {
@@ -42,7 +42,6 @@ exports.login = (username, password, ctx, success, error) ->
     type : 'POST'})
 
   req.done (data, textStatus, jqXHR) =>
-    console.log "Login response: " + jqXHR.responseText
     response = JSON.parse(jqXHR.responseText)
 
     # Login 
