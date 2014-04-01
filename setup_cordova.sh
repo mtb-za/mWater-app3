@@ -1,6 +1,7 @@
 #!/bin/bash
 rm -r cordova
 cordova create cordova co.mwater.clientapp mWater
+cp app/cordova/config.xml cordova
 cd cordova
 cordova platform add android
 cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-device.git
@@ -21,7 +22,6 @@ rm -r www/*
 
 echo "key.store=/home/clayton/.ssh/mwater.keystore" >> ./platforms/android/ant.properties
 echo "key.alias=mwater" >> ./platforms/android/ant.properties
-echo "TODO: Now update config.xml in cordova and in android/res/xml folder to run index_cordova.html?cordova= and other values not copied" 
 echo "TODO: Adjust minSdkVersion in AndroidManifest.xml to 8"
 echo "TODO: Set versionCode and versionName in AndroidManifest.xml for EACH release" 
 echo 'TODO: Add android:name="co.mwater.acraplugin.MyApplication" to application element of AndroidManifest.xml'
