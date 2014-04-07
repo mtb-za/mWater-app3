@@ -64,6 +64,10 @@ module.exports = class SourceListPage extends Page
     else
       sources = @searchSources
 
+    # If there are photos, use the first one as the thumbnail
+    sources.forEach (source) ->
+      source.thumbnail = if source.photos and source.photos.length then source.photos[0].id else null
+    
     @$("#table").html templates['pages/SourceListPage_items'](sources:sources)
 
   locationError: (pos) =>
