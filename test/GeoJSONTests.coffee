@@ -1,7 +1,7 @@
 assert = chai.assert
 GeoJSON = require "../app/js/GeoJSON"
 Localizer = require '../app/js/localization/Localizer'
-new Localizer().makeGlobal()
+new Localizer().makeGlobal(require("hbsfy/runtime"))
 
 describe 'GeoJSON', ->
   it 'returns a proper polygon', ->

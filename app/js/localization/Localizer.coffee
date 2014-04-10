@@ -33,11 +33,13 @@ module.exports = class Localizer
       locstr = locstr.replace("{" + i + "}", args[i])
     return locstr
 
-  # Makes this localizer global
+  # Makes this localizer global. handlebars is instance to register
+  # helper on, null for none
   makeGlobal: (handlebars) ->
     global.T = @localizeString
     global.T.localizer = this
-    handlebars.registerHelper 'T', @localizeString
+    if handlebars?
+      handlebars.registerHelper 'T', @localizeString
 
   # Saves current locale to localstorage
   saveCurrentLocale: ->

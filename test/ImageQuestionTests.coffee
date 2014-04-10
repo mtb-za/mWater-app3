@@ -4,7 +4,7 @@ UIDriver = require './helpers/UIDriver'
 ImagePage = require '../app/js/pages/ImagePage'
 
 Localizer = require '../app/js/localization/Localizer'
-new Localizer().makeGlobal()
+new Localizer().makeGlobal(require("hbsfy/runtime"))
 
 class MockImageManager 
   getImageThumbnailUrl: (imageUid, success, error) ->
