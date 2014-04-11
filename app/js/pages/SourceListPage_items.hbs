@@ -1,11 +1,14 @@
 <tbody>
 	{{#each sources}}
-	<tr class="tappable" id="{{_id}}">
-	    <td><strong>{{name}}</strong> 
-	    <td>{{#if geo}}{{else}}<span class="text-error"><b>{{T "Unlocated"}}</b></span>{{/if}}</td>
-	    <br/>
-	    <span class="text-muted">{{desc}}&nbsp;</span></td>
-	    <td><strong>{{code}}</strong></td>
+	<tr class="tappable source" id="{{_id}}">
+	    <td>
+	    	{{#if thumbnail}}<img class='thumb' src='https://api.mwater.co/v3/images/{{thumbnail}}?h=100' >{{/if}}
+	    	<strong>{{name}}</strong> 
+	    	<td>{{#if geo}}{{else}}<span class="text-error"><b>{{T "Unlocated"}}</b></span>{{/if}}</td>
+	    	<br/>
+	    	<span class="text-muted">{{desc}}&nbsp;</span>
+	    </td>
+    	<td><strong>{{code}}</strong></td>
 	    <td style="vertical-align:middle; border-left:none; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>
 	</tr>
 	{{else}}
@@ -13,4 +16,15 @@
 	    <td> {{T "See the map for a global view if no sources are found."}} </td>
 	</tr>
 	{{/each}}
-</tbody>
+</tbody> 
+
+<style>
+table tr.source td {
+	vertical-align: middle;
+}
+.source td .thumb {
+	height: 60px;
+	margin-right: 10px;
+	border-radius: 3px;
+}
+</style>

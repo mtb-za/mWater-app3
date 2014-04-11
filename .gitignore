@@ -4,5 +4,6 @@ dist
 dist.gz
 node_modules
 test/tests.js
+test/browserified.js
 forms/forms.js
 /cordova
