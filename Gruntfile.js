@@ -262,7 +262,7 @@ module.exports = function(grunt) {
           mode: 'gzip'
         },
        files: [
-          {expand: true,  cwd: 'dist/', src: ['**'], dest: 'dist.gz/', ext: ''}
+          {expand: true,  cwd: 'dist/', src: ['**'], dest: 'dist.gz/'}
         ]
       }
     }, 
