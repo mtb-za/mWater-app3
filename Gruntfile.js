@@ -55,6 +55,7 @@ module.exports = function(grunt) {
             'bower_components/lodash/dist/lodash.min.js', 
             'bower_components/backbone/backbone.js', 
             'vendor/bootstrap/js/bootstrap.min.js',  // Custom bootstrap with larger fonts
+            'bower_components/handlebars/handlebars.runtime.min.js',
             'bower_components/swag/lib/swag.min.js',
             'bower_components/overthrow-dist/overthrow.js',
             'vendor/mobiscroll.custom-2.5.4.min.js',
