@@ -1,6 +1,6 @@
 {
   "name": "mWater-App",
-  "version": "3.2.26",
+  "version": "3.3.3",
   "description": "Client of mWater App",
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,7 @@
     "fastclick": "~0.6.11",
     "glob": "~3.2.1",
     "grunt": "~0.4.1",
-    "grunt-contrib-compress": "~0.5.2",
+    "grunt-contrib-compress": "git+https://github.com/netpro2k/grunt-contrib-compress.git",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-handlebars": "~0.6.0",
