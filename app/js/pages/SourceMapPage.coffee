@@ -6,6 +6,7 @@ LocationDisplay = require '../map/LocationDisplay'
 LocationFinder = require '../LocationFinder'
 ContextMenu = require '../map/ContextMenu'
 BaseLayers = require '../map/BaseLayers'
+offlineMap = require 'offline-leaflet-map'
 
 # Map of water sources. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
@@ -65,10 +66,42 @@ class SourceMapPage extends Page
     $(window).on('resize', @resizeMap)
 
     # Setup base layers
-    osmLayer = BaseLayers.createOSMLayer()
+    osmLayer = BaseLayers.createOSMLayer(=>
+      osmLayer.addTo(@map)
+      progressControls = new offlineMap.OfflineProgressControl()
+      progressControls.setOfflineLayer(osmLayer)
+      @map.addControl(progressControls)
+
+      @topRightControl = L.control({position: 'topright'});
+      @topRightControl.onAdd = (map) =>
+        controls = L.DomUtil.create('div', 'control-button', @_container)
+
+        cacheButton = L.DomUtil.create('input', 'cache-button', controls)
+        cacheButton.setAttribute('type', "button")
+        cacheButton.setAttribute('id', "Btn1")
+        cacheButton.setAttribute('value', "Cache")
+
+        L.DomEvent.addListener(cacheButton, 'click', =>
+          # Might be a good idea to put a limit on the number of tiles that can would be saved
+          # calculateNbTiles includes potentially already saved tiles.
+          nbTiles = osmLayer.calculateNbTiles();
+          if nbTiles < 10000
+            console.log("Will be saving: " + nbTiles + " tiles")
+            # the actual call to save the tiles
+            osmLayer.saveTiles();
+          else
+            alert("You are trying to save " + nbTiles + " tiles. There is currently a limit of 10,000 tiles.");
+        , this)
+        L.DomEvent.disableClickPropagation(cacheButton)
+
+        return controls
+      @map.addControl(@topRightControl)
+
+
+    )
     # satelliteLayer = BaseLayers.createSatelliteLayer() # TODO re-add
     
-    osmLayer.addTo(@map)
+
     # baseLayers = 
     #   "OpenStreetMap": osmLayer
     #   "Satellite": satelliteLayer
