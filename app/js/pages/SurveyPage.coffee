@@ -18,7 +18,7 @@ class SurveyPage extends Page
       @response = response
 
       if @auth.remove("responses", @response)
-        @setupContextMenu [ { glyph: 'remove', text: T("Delete Survey"), click: => @deleteSurvey() } ]
+        @setupContextMenu [ { glyph: 'remove', text: T("Delete Survey"), click: => @removeResponse() } ]
       else 
         @setupContextMenu [ ]
 
