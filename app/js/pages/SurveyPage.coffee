@@ -1,5 +1,6 @@
 Page = require "../Page"
-forms = require '../forms'
+mwaterforms = require 'mwater-forms'
+ResponseModel = require '../ResponseModel'
 
 class SurveyPage extends Page
   @canOpen: (ctx) -> ctx.auth.update("responses")
@@ -17,42 +18,58 @@ class SurveyPage extends Page
 
       @response = response
 
-      if @auth.remove("responses", @response)
+      if @response.status in ['draft', 'pending', 'rejected']
         @setupContextMenu [ { glyph: 'remove', text: T("Delete Survey"), click: => @deleteSurvey() } ]
       else 
         @setupContextMenu [ ]
 
       # Get form
-      @db.forms.findOne { type: "Survey", code: response.type}, (form) =>
+      @db.forms.findOne { _id: response.form }, (form) =>
         if not form
-          alert T("Survey form {0} not found", response.type)
+          alert T("Survey form not found")
           @pager.closePage()
           return
 
+        @responseModel = new ResponseModel(response, form, @login.user, []) 
+
         # Render survey page
-        @$el.html require('./SurveyPage.hbs')(form: form, response: response)
+        canRedraft = response.status == "pending"
+        name = mwaterforms.formUtils.localizeString(form.design.name)
 
-        # Check if not completed and editable
-        if not response.completed and @auth.update("responses", response)
-          @formView = forms.instantiateView(form.views.edit, { ctx: @ctx })
+        @$el.html require('./SurveyPage.hbs')(response: response, name: name, canRedraft: canRedraft)
 
+        # Check if redraftable
+        if response.status == "draft"
+          model = new Backbone.Model()
+          compiler = new mwaterforms.FormCompiler(model: model, locale: @localizer.locale)
+          
+          # TODO ctx
+          ctx = {}
+          @formView = compiler.compileForm(form.design, ctx).render()
+          
           # Listen to events
           @listenTo @formView, 'change', @save
           @listenTo @formView, 'complete', @completed
           @listenTo @formView, 'close', @close
           @listenTo @formView, 'discard', @removeResponse
         else
-          @formView = forms.instantiateView(form.views.detail, { ctx: @ctx })
+          @formView = new Backbone.View() # TODO?
+          @formView.load = ->
+            return
+          if @response.status == "final"
+            @formView.$el.html("<em>Response has been finalized and cannot be edited</em>") # TODO
+          else
+            @formView.$el.html("<em>Response is pending approval</em>") # TODO
 
         # Add form view
         @$("#contents").append(@formView.el)
 
-        if not @auth.update("responses", response)
+        if not canRedraft
           @$("#edit_button").hide()
 
         @formView.load @response.data
 
-        if @auth.remove("responses", @response)
+        if response.status == "draft"
           @setupContextMenu [
             { glyph: 'remove', text: T("Delete Survey"), click: => @removeResponse() }
           ] 
@@ -66,7 +83,7 @@ class SurveyPage extends Page
 
   destroy: ->
     # Let know that saved if closed incompleted
-    if @response and not @response.completed
+    if @response and @response.status == "draft"
       @pager.flash T("Survey saved as draft.")
 
     # Remove survey control
@@ -74,8 +91,8 @@ class SurveyPage extends Page
       @formView.remove()
 
   edit: ->
-    # Mark as incomplete
-    @response.completed = null
+    # Redraft
+    @responseModel.draft()
     @db.responses.upsert @response, => @render()
 
   save: =>
@@ -88,9 +105,9 @@ class SurveyPage extends Page
     @pager.closePage()
 
   completed: =>
-    # Mark as completed
+    # Submit
     @response.data = @formView.save()
-    @response.completed = new Date().toISOString()
+    @responseModel.submit()
 
     @db.responses.upsert(@response)
     @pager.closePage()

@@ -2,8 +2,19 @@
 	{{#each responses}}
 	<tr class="response tappable" id="{{_id}}">
 		<td>
-			<span id="name_{{_id}}"></span> ({{T "started"}} {{formatDate started "%F"}})
-			{{#if completed}}<span class="label label-success">{{T "Completed"}}</span>{{else}}<span class="label label-warning">{{T "Draft"}}</span>{{/if}}
+			<span id="name_{{_id}}"></span> ({{T "started"}} {{formatDate startedOn "%F"}})
+			{{#is status "draft"}}
+			<span class="label label-default">{{T "Draft"}}</span>
+			{{/is}}
+			{{#is status "pending"}}
+			<span class="label label-warning">{{T "Pending"}}</span>
+			{{/is}}
+			{{#is status "final"}}
+			<span class="label label-success">{{T "Final"}}</span>
+			{{/is}}
+			{{#is status "rejected"}}
+			<span class="label label-danger">{{T "Rejected"}}</span>
+			{{/is}}
 			<br/>
 			<span class="text-muted">{{code}}</span>
 		</td>

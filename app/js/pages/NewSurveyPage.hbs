@@ -6,11 +6,11 @@
 }
 </style>
 
-<h4>{{T "Select type of survey to start"}}</h4>
+<h4>{{T "Select survey to start"}}</h4>
 <table class="table">
   <tbody>
     {{#each forms}}
-    <tr class="survey tappable" id="{{code}}">
+    <tr class="survey tappable" id="{{_id}}">
       <td>{{name}}</a>
       <td style="vertical-align:middle; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>
     </tr>
