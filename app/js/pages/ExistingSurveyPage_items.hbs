@@ -17,6 +17,9 @@
 			{{/is}}
 			<br/>
 			<span class="text-muted">{{code}}</span>
+			{{#if rejectionMessage}}
+			<br/><span class="text-danger">{{rejectionMessage}}</span>
+			{{/if}}
 		</td>
 		<td style="vertical-align:middle; border-left:none; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>
 	</tr>
