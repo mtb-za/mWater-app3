@@ -171,13 +171,13 @@ module.exports = function(grunt) {
           }
         }
       },
-      deploy_beta2: {
+      deploy_beta: {
         command: 's3cmd sync --acl-public --guess-mime-type ' +
           '--add-header "Cache-Control: no-cache, must-revalidate" ' +
           '--add-header "Pragma: no-cache" ' +
           '--add-header "Expires: 0" ' + 
           '--add-header "Content-Encoding: gzip" '+
-          '* s3://beta2.mwater.co',
+          '* s3://beta.mwater.co',
         options: {
           stdout: true,
           execOptions: {
@@ -303,6 +303,7 @@ module.exports = function(grunt) {
   grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages']);
   grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
 
+  grunt.registerTask('deploy_beta', ['default', 'shell:deploy_beta']);
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
   grunt.registerTask('deploy_map', ['default', 'shell:deploy_map']);
   grunt.registerTask('deploy_app', ['shell:bump_version', 'default', 'shell:deploy_app']);
