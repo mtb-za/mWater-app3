@@ -19,7 +19,7 @@ class SurveyPage extends Page
       @response = response
 
       if @response.status in ['draft', 'pending', 'rejected']
-        @setupContextMenu [ { glyph: 'remove', text: T("Delete Survey"), click: => @deleteSurvey() } ]
+        @setupContextMenu [ { glyph: 'remove', text: T("Delete Survey"), click: => @removeResponse() } ]
       else 
         @setupContextMenu [ ]
 
