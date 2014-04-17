@@ -20,7 +20,7 @@ class ExistingSurveyPage extends Page
     recent = new Date()
     recent.setDate(recent.getDate() - 30)
 
-    @db.responses.find({ completed: { $gt:recent.toISOString() }, user: @login.user }, {sort:[['started','desc']], limit: 100}).fetch (responses) =>
+    @db.responses.find({ type: { $exists: true }, completed: { $gt:recent.toISOString() }, user: @login.user }, {sort:[['started','desc']], limit: 100}).fetch (responses) =>
       @$("#recent_table").html require('./ExistingSurveyPage_items.hbs')(responses:responses)
 
       # Fill in survey names
@@ -29,7 +29,7 @@ class ExistingSurveyPage extends Page
           @db.forms.findOne { code:resp.type }, { mode: "local" }, (form) =>
             @$("#name_"+resp._id).text(if form then form.name else "???")
 
-    @db.responses.find({ completed: null, user: @login.user }, {sort:[['started','desc']], limit: 100}).fetch (responses) =>
+    @db.responses.find({ type: { $exists: true }, completed: null, user: @login.user }, {sort:[['started','desc']], limit: 100}).fetch (responses) =>
       @$("#incomplete_table").html require('./ExistingSurveyPage_items.hbs')(responses:responses)
 
       # Fill in survey names
