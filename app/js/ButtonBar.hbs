@@ -6,7 +6,7 @@
 .dropdown-menu .menuitem .glyphicon-ok {
   display:none;
 }
-.dropdown-menu .menuitem.active .glyphicon-ok {
+.dropdown-menu .menuitem.checked .glyphicon-ok {
   display:inline;
 }
 </style>
@@ -18,7 +18,11 @@
   </div>
   <ul class="dropdown-menu" role="menu" style="right: 0; left: auto;">
       {{#each menu}}
-      <li><a id="{{id}}" class="menuitem {{#if checked }}active{{/if}}"><span class="glyphicon glyphicon-ok"></span> {{text}}</a></li>
+        {{#if separator}}
+        <li role="presentation" class="divider"></li>
+        {{else}}
+        <li><a id="{{id}}" class="menuitem {{#if checked }}checked{{/if}}"><span class="glyphicon glyphicon-ok"></span> {{text}}</a></li>
+        {{/if}}
       {{/each}}
   </ul>  
   </div>
