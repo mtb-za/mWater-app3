@@ -197,19 +197,29 @@ class SourceMapPage extends Page
 
   # Caches tiles and makes them available offline
   cacheTiles: ->
-    # TODO Might be a good idea to put a limit on the number of tiles that can would be saved
-    # calculateNbTiles includes potentially already saved tiles.
     nbTiles = @osmLayer.calculateNbTiles();
     console.log("Would be saving: " + nbTiles + " tiles")
+
+    zoomLimit = @map.getMaxZoom()
+    console.log("Trying to save: " + nbTiles)
+
+    maxNbTiles = 10000
+    minZoomLimit = 15
+    while zoomLimit > minZoomLimit && nbTiles > maxNbTiles
+      nbTiles /= 4
+      zoomLimit--
+      console.log("Lowered zoom level to: " + zoomLimit)
+      console.log("Would now save: " + nbTiles)
+
     if nbTiles < 10000
-      if not confirm T("Download approximately {0} K of map data and make available offline?", nbTiles*10)
+      if not confirm T("Download approximately {0} K of map data and make available offline?", Math.ceil(nbTiles*10))
         return
 
       # Add progress/cancel display
       new CacheProgressControl(@map, @osmLayer)
 
       # Save the tiles
-      @osmLayer.saveTiles()
+      @osmLayer.saveTiles(zoomLimit)
     else
       alert(T("You are trying to save too large of a region of the map. Please zoom in further."))
 
