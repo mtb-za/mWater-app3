@@ -66,9 +66,29 @@ class SourceMapPage extends Page
     # Recalculate on resize
     $(window).on('resize', @resizeMap)
 
-    # Setup base layers
-    @osmLayer = BaseLayers.createOSMLayer () =>
+    onReady = () =>
       @osmLayer.addTo(@map)
+
+    onError = (errorType, errorData1, errorData2) =>
+      if @cacheProgressControl
+        if not @cacheProgressControl.cancelling
+          @cacheProgressControl.cancel();
+          if errorType == "INDEXED_DB_BATCH"
+            errorMsg = errorType
+            throw Error(errorMsg)
+          if errorType == "INDEXED_DB_GET"
+            errorMsg = errorType + ":" + errorData1
+            throw Error(errorMsg)
+          if errorType == "GET_STATUS_ERROR"
+            errorMsg = errorType + ":" + errorData1 + ":" + errorData2
+            console.log(errorMsg)
+          if errorType == "NETWORK_ERROR"
+            errorMsg = errorType + ":" + errorData1 + ":" + errorData2
+            console.log(errorMsg)
+          alert(errorMsg)
+
+    # Setup base layers
+    @osmLayer = BaseLayers.createOSMLayer(onReady, onError)
 
     # satelliteLayer = BaseLayers.createSatelliteLayer() # TODO re-add
 
@@ -216,7 +236,7 @@ class SourceMapPage extends Page
         return
 
       # Add progress/cancel display
-      new CacheProgressControl(@map, @osmLayer)
+      @cacheProgressControl = new CacheProgressControl(@map, @osmLayer)
 
       # Save the tiles
       @osmLayer.saveTiles(zoomLimit)
