@@ -7,6 +7,7 @@ LocationFinder = require '../LocationFinder'
 ContextMenu = require '../map/ContextMenu'
 BaseLayers = require '../map/BaseLayers'
 offlineMap = require 'offline-leaflet-map'
+CacheProgressControl = require '../map/CacheProgressControl'
 
 # Map of water sources. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
@@ -66,41 +67,10 @@ class SourceMapPage extends Page
     $(window).on('resize', @resizeMap)
 
     # Setup base layers
-    osmLayer = BaseLayers.createOSMLayer(=>
-      osmLayer.addTo(@map)
-      progressControls = new offlineMap.OfflineProgressControl()
-      progressControls.setOfflineLayer(osmLayer)
-      @map.addControl(progressControls)
+    @osmLayer = BaseLayers.createOSMLayer () =>
+      @osmLayer.addTo(@map)
 
-      @topRightControl = L.control({position: 'topright'});
-      @topRightControl.onAdd = (map) =>
-        controls = L.DomUtil.create('div', 'control-button', @_container)
-
-        cacheButton = L.DomUtil.create('input', 'cache-button', controls)
-        cacheButton.setAttribute('type', "button")
-        cacheButton.setAttribute('id', "Btn1")
-        cacheButton.setAttribute('value', "Cache")
-
-        L.DomEvent.addListener(cacheButton, 'click', =>
-          # Might be a good idea to put a limit on the number of tiles that can would be saved
-          # calculateNbTiles includes potentially already saved tiles.
-          nbTiles = osmLayer.calculateNbTiles();
-          if nbTiles < 10000
-            console.log("Will be saving: " + nbTiles + " tiles")
-            # the actual call to save the tiles
-            osmLayer.saveTiles();
-          else
-            alert("You are trying to save " + nbTiles + " tiles. There is currently a limit of 10,000 tiles.");
-        , this)
-        L.DomEvent.disableClickPropagation(cacheButton)
-
-        return controls
-      @map.addControl(@topRightControl)
-
-
-    )
     # satelliteLayer = BaseLayers.createSatelliteLayer() # TODO re-add
-    
 
     # baseLayers = 
     #   "OpenStreetMap": osmLayer
@@ -153,15 +123,17 @@ class SourceMapPage extends Page
         options.push { display: T("Only Mine"), type: "user", value: { user: @login.user } }
     return options
 
-  #Filter the sources by all, org, or user
+  # Filter the sources by all, org, or user
   updateSourceScope: (scope) => 
-    #Update UI
+    # Update UI
     @getButtonBar().$(".dropdown-menu .menuitem.active").removeClass("active")
     @getButtonBar().$("#source-scope-" + scope.type).addClass("active")
-    #Update Map
+    
+    # Update Map
     @sourcesLayer.setScope scope.value
     @sourcesLayer.update()
-    #Persist the view
+
+    # Persist the view
     @saveView()
     return
 
@@ -192,6 +164,11 @@ class SourceMapPage extends Page
       click: => @updateSourceScope scope
       checked: (JSON.stringify(currentScope) == JSON.stringify(scope.value))      
     )
+    menu.push { separator: true }
+    menu.push {
+      text: T("Make Available Offline")
+      click: => @cacheTiles()
+    }
 
     @setupButtonBar [
       { icon: "gear.png", menu: menu }
@@ -217,6 +194,25 @@ class SourceMapPage extends Page
     mapHeight = $("html").height() - 50
     $("#map").css("height", mapHeight + "px")
     @map.invalidateSize()
+
+  # Caches tiles and makes them available offline
+  cacheTiles: ->
+    # TODO Might be a good idea to put a limit on the number of tiles that can would be saved
+    # calculateNbTiles includes potentially already saved tiles.
+    nbTiles = @osmLayer.calculateNbTiles();
+    console.log("Would be saving: " + nbTiles + " tiles")
+    if nbTiles < 10000
+      if not confirm T("Download approximately {0} K of map data and make available offline?", nbTiles*10)
+        return
+
+      # Add progress/cancel display
+      new CacheProgressControl(@map, @osmLayer)
+
+      # Save the tiles
+      @osmLayer.saveTiles()
+    else
+      alert(T("You are trying to save too large of a region of the map. Please zoom in further."))
+
 
 setupMapTiles = ->
   mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png'
