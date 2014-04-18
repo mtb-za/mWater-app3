@@ -30,49 +30,51 @@ class SurveyPage extends Page
           @pager.closePage()
           return
 
-        @responseModel = new ResponseModel(response, form, @login.user, []) 
+        # Get user groups
+        @db.groups.find({ members: @login.user }, { fields: { groupname: 1 } }).fetch (groups) =>
+          @responseModel = new ResponseModel(response, form, @login.user, _.pluck(groups, "groupname"))
 
-        # Render survey page
-        canRedraft = response.status == "pending"
-        name = mwaterforms.formUtils.localizeString(form.design.name)
+          # Render survey page
+          canRedraft = response.status == "pending"
+          name = mwaterforms.formUtils.localizeString(form.design.name)
 
-        @$el.html require('./SurveyPage.hbs')(response: response, name: name, canRedraft: canRedraft)
+          @$el.html require('./SurveyPage.hbs')(response: response, name: name, canRedraft: canRedraft)
 
-        # Check if redraftable
-        if response.status == "draft"
-          model = new Backbone.Model()
-          compiler = new mwaterforms.FormCompiler(model: model, locale: @localizer.locale)
-          
-          # TODO ctx
-          ctx = {}
-          @formView = compiler.compileForm(form.design, ctx).render()
-          
-          # Listen to events
-          @listenTo @formView, 'change', @save
-          @listenTo @formView, 'complete', @completed
-          @listenTo @formView, 'close', @close
-          @listenTo @formView, 'discard', @removeResponse
-        else
-          @formView = new Backbone.View() # TODO?
-          @formView.load = ->
-            return
-          if @response.status == "final"
-            @formView.$el.html("<em>Response has been finalized and cannot be edited</em>") # TODO
+          # Check if redraftable
+          if response.status == "draft"
+            model = new Backbone.Model()
+            compiler = new mwaterforms.FormCompiler(model: model, locale: @localizer.locale)
+            
+            # TODO ctx
+            ctx = {}
+            @formView = compiler.compileForm(form.design, ctx).render()
+            
+            # Listen to events
+            @listenTo @formView, 'change', @save
+            @listenTo @formView, 'complete', @completed
+            @listenTo @formView, 'close', @close
+            @listenTo @formView, 'discard', @removeResponse
           else
-            @formView.$el.html("<em>Response is pending approval</em>") # TODO
+            @formView = new Backbone.View() # TODO?
+            @formView.load = ->
+              return
+            if @response.status == "final"
+              @formView.$el.html("<em>Response has been finalized and cannot be edited</em>") # TODO
+            else
+              @formView.$el.html("<em>Response is pending approval</em>") # TODO
 
-        # Add form view
-        @$("#contents").append(@formView.el)
+          # Add form view
+          @$("#contents").append(@formView.el)
 
-        if not canRedraft
-          @$("#edit_button").hide()
+          if not canRedraft
+            @$("#edit_button").hide()
 
-        @formView.load @response.data
+          @formView.load @response.data
 
-        if response.status == "draft"
-          @setupContextMenu [
-            { glyph: 'remove', text: T("Delete Survey"), click: => @removeResponse() }
-          ] 
+          if response.status == "draft"
+            @setupContextMenu [
+              { glyph: 'remove', text: T("Delete Survey"), click: => @removeResponse() }
+            ] 
 
   events:
     "click #edit_button" : "edit"

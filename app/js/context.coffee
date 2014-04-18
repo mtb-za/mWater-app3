@@ -41,7 +41,7 @@ cordova = require './cordova'
 ImageUploader = require './images/ImageUploader'
 ProblemReporter = require './ProblemReporter'
 
-collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes']
+collectionNames = ['sources', 'forms', 'groups', 'responses', 'source_types', 'tests', 'source_notes']
 
 apiUrl = 'https://api.mwater.co/v3/'
 

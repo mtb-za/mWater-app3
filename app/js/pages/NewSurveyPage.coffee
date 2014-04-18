@@ -13,16 +13,20 @@ module.exports = class NewSurveyPage extends Page
   activate: ->
     @setTitle T("Select Survey")
 
-    # TODO add groups
-    filter = { "deployments.enumerators": { $in: [ "user:" + @login.user ] } }
-    @db.forms.find(filter).fetch (forms) =>
-      @forms = forms
-      data = _.map forms, (form) =>
-        return  {
-          _id: form._id
-          name: mwaterforms.formUtils.localizeString(form.design.name, @localizer.locale)
-        }
-      @$el.html require('./NewSurveyPage.hbs')(forms:data)
+    # Get user groups
+    @db.groups.find({ members: @login.user }, { fields: { groupname: 1 } }).fetch (groups) =>
+      @groups = _.pluck(groups, "groupname")
+      enumerators = [ "all", "user:" + @login.user ].concat(_.map(groups, (g) -> "group:" + g))
+  
+      filter = { "deployments.enumerators": { $in: enumerators } }
+      @db.forms.find(filter).fetch (forms) =>
+        @forms = forms
+        data = _.map forms, (form) =>
+          return  {
+            _id: form._id
+            name: mwaterforms.formUtils.localizeString(form.design.name, @localizer.locale)
+          }
+        @$el.html require('./NewSurveyPage.hbs')(forms:data)
 
   startSurvey: (ev) ->
     surveyId = ev.currentTarget.id
@@ -33,8 +37,7 @@ module.exports = class NewSurveyPage extends Page
       return
 
     response = {}
-    # TODO add groups
-    responseModel = new ResponseModel(response, form, @login.user, []) 
+    responseModel = new ResponseModel(response, form, @login.user, @groups) 
     responseModel.draft()
 
     @db.responses.upsert response, (response) =>
