@@ -69,23 +69,27 @@ class SourceMapPage extends Page
     onReady = () =>
       @osmLayer.addTo(@map)
 
+    @noDb = false
     onError = (errorType, errorData1, errorData2) =>
-      if @cacheProgressControl
-        if not @cacheProgressControl.cancelling
-          @cacheProgressControl.cancel();
-          if errorType == "INDEXED_DB_BATCH"
-            errorMsg = errorType
-            throw Error(errorMsg)
-          if errorType == "INDEXED_DB_GET"
-            errorMsg = errorType + ":" + errorData1
-            throw Error(errorMsg)
-          if errorType == "GET_STATUS_ERROR"
-            errorMsg = errorType + ":" + errorData1 + ":" + errorData2
-            console.log(errorMsg)
-          if errorType == "NETWORK_ERROR"
-            errorMsg = errorType + ":" + errorData1 + ":" + errorData2
-            console.log(errorMsg)
-          alert(errorMsg)
+      if errorType == "COULD_NOT_CREATE_DB"
+        @noDb = true
+      else
+        if @cacheProgressControl
+          if not @cacheProgressControl.cancelling
+            @cacheProgressControl.cancel();
+            if errorType == "INDEXED_DB_BATCH"
+              errorMsg = errorType
+              throw Error(errorMsg)
+            if errorType == "INDEXED_DB_GET"
+              errorMsg = errorType + ":" + errorData1
+              throw Error(errorMsg)
+            if errorType == "GET_STATUS_ERROR"
+              errorMsg = errorType + ":" + errorData1 + ":" + errorData2
+              console.log(errorMsg)
+            if errorType == "NETWORK_ERROR"
+              errorMsg = errorType + ":" + errorData1 + ":" + errorData2
+              console.log(errorMsg)
+            alert(errorMsg)
 
     # Setup base layers
     @osmLayer = BaseLayers.createOSMLayer(onReady, onError)
@@ -184,11 +188,12 @@ class SourceMapPage extends Page
       click: => @updateSourceScope scope
       checked: (JSON.stringify(currentScope) == JSON.stringify(scope.value))      
     )
-    menu.push { separator: true }
-    menu.push {
-      text: T("Make Available Offline")
-      click: => @cacheTiles()
-    }
+    if not @noDb
+      menu.push { separator: true }
+      menu.push {
+        text: T("Make Available Offline")
+        click: => @cacheTiles()
+      }
 
     @setupButtonBar [
       { icon: "gear.png", menu: menu }
