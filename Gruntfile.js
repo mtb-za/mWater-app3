@@ -36,12 +36,19 @@ module.exports = function(grunt) {
               'vendor/*.css',
               'vendor/leaflet/leaflet.css'],
         dest: 'dist/css/libs.css'
-      },
-      css: {
-          src: ['app/css/*.css'],
-          dest: 'dist/css/app.css'
       }
     },
+
+   rework: {
+      'dist/css/app.css': 'app/css/index.css',
+      options: {
+        use: [
+          [require('rework-npm')]
+        ],
+        vendors: ['-moz-', '-webkit-']
+      }
+    },
+
 
     uglify: {
       options: {
@@ -295,13 +302,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-text-replace');
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-rework');
 
   grunt.registerTask('cordova_debug', ['copy:cordova_www', 'copy:cordova_override_debug']);
   grunt.registerTask('cordova_release', ['copy:cordova_www', 'copy:cordova_override_release']);
   grunt.registerTask('run_cordova_debug', ['default', 'cordova_debug', 'shell:cordova_run']);
 
   grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages']);
-  grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
+  grunt.registerTask('default', ['browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
 
   grunt.registerTask('deploy_beta', ['default', 'shell:deploy_beta']);
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
