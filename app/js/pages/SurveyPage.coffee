@@ -18,11 +18,6 @@ class SurveyPage extends Page
 
       @response = response
 
-      if @response.status in ['draft', 'pending', 'rejected']
-        @setupContextMenu [ { glyph: 'remove', text: T("Delete Survey"), click: => @removeResponse() } ]
-      else 
-        @setupContextMenu [ ]
-
       # Get form
       @db.forms.findOne { _id: response.form }, (form) =>
         if not form
@@ -34,8 +29,13 @@ class SurveyPage extends Page
         @db.groups.find({ members: @login.user }, { fields: { groupname: 1 } }).fetch (groups) =>
           @responseModel = new ResponseModel(response, form, @login.user, _.pluck(groups, "groupname"))
 
+          if @responseModel.canDelete()
+            @setupContextMenu [ { glyph: 'remove', text: T("Delete Survey"), click: => @removeResponse() } ]
+          else 
+            @setupContextMenu [ ]
+
           # Render survey page
-          canRedraft = response.status == "pending"
+          canRedraft = @responseModel.canDraft()
           name = mwaterforms.formUtils.localizeString(form.design.name)
 
           @$el.html require('./SurveyPage.hbs')(response: response, name: name, canRedraft: canRedraft)
