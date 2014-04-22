@@ -1,6 +1,10 @@
 Page = require "../Page"
 mwaterforms = require 'mwater-forms'
 ResponseModel = require '../ResponseModel'
+ImagePage = require './ImagePage'
+SourceListPage = require './SourceListPage'
+SourceMapPage = require './SourceMapPage'
+GeoJSON = require '../GeoJSON'
 
 class SurveyPage extends Page
   @canOpen: (ctx) -> ctx.auth.update("responses")
@@ -44,9 +48,21 @@ class SurveyPage extends Page
           if response.status == "draft"
             model = new Backbone.Model()
             compiler = new mwaterforms.FormCompiler(model: model, locale: @localizer.locale)
-            
-            # TODO ctx
-            ctx = {}
+
+            # Create context for forms            
+            ctx = {
+              displayImage: (options) =>
+                @pager.openPage(ImagePage, { id: options.id, remove: options.remove })
+              imageManager: @ctx.imageManager
+              imageAcquirer: @ctx.imageAcquirer
+              selectSite: (success) =>
+                @pager.openPage SourceListPage, { onSelect: (source)=> success(source.code) }
+              displayMap: (location) =>
+                @pager.openPage require("./SourceMapPage"), {
+                  initialGeo: { type: 'Point', coordinates: [location.longitude, location.latitude] }
+                }
+            }
+
             @formView = compiler.compileForm(form.design, ctx).render()
             
             # Listen to events
@@ -66,15 +82,11 @@ class SurveyPage extends Page
           # Add form view
           @$("#contents").append(@formView.el)
 
-          if not canRedraft
+          if not canRedraft or response.status in ['draft', 'rejected']
             @$("#edit_button").hide()
 
           @formView.load @response.data
 
-          if response.status == "draft"
-            @setupContextMenu [
-              { glyph: 'remove', text: T("Delete Survey"), click: => @removeResponse() }
-            ] 
 
   events:
     "click #edit_button" : "edit"
