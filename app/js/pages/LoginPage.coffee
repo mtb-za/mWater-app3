@@ -47,8 +47,8 @@ module.exports = class LoginPage extends Page
     # Prevent actual submit
     e.preventDefault()
 
-    username = @$("#login_username").val()
-    password = @$("#login_password").val()
+    username = @$("#login_username").val().trim()
+    password = @$("#login_password").val().trim()
 
     @login(username, password)
     return
