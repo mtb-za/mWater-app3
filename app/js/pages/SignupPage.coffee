@@ -19,19 +19,23 @@ module.exports = class SignupPage extends Page
     # Prevent actual submit
     e.preventDefault()
 
-    email = @$("#signup_email").val()
-    username = @$("#signup_username").val()
-    password = @$("#signup_password").val()
+    email = @$("#signup_email").val().trim()
+    username = @$("#signup_username").val().trim()
+    password = @$("#signup_password").val().trim()
 
-    if not username or username.length == 0
+    if username.length == 0
       alert(T("Username required"))
       return
 
-    if not password or password.length < 5
+    if not username.match /^[a-zA-Z][a-zA-Z0-9.\- ]{6,}/
+      alert(T("Username must be composed of letters, numbers, spaces, period and dash and must be at least 7 characters long. It must start with a letter."))
+      return
+
+    if password.length < 5
       alert(T("Password of at least 5 characters required"))
       return
 
-    if not email or email.length == 0
+    if email.length == 0
       alert(T("Email required"))
       return
 
