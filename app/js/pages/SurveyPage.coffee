@@ -45,7 +45,7 @@ class SurveyPage extends Page
           @$el.html require('./SurveyPage.hbs')(response: response, name: name, canRedraft: canRedraft)
 
           # Check if redraftable
-          if response.status == "draft"
+          if response.status == "draft" or response.status == "rejected"
             model = new Backbone.Model()
             compiler = new mwaterforms.FormCompiler(model: model, locale: @localizer.locale)
 
