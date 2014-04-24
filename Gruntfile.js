@@ -20,7 +20,7 @@ module.exports = function(grunt) {
           browserifyOptions: { extensions: [ '.coffee', '.js' ] },
           alias: [
             './app/js/run.coffee:run',
-            './app/js/forms:forms',
+            './app/js/forms/index.coffee:forms',
             './app/js/jquery-shim:jquery',
             './app/js/lodash-shim:lodash',
             './app/js/lodash-shim:underscore',
