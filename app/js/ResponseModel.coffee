@@ -15,6 +15,7 @@ module.exports = class ResponseModel
       @response.form = @form._id
       @response.user = @user
       @response.startedOn = new Date().toISOString()
+      @response.data = {}
   
       # Create code. Not unique, but unique per user if logged in once.
       @response.code = @user + "-" + mwaterforms.formUtils.createBase32TimeCode(new Date())
