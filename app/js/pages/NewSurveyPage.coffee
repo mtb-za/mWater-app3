@@ -18,7 +18,7 @@ module.exports = class NewSurveyPage extends Page
       @groups = _.pluck(groups, "groupname")
       enumerators = [ "all", "user:" + @login.user ].concat(_.map(groups, (g) -> "group:" + g))
   
-      filter = { "deployments.enumerators": { $in: enumerators } }
+      filter = { deployments: { $elemMatch: { enumerators: { $in: enumerators }, active: true } } }
       @db.forms.find(filter).fetch (forms) =>
         @forms = forms
         data = _.map forms, (form) =>
