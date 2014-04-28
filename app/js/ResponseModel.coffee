@@ -16,6 +16,7 @@ module.exports = class ResponseModel
       @response.user = @user
       @response.startedOn = new Date().toISOString()
       @response.data = {}
+      @response.approvals = []
   
       # Create code. Not unique, but unique per user if logged in once.
       @response.code = @user + "-" + mwaterforms.formUtils.createBase32TimeCode(new Date())
@@ -32,22 +33,7 @@ module.exports = class ResponseModel
       throw new Error("No matching deployments")
     @response.deployment = deployment._id
 
-    # Add self as admin
-    @response.roles = [{ id: "user:" + @user, role: "admin"}]
-
-    # Get list of admins at both deployment and form level
-    admins = _.union(_.pluck(_.where(@form.roles, { role: "admin"}), "id"), deployment.admins)
-    admins = _.without(admins, "user:" + @user)
-
-    # Get list of viewers (approvers)
-    viewers = []
-    for approvalStage in deployment.approvalStages
-      viewers = _.union(viewers, approvalStage.approvers)
-
-    viewers = _.without(viewers, admins)
-
-    @response.roles = @response.roles.concat _.map(admins, (id) -> { id: id, role: "admin"})
-    @response.roles = @response.roles.concat _.map(viewers, (id) -> { id: id, role: "view"})
+    @fixRoles()
 
   # Submit (either to final or pending as appropriate)
   submit: ->
@@ -59,59 +45,29 @@ module.exports = class ResponseModel
 
     # If no approval stages
     if deployment.approvalStages.length == 0
-      @_finalize(deployment)
+      @response.status = "final"    
     else
       @response.status = "pending"
-      @response.approvalStage = 0
+      @response.approvals = []
 
-      # Add self as viewer
-      @response.roles = [{ id: "user:" + @user, role: "admin"}]
-
-      # Get list of admins at both deployment and form level and add approvers
-      admins = _.union(_.pluck(_.where(@form.roles, { role: "admin"}), "id"), deployment.admins, deployment.approvalStages[0].approvers)
-      admins = _.without(admins, "user:" + @user)
-
-      # Get list of viewers (approvers)
-      viewers = []
-      for approvalStage in deployment.approvalStages
-        viewers = _.union(viewers, approvalStage.approvers)
-
-      viewers = _.without(viewers, admins)
-
-      @response.roles = @response.roles.concat _.map(admins, (id) -> { id: id, role: "admin"})
-      @response.roles = @response.roles.concat _.map(viewers, (id) -> { id: id, role: "view"})
+    @fixRoles()
 
   # Approve response
   approve: ->
-    if not @canReject()
+    if not @canApprove()
       throw new Error("Cannot approve")
 
     deployment = _.findWhere(@form.deployments, { _id: @response.deployment })
     if not deployment
       throw new Error("No matching deployments")
 
+    @response.approvals.push { by: @user, on: new Date().toISOString() }
+
     # Check if last stage
-    if @response.approvalStage == deployment.approvalStages.length - 1
-      @_finalize(deployment)
-    else
-      @response.approvalStage += 1
+    if @response.approvals.length == deployment.approvalStages.length
+      @response.status = "final"
 
-      # Add original user as admin
-      @response.roles = [{ id: "user:" + @response.user, role: "admin"}]
-
-      # Get list of admins at both deployment and form level and add approvers
-      admins = _.union(_.pluck(_.where(@form.roles, { role: "admin"}), "id"), deployment.admins, deployment.approvalStages[@response.approvalStage].approvers)
-      admins = _.without(admins, "user:" + @response.user)
-
-      # Get list of viewers (approvers)
-      viewers = []
-      for approvalStage in deployment.approvalStages
-        viewers = _.union(viewers, approvalStage.approvers)
-
-      viewers = _.without(viewers, admins)
-
-      @response.roles = @response.roles.concat _.map(admins, (id) -> { id: id, role: "admin"})
-      @response.roles = @response.roles.concat _.map(viewers, (id) -> { id: id, role: "view"})
+    @fixRoles()
 
   # Reject a response with a specific rejection message
   reject: (message) ->
@@ -124,24 +80,51 @@ module.exports = class ResponseModel
 
     @response.status = "rejected"
     @response.rejectionMessage = message
-    delete @response.approvalStage
+    @response.approvals = []
 
-    # Add original user as admin
-    @response.roles = [{ id: "user:" + @response.user, role: "admin"}]
+    @fixRoles()
 
-    # Get list of admins at both deployment and form level
-    admins = _.union(_.pluck(_.where(@form.roles, { role: "admin"}), "id"), deployment.admins)
-    admins = _.without(admins, "user:" + @response.user)
+  # Fixes roles to reflect status and approved fields
+  fixRoles: ->
+    # User is always admin, unless final, then viewer
+    if @response.status == 'final'
+      admins = []
+      viewers = ["user:" + @response.user]
+    else
+      admins = ["user:" + @response.user]
+      viewers = []
 
-    # Get list of viewers (approvers)
-    viewers = []
-    for approvalStage in deployment.approvalStages
-      viewers = _.union(viewers, approvalStage.approvers)
+    # Add form admins always
+    admins = _.union admins, _.pluck(_.where(@form.roles, { role: "admin"}), "id")
 
-    viewers = _.without(viewers, admins)
+    # Determine deployment
+    deployment = _.findWhere(@form.deployments, { _id: @response.deployment })
+    if not deployment
+      throw new Error("No matching deployments")
 
-    @response.roles = @response.roles.concat _.map(admins, (id) -> { id: id, role: "admin"})
-    @response.roles = @response.roles.concat _.map(viewers, (id) -> { id: id, role: "view"})
+    # Add deployment admins
+    admins = _.union admins, deployment.admins
+
+    # Approvers are admins unless at their stage, otherwise they are viewers
+    if @response.status == 'pending'
+      for i in [0...deployment.approvalStages.length]
+        if @response.approvals.length == i
+          admins = _.union admins, deployment.approvalStages[i].approvers
+        else
+          viewers = _.union viewers, deployment.approvalStages[i].approvers
+    else
+      for approvalStage in deployment.approvalStages
+        viewers = _.union viewers, approvalStage.approvers
+
+    # Viewers of deployment can see if final
+    if @response.status == 'final'
+      viewers = _.union viewers, deployment.viewers
+
+    # If already admin, don't include in viewers
+    viewers = _.without viewers, admins
+
+    @response.roles = _.map admins, (s) -> { id: s, role: "admin" }
+    @response.roles = @response.roles.concat(_.map(viewers, (s) -> { id: s, role: "view" }))
 
   # Determine if can approve response
   canApprove: ->
@@ -149,11 +132,11 @@ module.exports = class ResponseModel
     if not deployment
       throw new Error("No matching deployments")
 
-    if not @response.approvalStage? or @response.status != "pending"
+    if @response.status != "pending"
       return false
 
     # Get list of admins at both deployment and form level and add approvers
-    admins = _.union(_.pluck(_.where(@form.roles, { role: "admin"}), "id"), deployment.admins, deployment.approvalStages[@response.approvalStage].approvers)
+    admins = _.union(_.pluck(_.where(@form.roles, { role: "admin"}), "id"), deployment.admins, deployment.approvalStages[@response.approvals.length].approvers)
     subjects = ["user:" + @user]
     subjects = subjects.concat(_.map @groups, (g) -> "group:" + g)
 
@@ -183,9 +166,9 @@ module.exports = class ResponseModel
     if @response.status == "draft" or @response.status == "rejected"
       return false
 
-    if @response.status == "pending" and @response.approvalStage?
+    if @response.status == "pending"
       # Get list of admins at both deployment and form level and add approvers
-      admins = _.union(_.pluck(_.where(@form.roles, { role: "admin"}), "id"), deployment.admins, deployment.approvalStages[@response.approvalStage].approvers)
+      admins = _.union(_.pluck(_.where(@form.roles, { role: "admin"}), "id"), deployment.admins, deployment.approvalStages[@response.approvals.length].approvers)
       subjects = ["user:" + @user]
       subjects = subjects.concat(_.map @groups, (g) -> "group:" + g)
 
@@ -200,24 +183,4 @@ module.exports = class ResponseModel
       subjects = subjects.concat(_.map @groups, (g) -> "group:" + g)
 
       return _.intersection(admins, subjects).length > 0
-
-  _finalize: (deployment) ->
-    @response.status = "final"
-
-    delete @response.approvalStage
-    
-    # Add self as viewer
-    @response.roles = [{ id: "user:" + @user, role: "view"}]
-
-    # Get list of admins at both deployment and form level
-    admins = _.union(_.pluck(_.where(@form.roles, { role: "admin"}), "id"), deployment.admins)
-    admins = _.without(admins, "user:" + @user)
-
-    @response.roles = @response.roles.concat _.map(admins, (id) -> { id: id, role: "admin"})
-
-    # Add viewers
-    viewers = _.difference(deployment.viewers, admins)
-    viewers = _.without(viewers, "user:" + @user)
-    @response.roles = @response.roles.concat _.map(viewers, (id) -> { id: id, role: "view"})
-
 
