@@ -7,16 +7,13 @@ module.exports = class TestListPage extends Page
 
   events: 
     'click tr.tappable' : 'testClicked'
+    'click #add_test': "addTest"
 
   create: ->
     @$el.html require('./TestListPage.hbs')()
     @setTitle T('Recent Tests')
 
   activate: ->
-    @setupButtonBar [
-      { icon: "plus.png", click: => @addTest() }
-    ]
-
     # Query database for recent, completed tests
     recent = new Date()
     recent.setDate(recent.getDate() - 30)

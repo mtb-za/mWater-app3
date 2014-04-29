@@ -1,6 +1,7 @@
 Page = require("../Page")
 NewSurveyPage = require("./NewSurveyPage")
-NewTestPage = require("./NewTestPage")
+SurveyListPage = require("./SurveyListPage")
+TestListPage = require("./TestListPage")
 NewSourcePage = require("./NewSourcePage")
 SourceListPage = require("./SourceListPage")
 SourceMapPage = require("./SourceMapPage")
@@ -9,8 +10,8 @@ class MainPage extends Page
   events:
     "click #source_list" : "gotoSourceList"
     "click #source_map" : "gotoSourceMap"
-    "click #new_test" : "addTest"
-    "click #new_survey" : "addSurvey"
+    "click #test_list" : "gotoTestList"
+    "click #survey_list" : "gotoSurveyList"
 
   activate: ->
     @setTitle ""
@@ -56,7 +57,7 @@ class MainPage extends Page
     menu = []
     if NewSourcePage.canOpen(@ctx)
       menu.push({ text: T("Add Water Source"), click: => @addSource() })
-    if NewTestPage.canOpen(@ctx)
+    if TestListPage.canOpen(@ctx)
       menu.push({ text: T("Start Water Test"), click: => @addTest() })
     if NewSurveyPage.canOpen(@ctx)
       menu.push({ text: T("Start Survey"), click: => @addSurvey() })
@@ -78,4 +79,10 @@ class MainPage extends Page
   gotoSourceMap: ->
     @pager.openPage(SourceMapPage)
 
+  gotoSurveyList: ->
+    @pager.openPage(SurveyListPage)
+
+  gotoTestList: ->
+    @pager.openPage(TestListPage)
+    
 module.exports = MainPage

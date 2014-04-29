@@ -4,17 +4,16 @@ SurveyPage = require "./SurveyPage"
 NewSurveyPage = require './NewSurveyPage'
 mwaterforms = require 'mwater-forms'
 
-class ExistingSurveyPage extends Page
+module.exports = class SurveyListPage extends Page
   @canOpen: (ctx) -> ctx.auth.update("responses") 
 
   events: 
     "click .response" : "openResponse"
+    "click #add_survey": "addSurvey"
 
   create: ->
-    @$el.html require('./ExistingSurveyPage.hbs')()
-    @setTitle T("Select Survey")
-
-    @setupButtonBar [ { icon: "plus.png", click: => @addSurvey() } ]
+    @$el.html require('./SurveyListPage.hbs')()
+    @setTitle T("Surveys")
 
   activate: ->
     # Query database for recent, completed surveys
@@ -24,7 +23,7 @@ class ExistingSurveyPage extends Page
     # Get incomplete survey responses
     # TODO eventually remove $exists filter when legacy forms are gone
     @db.responses.find({ type: { $exists: false }, status: { $in: ['draft', 'rejected'] }, user: @login.user }, {sort:[['startedOn','desc']], limit: 100}).fetch (responses) =>
-      @$("#incomplete_table").html require('./ExistingSurveyPage_items.hbs')(responses:responses)
+      @$("#incomplete_table").html require('./SurveyListPage_items.hbs')(responses:responses)
 
       # Fill in survey names
       _.defer => # Defer to allow html to render
@@ -44,7 +43,7 @@ class ExistingSurveyPage extends Page
       submittedOn: { $gt:recent.toISOString() }
       user: @login.user }
     @db.responses.find(query, {sort:[['submittedOn','desc']], limit: 100}).fetch (responses) =>
-      @$("#recent_table").html require('./ExistingSurveyPage_items.hbs')(responses:responses)
+      @$("#recent_table").html require('./SurveyListPage_items.hbs')(responses:responses)
 
       # Fill in survey names
       _.defer => # Defer to allow html to render
@@ -65,4 +64,3 @@ class ExistingSurveyPage extends Page
   addSurvey: ->
     @pager.openPage(NewSurveyPage)
 
-module.exports = ExistingSurveyPage
