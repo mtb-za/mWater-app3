@@ -69,7 +69,11 @@ module.exports = class SourcePage extends Page
       @setLocation = false
 
     @listenTo locationView, 'locationset', (loc) ->
-      @source.geo = GeoJSON.locToPoint(loc)
+      geo = GeoJSON.locToPoint(loc)
+      if geo?
+        @source.geo = geo
+      else  
+        delete @source.geo
       @db.sources.upsert @source, => @render()
 
     @listenTo locationView, 'map', (loc) =>
