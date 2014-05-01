@@ -7,6 +7,27 @@ exports.posToPoint = (pos) ->
     coordinates: [pos.coords.longitude, pos.coords.latitude]
   }
 
+# Converts navigator location to point
+exports.locToPoint = (loc) ->
+  if not loc?
+    return null
+
+  geo = {
+    type: 'Point'
+    coordinates: [loc.longitude, loc.latitude]
+  }
+  if loc.altitude?
+    geo.coordinates.push loc.altitude
+  return geo
+
+# Converts geojson geometry to location. Implemented only for point
+exports.geoToLoc = (geo) ->
+  if not geo?
+    return null
+  if geo.type == "Point"
+    return { latitude: geo.coordinates[1], longitude: geo.coordinates[0], altitude: geo.coordinates[2] }
+  else
+    throw new Error("Unknown geo type: " + geo.type)
 
 exports.latLngBoundsToGeoJSON = (bounds) ->
   s = bounds.getSouth()

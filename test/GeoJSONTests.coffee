@@ -4,6 +4,54 @@ Localizer = require '../app/js/localization/Localizer'
 new Localizer().makeGlobal(require("hbsfy/runtime"))
 
 describe 'GeoJSON', ->
+  it 'converts geo to loc', ->
+    point = {
+      type: "Point",
+      coordinates: [-75, 2]
+    }
+
+    loc = GeoJSON.geoToLoc(point)
+    assert.equal loc.latitude, 2
+    assert.equal loc.longitude, -75
+    assert not loc.altitude
+
+  it 'converts geo to loc with altitude', ->
+    point = {
+      type: "Point",
+      coordinates: [-75, 2, 40]
+    }
+
+    loc = GeoJSON.geoToLoc(point)
+    assert.equal loc.latitude, 2
+    assert.equal loc.longitude, -75
+    assert.equal loc.altitude, 40
+
+  it 'converts null geo to null loc', ->
+    loc = GeoJSON.geoToLoc(null)
+    assert not loc
+
+  it 'converts loc to point geo', ->
+    point = {
+      type: "Point",
+      coordinates: [-75, 2]
+    }
+
+    geo = GeoJSON.locToPoint({ latitude:2, longitude: -75 })
+    assert.deepEqual geo, point
+
+  it 'converts loc to point geo with altitude', ->
+    point = {
+      type: "Point",
+      coordinates: [-75, 2, 3]
+    }
+
+    geo = GeoJSON.locToPoint({ latitude:2, longitude: -75, altitude: 3 })
+    assert.deepEqual geo, point
+
+  it 'converts null loc to point geo', ->
+    geo = GeoJSON.locToPoint(null)
+    assert not geo
+
   it 'returns a proper polygon', ->
     southWest = new L.LatLng(10, 20)
     northEast = new L.LatLng(13, 23)

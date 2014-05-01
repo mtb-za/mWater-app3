@@ -45,7 +45,7 @@
     "lodash": "~2.4.1",
     "minimist": "0.0.8",
     "minimongo": "~0.2.4",
-    "mwater-forms": "^0.3.2",
+    "mwater-forms": "^0.4.0",
     "parse-appcache-manifest": "~0.2.0",
     "queue-async": "~1.0.7",
     "read": "~1.0.4",
