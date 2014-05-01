@@ -117,6 +117,11 @@ describe 'GeoJSON', ->
 
     assert GeoJSON.pointInPolygon(point, polygon)
 
+  it "gets distance", ->
+    from = { type: "Point", coordinates: [10, 20]}
+    to = { type: "Point", coordinates: [10, 21]}
+    dist = GeoJSON.getDistance(from, to)
+    assert.closeTo dist, 111200, 1000
 
   it 'gets relative location N', ->
     from = { type: "Point", coordinates: [10, 20]}

@@ -48,6 +48,9 @@ module.exports = class SourceListPage extends Page
     
   locationFound: (pos) =>
     @$("#location_msg").hide()
+
+    # Save position
+    @pos = pos
     selector = geo: 
       $near: 
         $geometry: GeoJSON.posToPoint(pos)
@@ -107,7 +110,28 @@ module.exports = class SourceListPage extends Page
       else
         selector = { $or: [ { name: { $regex : @searchText,  $options: 'i' } }, { desc: { $regex : @searchText,  $options: 'i' } } ] }
         
-      @db.sources.find(selector, {limit: 50}).fetch (sources) =>
+      @db.sources.find(selector, {limit: 100}).fetch (sources) =>
+        sourceScorer = (s) =>
+          # Calculate score
+          score = 0
+
+          # Unlocated goes first
+          if not s.geo?
+            score += 1000000
+
+          # Relative distance removes one point per km
+          if s.geo? and @pos
+            dist = GeoJSON.getDistance(s.geo, GeoJSON.posToPoint(@pos))
+            score -= dist/1000
+
+          # Name match is a 100000 bump
+          if s.name.match(new RegExp(@searchText, "i"))
+            score += 100000
+
+          # Since sorts by score ascending
+          return -score
+
+        sources = _.sortBy sources, sourceScorer
         @searchSources = sources
         @renderList()
     else

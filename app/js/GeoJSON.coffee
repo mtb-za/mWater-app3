@@ -75,6 +75,21 @@ exports.pointInPolygon = (point, polygon) ->
 
   return bounds.contains(new L.LatLng(pointLat, pointLng))
 
+# Get distance
+exports.getDistance = (from, to) ->
+  x1 = from.coordinates[0]
+  y1 = from.coordinates[1]
+  x2 = to.coordinates[0]
+  y2 = to.coordinates[1]
+  
+  # Convert to relative position (approximate)
+  dy = (y2 - y1) / 57.3 * 6371000
+  dx = Math.cos(y1 / 57.3) * (x2 - x1) / 57.3 * 6371000
+  
+  # Determine direction and angle
+  dist = Math.sqrt(dx * dx + dy * dy)
+
+  return dist
 
 exports.getRelativeLocation = (from, to) ->
   x1 = from.coordinates[0]
