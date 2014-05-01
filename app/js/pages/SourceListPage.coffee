@@ -68,7 +68,16 @@ module.exports = class SourceListPage extends Page
     sources.forEach (source) ->
       source.thumbnail = if source.photos and source.photos.length then source.photos[0].id else null
     
-    @$("#table").html require('./SourceListPage_items.hbs')(sources:sources)
+    # Query for source types
+    @db.source_types.find({}).fetch (sourceTypes) =>
+      # Create map of types
+      typeMap = _.object(_.pluck(sourceTypes, "code"), sourceTypes)
+
+      for source in sources
+        type = typeMap[source.type]
+        if type
+          source.typeName = type.name
+      @$("#table").html require('./SourceListPage_items.hbs')(sources:sources)
 
   locationError: (pos) =>
     @$("#location_msg").hide()
