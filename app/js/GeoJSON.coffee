@@ -16,8 +16,9 @@ exports.locToPoint = (loc) ->
     type: 'Point'
     coordinates: [loc.longitude, loc.latitude]
   }
-  if loc.altitude?
-    geo.coordinates.push loc.altitude
+  # Do not include altitude due to Mongo bug
+  # if loc.altitude?
+  #   geo.coordinates.push loc.altitude
   return geo
 
 # Converts geojson geometry to location. Implemented only for point
