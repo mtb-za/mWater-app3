@@ -46,7 +46,11 @@ class SurveyPage extends Page
 
           # Check if redraftable
           if response.status == "draft" or response.status == "rejected"
+            # Load response data to model
             model = new Backbone.Model()
+            model.set(_.cloneDeep(response.data))
+
+            # Create compiler
             compiler = new mwaterforms.FormCompiler(model: model, locale: @localizer.locale)
 
             # Create context for forms            
@@ -61,6 +65,14 @@ class SurveyPage extends Page
                 @pager.openPage require("./SourceMapPage"), {
                   initialGeo: { type: 'Point', coordinates: [location.longitude, location.latitude] }
                 }
+              stickyStorage: {
+                get: (key) =>
+                  str = window.localStorage["stickyStorage:" + form._id + ":" +@login.user + ":" + key]
+                  if str? and str.length > 0
+                    return JSON.parse(str)
+                set: (key, value) =>
+                  window.localStorage["stickyStorage:" + form._id + ":" +@login.user + ":" + key] = JSON.stringify(value)
+              }
             }
 
             @formView = compiler.compileForm(form.design, ctx).render()
@@ -72,8 +84,6 @@ class SurveyPage extends Page
             @listenTo @formView, 'discard', @removeResponse
           else
             @formView = new Backbone.View() # TODO?
-            @formView.load = ->
-              return
             if @response.status == "final"
               @formView.$el.html("<em>Response has been finalized and cannot be edited</em>") # TODO
             else
@@ -84,8 +94,6 @@ class SurveyPage extends Page
 
           if not canRedraft or response.status in ['draft', 'rejected']
             @$("#edit_button").hide()
-
-          @formView.load @response.data
 
 
   events:
