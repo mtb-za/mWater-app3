@@ -42,9 +42,9 @@ module.exports = class PageMenu extends Backbone.View
     
     # Update context, first stopping old one
     @options.ctx.stop()
-    _.extend @options.ctx, context.createAnonymousContext()
-
-    @gotoLogin()
+    context.createAnonymousContext (ctx) =>
+      _.extend @options.ctx, ctx
+      @gotoLogin()
 
   gotoLogin: ->
     while @pager.multiplePages()
