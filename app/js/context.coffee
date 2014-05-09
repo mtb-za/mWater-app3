@@ -83,13 +83,10 @@ createBaseContext = ->
     # imageSync: null
   }
 
-createLocalDb = (login, success, error) ->
-  if login
-    # Namespace includes username to be safe
-    options = { namespace: "v3.db.#{login.user}" }  
-
+createLocalDb = (namespace, success, error) ->
+  if namespace
     # Autoselect database
-    minimongo.utils.autoselectLocalDb options, (localDb) =>
+    minimongo.utils.autoselectLocalDb { namespace: namespace }, (localDb) =>
       success(localDb)
     , (err) =>
       console.log "Error selecting database"
@@ -101,35 +98,56 @@ createLocalDb = (login, success, error) ->
 
 # Setup database
 createDb = (login, success) ->
-  createLocalDb login, (localDb) =>
+  if login
+    # Namespace includes username to be safe
+    namespace = "v3.db.#{login.user}"
+  else
+    namespace = null
+
+  createLocalDb namespace, (localDb) =>
     remoteDb = new minimongo.RemoteDb(apiUrl, if login then login.client else undefined)
     db = new minimongo.HybridDb(localDb, remoteDb)
 
     # Add collections
     async.eachSeries collectionNames, (col, callback) =>
       localDb.addCollection col, =>
+        # Remote Db addCollection is synchronous
         remoteDb.addCollection(col)
+
+        # Hybrid Db addCollection is synchronous
         db.addCollection(col)
+
         callback()
       , callback
     , (err) =>
       if err
         return error(err)
 
-      # Seed local db
-      if window.seeds
-        async.eachSeries _.keys(window.seeds), (col, callback) =>
-          async.eachSeries window.seeds[col], (doc, callback2) =>
-            localDb[col].seed doc, =>
-              callback2()
-            , callback2
-          , callback
-        , (err) =>
-          if err
-            return error(err)
+      performSeed = =>
+        # Seed local db with startup documents
+        if window.seeds
+          async.eachSeries _.keys(window.seeds), (col, callback) =>
+            async.eachSeries window.seeds[col], (doc, callback2) =>
+              localDb[col].seed doc, =>
+                callback2()
+              , callback2
+            , callback
+          , (err) =>
+            if err
+              return error(err)
+            success(db)
+        else
           success(db)
+
+      # Migrate from LocalStorageDb if database is not LocalStorageDb (TODO remove after Oct 2014)
+      if namespace and localDb instanceof minimongo.IndexedDb or localDb instanceof minimongo.WebSQLDb
+        console.log "Migrating database"
+        oldDb = new minimongo.LocalStorageDb(namespace: namespace)
+        for col in collectionNames
+          oldDb.addCollection(col)
+        minimongo.utils.migrateLocalDb oldDb, localDb, performSeed, error
       else
-        success(db)
+        performSeed()
 
 # Anonymous context for not logged in
 exports.createAnonymousContext = (success) ->
