@@ -1,4 +1,4 @@
-#### *Version 3 of mWater's cross-platform water monitoring app.*
+## Version 3 of mWater's cross-platform water monitoring app
 
 ### Technology
 
@@ -12,7 +12,6 @@ On Phonegap version, it has access to native computer vision technology implemen
 
 Browser support: IE10+ and all other modern browsers.
 
-### Deployment
 s3cmd is used to sync to S3 bucket which serves as the website.
 
 ### Getting started
