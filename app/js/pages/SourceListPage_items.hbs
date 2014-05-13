@@ -2,7 +2,9 @@
 	{{#each sources}}
 	<tr class="tappable source" id="{{_id}}">
 	    <td>
-	    	{{#if thumbnail}}<img class='thumb' src='https://api.mwater.co/v3/images/{{thumbnail}}?h=100' >{{/if}}
+	    	{{#if thumbnail}}
+	    	<img id="{{thumbnail}}" class="thumb" src="img/image-loading.png" onError="this.onerror=null;this.src='img/no-image-icon.jpg';" />
+	    	{{/if}}
 	    	<strong>{{name}}</strong> 
 	    	<br/>
 	    	<span class="text-muted"><em>{{typeName}}</em>&nbsp;</span>

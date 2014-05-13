@@ -2,6 +2,7 @@ var zlib = require('zlib');
 var compileForms = require('./compile-forms-task');
 var upsertForms = require('./upsert-forms-task');
 var seeds = require('./seeds-task');
+var localization = require('./localization-task');
 
 module.exports = function(grunt) {
 
@@ -292,6 +293,7 @@ module.exports = function(grunt) {
   grunt.registerTask('upsert-forms', 'Upsert forms to server', upsertForms);
   grunt.registerTask('compile-forms', 'Make forms into js', compileForms);
   grunt.registerTask('seeds', 'Seed database with some tables', seeds);
+  grunt.registerTask('localization', 'Localize strings in the app, updating localizations.json', localization);
 
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -309,7 +311,7 @@ module.exports = function(grunt) {
   grunt.registerTask('run_cordova_debug', ['default', 'cordova_debug', 'shell:cordova_run']);
 
   grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages']);
-  grunt.registerTask('default', ['browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
+  grunt.registerTask('default', ['localization', 'browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
 
   grunt.registerTask('deploy_beta', ['default', 'shell:deploy_beta']);
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
