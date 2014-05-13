@@ -77,7 +77,7 @@ module.exports = class SourcePage extends Page
       @db.sources.upsert @source, => @render()
 
     @listenTo locationView, 'map', (loc) =>
-      @pager.openPage(require("./SourceMapPage"), {initialGeo: loc})
+      @pager.openPage(require("./SourceMapPage"), {initialGeo: GeoJSON.locToPoint(loc)})
       
     @addSubview(locationView)
     @$("#location").append(locationView.el)
