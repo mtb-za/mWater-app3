@@ -63,7 +63,10 @@ module.exports = class SourcePage extends Page
         if sourceType? then @$("#source_type").text(sourceType.name)
 
     # Add location view
-    locationView = new LocationView(loc: GeoJSON.geoToLoc(@source.geo), readonly: not @auth.update("sources", @source))
+    locationView = new LocationView(
+      loc: GeoJSON.geoToLoc(@source.geo)
+      readonly: not @auth.update("sources", @source)
+      T: T)
     if @setLocation
       locationView.setLocation()
       @setLocation = false

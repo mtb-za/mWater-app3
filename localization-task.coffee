@@ -8,7 +8,8 @@ module.exports = ->
 
   options = { 
     extensions: ['.js', '.coffee']
-    transform: [coffeeify, hbsfy] 
+    externalModules: ["mwater-forms"]
+    transformKey: [ 'browserify', 'transform' ]
   }
 
   extractor.updateLocalizationFile "app/js/run.coffee", "app/js/localizations.json", options, -> 

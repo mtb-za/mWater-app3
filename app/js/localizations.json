@@ -1423,6 +1423,84 @@
       "en": "Survey form not found",
       "es": "",
       "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Select",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Images not available on this platform",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "GPS not available",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Location Set Successfully",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Use Anyway",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Low GPS Accuracy",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Very Low GPS Accuracy. Waiting for better signal...",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Setting Location...",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "km",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "m",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "N/A",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Don't know",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Comments",
+      "es": "",
+      "sw": ""
     }
   ]
 }
