@@ -1,6 +1,6 @@
 #### *Version 3 of mWater's cross-platform water monitoring app.*
 
-## Technology
+### Technology
 
 HTML5 + Javascript with full offline capability. Data is stored in a Javascript version of MongoDb and then synchronized to a central server.
 
@@ -12,10 +12,10 @@ On Phonegap version, it has access to native computer vision technology implemen
 
 Browser support: IE10+ and all other modern browsers.
 
-## Deployment
+### Deployment
 s3cmd is used to sync to S3 bucket which serves as the website.
 
-## Getting started
+### Getting started
 
 1. Clone this repository
 1. Ensure you have Node.js version >= 0.10 installed
