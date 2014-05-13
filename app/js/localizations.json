@@ -1,0 +1,1189 @@
+{
+  "locales": [
+    {
+      "code": "en",
+      "name": "English"
+    },
+    {
+      "code": "es",
+      "name": "Español"
+    }
+  ],
+  "strings": [
+    {
+      "en": "<b>{0} images to upload</b>",
+      "es": "<b>{0} imágenes para cargar</b>",
+      "_base": "en"
+    },
+    {
+      "en": "Add Water Source",
+      "es": "Agregar Fuente de Agua",
+      "_base": "en"
+    },
+    {
+      "en": "Start Water Test",
+      "es": "Comenzar Prueba de Agua",
+      "_base": "en"
+    },
+    {
+      "en": "Start Survey",
+      "es": "Comenzar Tasación",
+      "_base": "en"
+    },
+    {
+      "en": "User:",
+      "es": "Usario:",
+      "_base": "en"
+    },
+    {
+      "en": "Sync:",
+      "es": "Sincronizar:",
+      "_base": "en"
+    },
+    {
+      "en": "Version:",
+      "es": "Version:",
+      "_base": "en"
+    },
+    {
+      "en": "Map Water Sources",
+      "es": "Trazar un Mapa de los Fuentes de Agua",
+      "_base": "en"
+    },
+    {
+      "en": "List Water Sources",
+      "es": "Hacer un Lista de los Fuentes de Agua",
+      "_base": "en"
+    },
+    {
+      "en": "Language:",
+      "es": "Idioma:",
+      "_base": "en"
+    },
+    {
+      "en": "Advanced",
+      "es": "Avanzado",
+      "_base": "en"
+    },
+    {
+      "en": "Reset Local Storage",
+      "es": "Reinicializar el Almacenaje de Local",
+      "_base": "en"
+    },
+    {
+      "en": "This will completely reset any cached data and cause you to lose any pending changes that you have not uploaded",
+      "es": "Esto completamente restablecerá los datos almacenados en memoria caché y hacerle perder cualquier cambio pendiente que no haya subido",
+      "_base": "en"
+    },
+    {
+      "en": "N",
+      "es": "Norte",
+      "_base": "en"
+    },
+    {
+      "en": "NE",
+      "es": "Noreste",
+      "_base": "en"
+    },
+    {
+      "en": "E",
+      "es": "Este",
+      "_base": "en"
+    },
+    {
+      "en": "SE",
+      "es": "Sureste",
+      "_base": "en"
+    },
+    {
+      "en": "S",
+      "es": "Sur",
+      "_base": "en"
+    },
+    {
+      "en": "SW",
+      "es": "Suroeste",
+      "_base": "en"
+    },
+    {
+      "en": "W",
+      "es": "Oeste",
+      "_base": "en"
+    },
+    {
+      "en": "NW",
+      "es": "Noroeste",
+      "_base": "en"
+    },
+    {
+      "en": "No geolocation available",
+      "es": "Geolocalización no disponible",
+      "_base": "en"
+    },
+    {
+      "en": "Cannot find location",
+      "es": "No se puede encontrar ubicación",
+      "_base": "en"
+    },
+    {
+      "en": "Unspecified location",
+      "es": "ubicación no especificada",
+      "_base": "en"
+    },
+    {
+      "en": "Setting location...",
+      "es": "Configurando ubicación...",
+      "_base": "en"
+    },
+    {
+      "en": "Waiting for GPS...",
+      "es": "Esperando el GPS...",
+      "_base": "en"
+    },
+    {
+      "en": "Invalid latitude",
+      "es": "Latitud no válido",
+      "_base": "en"
+    },
+    {
+      "en": "Invalid longitude",
+      "es": "Longitud no válido",
+      "_base": "en"
+    },
+    {
+      "en": "Internal Error",
+      "es": "Error Interno",
+      "_base": "en"
+    },
+    {
+      "en": "Internal error",
+      "es": "Error Interno",
+      "_base": "en"
+    },
+    {
+      "en": "Failed to take picture",
+      "es": "No se pudo tomar foto",
+      "_base": "en"
+    },
+    {
+      "en": "A new version is available. Restart app?",
+      "es": "Está disponible una nueva versión. Reiniciar la aplicación?",
+      "_base": "en"
+    },
+    {
+      "en": "Loading mWater...",
+      "es": "Cargando mWater...",
+      "_base": "en"
+    },
+    {
+      "en": "Images not available",
+      "es": "Imagenes no disponibles",
+      "_base": "en"
+    },
+    {
+      "en": "Save",
+      "es": "Guardar",
+      "_base": "en"
+    },
+    {
+      "en": "Cancel",
+      "es": "Cancelar",
+      "_base": "en"
+    },
+    {
+      "en": "Discard",
+      "es": "Desechar",
+      "_base": "en"
+    },
+    {
+      "en": "Save for Later",
+      "es": "Guardar para luego",
+      "_base": "en"
+    },
+    {
+      "en": "Complete",
+      "es": "Completar",
+      "_base": "en"
+    },
+    {
+      "en": "Image must be a jpeg file",
+      "es": "Imagen tiene que ser un archivo jpeg",
+      "_base": "en"
+    },
+    {
+      "en": "Upload failed: {0}",
+      "es": "No se pudo cargar: {0}",
+      "_base": "en"
+    },
+    {
+      "en": "Error uploading file",
+      "es": "Error al cargar el archivo",
+      "_base": "en"
+    },
+    {
+      "en": "Upload cancelled",
+      "es": "Carga cancelada",
+      "_base": "en"
+    },
+    {
+      "en": "Create Water Source",
+      "es": "Crear Fuente de Agua",
+      "_base": "en"
+    },
+    {
+      "en": "Pending...",
+      "es": "Pendiente...",
+      "_base": "en"
+    },
+    {
+      "en": "No Data",
+      "es": "No Hay Datos",
+      "_base": "en"
+    },
+    {
+      "en": "High",
+      "es": "Alto",
+      "_base": "en"
+    },
+    {
+      "en": "Water source",
+      "es": "Fuente de Agua",
+      "_base": "en"
+    },
+    {
+      "en": "Name",
+      "es": "Nombre",
+      "_base": "en"
+    },
+    {
+      "en": "E.Coli / 100mL",
+      "es": "E.Coli / 100mL",
+      "_base": "en"
+    },
+    {
+      "en": "Open",
+      "es": "Abierto",
+      "_base": "en"
+    },
+    {
+      "en": "Admin",
+      "es": "Administración",
+      "_base": "en"
+    },
+    {
+      "en": "Select Survey",
+      "es": "Seleccione encuesta",
+      "_base": "en"
+    },
+    {
+      "en": "Image",
+      "es": "Imagen",
+      "_base": "en"
+    },
+    {
+      "en": "Remove image?",
+      "es": "Quitar Imagen?",
+      "_base": "en"
+    },
+    {
+      "en": "Import Sources",
+      "es": "Importar Fuentes",
+      "_unused": true
+    },
+    {
+      "en": "Error in data",
+      "es": "Error en los datos",
+      "_unused": true
+    },
+    {
+      "en": "Login as {0} successful",
+      "es": "Iniciar sesión como {0} exitoso ",
+      "_base": "en"
+    },
+    {
+      "en": "Running in Demo mode. No changes will be saved",
+      "es": "Ejecutando en modo de demostración. Los cambios no se guardarán",
+      "_base": "en"
+    },
+    {
+      "en": "New Source",
+      "es": "Fuente Nueva",
+      "_base": "en"
+    },
+    {
+      "en": "Enter Source Type",
+      "es": "Introducir Tipo de Fuente",
+      "_base": "en"
+    },
+    {
+      "en": "Zoom in to see more",
+      "es": "Zoom para ver más",
+      "_base": "en"
+    },
+    {
+      "en": "Enter optional name",
+      "es": "Introduzca nombre opcional",
+      "_base": "en"
+    },
+    {
+      "en": "Enter optional description",
+      "es": "Introduzca una descripción opcional",
+      "_base": "en"
+    },
+    {
+      "en": "Privacy",
+      "es": "Privacidad",
+      "_base": "en"
+    },
+    {
+      "en": "Water source is private",
+      "es": "Fuente de agua es privada",
+      "_base": "en"
+    },
+    {
+      "en": "This should only be used for sources that are not publically accessible",
+      "es": "Esto sólo debe usarse para fuentes que no son públicamente accesibles",
+      "_base": "en"
+    },
+    {
+      "en": "Set to current location?",
+      "es": "Establecer la ubicación actual?",
+      "_base": "en"
+    },
+    {
+      "en": "Unable to generate source id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range.",
+      "es": "Es incapaz de generar código fuente Por favor asegúrese de que tiene una conexión o utilizar las configuraciones para obtener más información antes de salir del rango de conexión",
+      "_base": "en"
+    },
+    {
+      "en": "Form not found",
+      "es": "Forma no encontrada",
+      "_base": "en"
+    },
+    {
+      "en": "Select Test",
+      "es": "Elegir Prueba",
+      "_base": "en"
+    },
+    {
+      "en": "Preview Sources",
+      "es": "Muestras de las Fuentes",
+      "_unused": true
+    },
+    {
+      "en": "Import sources? This cannot be undone.",
+      "es": "Importar fuentes ? Esto no se puede deshacer.",
+      "_unused": true
+    },
+    {
+      "en": "{0} sources inserted",
+      "es": "{0} fuentes insertadas",
+      "_unused": true
+    },
+    {
+      "en": "Report Problem",
+      "es": "Reportar Problema",
+      "_base": "en"
+    },
+    {
+      "en": "Enter username",
+      "es": "Introduzca el nombre de usuario",
+      "_base": "en"
+    },
+    {
+      "en": "Enter email address",
+      "es": "Introducir dirección de correo electrónico",
+      "_base": "en"
+    },
+    {
+      "en": "Describe the problem",
+      "es": "Describir el Problema",
+      "_base": "en"
+    },
+    {
+      "en": "Report sent",
+      "es": "Reportaje mandado",
+      "_base": "en"
+    },
+    {
+      "en": "Debugging with code <b>{0}</b>",
+      "es": "Depuración de código <b>{0}</b>",
+      "_base": "en"
+    },
+    {
+      "en": "Completely discard local data, logout and lose unsubmitted changes?",
+      "es": "Totalmente descartar datos locales, logout y perderá los cambios inéditos?",
+      "_base": "en"
+    },
+    {
+      "en": "Error",
+      "es": "Error",
+      "_base": "en"
+    },
+    {
+      "en": "E.Coli",
+      "es": "E.Coli",
+      "_base": "en"
+    },
+    {
+      "en": "TC",
+      "es": "TC",
+      "_base": "en"
+    },
+    {
+      "en": "Algorithm",
+      "es": "Algoritmo",
+      "_base": "en"
+    },
+    {
+      "en": "Start remote debugger (this will give developers temporary access to the app on your phone)?",
+      "es": "Iniciar el depurador remoto (esto le dará los desarrolladores acceso temporal a la aplicación en su teléfono)?",
+      "_base": "en"
+    },
+    {
+      "en": "Debugger started with code {0}",
+      "es": "Depurador comenzado con código {0}",
+      "_base": "en"
+    },
+    {
+      "en": "Failed to load weinre",
+      "es": "Error al cargar weinre",
+      "_base": "en"
+    },
+    {
+      "en": "Username required",
+      "es": "Nombre de usuario requerido",
+      "_base": "en"
+    },
+    {
+      "en": "Password of at least 5 characters required",
+      "es": "Contraseña de al menos 5 caracteres requerida",
+      "_base": "en"
+    },
+    {
+      "en": "Email required",
+      "es": "Correo electrónico obligatorio",
+      "_base": "en"
+    },
+    {
+      "en": "Unable to signup. Please check that you are connected to Internet",
+      "es": "No puede registrarse. Por favor, compruebe que está conectado a Internet",
+      "_base": "en"
+    },
+    {
+      "en": "Edit Source {0}",
+      "es": "Editar Fuente {0}",
+      "_base": "en"
+    },
+    {
+      "en": "Nearby Sources",
+      "es": "Fuentes Cercanas",
+      "_base": "en"
+    },
+    {
+      "en": "Unable to determine location",
+      "es": "Incapaz de determinar la ubicación",
+      "_base": "en"
+    },
+    {
+      "en": "Enter search text or ID of water source",
+      "es": "Introduzca el texto de búsqueda o el código de fuente de agua",
+      "_base": "en"
+    },
+    {
+      "en": "Source Map",
+      "es": "Mapa de los Fuentes",
+      "_base": "en"
+    },
+    {
+      "en": "All Sources",
+      "es": "Todas las Fuentes",
+      "_base": "en"
+    },
+    {
+      "en": "Only My Organization",
+      "es": "Sólo mi organización",
+      "_base": "en"
+    },
+    {
+      "en": "Only Mine",
+      "es": "Solo el Mio",
+      "_base": "en"
+    },
+    {
+      "en": "Note for Source {0}",
+      "es": "Nota para la fuente {0}",
+      "_base": "en"
+    },
+    {
+      "en": "Date of Visit",
+      "es": "Feche de Visita",
+      "_base": "en"
+    },
+    {
+      "en": "Status of Water Source",
+      "es": "Estado de la Fuente de Agua",
+      "_base": "en"
+    },
+    {
+      "en": "Functional",
+      "es": "Funcional",
+      "_base": "en"
+    },
+    {
+      "en": "Needs maintenance",
+      "es": "Necesita mantenimiento",
+      "_base": "en"
+    },
+    {
+      "en": "Non-functional",
+      "es": "No funcional",
+      "_base": "en"
+    },
+    {
+      "en": "No longer exists",
+      "es": "Ya no existe",
+      "_base": "en"
+    },
+    {
+      "en": "Notes",
+      "es": "Notas",
+      "_base": "en"
+    },
+    {
+      "en": "Source not found",
+      "es": "Fuente no encontrada",
+      "_base": "en"
+    },
+    {
+      "en": "Delete Source",
+      "es": "Eliminar fuente",
+      "_base": "en"
+    },
+    {
+      "en": "Add Note",
+      "es": "Agregar Nota",
+      "_base": "en"
+    },
+    {
+      "en": "Permanently delete source?",
+      "es": "Eliminar permanentemente la fuente?",
+      "_base": "en"
+    },
+    {
+      "en": "Source deleted",
+      "es": "Fuente eliminada",
+      "_base": "en"
+    },
+    {
+      "en": "Survey",
+      "es": "Encuesta",
+      "_base": "en"
+    },
+    {
+      "en": "Test not found",
+      "es": "Prueba no encontrada",
+      "_base": "en"
+    },
+    {
+      "en": "Delete Survey",
+      "es": "Eliminar Encuesta",
+      "_base": "en"
+    },
+    {
+      "en": "Survey form {0} not found",
+      "es": "Formulario de encuesta {0} no encontrado",
+      "_unused": true
+    },
+    {
+      "en": "Survey saved as draft.",
+      "es": "Encuesta guardada como borrador",
+      "_base": "en"
+    },
+    {
+      "en": "Survey completed successfully",
+      "es": "Encuesta completada con éxito",
+      "_base": "en"
+    },
+    {
+      "en": "Permanently delete survey?",
+      "es": "Eliminar encuesta permanentemente?",
+      "_base": "en"
+    },
+    {
+      "en": "Survey deleted",
+      "es": "Encuesta eliminada",
+      "_base": "en"
+    },
+    {
+      "en": "Recent Tests",
+      "es": "Pruebas recientes",
+      "_base": "en"
+    },
+    {
+      "en": "Water Test",
+      "es": "Prueba de Agua",
+      "_base": "en"
+    },
+    {
+      "en": "Delete Test",
+      "es": "Eliminar Prueba",
+      "_base": "en"
+    },
+    {
+      "en": "Test form {0} not found",
+      "es": "Prueba formulario {0} no encontrada",
+      "_base": "en"
+    },
+    {
+      "en": "Test saved as draft.",
+      "es": "Prueba guardada como borrador.",
+      "_base": "en"
+    },
+    {
+      "en": "Test completed successfully",
+      "es": "Prueba completada con exito",
+      "_base": "en"
+    },
+    {
+      "en": "Permanently delete test?",
+      "es": "Eliminar prueba permanentemente?",
+      "_base": "en"
+    },
+    {
+      "en": "Test deleted",
+      "es": "Prueba eliminada",
+      "_base": "en"
+    },
+    {
+      "en": "Unable to login. Please check that you are connected to Internet",
+      "es": "No se pudo iniciar sesión. Por favor, compruebe que está conectado a Internet",
+      "_base": "en"
+    },
+    {
+      "en": "Latitude",
+      "es": "Latitud",
+      "_base": "en"
+    },
+    {
+      "en": "Longitude",
+      "es": "Longitud",
+      "_base": "en"
+    },
+    {
+      "en": "Home",
+      "es": "Página inicial",
+      "_base": "en"
+    },
+    {
+      "en": "Login",
+      "es": "Conexión",
+      "_base": "en"
+    },
+    {
+      "en": "List of Sources",
+      "es": "Lista de las Fuentes",
+      "_base": "en"
+    },
+    {
+      "en": "Map of Sources",
+      "es": "Mapa de las Fuentes",
+      "_base": "en"
+    },
+    {
+      "en": "Start New Water Test",
+      "es": "Comenzar Prueba de Agua Nueva",
+      "_unused": true
+    },
+    {
+      "en": "Recent Water Tests",
+      "es": "Pruebas de agua recientes",
+      "_unused": true
+    },
+    {
+      "en": "Start New Survey",
+      "es": "Comenzar Encuesta Nueva",
+      "_unused": true
+    },
+    {
+      "en": "Recent Surveys",
+      "es": "Encuestas Recientes",
+      "_unused": true
+    },
+    {
+      "en": "Settings",
+      "es": "Ajustes",
+      "_base": "en"
+    },
+    {
+      "en": "Report a Problem",
+      "es": "Reportar un Problema",
+      "_base": "en"
+    },
+    {
+      "en": "Logout",
+      "es": "Cerrar sesión",
+      "_base": "en"
+    },
+    {
+      "en": "Back",
+      "es": "Atrás",
+      "_base": "en"
+    },
+    {
+      "en": "Next",
+      "es": "Siguente",
+      "_base": "en"
+    },
+    {
+      "en": "Finish",
+      "es": "Terminar",
+      "_base": "en"
+    },
+    {
+      "en": "Upload Image",
+      "es": "Cargar Imagen",
+      "_base": "en"
+    },
+    {
+      "en": "Close",
+      "es": "Cerrar",
+      "_base": "en"
+    },
+    {
+      "en": "Upload",
+      "es": "Subir",
+      "_base": "en"
+    },
+    {
+      "en": "Change user's password",
+      "es": "Cambiar la Contraseña de Usario",
+      "_base": "en"
+    },
+    {
+      "en": "Change Password",
+      "es": "Cambiar la Contraseña",
+      "_base": "en"
+    },
+    {
+      "en": "Set user's organization",
+      "es": "Establecer la Organización del Usuario",
+      "_base": "en"
+    },
+    {
+      "en": "Move user's existing data to new organization",
+      "es": "Mover los datos existentes del usuario a la nueva organización",
+      "_base": "en"
+    },
+    {
+      "en": "Change Organization",
+      "es": "Cambiar Organización",
+      "_base": "en"
+    },
+    {
+      "en": "Crash!",
+      "es": "Choque!",
+      "_base": "en"
+    },
+    {
+      "en": "Incomplete Surveys",
+      "es": "Encuestas Incompletadas",
+      "_base": "en"
+    },
+    {
+      "en": "Recent Completed Surveys",
+      "es": "Encuestas Completadas Recientes",
+      "_base": "en"
+    },
+    {
+      "en": "Loading image",
+      "es": "Cargando Imagen",
+      "_base": "en"
+    },
+    {
+      "en": "Paste CSV here",
+      "es": "Pega CSV aquí",
+      "_unused": true
+    },
+    {
+      "en": "Fields are all optional",
+      "es": "Campos son todos opcionales",
+      "_unused": true
+    },
+    {
+      "en": "name: name of source",
+      "es": "nombre: nombre de fuente",
+      "_unused": true
+    },
+    {
+      "en": "desc: description of source",
+      "es": "desc: descripción de la fuente",
+      "_unused": true
+    },
+    {
+      "en": "type: type of source (see http://api.mwater.co/v3/source_types)",
+      "es": "tipo: tipo de fuente (vea http://api.mwater.co/v3/source_types",
+      "_unused": true
+    },
+    {
+      "en": "latitude: latitude of source",
+      "es": "latitud: latitud de fuente",
+      "_unused": true
+    },
+    {
+      "en": "longitude: longitude of source",
+      "es": "longitud: longitud de fuente",
+      "_unused": true
+    },
+    {
+      "en": "private: \"true\" if source should be private",
+      "es": "privado: \"true\" si fuente debe de ser privada",
+      "_unused": true
+    },
+    {
+      "en": "org: organization to upload as (available to admin only)",
+      "es": "org: organización para subir (disponible sólo bajo admin)",
+      "_unused": true
+    },
+    {
+      "en": "Other fields will be added as custom fields and preserved.",
+      "es": "Otros campos serán agregados como campos personalizados y conservados",
+      "_unused": true
+    },
+    {
+      "en": "Preview",
+      "es": "Muestra",
+      "_unused": true
+    },
+    {
+      "en": "Demo",
+      "es": "Demo",
+      "_base": "en"
+    },
+    {
+      "en": "Try out app",
+      "es": "Probar app",
+      "_base": "en"
+    },
+    {
+      "en": "Login to mWater",
+      "es": "Iniciar sesión en mWater",
+      "_base": "en"
+    },
+    {
+      "en": "Username or Email",
+      "es": "Nombre de usuario o correo electrónico",
+      "_base": "en"
+    },
+    {
+      "en": "Username",
+      "es": "Nombre de Usario",
+      "_base": "en"
+    },
+    {
+      "en": "Password",
+      "es": "Contraseña",
+      "_base": "en"
+    },
+    {
+      "en": "or",
+      "es": "o",
+      "_base": "en"
+    },
+    {
+      "en": "Signup",
+      "es": "Registrarse",
+      "_base": "en"
+    },
+    {
+      "en": "Select type of survey to start",
+      "es": "Seleccione el tipo de encuesta para comenzar",
+      "_unused": true
+    },
+    {
+      "en": "Select type of test to start",
+      "es": "Seleccione el tipo de prueba para comenzar",
+      "_base": "en"
+    },
+    {
+      "en": "Sources to Import",
+      "es": "Fuentes para Importar",
+      "_unused": true
+    },
+    {
+      "en": "Import Now",
+      "es": "Importar ahora",
+      "_unused": true
+    },
+    {
+      "en": "Test EC Compact Dry Plate Counter",
+      "es": "Probar Contador Compacto Placa Seca CE",
+      "_base": "en"
+    },
+    {
+      "en": "Start Remote Debugger",
+      "es": "Iniciar el depurador remoto",
+      "_base": "en"
+    },
+    {
+      "en": "Signup with mWater",
+      "es": "Registrarse con mWater",
+      "_base": "en"
+    },
+    {
+      "en": "Note: Your username is visible on water sources you create",
+      "es": "Nota: Su nombre de usuario es visible en las fuentes de agua que se crea",
+      "_base": "en"
+    },
+    {
+      "en": "Email address",
+      "es": "Dirección de correo electrónico",
+      "_base": "en"
+    },
+    {
+      "en": "Email",
+      "es": "Correo electrónico",
+      "_base": "en"
+    },
+    {
+      "en": "Note: Your email address will never be shared",
+      "es": "Nota: Tu dirección de correo electrónico nunca será compartida",
+      "_base": "en"
+    },
+    {
+      "en": "Waiting for GPS location...",
+      "es": "En espera de ubicación GPS",
+      "_base": "en"
+    },
+    {
+      "en": "Search results for:",
+      "es": "Los resultados de la búsqueda",
+      "_base": "en"
+    },
+    {
+      "en": "ID:",
+      "es": "ID",
+      "_base": "en"
+    },
+    {
+      "en": "Type:",
+      "es": "Tipo",
+      "_base": "en"
+    },
+    {
+      "en": "Edit Source",
+      "es": "Editar fuente",
+      "_base": "en"
+    },
+    {
+      "en": "Location",
+      "es": "Ubicación",
+      "_base": "en"
+    },
+    {
+      "en": "Add",
+      "es": "Agregar",
+      "_base": "en"
+    },
+    {
+      "en": "Water Tests",
+      "es": "Pruebas de Agua",
+      "_base": "en"
+    },
+    {
+      "en": "Surveys",
+      "es": "Encuestas",
+      "_base": "en"
+    },
+    {
+      "en": "Photos",
+      "es": "Fotos",
+      "_base": "en"
+    },
+    {
+      "en": "Incomplete Tests",
+      "es": "Pruebas Incompletadas",
+      "_base": "en"
+    },
+    {
+      "en": "Test",
+      "es": "Prueba",
+      "_base": "en"
+    },
+    {
+      "en": "of",
+      "es": "de",
+      "_base": "en"
+    },
+    {
+      "en": "No images present",
+      "es": "Sin imágenes",
+      "_base": "en"
+    },
+    {
+      "en": "Taking photos not supported on this platform",
+      "es": "Esta plataforma no suporta la toma de fotografias",
+      "_base": "en"
+    },
+    {
+      "en": "started",
+      "es": "empezado",
+      "_base": "en"
+    },
+    {
+      "en": "Completed",
+      "es": "Completado",
+      "_unused": true
+    },
+    {
+      "en": "Desc",
+      "es": "Descripción",
+      "_unused": true
+    },
+    {
+      "en": "Type",
+      "es": "Tipo",
+      "_unused": true
+    },
+    {
+      "en": "Offline Source Creation",
+      "es": "Creación de Fuente sin Conexión",
+      "_base": "en"
+    },
+    {
+      "en": "Number of sources that can be created offline:",
+      "es": "Número de fuentes que se pueden crear sin conexión",
+      "_base": "en"
+    },
+    {
+      "en": "Request more",
+      "es": "Pedir más",
+      "_base": "en"
+    },
+    {
+      "en": "Select Source",
+      "es": "Seleccionar fuente",
+      "_base": "en"
+    },
+    {
+      "en": "Private",
+      "es": "Privado",
+      "_base": "en"
+    },
+    {
+      "en": "Needs repair",
+      "es": "Necesidades reparadas",
+      "_base": "en"
+    },
+    {
+      "en": "Edit Survey",
+      "es": "Editar Encuesta",
+      "_base": "en"
+    },
+    {
+      "en": "Source",
+      "es": "Fuente",
+      "_base": "en"
+    },
+    {
+      "en": "Edit Test",
+      "es": "Editar Prueba",
+      "_base": "en"
+    },
+    {
+      "en": "Select units",
+      "es": "Seleccionar unidades",
+      "_base": "en"
+    },
+    {
+      "en": "Draft",
+      "es": "Borrador",
+      "_base": "en"
+    },
+    {
+      "en": "None",
+      "es": "Ninguna",
+      "_base": "en"
+    },
+    {
+      "en": "Not logged in",
+      "es": "No iniciado",
+      "_base": "en"
+    },
+    {
+      "en": "Unlocated",
+      "es": "Sin localizar",
+      "_base": "en"
+    },
+    {
+      "en": "See the map for a global view if no sources are found.",
+      "es": "Vea el mapa para obtener una vista global si no encuentra fuentes",
+      "_base": "en"
+    },
+    {
+      "en": "Incomplete",
+      "es": "Incompleto",
+      "_base": "en"
+    },
+    {
+      "en": "unnamed",
+      "es": "sin nombre",
+      "_base": "en"
+    },
+    {
+      "en": "Set",
+      "es": "Fijar",
+      "_base": "en"
+    },
+    {
+      "en": "Clear",
+      "es": "Borrar",
+      "_base": "en"
+    },
+    {
+      "en": "Map",
+      "es": "Mapa",
+      "_base": "en"
+    },
+    {
+      "en": "Edit",
+      "es": "Editar",
+      "_base": "en"
+    },
+    {
+      "en": "Source {0}",
+      "es": "Fuente {0}",
+      "_base": "en"
+    },
+    {
+      "_base": "en",
+      "en": "Username must be composed of letters, numbers, spaces, period and dash and must be at least 7 characters long. It must start with a letter.",
+      "es": ""
+    },
+    {
+      "_base": "en",
+      "en": "Pending",
+      "es": ""
+    },
+    {
+      "_base": "en",
+      "en": "Final",
+      "es": ""
+    },
+    {
+      "_base": "en",
+      "en": "Rejected",
+      "es": ""
+    },
+    {
+      "_base": "en",
+      "en": "Select survey to start",
+      "es": ""
+    },
+    {
+      "_base": "en",
+      "en": "Survey form not found",
+      "es": ""
+    }
+  ]
+}
