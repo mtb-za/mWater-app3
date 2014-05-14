@@ -13,8 +13,7 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         files: {
-          'dist/js/app.js': [],
-          'dist/js/preload.js': ['./app/js/preload']
+          'dist/js/app.js': []
         },
         options: {
           transform: [require('./versionXform')],
@@ -27,6 +26,14 @@ module.exports = function(grunt) {
             './app/js/lodash-shim:underscore',
             './app/js/backbone-shim:backbone'
             ]
+        }
+      },
+      preload: {
+        files: {
+          'dist/js/preload.js': ['./app/js/preload']
+        },
+        options: {
+          browserifyOptions: { extensions: [ '.coffee', '.js' ] }
         }
       }
     },
