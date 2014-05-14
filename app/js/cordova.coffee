@@ -14,7 +14,7 @@ getQueryParameterByName = (name) ->
 cachePath = "Android/data/co.mwater.clientapp/updates"
 
 # Where to pull updates from
-updateUrl = "http://app.mwater.co/"
+updateUrl = "http://beta.mwater.co/"
 
 createAppUpdater = (baseUrl, success, error) ->
   window.requestFileSystem LocalFileSystem.PERSISTENT, 0, (fs) ->

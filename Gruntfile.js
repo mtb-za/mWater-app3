@@ -321,8 +321,8 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['localization', 'browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
 
   grunt.registerTask('deploy_beta', ['default', 'shell:deploy_beta']);
-  grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
-  grunt.registerTask('deploy_map', ['default', 'shell:deploy_map']);
-  grunt.registerTask('deploy_app', ['shell:bump_version', 'default', 'shell:deploy_app']);
-  grunt.registerTask('deploy', ['deploy_app', 'shell:deploy_demo', 'shell:deploy_map']);
+  //grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
+  //grunt.registerTask('deploy_map', ['default', 'shell:deploy_map']);
+  //grunt.registerTask('deploy_app', ['shell:bump_version', 'default', 'shell:deploy_app']);
+  //grunt.registerTask('deploy', ['deploy_app', 'shell:deploy_demo', 'shell:deploy_map']);
 };
