@@ -123,6 +123,12 @@ module.exports = function(grunt) {
         src: '**',
         dest: 'cordova/www/'
       },  
+      cordova_config: {
+        expand: true,
+        cwd: 'app/cordova/',
+        src: 'config.xml',
+        dest: 'cordova/'
+      },  
       cordova_override_debug: {
         expand: true,
         cwd: 'app/cordova/debug/',
@@ -313,8 +319,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-rework');
 
-  grunt.registerTask('cordova_debug', ['copy:cordova_www', 'copy:cordova_override_debug']);
-  grunt.registerTask('cordova_release', ['copy:cordova_www', 'copy:cordova_override_release']);
+  grunt.registerTask('cordova_debug', ['copy:cordova_config', 'copy:cordova_www', 'copy:cordova_override_debug']);
+  grunt.registerTask('cordova_release', ['copy:cordova_config', 'copy:cordova_www', 'copy:cordova_override_release']);
   grunt.registerTask('run_cordova_debug', ['default', 'cordova_debug', 'shell:cordova_run']);
 
   grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages']);
