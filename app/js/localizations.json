@@ -1501,6 +1501,12 @@
       "en": "Comments",
       "es": "",
       "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "<b>{0} records to upload</b>",
+      "es": "",
+      "sw": ""
     }
   ]
 }

@@ -35,15 +35,24 @@ class MainPage extends Page
       @stopListening @imageSync
 
   render: ->
-    data = {}
-    data.login = @login
-    data.version = @version
-    data.baseVersion = @baseVersion
-    data.lastSyncDate = @dataSync.lastSuccessDate if @dataSync?
-
-    data.imagesRemaining = @imageSync.lastSuccessMessage if @imageSync?
+    data = {
+      login: @login
+      version: @version
+      baseVersion: @baseVersion
+      lastSyncDate: @dataSync.lastSuccessDate if @dataSync?
+      imagesRemaining: @imageSync.lastSuccessMessage if @imageSync?
+    }
 
     @$el.html require('./MainPage.hbs')(data)
+
+    # Display upserts pending
+    if @dataSync
+      @dataSync.numUpsertsPending (num) =>
+        if num > 0
+          $("#upserts_pending").html(T("<b>{0} records to upload</b>", num))
+        else
+          $("#upserts_pending").html("")
+      , @error
 
     # Display images pending
     if @imageManager? and @imageManager.numPendingImages?
