@@ -5,7 +5,7 @@ PageMenu = require("./PageMenu")
 context = require './context'
 login = require './login'
 ProblemReporter = require './ProblemReporter'
-Localizer = require './localization/Localizer'
+ezlocalize = require 'ez-localize'
 
 MainPage = require './pages/MainPage'
 LoginPage = require './pages/LoginPage'
@@ -27,8 +27,8 @@ exports.start = (options = {}) ->
   Swag.registerHelpers(handlebars)
   
   # Setup localizer
-  localizationData = require './localization/localizations.json'
-  localizer = new Localizer(localizationData, "en")
+  localizationData = require './localizations.json'
+  localizer = new ezlocalize.Localizer(localizationData, "en")
   localizer.makeGlobal(handlebars)
   localizer.restoreCurrentLocale()
 

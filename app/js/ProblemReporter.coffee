@@ -73,10 +73,7 @@ ProblemReporter = (url, version, getLogin) ->
   # Prevent recursion
   reportingError = false
 
-  window.onerror = (errorMsg, url, lineNumber) ->
-    if reportingError 
-      console.error "Ignoring error: #{errorMsg}"
-      return
+  handleOnError = (errorMsg, url, lineNumber) ->
     reportingError = true
 
     # Put up alert instead of old action
@@ -86,6 +83,17 @@ ProblemReporter = (url, version, getLogin) ->
       reportingError = false
     , ->
       reportingError = false
+
+  # Don't overload the user with errors
+  debouncedHandleOnError = _.debounce(handleOnError, 5000, true)
+
+  window.onerror = (errorMsg, url, lineNumber) ->
+    if reportingError 
+      console.error "Ignoring error: #{errorMsg}"
+      return
+
+    debouncedHandleOnError(errorMsg, url, lineNumber)
+
 
   @restore = ->
     _.each _.keys(_captured), (key) ->

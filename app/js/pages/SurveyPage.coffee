@@ -9,7 +9,79 @@ GeoJSON = require '../GeoJSON'
 class SurveyPage extends Page
   @canOpen: (ctx) -> ctx.auth.update("responses")
 
-  create: -> @render()
+  create: -> 
+    # Set default locale
+    @formLocale = @localizer.locale
+
+    @render()
+
+  displayFormView: ->
+    # Remove existing survey control
+    if @formView?
+      @formView.remove()
+
+    data = {
+      response: @response
+      name: mwaterforms.formUtils.localizeString(@form.design.name, @formLocale)
+      canRedraft: @responseModel.canDraft()
+      locales: @form.design.locales
+    }
+
+    @$el.html require('./SurveyPage.hbs')(data)
+
+    # Set locale dropdown
+    @$("#locale").val(@formLocale)
+
+    # Check if redraftable
+    if @response.status == "draft" or @response.status == "rejected"
+      # Load response data to model
+      model = new Backbone.Model()
+      model.set(_.cloneDeep(@response.data))
+
+      # Create compiler
+      compiler = new mwaterforms.FormCompiler(model: model, locale: @formLocale)
+
+      # Create context for forms            
+      ctx = {
+        displayImage: (options) =>
+          @pager.openPage(ImagePage, { id: options.id, onRemove: options.remove })
+        imageManager: @ctx.imageManager
+        imageAcquirer: @ctx.imageAcquirer
+        selectSite: (success) =>
+          @pager.openPage SourceListPage, { onSelect: (source)=> success(source.code) }
+        displayMap: (location) =>
+          @pager.openPage require("./SourceMapPage"), {
+            initialGeo: { type: 'Point', coordinates: [location.longitude, location.latitude] }
+          }
+        stickyStorage: {
+          get: (key) =>
+            str = window.localStorage["stickyStorage:" + @form._id + ":" +@login.user + ":" + key]
+            if str? and str.length > 0
+              return JSON.parse(str)
+          set: (key, value) =>
+            window.localStorage["stickyStorage:" + @form._id + ":" +@login.user + ":" + key] = JSON.stringify(value)
+        }
+      }
+
+      @formView = compiler.compileForm(@form.design, ctx).render()
+      
+      # Listen to events
+      @listenTo @formView, 'change', @save
+      @listenTo @formView, 'complete', @completed
+      @listenTo @formView, 'close', @close
+      @listenTo @formView, 'discard', @removeResponse
+    else
+      @formView = new Backbone.View() # TODO?
+      if @response.status == "final"
+        @formView.$el.html("<em>Response has been finalized and cannot be edited</em>") # TODO
+      else
+        @formView.$el.html("<em>Response is pending approval</em>") # TODO
+
+    # Add form view
+    @$("#contents").append(@formView.el)
+
+    if not @responseModel.canDraft() or @response.status in ['draft', 'rejected']
+      @$("#edit_button").hide()
 
   render: ->
     @setTitle T("Survey")
@@ -29,6 +101,8 @@ class SurveyPage extends Page
           @pager.closePage()
           return
 
+        @form = form
+
         # Get user groups
         @db.groups.find({ members: @login.user }, { fields: { groupname: 1 } }).fetch (groups) =>
           @responseModel = new ResponseModel(response, form, @login.user, _.pluck(groups, "groupname"))
@@ -39,65 +113,18 @@ class SurveyPage extends Page
             @setupContextMenu [ ]
 
           # Render survey page
-          canRedraft = @responseModel.canDraft()
-          name = mwaterforms.formUtils.localizeString(form.design.name)
-
-          @$el.html require('./SurveyPage.hbs')(response: response, name: name, canRedraft: canRedraft)
-
-          # Check if redraftable
-          if response.status == "draft" or response.status == "rejected"
-            # Load response data to model
-            model = new Backbone.Model()
-            model.set(_.cloneDeep(response.data))
-
-            # Create compiler
-            compiler = new mwaterforms.FormCompiler(model: model, locale: @localizer.locale)
-
-            # Create context for forms            
-            ctx = {
-              displayImage: (options) =>
-                @pager.openPage(ImagePage, { id: options.id, onRemove: options.remove })
-              imageManager: @ctx.imageManager
-              imageAcquirer: @ctx.imageAcquirer
-              selectSite: (success) =>
-                @pager.openPage SourceListPage, { onSelect: (source)=> success(source.code) }
-              displayMap: (location) =>
-                @pager.openPage require("./SourceMapPage"), {
-                  initialGeo: { type: 'Point', coordinates: [location.longitude, location.latitude] }
-                }
-              stickyStorage: {
-                get: (key) =>
-                  str = window.localStorage["stickyStorage:" + form._id + ":" +@login.user + ":" + key]
-                  if str? and str.length > 0
-                    return JSON.parse(str)
-                set: (key, value) =>
-                  window.localStorage["stickyStorage:" + form._id + ":" +@login.user + ":" + key] = JSON.stringify(value)
-              }
-            }
-
-            @formView = compiler.compileForm(form.design, ctx).render()
-            
-            # Listen to events
-            @listenTo @formView, 'change', @save
-            @listenTo @formView, 'complete', @completed
-            @listenTo @formView, 'close', @close
-            @listenTo @formView, 'discard', @removeResponse
-          else
-            @formView = new Backbone.View() # TODO?
-            if @response.status == "final"
-              @formView.$el.html("<em>Response has been finalized and cannot be edited</em>") # TODO
-            else
-              @formView.$el.html("<em>Response is pending approval</em>") # TODO
-
-          # Add form view
-          @$("#contents").append(@formView.el)
-
-          if not canRedraft or response.status in ['draft', 'rejected']
-            @$("#edit_button").hide()
-
+          @displayFormView()
 
   events:
     "click #edit_button" : "edit"
+    "change #locale" : "changeLocale"
+
+  changeLocale: ->
+    # Save to be safe
+    @save()
+
+    @formLocale = @$("#locale").val()
+    @displayFormView()
 
   activate: ->
     # Do not reload as form may have launched another page

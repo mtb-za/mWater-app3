@@ -13,6 +13,12 @@
 }
 </style>
 
+<select id="locale" class="form-control input-sm pull-right" style="width:auto">
+	{{#each locales}}
+	<option value="{{code}}">{{name}}</option>
+	{{/each}}
+</select>
+
 <div class="responsecode_div">
 	<span class="text-muted"><b>{{T "Survey"}} </b></span>
 	{{#if response.code}}
@@ -20,8 +26,7 @@
 	{{/if}}
 	<span class="text-muted"><b> of </b></span><b>{{name}}</b>
 </div>
-
-<div id="contents"></div>
+<div id="contents" class="clearfix"></div>
 
 {{#if canRedraft}}
 <br/>

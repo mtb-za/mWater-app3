@@ -82,6 +82,15 @@ module.exports = class SourceListPage extends Page
           source.typeName = type.name
       @$("#table").html require('./SourceListPage_items.hbs')(sources:sources)
 
+      # Look up image thumbnails
+      for source in sources
+        if source.thumbnail
+          imageId = source.thumbnail
+          do (imageId) =>
+            @imageManager.getImageThumbnailUrl imageId, (imageUrl) =>
+              @$("#" + imageId).attr("src", imageUrl)
+            , @error
+
   locationError: (pos) =>
     @$("#location_msg").hide()
     @pager.flash T("Unable to determine location"), "danger"

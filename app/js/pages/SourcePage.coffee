@@ -63,7 +63,10 @@ module.exports = class SourcePage extends Page
         if sourceType? then @$("#source_type").text(sourceType.name)
 
     # Add location view
-    locationView = new LocationView(loc: GeoJSON.geoToLoc(@source.geo), readonly: not @auth.update("sources", @source))
+    locationView = new LocationView(
+      loc: GeoJSON.geoToLoc(@source.geo)
+      readonly: not @auth.update("sources", @source)
+      T: T)
     if @setLocation
       locationView.setLocation()
       @setLocation = false
@@ -77,7 +80,7 @@ module.exports = class SourcePage extends Page
       @db.sources.upsert @source, => @render()
 
     @listenTo locationView, 'map', (loc) =>
-      @pager.openPage(require("./SourceMapPage"), {initialGeo: loc})
+      @pager.openPage(require("./SourceMapPage"), {initialGeo: GeoJSON.locToPoint(loc)})
       
     @addSubview(locationView)
     @$("#location").append(locationView.el)
