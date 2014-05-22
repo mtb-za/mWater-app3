@@ -1,12 +1,12 @@
 assert = chai.assert
 _ = require 'lodash'
 
-LocalDb = require("minimongo").LocalDb
+MemoryDb = require("minimongo").MemoryDb
 SourceLayerCreators = require '../app/js/map/SourceLayerCreators'
 
 describe "EColiAnalyzer", ->
   beforeEach ->
-    @db = new LocalDb()
+    @db = new MemoryDb()
     @db.addCollection("tests")
     @source = { code : "1" }
 
