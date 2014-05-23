@@ -44,9 +44,27 @@ module.exports = class GPSLoggerProtocol
     @queue.push(task)
 
   getBatteryVoltage: (success, error) ->
-    @command "bv", "", "BV", (data) ->
+    @command "bv", "0", "BV", (data) ->
       volts = parseFloat(data)
       success(volts)
     , error 
 
+  getUid: (success, error) ->
+    @command "fw", "0", "FW", (data) ->
+      success(data)
+    , error 
 
+  getStatus: (success, error) ->
+    @command "gs", "0", "GS", (data) ->
+      success(data[0] == "1", parseInt(data.substr(2, 2)))
+    , error 
+
+  getNumberRecords: (success, error) ->
+    @command "fn", "0", "FN", (data) ->
+      success(parseInt(data.substr(0, 8)), parseInt(data.substr(19, 8)), parseInt(data.substr(9, 8)))
+    , error
+
+  upgradeFirmware: (success, error) ->
+    @command "ug", "0", "UG", (data) ->
+      success()
+    , error
