@@ -68,3 +68,53 @@ module.exports = class GPSLoggerProtocol
     @command "ug", "0", "UG", (data) ->
       success()
     , error
+
+  getRecords: (startPage, numPages, success, error) ->
+    # Parse coords in xxx degrees xx minutes xxxx fractions
+    parseCoord = (str) ->
+      val = parseInt(str.substr(0, 3))
+      val += parseInt(str.substr(3)) / 10000 / 60
+
+    # Pad with zeros
+    pad = (num, size) ->
+      s = "000000000" + num
+      return s.substr(s.length-size)
+
+    @command "gn", pad(startPage, 8) + "," + pad(numPages, 3), "GN", (data) ->
+      if data[0] != "0"
+        return error("Invalid range")
+
+      if (data.length % 48) != 1
+        return error("Invalid range")        
+
+      # For each record
+      numRecords = (data.length - 2) / 48
+      records = []
+      for n in [0...numRecords]
+        str = data.substr(n*48 + 2, 48)
+
+        record = {
+          rec: parseInt(str.substr(0, 8))
+          valid: str[8] == "1"
+          ts: "20" + str.substr(33, 2) + "-" + str.substr(31, 2) + "-" + str.substr(29, 2) + "T" + str.substr(35, 2) + ":" + str.substr(37, 2) + ":" + str.substr(39, 2) + "Z"
+        }        
+
+        records.push(record)
+
+        # Check if valid fix
+        if not record.valid
+          continue
+
+        # Get latitude, etc.
+        record.lat = parseCoord(str.substr(11, 9))
+        record.lng = parseCoord(str.substr(20, 9))
+        record.sats = parseInt(str.substr(45, 2))
+        record.acc = parseFloat(str.substr(41, 4))/10
+
+        if str[9] == "0"
+          record.lat = -record.lat
+        if str[10] == "0"
+          record.lng = -record.lng
+
+      success(records)
+    , error

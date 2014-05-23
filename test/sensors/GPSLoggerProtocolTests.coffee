@@ -80,7 +80,46 @@ describe "GPSLoggerProtocol", ->
       assert.equal highestId, 111
       done()
 
-  it "gets n records"
+  it "gets records", (done) ->
+    @mgr.setExpected("gn", "00000045,001")
+    @mgr.setResponse("GN", '''0, 
+00000155000000000000000000000201012235945000000, 
+00000156000000000000000000000201012235950000000, 
+00000157000000000000000000000201012235955000000, 
+00000158000000000000000000000251012220045000000, 
+00000159000000000000000000000220514220050000000, 
+00000160110029324538095234169220514220055000909, 
+00000161110029324534095234129220514220100000909, 
+00000162110029324526095234127220514220105000810, 
+00000163110029324526095234127220514220110000810, 
+00000164110029324526095234127220514220115000810, 
+00000165110029324526095234127220514220120000810'''.replace(/, *\n\r?/g, ","))
+    @prot.getRecords 45, 1, (records) ->
+      assert.equal records.length, 11
+      assert.deepEqual records[0], {
+        rec: 155
+        valid: false
+        ts: "2012-10-20T23:59:45Z"
+      } 
+      cmp = {
+        rec: 160
+        valid: true
+        ts: "2014-05-22T22:00:55Z"
+        acc: 0.9
+        lat: 29 + (32.4538/60)
+        lng: - (95 + 23.4169/60)
+        sats: 9
+      }
+      assert.deepEqual records[5], cmp
+      done()
+
+  it "gets error records", (done) ->
+    @mgr.setExpected("gn", "00000045,001")
+    @mgr.setResponse("GN", '1')
+    @prot.getRecords 45, 1, ->
+      assert.fail()
+    , () ->
+      done()
 
   it "deletes all records"
   it "disables logging"

@@ -45,7 +45,6 @@ gulp.task 'prepareTests', ['libsjs'], ->
   bundler.require("./app/js/forms/index.coffee", { expose: "forms"})
 
   return bundler.bundle()
-    .on('error', gutil.log)
     .pipe(source('browserified.js'))
     .pipe(gulp.dest('./test'))
 
