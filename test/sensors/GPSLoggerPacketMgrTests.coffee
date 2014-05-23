@@ -3,7 +3,7 @@ assert = chai.assert
 MockBluetoothConnection = require './MockBluetoothConnection'
 GPSLoggerPacketMgr = require '../../app/js/sensors/gpslogger/GPSLoggerPacketMgr'
 
-describe "GPSLoggerPackets", ->
+describe "GPSLoggerPacketMgr", ->
   beforeEach ->
     @conn = new MockBluetoothConnection()
     @mgr = new GPSLoggerPacketMgr(@conn)
