@@ -17,14 +17,25 @@
   "license": "GPLv3",
   "devDependencies": {
     "chai": "~1.9.0",
+    "coffee-script": "^1.7.1",
+    "grunt-browserify": "~2.0.1",
+    "gulp": "^3.6.2",
+    "gulp-awspublish": "0.0.16",
+    "gulp-buffer": "0.0.2",
+    "gulp-clean": "^0.2.4",
+    "gulp-concat": "^2.2.0",
+    "gulp-gzip": "0.0.6",
+    "gulp-rework": "^0.2.2",
+    "gulp-size": "^0.3.0",
+    "gulp-uglify": "^0.2.1",
+    "gulp-util": "^2.2.14",
     "rework-npm": "~0.4.1",
-    "grunt-browserify": "~2.0.1"
+    "vinyl-source-stream": "^0.1.1"
   },
   "dependencies": {
     "async": "^0.8.0",
     "backbone-faux-server": "~0.10.1",
     "browserify": "~3.21.0",
-    "coffee-script": "~1.6.2",
     "coffeeify": "~0.6.0",
     "csv": "~0.3.6",
     "express": "~3.4.7",
