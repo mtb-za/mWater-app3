@@ -1,11 +1,11 @@
 assert = chai.assert
-LocalDb = require("minimongo").LocalDb
+MemoryDb = require("minimongo").MemoryDb
 utils = require '../app/js/pages/utils'
 
 describe 'utils', ->
   describe "changeUserOrgDocs", ->
     before ->
-      @db = new LocalDb()
+      @db = new MemoryDb()
 
     beforeEach (done) ->
       @db.removeCollection('sources')
