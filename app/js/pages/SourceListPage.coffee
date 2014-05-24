@@ -93,7 +93,7 @@ module.exports = class SourceListPage extends Page
 
   locationError: (pos) =>
     @$("#location_msg").hide()
-    @pager.flash T("Unable to determine location"), "error"
+    @pager.flash T("Unable to determine location"), "danger"
 
   sourceClicked: (ev) ->
     # Wrap onSelect
