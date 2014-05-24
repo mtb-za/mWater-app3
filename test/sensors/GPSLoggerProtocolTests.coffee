@@ -9,9 +9,10 @@ class MockGPSLoggerPacketMgr
     @expectedId = id
     @expectedData = data
 
-  send: (id, data) ->
+  send: (id, data, success, error) ->
     assert.equal id, @expectedId
     assert.equal data, @expectedData
+    success()
     if @autoResponseId
       @trigger 'receive', @autoResponseId, @autoResponseData
 
@@ -59,7 +60,7 @@ describe "GPSLoggerProtocol", ->
 
   it "gets status", (done) ->
     @mgr.setExpected("gs", "0")
-    @mgr.setResponse("GS", "1,05")
+    @mgr.setResponse("GS", "0,05")
     @prot.getStatus (running, samplingRate) ->
       assert.equal running, true
       assert.equal samplingRate, 5
@@ -125,5 +126,12 @@ describe "GPSLoggerProtocol", ->
   it "disables logging"
   it "enables logging"
   it "exits command mode"
-  it "calls error on unknown command"
+  it "calls error on unknown command", (done) ->
+    @mgr.setExpected("fw", "0")
+    @mgr.setResponse("ZZ", "0")
+    @prot.getUid (uid) ->
+      assert.fail()
+    , () ->
+      done()
+
 

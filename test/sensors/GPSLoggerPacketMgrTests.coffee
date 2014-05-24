@@ -9,8 +9,8 @@ describe "GPSLoggerPacketMgr", ->
     @mgr = new GPSLoggerPacketMgr(@conn)
 
   it "sends packet to connection", ->
-    @mgr.send "gn", "1234567"
-    assert.deepEqual @conn.written, "#gn00007,1234567"
+    @mgr.send "gn", "1234567", =>
+      assert.deepEqual @conn.written, "#gn00007,1234567"
 
   it "decodes single packet", (done) ->
     @mgr.on 'receive', (id, data) ->

@@ -1,0 +1,13 @@
+<div>Connection Status: <b>{{status}}</b></div>
+
+{{#if connected}}<span class="text-success">Connected</span>{{/if}}
+
+<br/>
+
+{{#with stats}}
+	<div>Battery voltage: {{batteryVoltage}}</div>
+	<div>UID: {{uid}}</div>
+	<div>Status: {{#if recording}}Recording{{else}}Not Recording{{/if}}</div>
+	<div>Sample Rate: {{sampleRate}}</div>
+	<div>Records: {{totalRecords}} {{lowestRecord}}-{{highestRecord}}</div>
+{{/with}}

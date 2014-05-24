@@ -4,14 +4,18 @@ cordova create cordova co.mwater.clientapp mWater
 cp app/cordova/config.xml cordova
 cd cordova
 cordova platform add android
-cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-device.git
+cordova plugin add org.apache.cordova.device
 cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-file.git
 cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-file-transfer.git
-cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-device-orientation.git
-cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-network-information.git
+cordova plugin add org.apache.cordova.device-orientation
+cordova plugin add org.apache.cordova.network-information
 cordova plugin add https://github.com/mWater/cordova-plugin-camera-foreground.git
 cordova plugin add https://github.com/mWater/OpenCVActivityPlugin.git
 cordova plugin add https://github.com/mWater/cordova-plugin-acra.git
+
+# Bluetooth plugin
+cordova plugin add https://github.com/tanelih/phonegap-bluetooth-plugin
+
 rm platforms/android/res/drawable-hdpi/icon.png
 rm platforms/android/res/drawable-ldpi/icon.png
 rm platforms/android/res/drawable-mdpi/icon.png

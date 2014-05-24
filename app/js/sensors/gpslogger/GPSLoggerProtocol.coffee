@@ -39,7 +39,10 @@ module.exports = class GPSLoggerProtocol
 
       @mgr.on 'error', taskErrorCb
       @mgr.on 'receive', taskReceiveCb
-      @mgr.send(cmdId, cmdData)
+      @mgr.send cmdId, cmdData, ->
+        # Success, do nothing
+        return
+      , taskErrorCb
 
     @queue.push(task)
 
@@ -56,9 +59,10 @@ module.exports = class GPSLoggerProtocol
 
   getStatus: (success, error) ->
     @command "gs", "0", "GS", (data) ->
-      success(data[0] == "1", parseInt(data.substr(2, 2)))
+      success(data[0] == "0", parseInt(data.substr(2, 2)))
     , error 
 
+  # Gets number of records: success(number, lowest, highest)
   getNumberRecords: (success, error) ->
     @command "fn", "0", "FN", (data) ->
       success(parseInt(data.substr(0, 8)), parseInt(data.substr(19, 8)), parseInt(data.substr(9, 8)))

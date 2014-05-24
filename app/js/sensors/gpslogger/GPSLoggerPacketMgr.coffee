@@ -13,14 +13,14 @@ module.exports = class GPSLoggerPacketMgr
       @buffer += data.replace("\n", "").replace("\r", "")
       @processBuffer()
 
-  send: (id, data) ->
+  send: (id, data, success, error) ->
     # Pad with zeros
     pad = (num, size) ->
       s = "000000000" + num
       return s.substr(s.length-size)
 
     packet = "#" + id + pad(data.length, 5) + "," + data
-    @conn.write(packet)
+    @conn.write(packet, success, error)
 
   processBuffer: ->
     if @buffer.length > 0
@@ -45,6 +45,7 @@ module.exports = class GPSLoggerPacketMgr
         @processBuffer()
 
   processPacket: (packet) ->
+    console.log "Processing packet #{packet}"
     id = packet.substr(1, 2)
     data = packet.substr(9)
     @trigger 'receive', id, data

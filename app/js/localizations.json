@@ -1507,6 +1507,30 @@
       "en": "<b>{0} records to upload</b>",
       "es": "",
       "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Sensors",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Only available on Android app",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Unable to connect to Bluetooth",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Sensor",
+      "es": "",
+      "sw": ""
     }
   ]
 }

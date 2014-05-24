@@ -5,8 +5,9 @@ module.exports = class MockBluetoothConnection
   constructor: ->
     _.extend @, Backbone.Events
 
-  write: (str) ->
+  write: (str, success, error) ->
     @written = str
+    success()
 
   mockRead: (str) ->
     @trigger 'read', str

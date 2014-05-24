@@ -21,6 +21,7 @@ module.exports = class PageMenu extends Backbone.View
     "click #survey_list" : "gotoSurveyList"
     "click #report_problem" : 'gotoProblemReport'
     "click #admin" : 'gotoAdmin'
+    "click #sensor_list" : 'gotoSensorList'
 
   render: ->
     @$el.html require('./PageMenu.hbs')()
@@ -78,3 +79,6 @@ module.exports = class PageMenu extends Backbone.View
 
   gotoAdmin: ->
     @pager.openPage(require("./pages/AdminPage"))
+
+  gotoSensorList: ->
+    @pager.openPage(require("./pages/SensorListPage"))
