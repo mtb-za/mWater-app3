@@ -53,14 +53,21 @@ exports.setupFileSystems = (tempFs, persFs) ->
   temporaryFs = tempFs
   persistentFs = persFs
 
+displayErrorAlert = _.debounce (msg) ->
+  alert(T("Internal error") + ": " + msg)
+, 5000, true
+
 error = (err) ->
-  console.error err
   str = if err? and err.message then err.message else err
-  alert(T("Internal error") + ": " + err)
+  if typeof str != "string"
+    str = JSON.stringify(str)
+
+  console.error("Internal Error Callback: " + str)
+  displayErrorAlert(str)
   
   # Call default problem reporter if present
   if ProblemReporter.default?
-    ProblemReporter.default.reportProblem(err)
+    ProblemReporter.default.reportProblem(str)
 
 # Base context
 createBaseContext = ->
