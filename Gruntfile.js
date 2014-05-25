@@ -44,6 +44,29 @@ module.exports = function(grunt) {
               'vendor/*.css',
               'vendor/leaflet/leaflet.css'],
         dest: 'dist/css/libs.css'
+      },
+      libsjs: {
+        // src: ['bower_components/jquery/dist/jquery.min.js', 
+        //     'bower_components/lodash/dist/lodash.min.js', 
+        //     'bower_components/backbone/backbone.js', 
+        //     'vendor/bootstrap/js/bootstrap.min.js',  // Custom bootstrap with larger fonts
+        //     'bower_components/handlebars/handlebars.runtime.min.js',
+        //     'bower_components/swag/lib/swag.min.js',
+        //     'bower_components/overthrow-dist/overthrow.js',
+        //     'vendor/mobiscroll.custom-2.5.4.min.js',
+        //     'vendor/jquery.scrollintoview.min.js',
+        //     'vendor/leaflet/leaflet-src.js'],
+        src: ['bower_components/jquery/dist/jquery.js', 
+            'bower_components/lodash/dist/lodash.js', 
+            'bower_components/backbone/backbone.js', 
+            'vendor/bootstrap/js/bootstrap.js',  // Custom bootstrap with larger fonts
+            'bower_components/handlebars/handlebars.runtime.js',
+            'bower_components/swag/lib/swag.js',
+            'bower_components/overthrow-dist/overthrow.js',
+            'vendor/mobiscroll.custom-2.5.4.min.js',
+            'vendor/jquery.scrollintoview.min.js',
+            'vendor/leaflet/leaflet-src.js'],
+        dest: 'dist/js/libs.js'
       }
     },
 
@@ -61,23 +84,23 @@ module.exports = function(grunt) {
     uglify: {
       options: {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-      },
-      libsjs: {
-        files: {
-          // the files to uglify
-          'dist/js/libs.js': 
-            ['bower_components/jquery/dist/jquery.min.js', 
-            'bower_components/lodash/dist/lodash.min.js', 
-            'bower_components/backbone/backbone.js', 
-            'vendor/bootstrap/js/bootstrap.min.js',  // Custom bootstrap with larger fonts
-            'bower_components/handlebars/handlebars.runtime.min.js',
-            'bower_components/swag/lib/swag.min.js',
-            'bower_components/overthrow-dist/overthrow.js',
-            'vendor/mobiscroll.custom-2.5.4.min.js',
-            'vendor/jquery.scrollintoview.min.js',
-            'vendor/leaflet/leaflet-src.js']
-        }
       }
+      // libsjs: {
+      //   files: {
+      //     // the files to uglify
+      //     'dist/js/libs.js': 
+      //       ['bower_components/jquery/dist/jquery.min.js', 
+      //       'bower_components/lodash/dist/lodash.min.js', 
+      //       'bower_components/backbone/backbone.js', 
+      //       'vendor/bootstrap/js/bootstrap.min.js',  // Custom bootstrap with larger fonts
+      //       'bower_components/handlebars/handlebars.runtime.min.js',
+      //       'bower_components/swag/lib/swag.min.js',
+      //       'bower_components/overthrow-dist/overthrow.js',
+      //       'vendor/mobiscroll.custom-2.5.4.min.js',
+      //       'vendor/jquery.scrollintoview.min.js',
+      //       'vendor/leaflet/leaflet-src.js']
+      //   }
+      // }
     },
 
     copy: {

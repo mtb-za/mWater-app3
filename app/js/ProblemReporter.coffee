@@ -44,7 +44,7 @@ ProblemReporter = (url, version, getLogin) ->
       user_agent: navigator.userAgent
       log: log
       desc: desc
-      device: window.device
+      device: JSON.stringify(window.device)
       url: window.location.href
       date: new Date().toISOString()
 
