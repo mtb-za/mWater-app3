@@ -1501,6 +1501,12 @@
       "en": "Comments",
       "es": "",
       "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Image not available",
+      "es": "",
+      "sw": ""
     }
   ]
 }
