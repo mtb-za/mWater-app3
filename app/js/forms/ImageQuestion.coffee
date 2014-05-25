@@ -36,7 +36,10 @@ module.exports = class ImageQuestion extends Question
   setThumbnailUrl: (id) ->
     success = (url) =>
       @$("#" + id).attr("src", url)
-    @ctx.imageManager.getImageThumbnailUrl id, success, @error
+    @ctx.imageManager.getImageThumbnailUrl id, success, =>
+      # Display this image on error
+      @$("#" + id).attr("src", "img/no-image-icon.jpg")
+
 
   addClick: ->
     # Call imageAcquirer

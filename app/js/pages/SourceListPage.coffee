@@ -89,7 +89,9 @@ module.exports = class SourceListPage extends Page
           do (imageId) =>
             @imageManager.getImageThumbnailUrl imageId, (imageUrl) =>
               @$("#" + imageId).attr("src", imageUrl)
-            , @error
+            , =>
+              # Display this image on error
+              @$("#" + imageId).attr("src", "img/no-image-icon.jpg")
 
   locationError: (pos) =>
     @$("#location_msg").hide()
