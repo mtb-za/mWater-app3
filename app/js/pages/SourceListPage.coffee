@@ -14,6 +14,9 @@ module.exports = class SourceListPage extends Page
   create: ->
     @setTitle T('Nearby Sources')
 
+    # Create cache of thumbnail urls by image id
+    @thumbnailUrls = {}
+
   activate: ->
     @$el.html require('./SourceListPage.hbs')()
     @nearSources = []
@@ -87,11 +90,15 @@ module.exports = class SourceListPage extends Page
         if source.thumbnail
           imageId = source.thumbnail
           do (imageId) =>
-            @imageManager.getImageThumbnailUrl imageId, (imageUrl) =>
-              @$("#" + imageId).attr("src", imageUrl)
-            , =>
-              # Display this image on error
-              @$("#" + imageId).attr("src", "img/no-image-icon.jpg")
+            if @thumbnailUrls[imageId]
+              @$("#" + imageId).attr("src", @thumbnailUrls[imageId])
+            else
+              @imageManager.getImageThumbnailUrl imageId, (imageUrl) =>
+                @thumbnailUrls[imageId] = imageUrl
+                @$("#" + imageId).attr("src", imageUrl)
+              , =>
+                # Display this image on error
+                @$("#" + imageId).attr("src", "img/no-image-icon.jpg")
 
   locationError: (pos) =>
     @$("#location_msg").hide()
