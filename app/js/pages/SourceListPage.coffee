@@ -1,3 +1,4 @@
+async = require 'async'
 Page = require("../Page")
 SourcePage = require("./SourcePage")
 LocationFinder = require '../LocationFinder'
@@ -86,19 +87,24 @@ module.exports = class SourceListPage extends Page
       @$("#table").html require('./SourceListPage_items.hbs')(sources:sources)
 
       # Look up image thumbnails
-      for source in sources
+      async.eachLimit sources, 4, (source, callback) =>
         if source.thumbnail
           imageId = source.thumbnail
           do (imageId) =>
             if @thumbnailUrls[imageId]
               @$("#" + imageId).attr("src", @thumbnailUrls[imageId])
+              callback()
             else
               @imageManager.getImageThumbnailUrl imageId, (imageUrl) =>
                 @thumbnailUrls[imageId] = imageUrl
                 @$("#" + imageId).attr("src", imageUrl)
+                callback()
               , =>
                 # Display this image on error
                 @$("#" + imageId).attr("src", "img/no-image-icon.jpg")
+                callback()
+        else
+          callback()
 
   locationError: (pos) =>
     @$("#location_msg").hide()
