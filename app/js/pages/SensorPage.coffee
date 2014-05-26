@@ -178,7 +178,7 @@ module.exports = class SensorPage extends Page
   upgradeFirmware: ->
     if confirm("You will need an Ant+ connection and PC and a binary ready. This cannot be undone. Proceed?")
       if confirm("Are you really sure you want to do this?")
-        @protocol.upgradeFirmware ->
+        @protocol.upgradeFirmware =>
           @connected = false
           @pager.closePage()
           alert("Now upload new firmware, following instructions carefully")

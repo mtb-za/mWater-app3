@@ -78,7 +78,7 @@ describe "GPSLoggerProtocol", ->
     @prot.getNumberRecords (count, lowestId, nextId) ->
       assert.equal count, 66
       assert.equal lowestId, 45
-      assert.equal highestId, 111
+      assert.equal nextId, 111
       done()
 
   it "gets records", (done) ->
@@ -161,5 +161,12 @@ describe "GPSLoggerProtocol", ->
       assert.fail()
     , () ->
       done()
+
+  it "listens for move events", (done) ->
+    @prot.on "move", (data) =>
+      assert.equal data, "abc"
+      done()
+
+    @mgr.trigger 'receive', 'MV', 'abc'
 
 

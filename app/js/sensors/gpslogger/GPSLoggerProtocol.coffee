@@ -9,31 +9,43 @@ module.exports = class GPSLoggerProtocol
     # Create queue of commands
     @queue = async.queue(@worker, 1)
 
-    # Listen for spontaneous events TODO remove
+    # Listen for spontaneous events 
     @mgr.on 'receive', (id, data) =>
       if id == "MV"
-        alert("Move: #{data}")
+        @trigger "move", data
 
   worker: (task, callback) =>
     task(callback)
 
-  command: (cmdId, cmdData, respId, respCb, errorCb) ->
+  command: (cmdId, cmdData, respId, respCb, errorCb, timeout=3000) ->
     # Queue a task
     task = (callback) =>
+      # True if completed, one way or another
+      completed = false
+
       stopListening = =>
         @mgr.off 'error', taskErrorCb
         @mgr.off 'receive', taskReceiveCb
 
       taskErrorCb = (error) ->
+        if completed
+          return
+
+        completed = true
         stopListening()
+
         errorCb(error)
         callback(error)
 
       taskReceiveCb = (id, data) ->
-        # Listen for spontaneous events TODO remove
+        if completed
+          return
+
+        # Ignore spontaneous events
         if id == "MV"
           return
 
+        completed = true
         stopListening()
 
         # Check that matches expected respId
@@ -45,6 +57,19 @@ module.exports = class GPSLoggerProtocol
         # Call resp callback
         respCb(data)
         callback()
+
+      # Timeout on calls
+      setTimeout =>
+        if completed
+          return
+
+        completed = true
+        stopListening()
+
+        error = "Command timed out"
+        errorCb(error)
+        return callback(error)
+      , timeout
 
       @mgr.on 'error', taskErrorCb
       @mgr.on 'receive', taskReceiveCb
@@ -103,7 +128,7 @@ module.exports = class GPSLoggerProtocol
         success()
       else
         error("Unable to delete records")
-    , error
+    , error, 60*1000*10 # Takes a long time
 
   getRecords: (startPage, numPages, success, error) ->
     # Parse coords in xxx degrees xx minutes xxxx fractions
