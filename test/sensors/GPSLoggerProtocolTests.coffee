@@ -142,6 +142,21 @@ describe "GPSLoggerProtocol", ->
     @prot.exitCommandMode ->
       done()
 
+  it "deletes all records successfully", (done) ->
+    @mgr.setExpected("da", "0")
+    @mgr.setResponse("DA", "1")
+    @prot.deleteAllRecords ->
+      done()
+
+  it "deletes all records unsuccessfully", (done) ->
+    @mgr.setExpected("da", "0")
+    @mgr.setResponse("DA", "0")
+    @prot.deleteAllRecords ->
+      assert.fail()
+    , =>
+      done()
+
+
   it "calls error on unknown command", (done) ->
     @mgr.setExpected("fw", "0")
     @mgr.setResponse("ZZ", "0")

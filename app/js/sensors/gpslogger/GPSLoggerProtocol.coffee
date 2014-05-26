@@ -97,6 +97,14 @@ module.exports = class GPSLoggerProtocol
       success()
     , error
 
+  deleteAllRecords: (success, error) ->
+    @command "da", "0", "DA", (data) ->
+      if data == "1"
+        success()
+      else
+        error("Unable to delete records")
+    , error
+
   getRecords: (startPage, numPages, success, error) ->
     # Parse coords in xxx degrees xx minutes xxxx fractions
     parseCoord = (str) ->
