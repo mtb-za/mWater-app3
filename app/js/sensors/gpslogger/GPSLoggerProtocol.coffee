@@ -9,6 +9,11 @@ module.exports = class GPSLoggerProtocol
     # Create queue of commands
     @queue = async.queue(@worker, 1)
 
+    # Listen for spontaneous events TODO remove
+    @mgr.on 'receive', (id, data) =>
+      if id == "MV"
+        alert("Move: #{data}")
+
   worker: (task, callback) =>
     task(callback)
 

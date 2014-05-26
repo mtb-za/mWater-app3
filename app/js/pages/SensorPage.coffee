@@ -5,7 +5,8 @@ GPSLoggerProtocol = require "../sensors/gpslogger/GPSLoggerProtocol"
 
 # Pass in `address` to connect to
 module.exports = class SensorPage extends Page
-  #events: 
+  events: 
+    "click #update_status": "updateStats"
 
   activate: ->
     @setTitle T("Sensor")
@@ -52,84 +53,75 @@ module.exports = class SensorPage extends Page
     , error
 
   connect: ->
-    #@connecting = true
-    @status = "Getting UUIDs..."
-    @render()
+    connectionError = (error) =>
+      @connected = false
+      console.error "Error connecting: " + JSON.stringify(error)
+      @status = "Error connecting: " + JSON.stringify(error)
+      @render()
 
-    window.bluetooth.getUuids (device) =>
-      console.log "Device: " + JSON.stringify(device)
-      opts = { address: device.address, uuid: device.uuids[0], conn: "Hax" }
+    updateStatus = (status) =>
+      @status = status
+      console.log "Bluetooth status: #{status}"
+      @render()
+
+    startConnectionManager = =>
+      updateStatus("Starting connection manager...")
+
+      @connection = {
+        write: (data, success, error) ->
+          console.log "Write called with #{data}"
+          window.bluetooth.write success, error, data
+      }
+      _.extend @connection, Backbone.Events
+
+      onRead = (data) =>
+        console.log "Read with #{data}"
+        @connection.trigger("read", data)
+
+      onError = (error) =>
+        @connected = false
+        console.error "Error in connection manager: " + JSON.stringify(error)
+        @status = "Error in connection: " + JSON.stringify(error)
+        @render()
+
+      # Manage connection
+      window.bluetooth.startConnectionManager(onRead, onError)
+
+      # Create packet manager
+      @packetMgr = new GPSLoggerPacketMgr(@connection)
+      @protocol = new GPSLoggerProtocol(@packetMgr)
+
+      updateStatus("Connected")
+      @connected = true
+
+      #@updateStats()
+
+    makeConnection = (device) =>
+      updateStatus("Connecting...")
+      opts = { address: device.address, uuid: device.uuids[0] } #, conn: "Hax" }
       console.log "Connecting to " + JSON.stringify(opts)
-      @status = "Connecting to " + JSON.stringify(opts)
-      @render()
 
-      attempt = 1
+      window.bluetooth.connect () =>  
+        console.log "Connected!"
+        startConnectionManager()
+      , connectionError, opts
 
-      tryConnect = (cb) =>
-        console.log "tryConnect attempt #{attempt}"
-        window.bluetooth.connect () =>
-          console.log "Connected!"
-          # Success
-          @status = "Connected!"
-          @connected = true
-          @render()
+    getUuids = =>
+      updateStatus("Getting UUIDs...")
+      window.bluetooth.getUuids (device) =>
+        console.log "Device: " + JSON.stringify(device)
+        makeConnection(device)
+      , connectionError, @options.address
 
-          @connection = {
-            write: (data, success, error) ->
-              console.log "Write called with #{data}"
-              window.bluetooth.write success, error, data
-          }
-          _.extend @connection, Backbone.Events
+    # Check pairing
+    updateStatus("Checking pairing...")
+    window.bluetooth.isPaired (paired) =>
+      if paired
+        return getUuids()
 
-          onRead = (data) =>
-            console.log "Read with #{data}"
-            @connection.trigger("read", data)
-
-          onError = (error) =>
-            @connected = false
-            console.error "Error in connection: " + JSON.stringify(error)
-            @status = "Error in connection: " + JSON.stringify(error)
-            @render()
-
-          # Manage connection
-          window.bluetooth.startConnectionManager(onRead, onError)
-
-          # Create packet manager
-          @packetMgr = new GPSLoggerPacketMgr(@connection)
-          @protocol = new GPSLoggerProtocol(@packetMgr)
-
-          @updateStats()
-
-          cb()
-        , (error) =>
-          console.error "Error connecting: " + JSON.stringify(error)
-          @status = "Error connecting attempt #{attempt}: " + JSON.stringify(error)
-          attempt += 1
-          @render()
-          setTimeout () ->
-            cb(error)
-          , 100
-        , opts
-      
-      max = 100
-      doit = =>
-        if attempt > max
-          return
-
-        tryConnect (err) =>
-          if not err
-            return
-          doit()
-      doit()
-
-      #console.log "about to async retry"
-      #async.retry 100, tryConnect
-
-    , (error) =>
-      console.error "Error getting UUIDs: " + JSON.stringify(error)
-      @status = "Error getting UUIDs: " + JSON.stringify(error)
-      @render()
-    , @options.address
+      updateStatus("Pairing...")
+      window.bluetooth.pair getUuids, connectionError, @options.address
+    , connectionError, @options.address
 
   render: ->
     data = {

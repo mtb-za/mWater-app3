@@ -1531,6 +1531,12 @@
       "en": "Sensor",
       "es": "",
       "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Image not available",
+      "es": "",
+      "sw": ""
     }
   ]
 }
