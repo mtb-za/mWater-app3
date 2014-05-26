@@ -29,6 +29,15 @@ describe "GPSLoggerPacketMgr", ->
     @conn.mockRead "#gn00"
     @conn.mockRead "007,1234567"
 
+  it "combines parts of packets at a different split", (done) ->
+    @mgr.on 'receive', (id, data) ->
+      assert.equal id, "BV"
+      assert.equal data, "4.2"
+      done()
+
+    @conn.mockRead "#BV0000"
+    @conn.mockRead "3,4.2"
+
   it "ignore cr/lf", (done) ->
     @mgr.on 'receive', (id, data) ->
       assert.equal id, "gn"

@@ -10,7 +10,7 @@ module.exports = class GPSLoggerPacketMgr
 
     # TODO unlisten?
     @listenTo conn, 'read', (data) =>
-      @buffer += data.replace("\n", "").replace("\r", "")
+      @buffer += data.replace(/[\n\r]/g, "")
       @processBuffer()
 
   send: (id, data, success, error) ->
@@ -23,15 +23,16 @@ module.exports = class GPSLoggerPacketMgr
     @conn.write(packet, success, error)
 
   processBuffer: ->
+    console.log "Processing buffer: [" + @buffer + "] len=" + @buffer.length 
     if @buffer.length > 0
       if @buffer[0] != "#"
-        return @trigger "error", "Invalid packet"
+        return @trigger "error", "Invalid packet start #{this.buffer[0]}"
 
     if @buffer.length >= 9
       len = parseInt(@buffer.substr(3, 5))
 
       if isNaN(len)
-        return @trigger "error", "Invalid packet"
+        return @trigger "error", "Invalid packet length #{len}"
         
       # Check length
       if @buffer.length >= len + 9

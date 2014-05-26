@@ -30,6 +30,10 @@ module.exports = class GPSLoggerProtocol
         callback(error)
 
       taskReceiveCb = (id, data) ->
+        # Listen for spontaneous events TODO remove
+        if id == "MV"
+          return
+
         stopListening()
 
         # Check that matches expected respId
@@ -75,6 +79,21 @@ module.exports = class GPSLoggerProtocol
 
   upgradeFirmware: (success, error) ->
     @command "ug", "0", "UG", (data) ->
+      success()
+    , error
+
+  exitCommandMode: (success, error) ->
+    @command "ex", "0", "EX", (data) ->
+      success()
+    , error
+
+  enableLogging: (success, error) ->
+    @command "dl", "0", "DL", (data) ->
+      success()
+    , error
+
+  disableLogging: (success, error) ->
+    @command "dl", "1", "DL", (data) ->
       success()
     , error
 

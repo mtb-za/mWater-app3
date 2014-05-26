@@ -123,9 +123,25 @@ describe "GPSLoggerProtocol", ->
       done()
 
   it "deletes all records"
-  it "disables logging"
-  it "enables logging"
-  it "exits command mode"
+
+  it "disables logging", (done) ->
+    @mgr.setExpected("dl", "1")
+    @mgr.setResponse("DL", "1")
+    @prot.disableLogging ->
+      done()
+
+  it "enables logging", (done) ->
+    @mgr.setExpected("dl", "0")
+    @mgr.setResponse("DL", "0")
+    @prot.enableLogging ->
+      done()
+  
+  it "exits command mode", (done) ->
+    @mgr.setExpected("ex", "0")
+    @mgr.setResponse("EX", "0")
+    @prot.exitCommandMode ->
+      done()
+
   it "calls error on unknown command", (done) ->
     @mgr.setExpected("fw", "0")
     @mgr.setResponse("ZZ", "0")
