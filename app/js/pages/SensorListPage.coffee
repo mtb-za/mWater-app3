@@ -29,7 +29,10 @@ module.exports = class SensorListPage extends Page
         # Do nothing
         @discovering = false
         return
-      , @error
+      , (error) =>
+        # Do nothing
+        console.error "Error cancelling discovery process: #{error}"
+        @discovering = false
 
   discoverDevices: ->
     @discovering = true
@@ -54,7 +57,7 @@ module.exports = class SensorListPage extends Page
 
     # Make name friendly
     device.name = "Sparx GPS Logger #{device.name.substr(5)}"
-    
+
     # Store discovery attempt number to cull old ones
     device.attempt = @discoveryAttempt
     @devices[device.address] = device
