@@ -71,7 +71,7 @@ module.exports = class GPSLoggerProtocol
       success(data[0] == "0", parseInt(data.substr(2, 2)))
     , error 
 
-  # Gets number of records: success(number, lowest, highest)
+  # Gets number of records: success(number, lowestId, nextId)
   getNumberRecords: (success, error) ->
     @command "fn", "0", "FN", (data) ->
       success(parseInt(data.substr(0, 8)), parseInt(data.substr(19, 8)), parseInt(data.substr(9, 8)))

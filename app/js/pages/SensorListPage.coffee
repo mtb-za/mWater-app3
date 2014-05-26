@@ -47,6 +47,14 @@ module.exports = class SensorListPage extends Page
     @render()
 
   onDeviceDiscovered: (device) =>
+    # Ignore non-GPS loggers
+    if not device.name.match(/^RNBT/)
+      console.log "Ignoring #{device.name}"
+      return
+
+    # Make name friendly
+    device.name = "Sparx GPS Logger #{device.name.substr(5)}"
+    
     # Store discovery attempt number to cull old ones
     device.attempt = @discoveryAttempt
     @devices[device.address] = device

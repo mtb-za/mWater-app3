@@ -75,7 +75,7 @@ describe "GPSLoggerProtocol", ->
   it "finds number of records", (done) ->
     @mgr.setExpected("fn", "0")
     @mgr.setResponse("FN", "00000066,00000111,00000045")
-    @prot.getNumberRecords (count, lowestId, highestId) ->
+    @prot.getNumberRecords (count, lowestId, nextId) ->
       assert.equal count, 66
       assert.equal lowestId, 45
       assert.equal highestId, 111
@@ -122,8 +122,6 @@ describe "GPSLoggerProtocol", ->
     , () ->
       done()
 
-  it "deletes all records"
-
   it "disables logging", (done) ->
     @mgr.setExpected("dl", "1")
     @mgr.setResponse("DL", "1")
@@ -155,7 +153,6 @@ describe "GPSLoggerProtocol", ->
       assert.fail()
     , =>
       done()
-
 
   it "calls error on unknown command", (done) ->
     @mgr.setExpected("fw", "0")

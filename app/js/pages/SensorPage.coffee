@@ -7,6 +7,7 @@ GPSLoggerProtocol = require "../sensors/gpslogger/GPSLoggerProtocol"
 module.exports = class SensorPage extends Page
   events: 
     "click #update_status": "updateStats"
+    "click #upgrade_firmware": "upgradeFirmware"
 
   activate: ->
     @setTitle T("Sensor")
@@ -17,10 +18,22 @@ module.exports = class SensorPage extends Page
     @connect()
 
   deactivate: ->
-    window.bluetooth.disconnect (success) =>
-      console.log "Disconnect success = #{success}"
-    , (error) =>
-      console.log "Disconnect error = #{error}"
+    disconnectBluetooth = =>
+      console.log "Disconnecting bluetooth"
+      window.bluetooth.disconnect (success) =>
+        console.log "Disconnect success = #{success}"
+      , (error) =>
+        console.log "Disconnect error = #{error}"
+
+    # If connected, exit command mode and disconnect
+    if @connected
+      console.log "Exiting command mode"
+      @protocol.exitCommandMode () =>
+        console.log "Exited command mode"
+        disconnectBluetooth()
+      , (error) =>
+        console.log "Error exiting command mode: " + error
+        disconnectBluetooth()
 
   updateStats: ->
     console.log "Updating stats"
@@ -94,8 +107,8 @@ module.exports = class SensorPage extends Page
       @packetMgr = new GPSLoggerPacketMgr(@connection)
       @protocol = new GPSLoggerProtocol(@packetMgr)
 
-      updateStatus("Connected")
       @connected = true
+      updateStatus("Connected")
 
       #@updateStats()
 
@@ -162,5 +175,13 @@ module.exports = class SensorPage extends Page
 
     @$el.html require('./SensorPage.hbs')(data)
 
-
+  upgradeFirmware: ->
+    if confirm("You will need an Ant+ connection and PC and a binary ready. This cannot be undone. Proceed?")
+      if confirm("Are you really sure you want to do this?")
+        @protocol.upgradeFirmware ->
+          @connected = false
+          @pager.closePage()
+          alert("Now upload new firmware, following instructions carefully")
+        , 
+          alert("Unable to upgrade firmware")
 
