@@ -17,7 +17,10 @@ module.exports = class SensorPage extends Page
     @connect()
 
   deactivate: ->
-    window.bluetooth.disconnect()
+    window.bluetooth.disconnect (success) =>
+      console.log "Disconnect success = #{success}"
+    , (error) =>
+      console.log "Disconnect error = #{error}"
 
   updateStats: ->
     console.log "Updating stats"
@@ -98,12 +101,30 @@ module.exports = class SensorPage extends Page
 
     makeConnection = (device) =>
       updateStatus("Connecting...")
-      opts = { address: device.address, uuid: device.uuids[0] } #, conn: "Hax" }
+      opts = { address: device.address, uuid: device.uuids[0], conn: "Hax" }
       console.log "Connecting to " + JSON.stringify(opts)
 
       window.bluetooth.connect () =>  
-        console.log "Connected!"
-        startConnectionManager()
+        updateStatus("Finalizing connection...")
+
+        async.retry 60, (cb) =>
+          setTimeout =>
+            console.log "Checking isConnected"
+            window.bluetooth.isConnected (connected) =>
+              console.log "isConnected = #{connected}"
+              if connected
+                cb()
+              else
+                cb("Not connected")
+            , (error) =>
+              console.log "isConnected Error = #{error}"
+              cb(error)
+          , 1000
+        , =>
+          startConnectionManager()
+
+        # TODO this is a hack due to delay in socket being actually connected, it seems
+        #setTimeout startConnectionManager, 1000
       , connectionError, opts
 
     getUuids = =>
@@ -113,15 +134,24 @@ module.exports = class SensorPage extends Page
         makeConnection(device)
       , connectionError, @options.address
 
-    # Check pairing
-    updateStatus("Checking pairing...")
-    window.bluetooth.isPaired (paired) =>
-      if paired
-        return getUuids()
+    checkPairing = =>
+      # Check pairing
+      updateStatus("Checking pairing...")
+      window.bluetooth.isPaired (paired) =>
+        if paired
+          return getUuids()
 
-      updateStatus("Pairing...")
-      window.bluetooth.pair getUuids, connectionError, @options.address
-    , connectionError, @options.address
+        updateStatus("Pairing...")
+        window.bluetooth.pair getUuids, connectionError, @options.address
+      , connectionError, @options.address
+
+    # First stop discovery
+    window.bluetooth.stopDiscovery () =>
+      console.log "Stopped discovery"
+      checkPairing()
+    , =>
+      console.log "Unable to stop discovery"
+      checkPairing()
 
   render: ->
     data = {

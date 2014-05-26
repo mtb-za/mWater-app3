@@ -4,6 +4,7 @@
 
 <br/>
 
+{{#if connected}}
 <button id="update_status" type="button" class="btn btn-default">Update Device Status</button>
 
 {{#with stats}}
@@ -13,3 +14,4 @@
 	<div>Sample Rate: {{sampleRate}}</div>
 	<div>Records: {{totalRecords}} {{lowestRecord}}-{{highestRecord}}</div>
 {{/with}}
+{{/if}}

@@ -20,11 +20,14 @@ module.exports = class SensorListPage extends Page
     @discoveryAttempt = 0
 
     @discoverDevices()
+    @bluetoothError = null
+    @render()
 
   deactivate: ->
     if @discovering
       window.bluetooth.stopDiscovery () =>
         # Do nothing
+        @discovering = false
         return
       , @error
 
@@ -40,7 +43,7 @@ module.exports = class SensorListPage extends Page
     @discoverDevices()
 
   onDiscoveryError: (error) =>
-    @bluetoothError = T("Unable to connect to Bluetooth")
+    @bluetoothError = T("Unable to connect to Bluetooth") + JSON.stringify(error)
     @render()
 
   onDeviceDiscovered: (device) =>
