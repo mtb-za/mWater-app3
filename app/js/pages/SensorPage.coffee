@@ -54,9 +54,11 @@ module.exports = class SensorPage extends Page
       @render()
     , updateError
 
-    # Get uid
-    @protocol.getUid (uid) =>
+    # Get firmware info
+    @protocol.getFirmwareInfo (uid, channel, version) =>
       @stats.uid = uid
+      @stats.channel = channel
+      @stats.version = version
       @render()
     , updateError
     

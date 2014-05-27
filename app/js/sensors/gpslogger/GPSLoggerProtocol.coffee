@@ -86,9 +86,9 @@ module.exports = class GPSLoggerProtocol
       success(volts)
     , error 
 
-  getUid: (success, error) ->
+  getFirmwareInfo: (success, error) ->
     @command "fw", "0", "FW", (data) ->
-      success(data)
+      success(data.substr(0,16), parseInt(data.substr(16,5)), data.substr(22, 5))
     , error 
 
   getStatus: (success, error) ->

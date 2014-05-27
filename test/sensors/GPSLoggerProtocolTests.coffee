@@ -49,11 +49,13 @@ describe "GPSLoggerProtocol", ->
       assert.equal volts, 3.7
       done()
 
-  it "gets uid", (done) ->
+  it "gets firmware info", (done) ->
     @mgr.setExpected("fw", "0")
-    @mgr.setResponse("FW", "c1fee0e3fb24852600001")
-    @prot.getUid (uid) ->
-      assert.equal uid, "c1fee0e3fb24852600001"
+    @mgr.setResponse("FW", "c1fee0e3fb24852600001,0.2.6")
+    @prot.getFirmwareInfo (uid, channel, version) ->
+      assert.equal uid, "c1fee0e3fb248526"
+      assert.equal channel, 1
+      assert.equal version, "0.2.6"
       done()
 
   it "gets status", (done) ->
@@ -155,7 +157,7 @@ describe "GPSLoggerProtocol", ->
   it "calls error on unknown command", (done) ->
     @mgr.setExpected("fw", "0")
     @mgr.setResponse("ZZ", "0")
-    @prot.getUid (uid) ->
+    @prot.getFirmwareInfo (uid) ->
       assert.fail()
     , () ->
       done()
