@@ -50,6 +50,10 @@ module.exports = class GPSLoggerDownloader
           return error(err)
         success(number)
 
+    @getDownloadRange(downloadRange, error)
+
+  # Get range to download. Calls success with (startIndex, number)
+  getDownloadRange: (success, error) ->
     gotHighestRecord = (highestRecord) =>
       # Get range available
       @prot.getNumberRecords (number, lowestId, nextId) =>
@@ -61,14 +65,15 @@ module.exports = class GPSLoggerDownloader
 
         # If nothing to do, return
         if startAt >= nextId
-          return success(0)
+          return success(startAt, 0)
 
         # Download range (subtract lowestId since pages start at 0 regardless of record ids)
-        downloadRange(startAt - lowestId, nextId - startAt)
+        success(startAt - lowestId, nextId - startAt)
       , error
 
     # Determine highest record id downloaded (wait for server to respond differently, but not long)
     @col.findOne { duid: @deviceUid }, { sort: [['rec','desc']] }, _.debounce(_.once(gotHighestRecord), 1000), error
+
 
   cancel: ->
     @canceled = true

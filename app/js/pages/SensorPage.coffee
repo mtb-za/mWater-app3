@@ -60,6 +60,15 @@ module.exports = class SensorPage extends Page
       @stats.channel = channel
       @stats.version = version
       @render()
+
+      # Create downloader to get records to download
+      downloader = new GPSLoggerDownloader(@protocol, @db.sensor_data, deviceUid)
+      downloader.getDownloadRange (startIndex, number) =>
+        @stats.numberToDownload = number
+        @stats.numberToDownloadKnown = true
+        @render()
+      , updateError
+
     , updateError
     
     @protocol.getStatus (recording, sampleRate) =>
@@ -74,6 +83,9 @@ module.exports = class SensorPage extends Page
       @stats.highestRecord = highestRecord
       @render()
     , updateError
+
+    # Get records to download
+
 
   connect: ->
     connectionError = (error) =>
@@ -166,7 +178,9 @@ module.exports = class SensorPage extends Page
     success = (number) =>
       @downloading = false
       @render()
-      alert("Successfully downloaded #{number} records")
+      @updateStats()
+      _.defer ->
+        alert("Successfully downloaded #{number} records")
 
     error = (err) =>
       @downloading = false

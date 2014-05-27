@@ -14,12 +14,20 @@
 	<div>Firmware version: {{version}}</div>
 	<div>Status: {{#if recording}}Logging Enabled{{else}}Logging Disabled{{/if}}</div>
 	<div>Sample Rate: {{sampleRate}}</div>
-	<div>Records: {{totalRecords}} {{lowestRecord}}-{{highestRecord}}</div>
+	<div class="text-muted">Records: {{totalRecords}} {{lowestRecord}}-{{highestRecord}}</div>
 {{/with}}
 
-<div>
-	<button id="download_data" type="button" class="btn btn-primary btn-lg" {{#if downloading}}disabled="disabled"{{/if}}>Download Data</button>
-</div>
+
+{{#if stats.numberToDownload}}
+	<div class="lead">{{stats.numberToDownload}} records to download</div>
+	<div>
+		<button id="download_data" type="button" class="btn btn-primary btn-lg" {{#if downloading}}disabled="disabled"{{/if}}>Download Data</button>
+	</div>
+{{else}}
+	{{#if stats.numberToDownloadKnown}}
+		<div class="lead">No records to download</div>
+	{{/if}}
+{{/if}}
 
 {{#if downloading}}
 <h4>Downloading data</h4>
@@ -29,6 +37,8 @@
 </div>
 {{/if}}
 
+<br/>
+<br/>
 <div>
 	<button id="upgrade_firmware" type="button" class="btn btn-warning">Upgrade Firmware</button>
 </div>

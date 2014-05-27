@@ -63,6 +63,8 @@ module.exports = class GPSLoggerProtocol
         if completed
           return
 
+        console.log "Timeout on #{cmdId}"
+
         completed = true
         stopListening()
 
