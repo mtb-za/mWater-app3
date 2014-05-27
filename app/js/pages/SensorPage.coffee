@@ -55,8 +55,8 @@ module.exports = class SensorPage extends Page
     , updateError
 
     # Get firmware info
-    @protocol.getFirmwareInfo (uid, channel, version) =>
-      @stats.uid = uid
+    @protocol.getFirmwareInfo (deviceUid, channel, version) =>
+      @stats.deviceUid = deviceUid
       @stats.channel = channel
       @stats.version = version
       @render()
@@ -160,6 +160,8 @@ module.exports = class SensorPage extends Page
 
   downloadData: ->
     @downloading = true
+    @progress = 0
+    @render()
 
     success = (number) =>
       @downloading = false
@@ -171,10 +173,10 @@ module.exports = class SensorPage extends Page
       @render()
       @error(err)
 
-    # Get uid
-    @protocol.getFirmwareInfo (uid, channel, version) =>
+    # Get deviceUid
+    @protocol.getFirmwareInfo (deviceUid, channel, version) =>
       # Create downloader
-      downloader = new GPSLoggerDownloader(@protocol, @db.sensor_data, uid)
+      downloader = new GPSLoggerDownloader(@protocol, @db.sensor_data, deviceUid)
       downloader.on 'progress', (completed, total) =>
         @progress = completed*100/total
         @render()

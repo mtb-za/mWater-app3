@@ -24,7 +24,7 @@ class MockGPSLoggerProtocol
       for i in [0...11]
         index = page * 11 + i
         if @records[index]
-          @results.push(@records[index])
+          @results.push(_.cloneDeep(@records[index]))
 
     success(@results)
 
@@ -47,6 +47,9 @@ class MockGPSLoggerProtocol
     success(number, lowestId, nextId)
     return
 
+stridDbFields = (docs) ->
+  return _.map docs, (d) -> _.omit(d, "duid", "_id")
+
 describe "GPSLoggerDownloader", ->
   @timeout(10000)
 
@@ -55,13 +58,13 @@ describe "GPSLoggerDownloader", ->
     @db = new minimongo.MemoryDb()
     @db.addCollection("sensor_data")
 
-    @suid = "1234"
-    @downloader = new GPSLoggerDownloader(@prot, @db.sensor_data, @suid)
+    @deviceUid = "1234"
+    @downloader = new GPSLoggerDownloader(@prot, @db.sensor_data, @deviceUid)
 
   it "downloads no data", (done) ->
     @downloader.download () =>
       @db.sensor_data.find({}, { sort: ['rec']}).fetch (docs) =>
-        assert.deepEqual docs, @prot.records
+        assert.deepEqual stridDbFields(docs), @prot.records
         done()
     , assert.fail
 
@@ -71,17 +74,17 @@ describe "GPSLoggerDownloader", ->
 
     @downloader.download () =>
       @db.sensor_data.find({}, { sort: ['rec']}).fetch (docs) =>
-        assert.deepEqual docs, @prot.records
+        assert.deepEqual stridDbFields(docs), @prot.records
         done()
     , assert.fail    
 
-  it "sets sensor uid in records", (done) ->
+  it "sets device uid in records", (done) ->
     for i in [0...11]
       @prot.records.push { rec: i + 1, lat: i }
 
     @downloader.download () =>
       @db.sensor_data.find({}, { sort: ['rec']}).fetch (docs) =>
-        assert.equal docs[0].suid, @suid
+        assert.equal docs[0].duid, @deviceUid
         done()
     , assert.fail    
 
@@ -94,8 +97,8 @@ describe "GPSLoggerDownloader", ->
       
     @downloader.download () =>
       @db.sensor_data.find({}, { sort: ['rec']}).fetch (docs) =>
-        assert.deepEqual docs.slice(1), @prot.records.slice(1)
-        assert.deepEqual docs[0], existing
+        assert.deepEqual stridDbFields(docs).slice(1), @prot.records.slice(1)
+        assert.deepEqual stridDbFields(docs)[0], stridDbFields([existing])[0]
         done()
     , assert.fail    
 
@@ -105,7 +108,7 @@ describe "GPSLoggerDownloader", ->
 
     @downloader.download () =>
       @db.sensor_data.find({}, { sort: ['rec']}).fetch (docs) =>
-        assert.deepEqual docs, @prot.records
+        assert.deepEqual stridDbFields(docs), @prot.records
         assert.equal @prot.numberGetCalls, 1
         done()
     , assert.fail    
@@ -116,7 +119,7 @@ describe "GPSLoggerDownloader", ->
 
     @downloader.download () =>
       @db.sensor_data.find({}, { sort: ['rec']}).fetch (docs) =>
-        assert.deepEqual docs, @prot.records
+        assert.deepEqual stridDbFields(docs), @prot.records
         assert.equal @prot.numberGetCalls, 2
         done()
     , assert.fail    
@@ -127,7 +130,7 @@ describe "GPSLoggerDownloader", ->
 
     @downloader.download () =>
       @db.sensor_data.find({}, { sort: ['rec']}).fetch (docs) =>
-        assert.deepEqual docs, @prot.records
+        assert.deepEqual stridDbFields(docs), @prot.records
         assert.equal @prot.numberGetCalls, 2
         done()
     , assert.fail    
@@ -153,7 +156,7 @@ describe "GPSLoggerDownloader", ->
     , =>
       # Check that only first 110 records made it
       @db.sensor_data.find({}, { sort: ['rec']}).fetch (docs) =>
-        assert.deepEqual docs, @prot.records.slice(0, 110)
+        assert.deepEqual stridDbFields(docs), @prot.records.slice(0, 110)
         done()
 
   it "aborts on error", (done) ->

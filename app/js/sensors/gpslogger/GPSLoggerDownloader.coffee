@@ -1,13 +1,13 @@
 async = require 'async'
 
-# Implements downloader from GPS logger. Pass protocol and collection for data (db.sensor_data) to constructor and sensor uid (device uid, not _id of sensors table)
+# Implements downloader from GPS logger. Pass protocol and collection for data (db.sensor_data) to constructor and device uid (device uid, not _id of sensors table)
 module.exports = class GPSLoggerDownloader
-  constructor: (prot, col, sensorUid) ->
+  constructor: (prot, col, deviceUid) ->
     _.extend @, Backbone.Events
 
     @prot = prot
     @col = col
-    @sensorUid = sensorUid
+    @deviceUid = deviceUid
 
   # Download data, triggering progress events along the way
   download: (success, error) ->
@@ -20,10 +20,10 @@ module.exports = class GPSLoggerDownloader
       if @canceled
         return callback("Cancelled")
       @prot.getRecords pageSet.pageNumber, pageSet.numPages, (records) =>
-        # Add suid (sensor uid)
+        # Add duid (device uid)
         for record in records
-          record.suid = @sensorUid
-          
+          record.duid = @deviceUid
+
         # Store records
         @col.upsert records, () =>
           # Report progress
@@ -61,14 +61,14 @@ module.exports = class GPSLoggerDownloader
 
         # If nothing to do, return
         if startAt >= nextId
-          return success()
+          return success(0)
 
         # Download range (subtract lowestId since pages start at 0 regardless of record ids)
         downloadRange(startAt - lowestId, nextId - startAt)
       , error
 
     # Determine highest record id downloaded (wait for server to respond differently, but not long)
-    @col.findOne { suid: @sensorUid }, { sort: [['rec','desc']] }, _.debounce(_.once(gotHighestRecord), 1000), error
+    @col.findOne { duid: @deviceUid }, { sort: [['rec','desc']] }, _.debounce(_.once(gotHighestRecord), 1000), error
 
   cancel: ->
     @canceled = true
