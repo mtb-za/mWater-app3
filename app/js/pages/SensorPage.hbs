@@ -18,13 +18,16 @@
 {{/with}}
 
 <div>
-	<button id="download_data" type="button" class="btn btn-primary btn-lg">Download Data</button>
+	<button id="download_data" type="button" class="btn btn-primary btn-lg" {{#if downloading}}disabled="disabled"{{/if}}>Download Data</button>
 </div>
 
+{{#if downloading}}
+<h4>Downloading data</h4>
 <div class="progress">
-  <div id="progress_bar" class="progress-bar" style="width: 0%;">
+  <div id="progress_bar" class="progress-bar" style="width: {{progress}}%;">
   </div>
 </div>
+{{/if}}
 
 <div>
 	<button id="upgrade_firmware" type="button" class="btn btn-warning">Upgrade Firmware</button>

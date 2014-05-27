@@ -154,19 +154,23 @@ module.exports = class SensorPage extends Page
       status: @status
       connected: @connected
       stats: @stats
+      downloading: @downloading
+      progress: @progress
     }
 
     @$el.html require('./SensorPage.hbs')(data)
 
   downloadData: ->
-    @$("#download_data").attr('disabled', 'disabled')
+    @downloading = true
 
     success = (number) =>
-      @$("#download_data").removeAttr('disabled')
+      @downloading = false
+      @render()
       alert("Successfully downloaded #{number} records")
 
     error = (err) =>
-      @$("#download_data").removeAttr('disabled')
+      @downloading = false
+      @render()
       @error(err)
 
     # Get uid
@@ -174,7 +178,8 @@ module.exports = class SensorPage extends Page
       # Create downloader
       downloader = new GPSLoggerDownloader(@protocol, @db.sensor_data, uid)
       downloader.on 'progress', (completed, total) =>
-        @$("#progress_bar").width((completed*100/total) + "%")
+        @progress = completed*100/total
+        @render()
       downloader.download success, error
     , @error
 
