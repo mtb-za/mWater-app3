@@ -20,10 +20,10 @@ module.exports = class GPSLoggerPacketMgr
       return s.substr(s.length-size)
 
     packet = "#" + id + pad(data.length, 5) + "," + data
+    console.log "Send packet: #{packet}"
     @conn.write(packet, success, error)
 
   processBuffer: ->
-    console.log "Processing buffer: [" + @buffer + "] len=" + @buffer.length 
     if @buffer.length > 0
       if @buffer[0] != "#"
         return @trigger "error", "Invalid packet start #{this.buffer[0]}"
@@ -46,7 +46,7 @@ module.exports = class GPSLoggerPacketMgr
         @processBuffer()
 
   processPacket: (packet) ->
-    console.log "Processing packet #{packet}"
+    console.log "Receive packet: #{packet}"
     id = packet.substr(1, 2)
     data = packet.substr(9)
     @trigger 'receive', id, data

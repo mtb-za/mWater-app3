@@ -59,12 +59,9 @@ module.exports = class GPSLoggerProtocol
         callback()
 
       # Timeout on calls
-      console.log "### Starting timeout for #{cmdId} of #{timeout}"
       setTimeout ->
         if completed
           return
-
-        console.log "### timeout for #{cmdId}"
 
         completed = true
         stopListening()

@@ -2,12 +2,14 @@ Page = require "../Page"
 async = require 'async'
 GPSLoggerPacketMgr = require "../sensors/gpslogger/GPSLoggerPacketMgr"
 GPSLoggerProtocol = require "../sensors/gpslogger/GPSLoggerProtocol"
+GPSLoggerDownloader = require "../sensors/gpslogger/GPSLoggerDownloader"
 
 # Pass in `address` to connect to
 module.exports = class SensorPage extends Page
   events: 
     "click #update_status": "updateStats"
     "click #upgrade_firmware": "upgradeFirmware"
+    "click #download_data": "downloadData"
 
   activate: ->
     @setTitle T("Sensor")
@@ -126,13 +128,6 @@ module.exports = class SensorPage extends Page
         startConnectionManager()
       , connectionError, opts
 
-    # getUuids = =>
-    #   updateStatus("Getting UUIDs...")
-    #   window.bluetooth.getUuids (device) =>
-    #     console.log "Device: " + JSON.stringify(device)
-    #     makeConnection(device)
-    #   , connectionError, @options.address
-
     checkPairing = =>
       # Check pairing
       updateStatus("Checking pairing...")
@@ -160,6 +155,26 @@ module.exports = class SensorPage extends Page
     }
 
     @$el.html require('./SensorPage.hbs')(data)
+
+  downloadData: ->
+    @$("#download_data").attr('disabled', 'disabled')
+
+    success = (number) =>
+      @$("#download_data").removeAttr('disabled')
+      alert("Successfully downloaded #{number} records")
+
+    error = (err) =>
+      @$("#download_data").removeAttr('disabled')
+      @error(err)
+
+    # Get uid
+    @protocol.getUid (uid) =>
+      # Create downloader
+      downloader = new GPSLoggerDownloader(@protocol, @db.sensor_data, uid)
+      downloader.on 'progress', (completed, total) =>
+        @$("#progress_bar").width((completed*100/total) + "%")
+      downloader.download success, error
+    , @error
 
   upgradeFirmware: ->
     if confirm("You will need an Ant+ connection and PC and a binary ready. This cannot be undone. Proceed?")

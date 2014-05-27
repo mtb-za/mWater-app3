@@ -15,7 +15,18 @@
 	<div>Records: {{totalRecords}} {{lowestRecord}}-{{highestRecord}}</div>
 {{/with}}
 
-<button id="upgrade_firmware" type="button" class="btn btn-warning">Upgrade Firmware</button>
+<div>
+	<button id="download_data" type="button" class="btn btn-primary btn-lg">Download Data</button>
+</div>
+
+<div class="progress">
+  <div id="progress_bar" class="progress-bar" style="width: 0%;">
+  </div>
+</div>
+
+<div>
+	<button id="upgrade_firmware" type="button" class="btn btn-warning">Upgrade Firmware</button>
+</div>
 
 {{/if}}
 

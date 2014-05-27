@@ -32,8 +32,6 @@ describe "GPSLoggerProtocol", ->
     @mgr = new MockGPSLoggerPacketMgr()
     @prot = new GPSLoggerProtocol(@mgr)
 
-  # it "waits until one command done before sending next"
-
   it "calls error on error", (done) ->
     @mgr.send = =>
       @mgr.trigger 'error', "some error"
