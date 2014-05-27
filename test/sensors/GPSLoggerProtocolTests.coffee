@@ -170,3 +170,14 @@ describe "GPSLoggerProtocol", ->
     @mgr.trigger 'receive', 'MV', 'abc'
 
 
+  it "waits a bit before timeout", (done) ->
+    @mgr.setExpected("dl", "0")
+    @prot.enableLogging ->
+      done()
+    , ->
+      assert.fail("Error")
+      done()
+
+    setTimeout () =>
+      @mgr.trigger 'receive', 'DL', "0"
+    , 500

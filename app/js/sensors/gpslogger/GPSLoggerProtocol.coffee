@@ -17,7 +17,7 @@ module.exports = class GPSLoggerProtocol
   worker: (task, callback) =>
     task(callback)
 
-  command: (cmdId, cmdData, respId, respCb, errorCb, timeout=3000) ->
+  command: (cmdId, cmdData, respId, respCb, errorCb, timeout=10000) ->
     # Queue a task
     task = (callback) =>
       # True if completed, one way or another
@@ -59,9 +59,12 @@ module.exports = class GPSLoggerProtocol
         callback()
 
       # Timeout on calls
-      setTimeout =>
+      console.log "### Starting timeout for #{cmdId} of #{timeout}"
+      setTimeout ->
         if completed
           return
+
+        console.log "### timeout for #{cmdId}"
 
         completed = true
         stopListening()

@@ -35,38 +35,41 @@ module.exports = class SensorPage extends Page
         console.log "Error exiting command mode: " + error
         disconnectBluetooth()
 
+  displayEvent: (message) =>
+    row = $("<div>" + message + "</div>")
+    row.appendTo(@$("#events")).delay(3000).slideUp 200, ->
+      row.remove()
+
   updateStats: ->
+    updateError = (error) =>
+      @displayEvent("Update error: " + error)
+
     console.log "Updating stats"
 
     # Get battery status
     @protocol.getBatteryVoltage (volts) =>
       @stats.batteryVoltage = volts
       @render()
-    , @error
+    , updateError
 
     # Get uid
     @protocol.getUid (uid) =>
       @stats.uid = uid
       @render()
-    , @error
+    , updateError
     
     @protocol.getStatus (recording, sampleRate) =>
       @stats.recording = recording
       @stats.sampleRate = sampleRate
       @render()
-    , @error
+    , updateError
 
     @protocol.getNumberRecords (totalRecords, lowestRecord, highestRecord) =>
       @stats.totalRecords = totalRecords
       @stats.lowestRecord = lowestRecord
       @stats.highestRecord = highestRecord
       @render()
-    , @error
-
-  getNumberRecords: (success, error) ->
-    @command "fn", "0", "FN", (data) ->
-      success(parseInt(data.substr(0, 8)), parseInt(data.substr(19, 8)), parseInt(data.substr(9, 8)))
-    , error
+    , updateError
 
   connect: ->
     connectionError = (error) =>
@@ -97,7 +100,7 @@ module.exports = class SensorPage extends Page
       onError = (error) =>
         @connected = false
         console.error "Error in connection manager: " + JSON.stringify(error)
-        @status = "Error in connection: " + JSON.stringify(error)
+        @status = "Error in connection manager: " + JSON.stringify(error)
         @render()
 
       # Manage connection
@@ -107,55 +110,38 @@ module.exports = class SensorPage extends Page
       @packetMgr = new GPSLoggerPacketMgr(@connection)
       @protocol = new GPSLoggerProtocol(@packetMgr)
 
+      # Listen to move events
+      @protocol.on "move", (data) =>
+        @displayEvent("Move: " + data)
+
       @connected = true
       updateStatus("Connected")
 
-      #@updateStats()
-
-    makeConnection = (device) =>
+    makeConnection = () =>
       updateStatus("Connecting...")
-      opts = { address: device.address, uuid: device.uuids[0], conn: "Hax" }
+      opts = { address: @options.address, uuid: "00001101-0000-1000-8000-00805f9b34fb", conn: "Hax" }
       console.log "Connecting to " + JSON.stringify(opts)
 
       window.bluetooth.connect () =>  
-        updateStatus("Finalizing connection...")
-
-        async.retry 60, (cb) =>
-          setTimeout =>
-            console.log "Checking isConnected"
-            window.bluetooth.isConnected (connected) =>
-              console.log "isConnected = #{connected}"
-              if connected
-                cb()
-              else
-                cb("Not connected")
-            , (error) =>
-              console.log "isConnected Error = #{error}"
-              cb(error)
-          , 1000
-        , =>
-          startConnectionManager()
-
-        # TODO this is a hack due to delay in socket being actually connected, it seems
-        #setTimeout startConnectionManager, 1000
+        startConnectionManager()
       , connectionError, opts
 
-    getUuids = =>
-      updateStatus("Getting UUIDs...")
-      window.bluetooth.getUuids (device) =>
-        console.log "Device: " + JSON.stringify(device)
-        makeConnection(device)
-      , connectionError, @options.address
+    # getUuids = =>
+    #   updateStatus("Getting UUIDs...")
+    #   window.bluetooth.getUuids (device) =>
+    #     console.log "Device: " + JSON.stringify(device)
+    #     makeConnection(device)
+    #   , connectionError, @options.address
 
     checkPairing = =>
       # Check pairing
       updateStatus("Checking pairing...")
       window.bluetooth.isPaired (paired) =>
         if paired
-          return getUuids()
+          return makeConnection()
 
         updateStatus("Pairing...")
-        window.bluetooth.pair getUuids, connectionError, @options.address
+        window.bluetooth.pair makeConnection, connectionError, @options.address
       , connectionError, @options.address
 
     # First stop discovery
