@@ -74,7 +74,8 @@ exports.DataSync = class DataSync extends Repeater
 
   _sync: (success, error) =>
     @hybridDb.upload () =>
-      @sourceCodesManager.replenishCodes 5, =>
+      # Replenish offline source codes available
+      @sourceCodesManager.replenishCodes 50, =>
         success()
       , error      
     , error
