@@ -92,13 +92,11 @@ module.exports = class SensorPage extends Page
 
       @connection = {
         write: (data, success, error) ->
-          console.log "Write called with #{data}"
           window.bluetooth.write success, error, data
       }
       _.extend @connection, Backbone.Events
 
       onRead = (data) =>
-        console.log "Read with #{data}"
         @connection.trigger("read", data)
 
       onError = (error) =>
@@ -174,7 +172,7 @@ module.exports = class SensorPage extends Page
       @error(err)
 
     # Get uid
-    @protocol.getUid (uid) =>
+    @protocol.getFirmwareInfo (uid, channel, version) =>
       # Create downloader
       downloader = new GPSLoggerDownloader(@protocol, @db.sensor_data, uid)
       downloader.on 'progress', (completed, total) =>
@@ -186,7 +184,7 @@ module.exports = class SensorPage extends Page
   upgradeFirmware: ->
     if confirm("You will need an Ant+ connection and PC and a binary ready. This cannot be undone. Proceed?")
       if confirm("Are you really sure you want to do this?")
-        @protocol.upgradeFirmware =>
+        @protocol.upgradeFirmware () =>
           @connected = false
           @pager.closePage()
           alert("Now upload new firmware, following instructions carefully")

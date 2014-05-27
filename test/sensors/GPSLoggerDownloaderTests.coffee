@@ -55,7 +55,8 @@ describe "GPSLoggerDownloader", ->
     @db = new minimongo.MemoryDb()
     @db.addCollection("sensor_data")
 
-    @downloader = new GPSLoggerDownloader(@prot, @db.sensor_data)
+    @suid = "1234"
+    @downloader = new GPSLoggerDownloader(@prot, @db.sensor_data, @suid)
 
   it "downloads no data", (done) ->
     @downloader.download () =>
@@ -71,6 +72,16 @@ describe "GPSLoggerDownloader", ->
     @downloader.download () =>
       @db.sensor_data.find({}, { sort: ['rec']}).fetch (docs) =>
         assert.deepEqual docs, @prot.records
+        done()
+    , assert.fail    
+
+  it "sets sensor uid in records", (done) ->
+    for i in [0...11]
+      @prot.records.push { rec: i + 1, lat: i }
+
+    @downloader.download () =>
+      @db.sensor_data.find({}, { sort: ['rec']}).fetch (docs) =>
+        assert.equal docs[0].suid, @suid
         done()
     , assert.fail    
 
