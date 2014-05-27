@@ -16,7 +16,7 @@ module.exports = class NewSurveyPage extends Page
     # Get user groups
     @db.groups.find({ members: @login.user }, { fields: { groupname: 1 } }).fetch (groups) =>
       @groups = _.pluck(groups, "groupname")
-      enumerators = [ "all", "user:" + @login.user ].concat(_.map(groups, (g) -> "group:" + g))
+      enumerators = [ "all", "user:" + @login.user ].concat(_.map(@groups, (g) -> "group:" + g))
   
       filter = { deployments: { $elemMatch: { enumerators: { $in: enumerators }, active: true } } }
       @db.forms.find(filter).fetch (forms) =>
