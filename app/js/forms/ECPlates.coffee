@@ -12,15 +12,14 @@ exports.isAvailable = (success, error) ->
 
 
 exports.processImage = (imgUrl, success, error) ->
+  # Strip file:// prefix
   console.log "Processing image url: #{imgUrl}"
-  window.resolveLocalFileSystemURI imgUrl, (fileEntry) =>
-    fullPath = fileEntry.fullPath
+  if imgUrl.match /^file:\/\//
+    fullPath = imgUrl.substring(7)
+  else
+    return error("Invalid image url: #{imgUrl}")
 
-    # Handle bug in Cordova fullPath
-    if fullPath.match /^file:\/\//
-      fullPath = fullPath.substring(7)
-
-    console.log "Got image fullPath: #{fullPath}"
-    OpenCVActivity.process "ec-plate", [fullPath], "EC Compact Dry Plate Counter", (args) ->
-      success(args)
+  console.log "Got image fullPath: #{fullPath}"
+  OpenCVActivity.process "ec-plate", [fullPath], "EC Compact Dry Plate Counter", (args) ->
+    success(args)
   , @error
