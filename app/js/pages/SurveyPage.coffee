@@ -38,9 +38,6 @@ class SurveyPage extends Page
       model = new Backbone.Model()
       model.set(_.cloneDeep(@response.data))
 
-      # Create compiler
-      compiler = new mwaterforms.FormCompiler(model: model, locale: @formLocale)
-
       # Create context for forms            
       ctx = {
         displayImage: (options) =>
@@ -62,6 +59,9 @@ class SurveyPage extends Page
             window.localStorage["stickyStorage:" + @form._id + ":" +@login.user + ":" + key] = JSON.stringify(value)
         }
       }
+
+      # Create compiler
+      compiler = new mwaterforms.FormCompiler(model: model, locale: @formLocale, ctx: ctx)
 
       @formView = compiler.compileForm(@form.design, ctx).render()
       
