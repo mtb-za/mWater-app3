@@ -204,6 +204,6 @@ module.exports = class SensorPage extends Page
           @connected = false
           @pager.closePage()
           alert("Now upload new firmware, following instructions carefully")
-        , 
+        , ->
           alert("Unable to upgrade firmware")
 
