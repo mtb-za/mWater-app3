@@ -18,6 +18,9 @@ module.exports = class SourceListPage extends Page
     # Create cache of thumbnail urls by image id
     @thumbnailUrls = {}
 
+    # Create queue of thumbnails
+    @thumbnailQueue = async.queue(@processThumbnail, 1)
+
   activate: ->
     @$el.html require('./SourceListPage.hbs')()
     @nearSources = []
@@ -40,6 +43,29 @@ module.exports = class SourceListPage extends Page
         @renderList()
 
     @performSearch()
+
+  deactivate: ->
+    # Kill all items in thumbnail queuu
+    @thumbnailQueue.kill()
+
+  processThumbnail: (imageId, callback) =>
+    # Process a single thumbnail to be looked up. Thumbnails are in list as placeholders and their 
+    # url is looked up in a queue
+
+    # Check if cached
+    if @thumbnailUrls[imageId]
+      @$("#" + imageId).attr("src", @thumbnailUrls[imageId])
+      callback()
+    else
+      @imageManager.getImageThumbnailUrl imageId, (imageUrl) =>
+        # Cache url
+        @thumbnailUrls[imageId] = imageUrl
+        @$("#" + imageId).attr("src", imageUrl)
+        callback()
+      , =>
+        # Display this image on error
+        @$("#" + imageId).attr("src", "img/no-image-icon.jpg")
+        callback()
 
   addSource: ->
     # Wrap onSelect
@@ -71,6 +97,9 @@ module.exports = class SourceListPage extends Page
     else
       sources = @searchSources
 
+    # Clone list as we will modify source list items and don't want to confuse minimongo
+    sources = _.cloneDeep(sources)
+
     # If there are photos, use the first one as the thumbnail
     sources.forEach (source) ->
       source.thumbnail = if source.photos and source.photos.length then source.photos[0].id else null
@@ -84,27 +113,20 @@ module.exports = class SourceListPage extends Page
         type = typeMap[source.type]
         if type
           source.typeName = type.name
+      
+      # Kill all items in thumbnail queue (since we are re-rendering)
+      @thumbnailQueue.kill()
+
       @$("#table").html require('./SourceListPage_items.hbs')(sources:sources)
 
-      # Look up image thumbnails
-      async.eachLimit sources, 4, (source, callback) =>
+      # Look up cached image thumbnails
+      for source in sources
         if source.thumbnail
-          imageId = source.thumbnail
-          do (imageId) =>
-            if @thumbnailUrls[imageId]
-              @$("#" + imageId).attr("src", @thumbnailUrls[imageId])
-              callback()
-            else
-              @imageManager.getImageThumbnailUrl imageId, (imageUrl) =>
-                @thumbnailUrls[imageId] = imageUrl
-                @$("#" + imageId).attr("src", imageUrl)
-                callback()
-              , =>
-                # Display this image on error
-                @$("#" + imageId).attr("src", "img/no-image-icon.jpg")
-                callback()
-        else
-          callback()
+          # If cached
+          if @thumbnailUrls[source.thumbnail]
+            @$("#" + source.thumbnail).attr("src", @thumbnailUrls[source.thumbnail])
+          else
+            @thumbnailQueue.push(source.thumbnail)
 
   locationError: (pos) =>
     @$("#location_msg").hide()

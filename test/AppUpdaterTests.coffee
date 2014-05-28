@@ -7,12 +7,13 @@ fail = (err) ->
   console.error err
   assert.fail()
 
-createImage = FileUtils.createFile
+createFile = FileUtils.createFile
 readFileEntry = FileUtils.readFileEntry
 requestFileSystem  = FileUtils.requestFileSystem
 resolveLocalFileSystemURI = FileUtils.resolveLocalFileSystemURI
 
 describe "AppUpdater", ->
+  @timeout(10000)
   beforeEach (done) ->
     # Obtain temp storage
     FileUtils.getTempFileSystem (fs) =>
@@ -20,15 +21,7 @@ describe "AppUpdater", ->
       @fileTransfer = 
         download: (source, target, successCallback, errorCallback) =>
           $.get(source).fail(errorCallback).done (data) =>
-            fs.root.getFile target, {create: true, exclusive: false}, (fileEntry) =>
-              fileEntry.createWriter (writer) =>
-                writer.onwriteend = ->
-                  successCallback fileEntry
-                blob = new Blob([data], {type: 'text/plain'})
-                writer.write(blob)
-              , errorCallback
-            , errorCallback
-  
+            createFile fs, target, data, successCallback
       done()
 
   context "clean install", ->

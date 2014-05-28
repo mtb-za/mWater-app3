@@ -12,11 +12,11 @@
     "src_files": [
         "app/js/**/.js",
         "app/js/**/*.coffee",
-        "test/*Tests.coffee"
+        "test/**/*"
     ],
     "launchers": {
     },
-    "before_tests": "grunt uglify:libsjs && browserify --extension=.coffee -r ./app/js/forms:forms --debug test/*Tests.coffee -o test/browserified.js",
+    "before_tests": "grunt concat:libsjs && browserify --extension=.coffee -r ./app/js/forms:forms --debug test/*Tests.coffee -o test/browserified.js",
     "on_exit": "rm test/browserified.js",
     "launch_in_dev": [ "chrome" ],
     "routes": {
