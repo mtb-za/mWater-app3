@@ -17,6 +17,9 @@ module.exports = class GPSLoggerProtocol
   worker: (task, callback) =>
     task(callback)
 
+  startCommandMode: (success, error, timeout=2000) ->
+    @command("!", "", "CM", success, error, timeout)
+
   command: (cmdId, cmdData, respId, respCb, errorCb, timeout=10000) ->
     # Queue a task
     task = (callback) =>
@@ -75,10 +78,18 @@ module.exports = class GPSLoggerProtocol
 
       @mgr.on 'error', taskErrorCb
       @mgr.on 'receive', taskReceiveCb
-      @mgr.send cmdId, cmdData, ->
-        # Success, do nothing
-        return
-      , taskErrorCb
+
+      if cmdId != "!"
+        @mgr.send cmdId, cmdData, ->
+          # Success, do nothing
+          return
+        , taskErrorCb
+      else 
+        # ! command is special
+        @mgr.sendStartCommandMode ->
+          # Success, do nothing
+          return
+        , taskErrorCb
 
     @queue.push(task)
 

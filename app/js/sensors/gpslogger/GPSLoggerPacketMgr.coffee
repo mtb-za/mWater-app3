@@ -23,6 +23,10 @@ module.exports = class GPSLoggerPacketMgr
     console.log "Send packet: #{packet}"
     @conn.write(packet, success, error)
 
+  sendStartCommandMode: (success, error) ->
+    console.log "Starting command mode"
+    @conn.write("!", success, error)
+
   processBuffer: ->
     if @buffer.length > 0
       if @buffer[0] != "#"

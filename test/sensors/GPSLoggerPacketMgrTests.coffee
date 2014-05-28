@@ -12,6 +12,10 @@ describe "GPSLoggerPacketMgr", ->
     @mgr.send "gn", "1234567", =>
       assert.deepEqual @conn.written, "#gn00007,1234567"
 
+  it "sends command mode command", ->
+    @mgr.sendStartCommandMode () =>
+      assert.deepEqual @conn.written, "!"
+
   it "decodes single packet", (done) ->
     @mgr.on 'receive', (id, data) ->
       assert.equal id, "gn"

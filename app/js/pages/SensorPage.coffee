@@ -84,9 +84,6 @@ module.exports = class SensorPage extends Page
       @render()
     , updateError
 
-    # Get records to download
-
-
   connect: ->
     connectionError = (error) =>
       @connected = false
@@ -98,6 +95,21 @@ module.exports = class SensorPage extends Page
       @status = status
       console.log "Bluetooth status: #{status}"
       @render()
+
+    startCommandMode = =>
+      updateStatus("Entering command mode...")
+
+      async.retry 10, (callback) =>
+        @protocol.startCommandMode () =>
+          callback()
+        , callback
+      , (error) =>
+        if error
+          return connectionError(error)
+
+        @connected = true
+        updateStatus("Connected")
+        @updateStats()
 
     startConnectionManager = =>
       updateStatus("Starting connection manager...")
@@ -124,12 +136,11 @@ module.exports = class SensorPage extends Page
       @packetMgr = new GPSLoggerPacketMgr(@connection)
       @protocol = new GPSLoggerProtocol(@packetMgr)
 
-      # Listen to move events
+      # Listen to move events # TODO REMOVE
       @protocol.on "move", (data) =>
         @displayEvent("Move: " + data)
 
-      @connected = true
-      updateStatus("Connected")
+      startCommandMode()
 
     makeConnection = () =>
       updateStatus("Connecting...")

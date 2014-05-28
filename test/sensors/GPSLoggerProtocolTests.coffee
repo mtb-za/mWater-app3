@@ -169,6 +169,13 @@ describe "GPSLoggerProtocol", ->
 
     @mgr.trigger 'receive', 'MV', 'abc'
 
+  it "starts command mode", (done) ->
+    @mgr.sendStartCommandMode = (success, error) =>
+      success()
+      @mgr.trigger 'receive', 'CM', '0'
+
+    @prot.startCommandMode () =>
+      done()
 
   # it "waits a bit before timeout", (done) ->
   #   @mgr.setExpected("dl", "0")
