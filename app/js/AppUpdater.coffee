@@ -66,7 +66,7 @@ module.exports = class AppUpdater
             removeSuccess = =>
               # Copy original manifest to update root folder
               source = encodeURI(@origUrl + "manifest.appcache")
-              target = @fs.root.fullPath + "/" + @cachePath + "/manifest.appcache"
+              target = @fs.root.toURL() + "/" + @cachePath + "/manifest.appcache"
               console.log "Copying original manifest from #{source} to #{target}..." # REMOVE
               @fileTransfer.download source, target, =>
 
@@ -133,7 +133,7 @@ downloadFiles = (fs, list, source, target, fileTransfer, success, error) ->
   parent = _.initial(dest.split("/")).join("/")
   createDirs fs.root, parent, (parentDirEntry) =>
     # Download file
-    fileTransfer.download encodeURI(source + item), fs.root.fullPath + "/" + dest, =>
+    fileTransfer.download encodeURI(source + item), fs.root.toURL() + "/" + dest, =>
       # Download next
       downloadFiles(fs, _.rest(list), source, target, fileTransfer, success, error)
     , error 

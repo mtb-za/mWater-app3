@@ -8,7 +8,7 @@
     "src_files": [
         "app/js/**/.js",
         "app/js/**/*.coffee",
-        "test/**/*Tests.coffee"
+        "test/**/*"
     ],
     "launchers": {
     },

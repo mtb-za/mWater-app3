@@ -5,7 +5,7 @@ FileUtils = require './helpers/FileUtils'
 
 fail = (err) ->
   console.error err
-  assert.fail()
+  assert.ok(false, err)
 
 createImage = FileUtils.createFile
 readFileEntry = FileUtils.readFileEntry
@@ -195,11 +195,13 @@ describe "CachedImageManager", ->
       # Create file and fail
       @target = target
       createImage @fs, target, "text", =>
-        errorCallback()
+        errorCallback("some fake error")
       , fail
 
     @mgr.getImageUrl "123", fail, =>
       # Check that file is gone
-      @fs.root.getFile @target, fail, =>
+      resolveLocalFileSystemURI @target, =>
+        assert.ok(false, "File should be gone")
+      , =>
         done()
 
