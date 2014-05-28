@@ -88,12 +88,13 @@ module.exports = class CachedImageManager
       success entry.toURL()
     ), (err) ->
       # Delete file on disk if present
-      dirEntry.getFile imageId + ".jpg", {}, ((imageFile) ->
-        imageFile.remove (->
-        ), ->
-      ), ->
-      # Call error function
-      error(err)
+      dirEntry.getFile imageId + ".jpg", {}, (imageFile) ->
+        imageFile.remove ->
+          error(err)
+        , ->
+          error(err)
+      , ->
+        error(err)
 
   findImageFile: (dir, imageId, found, notfound, error) ->
     console.log "checking in: " + dir

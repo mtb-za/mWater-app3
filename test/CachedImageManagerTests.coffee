@@ -195,11 +195,13 @@ describe "CachedImageManager", ->
       # Create file and fail
       @target = target
       createImage @fs, target, "text", =>
-        errorCallback()
+        errorCallback("some fake error")
       , fail
 
     @mgr.getImageUrl "123", fail, =>
       # Check that file is gone
-      resolveLocalFileSystemURI @target, fail, =>
+      resolveLocalFileSystemURI @target, =>
+        assert.ok(false, "File should be gone")
+      , =>
         done()
 
