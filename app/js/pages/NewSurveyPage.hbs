@@ -14,6 +14,10 @@
       <td>{{name}}</a>
       <td style="vertical-align:middle; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>
     </tr>
+    {{else}}
+    <tr>
+      <td> {{T "No surveys available. Please contact info@mwater.co to learn how to set one up"}} </td>
+    </tr>
     {{/each}}
   </tbody>
 </table>
