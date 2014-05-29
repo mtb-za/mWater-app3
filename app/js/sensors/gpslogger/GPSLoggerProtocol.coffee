@@ -27,6 +27,7 @@ module.exports = class GPSLoggerProtocol
       completed = false
 
       stopListening = =>
+        clearTimeout timeoutId
         @mgr.off 'error', taskErrorCb
         @mgr.off 'receive', taskReceiveCb
 
@@ -75,7 +76,7 @@ module.exports = class GPSLoggerProtocol
         errorCb(error)
         return callback(error)
 
-      _.delay taskTimeout, timeout
+      timeoutId = setTimeout taskTimeout, timeout
 
       @mgr.on 'error', taskErrorCb
       @mgr.on 'receive', taskReceiveCb

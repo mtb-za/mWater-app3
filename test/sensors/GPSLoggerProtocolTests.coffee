@@ -194,3 +194,28 @@ describe "GPSLoggerProtocol", ->
   #   setTimeout () =>
   #     @mgr.trigger 'receive', 'DL', "0"
   #   , 500
+
+
+# describe "Weird Timer Bug", ->
+#   @timeout(1000000)
+#   beforeEach ->
+#     @mgr = new MockGPSLoggerPacketMgr()
+#     @prot = new GPSLoggerProtocol(@mgr)
+#     @mgr.send = (id, data, success, error) =>
+#       setTimeout () =>
+#         @mgr.trigger "receive", "BV", "3.7"
+#       , 500
+
+#       setTimeout () =>
+#         success()
+#       , 50
+  
+#   it "runs a ton of commands", (done) ->
+#     completed = 0
+#     for i in [0...100]
+#       @prot.getBatteryVoltage (volts) ->
+#         completed += 1
+#         if completed == 100
+#           done()
+#       , (error) ->
+#         assert.ok false, error
