@@ -62,11 +62,11 @@ module.exports = class GPSLoggerProtocol
         callback()
 
       # Timeout on calls
-      setTimeout ->
+      taskTimeout = ->
         if completed
           return
 
-        console.log "Timeout on #{cmdId}"
+        console.log "Timeout on #{cmdId} at " + new Date().getTime()
 
         completed = true
         stopListening()
@@ -74,11 +74,13 @@ module.exports = class GPSLoggerProtocol
         error = "Command timed out"
         errorCb(error)
         return callback(error)
-      , timeout
+
+      _.delay taskTimeout, timeout
 
       @mgr.on 'error', taskErrorCb
       @mgr.on 'receive', taskReceiveCb
 
+      console.log "Starting on #{cmdId} at " + new Date().getTime()
       if cmdId != "!"
         @mgr.send cmdId, cmdData, ->
           # Success, do nothing
@@ -122,6 +124,11 @@ module.exports = class GPSLoggerProtocol
 
   exitCommandMode: (success, error) ->
     @command "ex", "0", "EX", (data) ->
+      success()
+    , error
+
+  gotoSleep: (success, error) ->
+    @command "sl", "0", "SL", (data) ->
       success()
     , error
 

@@ -140,6 +140,12 @@ describe "GPSLoggerProtocol", ->
     @prot.exitCommandMode ->
       done()
 
+  it "goes to sleep", (done) ->
+    @mgr.setExpected("sl", "0")
+    @mgr.setResponse("SL", "0")
+    @prot.gotoSleep ->
+      done()
+
   it "deletes all records successfully", (done) ->
     @mgr.setExpected("da", "0")
     @mgr.setResponse("DA", "1")
