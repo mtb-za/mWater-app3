@@ -28,12 +28,13 @@ module.exports = class SurveyListPage extends Page
       # Fill in survey names
       _.defer => # Defer to allow html to render
         for resp in responses
-          @db.forms.findOne { _id: resp.form }, { mode: "local" }, (form) =>
-            if form
-              name = mwaterforms.formUtils.localizeString(form.design.name, @localizer.locale)
-            else
-              name = "???"
-            @$("#name_"+resp._id).text(name)
+          do (resp) =>
+            @db.forms.findOne { _id: resp.form }, { mode: "local" }, (form) =>
+              if form
+                name = mwaterforms.formUtils.localizeString(form.design.name, @localizer.locale)
+              else
+                name = "???"
+              @$("#name_"+resp._id).text(name)
 
     # Get final/pending surveys
     # TODO eventually remove $exists filter when legacy forms are gone

@@ -24,8 +24,9 @@ module.exports = class TestListPage extends Page
       # Fill in test names
       _.defer => # Defer to allow html to render
         for test in tests
-          @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
-            @$("#name_"+test._id).text(if form then form.name else "???")
+          do (test) =>
+            @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
+              @$("#name_"+test._id).text(if form then form.name else "???")
 
     @db.tests.find({ completed: null, user: @login.user }, {sort:[['started','desc']]}).fetch (tests) =>
       @$("#incomplete_table").html require('./TestListPage_items.hbs')(tests:tests)
