@@ -20,8 +20,22 @@
     "coffee-script": "^1.7.1",
     "coffeeify": "^0.6.0",
     "grunt-browserify": "~2.0.1",
+    "gulp": "^3.6.2",
+    "gulp-awspublish": "0.0.16",
+    "gulp-buffer": "0.0.2",
+    "gulp-clean": "^0.2.4",
+    "gulp-concat": "^2.2.0",
+    "gulp-gzip": "0.0.6",
+    "gulp-rework": "^0.2.2",
+    "gulp-size": "^0.3.0",
+    "gulp-uglify": "^0.2.1",
+    "gulp-util": "^2.2.14",
     "hbsfy": "^1.3.2",
-    "rework-npm": "~0.4.1"
+    "testem": "~0.5.15",
+    "through": "~2.3.4",
+    "uglify-js": "~2.4.13",
+    "rework-npm": "~0.4.1",
+    "vinyl-source-stream": "^0.1.1"
   },
   "dependencies": {
     "async": "^0.8.0",
@@ -43,18 +57,14 @@
     "grunt-shell": "~0.6.1",
     "grunt-text-replace": "~0.3.9",
     "handlebars": "~1.3.0",
-    "hbsfy": "^1.3.2",
     "lodash": "~2.4.1",
     "minimist": "0.0.8",
-    "minimongo": "~2.2.0",
+    "minimongo": "~2.2.3",
     "mwater-forms": "^0.5.3",
     "parse-appcache-manifest": "~0.2.0",
     "read": "~1.0.4",
     "request-json": "~0.4.4",
     "synchronize": "~0.5.2",
-    "testem": "~0.5.15",
-    "through": "~2.3.4",
-    "uglify-js": "~2.4.13",
     "uuid": "~1.4.1"
   }
 }

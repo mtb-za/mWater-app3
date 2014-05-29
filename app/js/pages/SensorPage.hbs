@@ -1,0 +1,82 @@
+<h4>Connection</h4>
+
+<div>Status: 
+{{#if connected}}
+<span class="text-success">{{status}}</span>
+{{/if}}
+
+{{#if connecting}}
+<span class="text-warning">{{status}}</span>
+{{/if}}
+
+{{#if disconnected}}
+<span class="text-danger">{{status}}</span>
+
+<br/>
+<button type="button" id="connect" class="btn btn-default">
+	<span class="glyphicon glyphicon-repeat"></span>
+	Reconnect
+</button>
+
+{{/if}}
+
+</div>
+
+<br/>
+
+{{#if connected}}
+
+<h4>Battery</h4>
+<div class="progress">
+  <div id="progress_bar" class="progress-bar progress-bar-{{stats.batteryState}}" style="width: {{stats.batteryPercentage}}%;">
+  	{{stats.batteryPercentage}}%
+  </div>
+</div>
+
+<h4>Data</h4>
+{{#if stats.numberToDownloadKnown}}
+	{{#if stats.numberToDownload}}
+	<div class="lead">{{stats.numberToDownload}} records to download</div>
+	<div>
+		<button id="download_data" type="button" class="btn btn-primary btn-lg" {{#if downloading}}disabled="disabled"{{/if}}>Download Data</button>
+	</div>
+	{{else}}
+		<div class="lead">No records to download</div>
+	{{/if}}
+{{else}}
+	<div>Calculating...</div>
+{{/if}}
+
+{{#if downloading}}
+<h4>Downloading data</h4>
+<div class="progress">
+  <div id="progress_bar" class="progress-bar progress-striped active" style="width: {{progress}}%;">
+  </div>
+</div>
+{{/if}}
+
+<br/>
+
+<h4>Device Information</h4>
+{{#with stats}}
+	<div class="text-muted">Battery voltage: {{batteryVoltage}}</div>
+	<div class="text-muted">Device UID: {{deviceUid}}</div>
+	<div class="text-muted">Ant+ Channel: {{channel}}</div>
+	<div class="text-muted">Firmware version: {{version}}</div>
+	<div class="text-muted">Status: {{#if recording}}Logging Enabled{{else}}Logging Disabled{{/if}}</div>
+	<div class="text-muted">Sample Rate: {{sampleRate}}</div>
+	<div class="text-muted">Records: {{totalRecords}} {{lowestRecord}}-{{highestRecord}}</div>
+{{/with}}
+
+<button id="update_status" type="button" class="btn btn-default btn-sm">Update Device Status</button>
+<br/>
+
+<!--
+<div>
+	<button id="upgrade_firmware" type="button" class="btn btn-warning btn-sm">Upgrade Firmware</button>
+</div>
+-->
+{{/if}}
+
+<div id="events">
+</div>
