@@ -24,6 +24,9 @@ module.exports = class GPSLoggerDownloader
         for record in records
           record.duid = @deviceUid
 
+        # Remove records to skip
+        records.splice(0, pageSet.skip)
+
         # Store records
         @col.upsert records, () =>
           # Report progress
@@ -41,8 +44,15 @@ module.exports = class GPSLoggerDownloader
 
       # Create list of page sets to download
       pageSets = []
-      for i in [0...Math.ceil((number/11)/pagesPerQuery)]
-        pageSets.push({ pageNumber: i * pagesPerQuery, numPages: Math.min(Math.ceil(number/11) - i * pagesPerQuery, pagesPerQuery) })
+      startPage = Math.floor(startIndex/(11*pagesPerQuery))
+      endPage = Math.floor((startIndex+number-1)/(11*pagesPerQuery))
+      for i in [startPage..endPage]
+        pageSet = { 
+          pageNumber: i * pagesPerQuery
+          numPages: Math.min(Math.ceil((startIndex+number)/11) - i * pagesPerQuery, pagesPerQuery)
+          skip: Math.max(0, startIndex - i * pagesPerQuery * 11)
+        }
+        pageSets.push(pageSet)
 
       # For each page set
       async.eachSeries pageSets, downloadPageSet, (err) =>
