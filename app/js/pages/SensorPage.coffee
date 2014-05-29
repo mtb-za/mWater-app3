@@ -110,6 +110,22 @@ module.exports = class SensorPage extends Page
       @stats.totalRecords = totalRecords
       @stats.lowestRecord = lowestRecord
       @stats.highestRecord = highestRecord
+
+
+      # Calculate memory data
+      percentage = Math.ceil(totalRecords * 100 / (65536 * 11))
+      @stats.memoryPercentage = percentage
+      if percentage < 50
+        state = "success"
+      else if percentage < 75
+        state = "warning"
+      else
+        state = "danger"
+      @stats.memoryState = state
+
+      @stats.memoryState = Math.ceil(totalRecords * 100 / (65536 * 11))
+
+
       @render()
     , updateError
 

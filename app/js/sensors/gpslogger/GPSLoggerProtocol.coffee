@@ -49,6 +49,10 @@ module.exports = class GPSLoggerProtocol
         if id == "MV"
           return
 
+        # Ignore CM (command mode) unless listening for it
+        if id == "CM" and respId != "CM"
+          return
+
         completed = true
         stopListening()
 

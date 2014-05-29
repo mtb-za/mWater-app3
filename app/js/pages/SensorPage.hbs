@@ -22,14 +22,19 @@
 
 </div>
 
-<br/>
-
 {{#if connected}}
 
 <h4>Battery</h4>
 <div class="progress">
   <div id="progress_bar" class="progress-bar progress-bar-{{stats.batteryState}}" style="width: {{stats.batteryPercentage}}%;">
   	{{stats.batteryPercentage}}%
+  </div>
+</div>
+
+<h4>Memory</h4>
+<div class="progress">
+  <div id="progress_bar" class="progress-bar progress-bar-{{stats.memoryState}}" style="width: {{stats.memoryPercentage}}%;">
+  	{{stats.memoryPercentage}}%
   </div>
 </div>
 
