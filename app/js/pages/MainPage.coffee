@@ -25,6 +25,11 @@ class MainPage extends Page
       @listenTo @imageSync, "success error", =>
         @render()
 
+    # Cache groups
+    @db.groups.find({ members: @login.user }).fetch (groups) =>
+      # Do nothing, just querying caches them
+      return
+
     @render()
 
   deactivate: ->

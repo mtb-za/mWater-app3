@@ -89,7 +89,7 @@ class SurveyPage extends Page
     # Get response
     @db.responses.findOne {_id: @options._id}, (response) =>
       if not response
-        alert(T("Test not found"))
+        alert(T("Survey not found"))
         return @pager.closePage()
 
       @response = response
