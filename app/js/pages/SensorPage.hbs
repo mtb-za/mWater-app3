@@ -1,23 +1,41 @@
-<div>Connection Status: <b>{{status}}</b></div>
+<h4>Connection</h4>
 
-{{#if connected}}<span class="text-success">Connected</span>{{/if}}
+<div>Status: 
+{{#if connected}}
+<span class="text-success">{{status}}</span>
+{{/if}}
+
+{{#if connecting}}
+<span class="text-warning">{{status}}</span>
+{{/if}}
+
+{{#if disconnected}}
+<span class="text-danger">{{status}}</span>
+
+<br/>
+<button type="button" id="connect" class="btn btn-default">
+	<span class="glyphicon glyphicon-repeat"></span>
+	Reconnect
+</button>
+
+{{/if}}
+
+</div>
 
 <br/>
 
 {{#if connected}}
-<button id="update_status" type="button" class="btn btn-default">Update Device Status</button>
 
-{{#with stats}}
-	<div>Battery voltage: {{batteryVoltage}}</div>
-	<div>Device UID: {{deviceUid}}</div>
-	<div>Ant+ Channel: {{channel}}</div>
-	<div>Firmware version: {{version}}</div>
-	<div>Status: {{#if recording}}Logging Enabled{{else}}Logging Disabled{{/if}}</div>
-	<div>Sample Rate: {{sampleRate}}</div>
-	<div class="text-muted">Records: {{totalRecords}} {{lowestRecord}}-{{highestRecord}}</div>
-{{/with}}
+<h4>Battery</h4>
+<div class="progress">
+  <div id="progress_bar" class="progress-bar progress-bar-{{stats.batteryState}}" style="width: {{stats.batteryPercentage}}%;">
+  	{{stats.batteryPercentage}}%
+  </div>
+</div>
 
+<br/>
 
+<h4>Data</h4>
 {{#if stats.numberToDownload}}
 	<div class="lead">{{stats.numberToDownload}} records to download</div>
 	<div>
@@ -39,10 +57,26 @@
 
 <br/>
 <br/>
-<div>
-	<button id="upgrade_firmware" type="button" class="btn btn-warning">Upgrade Firmware</button>
-</div>
 
+<h4>Device Information</h4>
+{{#with stats}}
+	<div class="text-muted">Battery voltage: {{batteryVoltage}}</div>
+	<div class="text-muted">Device UID: {{deviceUid}}</div>
+	<div class="text-muted">Ant+ Channel: {{channel}}</div>
+	<div class="text-muted">Firmware version: {{version}}</div>
+	<div class="text-muted">Status: {{#if recording}}Logging Enabled{{else}}Logging Disabled{{/if}}</div>
+	<div class="text-muted">Sample Rate: {{sampleRate}}</div>
+	<div class="text-muted">Records: {{totalRecords}} {{lowestRecord}}-{{highestRecord}}</div>
+{{/with}}
+
+<button id="update_status" type="button" class="btn btn-default btn-sm">Update Device Status</button>
+<br/>
+
+<!--
+<div>
+	<button id="upgrade_firmware" type="button" class="btn btn-warning btn-sm">Upgrade Firmware</button>
+</div>
+-->
 {{/if}}
 
 <div id="events">

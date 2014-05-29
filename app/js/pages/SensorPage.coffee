@@ -10,14 +10,24 @@ module.exports = class SensorPage extends Page
     "click #update_status": "updateStats"
     "click #upgrade_firmware": "upgradeFirmware"
     "click #download_data": "downloadData"
+    "click #connect": "connect"
 
   activate: ->
     @setTitle T("Sensor")
 
-    @connected = false
+    @state = "disconnected"
     @stats = {}
     @render()
     @connect()
+
+    # Setup menu
+    menu = [
+      { text: "Upgrade Firmware", id: "upgradeFirmware", click: @upgradeFirmware }
+      { text: "Delete All Records", id: "deleteAllRecords", click: @deleteAllRecords }
+    ]
+    @setupButtonBar [
+      { icon: "gear.png", menu: menu }
+    ]
 
   deactivate: ->
     disconnectBluetooth = =>
@@ -27,20 +37,24 @@ module.exports = class SensorPage extends Page
       , (error) =>
         console.log "Disconnect error = #{error}"
 
-    # If connected, exit command mode and disconnect
-    if @connected
-      console.log "Exiting command mode"
-      @protocol.exitCommandMode () =>
-        console.log "Exited command mode"
+    # If connected, go to sleep and disconnect
+    if @state == "connected"
+      console.log "Going to sleep"
+      @protocol.gotoSleep () =>
+        console.log "Gone to sleep"
         disconnectBluetooth()
       , (error) =>
-        console.log "Error exiting command mode: " + error
+        console.log "Error going to sleep: " + error
         disconnectBluetooth()
 
   displayEvent: (message) =>
-    row = $("<div>" + message + "</div>")
-    row.appendTo(@$("#events")).delay(3000).slideUp 200, ->
+    console.log "Event: #{message}"
+
+    row = $('<div class="alert alert-warning">' + message + "</div>")
+    row.appendTo(@$("#events"))
+    _.delay ->
       row.remove()
+    , 5000
 
   updateStats: ->
     updateError = (error) =>
@@ -51,6 +65,18 @@ module.exports = class SensorPage extends Page
     # Get battery status
     @protocol.getBatteryVoltage (volts) =>
       @stats.batteryVoltage = volts
+
+      # Calculate percentages
+      percentage = (volts - 3.7)/0.5*100
+      percentage = Math.max(Math.min(Math.floor(percentage), 100), 0)
+      @stats.batteryPercentage = percentage
+      if percentage > 50
+        state = "success"
+      else if percentage > 25
+        state = "warning"
+      else
+        state = "danger"
+      @stats.batteryState = state
       @render()
     , updateError
 
@@ -64,6 +90,7 @@ module.exports = class SensorPage extends Page
       # Create downloader to get records to download
       downloader = new GPSLoggerDownloader(@protocol, @db.sensor_data, deviceUid)
       downloader.getDownloadRange (startIndex, number) =>
+        console.log "Got download range #{startIndex} + #{number}"
         @stats.numberToDownload = number
         @stats.numberToDownloadKnown = true
         @render()
@@ -85,10 +112,12 @@ module.exports = class SensorPage extends Page
     , updateError
 
   connect: ->
+    @state = "connecting"
+
     connectionError = (error) =>
-      @connected = false
+      @state = "disconnected"
       console.error "Error connecting: " + JSON.stringify(error)
-      @status = "Error connecting: " + JSON.stringify(error)
+      @status = "Error connecting"
       @render()
 
     updateStatus = (status) =>
@@ -105,9 +134,17 @@ module.exports = class SensorPage extends Page
         , callback
       , (error) =>
         if error
-          return connectionError(error)
+          # Disconnect
+          console.log "Disconnecting"
+          window.bluetooth.disconnect () =>
+            console.log "Disconnected"
+            return connectionError(error)
+          , () =>
+            console.log "Disconnection failed"
+            return connectionError(error)
+          return
 
-        @connected = true
+        @state = "connected"
         updateStatus("Connected")
         @updateStats()
 
@@ -124,7 +161,7 @@ module.exports = class SensorPage extends Page
         @connection.trigger("read", data)
 
       onError = (error) =>
-        @connected = false
+        @state = "disconnected"
         console.error "Error in connection manager: " + JSON.stringify(error)
         @status = "Error in connection manager: " + JSON.stringify(error)
         @render()
@@ -136,9 +173,9 @@ module.exports = class SensorPage extends Page
       @packetMgr = new GPSLoggerPacketMgr(@connection)
       @protocol = new GPSLoggerProtocol(@packetMgr)
 
-      # Listen to move events # TODO REMOVE
-      @protocol.on "move", (data) =>
-        @displayEvent("Move: " + data)
+      # # Listen to move events # TODO REMOVE
+      # @protocol.on "move", (data) =>
+      #   @displayEvent("Move: " + data)
 
       startCommandMode()
 
@@ -173,7 +210,9 @@ module.exports = class SensorPage extends Page
   render: ->
     data = {
       status: @status
-      connected: @connected
+      connected: @state =="connected"
+      connecting: @state =="connecting"
+      disconnected: @state =="disconnected"
       stats: @stats
       downloading: @downloading
       progress: @progress
@@ -209,6 +248,9 @@ module.exports = class SensorPage extends Page
     , @error
 
   upgradeFirmware: ->
+    if @state != "connected"
+      return alert("Not connected")
+
     if confirm("You will need an Ant+ connection and PC and a binary ready. This cannot be undone. Proceed?")
       if confirm("Are you really sure you want to do this?")
         @protocol.upgradeFirmware () =>
@@ -217,4 +259,16 @@ module.exports = class SensorPage extends Page
           alert("Now upload new firmware, following instructions carefully")
         , ->
           alert("Unable to upgrade firmware")
+
+  deleteAllRecords: ->
+    if @state != "connected"
+      return alert("Not connected")
+      
+    if confirm("This will delete all records on the device. This cannot be undone. Proceed?")
+      if confirm("Are you really sure you want to do this?")
+        @protocol.deleteAllRecords () =>
+          alert("All records deleted")
+          @updateStats()
+        , ->
+          alert("Unable to delete all records")
 
