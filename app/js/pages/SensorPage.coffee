@@ -57,6 +57,8 @@ module.exports = class SensorPage extends Page
     , 5000
 
   updateStats: ->
+    @stats.numberToDownloadKnown = false
+    
     updateError = (error) =>
       @displayEvent("Update error: " + error)
 
@@ -247,7 +249,7 @@ module.exports = class SensorPage extends Page
       downloader.download success, error
     , @error
 
-  upgradeFirmware: ->
+  upgradeFirmware: =>
     if @state != "connected"
       return alert("Not connected")
 
@@ -260,7 +262,7 @@ module.exports = class SensorPage extends Page
         , ->
           alert("Unable to upgrade firmware")
 
-  deleteAllRecords: ->
+  deleteAllRecords: =>
     if @state != "connected"
       return alert("Not connected")
       
