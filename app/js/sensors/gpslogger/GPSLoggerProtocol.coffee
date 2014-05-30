@@ -111,6 +111,7 @@ module.exports = class GPSLoggerProtocol
       success(data.substr(0,16), parseInt(data.substr(16,5)), data.substr(22, 5))
     , error 
 
+  # Calls success with boolean if logging enabled
   getStatus: (success, error) ->
     @command "gs", "0", "GS", (data) ->
       success(data[0] == "0", parseInt(data.substr(2, 2)))

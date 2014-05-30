@@ -11,6 +11,8 @@ module.exports = class SensorPage extends Page
     "click #upgrade_firmware": "upgradeFirmware"
     "click #download_data": "downloadData"
     "click #connect": "connect"
+    "click #enable_logging": "enableLogging"
+    "click #disable_logging": "disableLogging"
 
   activate: ->
     @setTitle T("Sensor")
@@ -39,12 +41,12 @@ module.exports = class SensorPage extends Page
 
     # If connected, go to sleep and disconnect
     if @state == "connected"
-      console.log "Going to sleep"
-      @protocol.gotoSleep () =>
-        console.log "Gone to sleep"
+      console.log "Disconnecting"
+      @protocol.exitCommandMode () =>
+        console.log "Disconnected"
         disconnectBluetooth()
       , (error) =>
-        console.log "Error going to sleep: " + error
+        console.log "Disconnecting: " + error
         disconnectBluetooth()
 
   displayEvent: (message) =>
@@ -100,8 +102,8 @@ module.exports = class SensorPage extends Page
 
     , updateError
     
-    @protocol.getStatus (recording, sampleRate) =>
-      @stats.recording = recording
+    @protocol.getStatus (enabled, sampleRate) =>
+      @stats.enabled = enabled
       @stats.sampleRate = sampleRate
       @render()
     , updateError
@@ -260,6 +262,18 @@ module.exports = class SensorPage extends Page
         @render()
       downloader.download success, error
     , @error
+
+  enableLogging: =>
+    @protocol.enableLogging () =>
+      @updateStats()
+    , (error) =>
+      alert("Unable to enable logging")
+
+  disableLogging: =>
+    @protocol.disableLogging () =>
+      @updateStats()
+    , (error) =>
+      alert("Unable to disable logging")
 
   upgradeFirmware: =>
     if @state != "connected"
