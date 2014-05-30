@@ -1,3 +1,8 @@
+
+</div>
+
+<h4>Status</h4>
+
 <div>Connection Status: 
 {{#if connected}}
 <span class="text-success">{{status}}</span>
@@ -9,20 +14,17 @@
 
 {{#if disconnected}}
 <span class="text-danger">{{status}}</span>
-
 <br/>
 <button type="button" id="connect" class="btn btn-default">
 	<span class="glyphicon glyphicon-repeat"></span>
 	Reconnect
 </button>
-
 {{/if}}
-
-</div>
 
 {{#if connected}}
 
-<h4>Status</h4>
+<div>Device ID: {{address}}</div>
+
 {{#if stats.enabled}}
 	<div class="lead text-success">Logging Enabled</div>
 	<button id="disable_logging" type="button" class="btn btn-default">Disable Logging</button>
@@ -70,9 +72,10 @@
 <br/>
 
 <h4>Device Information</h4>
+<div class="text-muted">ID (Bluetooth Address): {{address}}</div>
 {{#with stats}}
 	<div class="text-muted">Battery voltage: {{batteryVoltage}}</div>
-	<div class="text-muted">Device UID: {{deviceUid}}</div>
+	<div class="text-muted">Interal Device UID: {{deviceUid}}</div>
 	<div class="text-muted">Ant+ Channel: {{channel}}</div>
 	<div class="text-muted">Firmware version: {{version}}</div>
 	<div class="text-muted">Status: {{#if enabled}}Logging Enabled{{else}}Logging Disabled{{/if}}</div>

@@ -58,8 +58,8 @@ describe "GPSLoggerDownloader", ->
     @db = new minimongo.MemoryDb()
     @db.addCollection("sensor_data")
 
-    @deviceUid = "1234"
-    @downloader = new GPSLoggerDownloader(@prot, @db.sensor_data, @deviceUid)
+    @duid = "1234"
+    @downloader = new GPSLoggerDownloader(@prot, @db.sensor_data, @duid)
 
   it "downloads no data", (done) ->
     @downloader.download () =>
@@ -84,7 +84,7 @@ describe "GPSLoggerDownloader", ->
 
     @downloader.download () =>
       @db.sensor_data.find({}, { sort: ['rec']}).fetch (docs) =>
-        assert.equal docs[0].duid, @deviceUid
+        assert.equal docs[0].duid, @duid
         done()
     , assert.fail    
 
@@ -92,7 +92,7 @@ describe "GPSLoggerDownloader", ->
     for i in [0...11]
       @prot.records.push { rec: i + 1, lat: i }
 
-    existing = _.extend(_.cloneDeep(@prot.records[0]), { already: true, duid: @deviceUid })
+    existing = _.extend(_.cloneDeep(@prot.records[0]), { already: true, duid: @duid })
     @db.sensor_data.upsert(existing)
       
     @downloader.download () =>
@@ -107,7 +107,7 @@ describe "GPSLoggerDownloader", ->
     for i in [0...200]
       @prot.records.push { rec: i + 1, lat: i }
 
-    existing = _.map(_.first(@prot.records, 111), (r) => _.extend(_.cloneDeep(r), { already: true, duid: @deviceUid }))
+    existing = _.map(_.first(@prot.records, 111), (r) => _.extend(_.cloneDeep(r), { already: true, duid: @duid }))
     @db.sensor_data.upsert(existing)
       
     @downloader.download () =>

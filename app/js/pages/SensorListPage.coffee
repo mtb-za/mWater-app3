@@ -72,6 +72,7 @@ module.exports = class SensorListPage extends Page
     @$el.html require('./SensorListPage.hbs')(data)
 
   sensorClicked: (ev) ->
-    @pager.openPage(require("./SensorPage"), { address: ev.currentTarget.id})
+    # Ensure use capitalized version
+    @pager.openPage(require("./SensorPage"), { address: ev.currentTarget.id.toUpperCase() })
     return
 
