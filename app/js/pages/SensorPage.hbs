@@ -46,7 +46,11 @@
 </div>
 
 <h4>Data</h4>
-{{#if stats.numberToDownloadKnown}}
+<div>
+	<button id="download_data" type="button" class="btn btn-primary btn-lg" {{#if downloading}}disabled="disabled"{{/if}}>Download Data</button>
+</div>
+
+<!--{{#if stats.numberToDownloadKnown}}
 	{{#if stats.numberToDownload}}
 	<div class="lead">{{stats.numberToDownload}} records to download</div>
 	<div>
@@ -57,7 +61,7 @@
 	{{/if}}
 {{else}}
 	<div>Calculating...</div>
-{{/if}}
+{{/if}}-->
 
 {{#if downloading}}
 <h4>Downloading data</h4>

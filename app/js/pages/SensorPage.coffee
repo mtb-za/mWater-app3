@@ -91,14 +91,15 @@ module.exports = class SensorPage extends Page
       @stats.version = version
       @render()
 
-      # Create downloader to get records to download
-      downloader = new GPSLoggerDownloader(@protocol, @db.sensor_data, deviceUid)
-      downloader.getDownloadRange (startIndex, number) =>
-        console.log "Got download range #{startIndex} + #{number}"
-        @stats.numberToDownload = number
-        @stats.numberToDownloadKnown = true
-        @render()
-      , updateError
+      # No easy way to know number to download now
+      # # Create downloader to get records to download
+      # downloader = new GPSLoggerDownloader(@protocol, @db.sensor_data, deviceUid)
+      # downloader.getDownloadRange (startIndex, number) =>
+      #   console.log "Got download range #{startIndex} + #{number}"
+      #   @stats.numberToDownload = number
+      #   @stats.numberToDownloadKnown = true
+      #   @render()
+      # , updateError
 
     , updateError
     

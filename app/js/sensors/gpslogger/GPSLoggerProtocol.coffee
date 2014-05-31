@@ -66,11 +66,17 @@ module.exports = class GPSLoggerProtocol
         respCb(data)
         callback()
 
-      # Timeout on calls
+      # Timeout on calls (note: a strange bug that causes immediate calls requires the more complex workaround here)
+      startTime = new Date().getTime()
       taskTimeout = ->
         if completed
           return
 
+        elapsedTime = (new Date().getTime()) - startTime
+        if elapsedTime < timeout - 1
+          timeoutId = setTimeout taskTimeout, timeout - elapsedTime
+          return
+          
         console.log "Timeout on #{cmdId} at " + new Date().getTime()
 
         completed = true
@@ -155,6 +161,13 @@ module.exports = class GPSLoggerProtocol
       else
         error("Unable to delete records")
     , error, 60*1000*10 # Takes a long time
+
+  # Gets last page with data
+  getLastDataPage: (success, error) ->
+    @command "fp", "0", "FP", (data) ->
+      page = parseInt(data)
+      success(page)
+    , error 
 
   getRecords: (startPage, numPages, success, error) ->
     # Parse coords in xxx degrees xx minutes xxxx fractions
