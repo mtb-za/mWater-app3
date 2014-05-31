@@ -66,6 +66,13 @@ module.exports = class SensorPage extends Page
 
     console.log "Updating stats"
 
+    @protocol.getStatus (enabled, sampleRate) =>
+      @stats.enabled = enabled
+      @stats.disabled = not enabled
+      @stats.sampleRate = sampleRate
+      @render()
+    , updateError
+
     # Get battery status
     @protocol.getBatteryVoltage (volts) =>
       @stats.batteryVoltage = volts
@@ -103,12 +110,6 @@ module.exports = class SensorPage extends Page
 
     , updateError
     
-    @protocol.getStatus (enabled, sampleRate) =>
-      @stats.enabled = enabled
-      @stats.sampleRate = sampleRate
-      @render()
-    , updateError
-
     @protocol.getNumberRecords (totalRecords, lowestRecord, highestRecord) =>
       @stats.totalRecords = totalRecords
       @stats.lowestRecord = lowestRecord
@@ -247,7 +248,10 @@ module.exports = class SensorPage extends Page
       @render()
       @updateStats()
       _.defer ->
-        alert("Successfully downloaded #{number} records")
+        if number > 0
+          alert("Successfully downloaded #{number} records")
+        else
+          alert("No new records were available to download")
 
     error = (err) =>
       @downloading = false

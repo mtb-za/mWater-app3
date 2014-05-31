@@ -26,7 +26,9 @@
 {{#if stats.enabled}}
 	<div class="lead text-success">Logging Enabled</div>
 	<button id="disable_logging" type="button" class="btn btn-default">Disable Logging</button>
-{{else}}
+{{/if}}
+
+{{#if stats.disabled}}
 	<div class="lead text-danger">Logging Disabled</div>
 	<button id="enable_logging" type="button" class="btn btn-primary">Enable Logging</button>
 {{/if}}
@@ -66,7 +68,7 @@
 {{#if downloading}}
 <h4>Downloading data</h4>
 <div class="progress">
-  <div id="progress_bar" class="progress-bar progress-striped active" style="width: {{progress}}%;">
+  <div id="progress_bar" class="progress-bar" style="width: {{progress}}%;">
   </div>
 </div>
 {{/if}}

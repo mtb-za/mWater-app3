@@ -20,13 +20,14 @@ module.exports = class GPSLoggerDownloader
     downloadPageSet = (pageSet, callback) =>
       if @canceled
         return callback("Cancelled")
+
       @prot.getRecords pageSet.pageNumber, pageSet.numPages, (records) =>
         # Skip records below minRecordId
         records = _.filter records, (r) -> r.rec >= pageSet.minRecordId
 
         if records.length == 0
           # Report progress
-          progressCompleted += 1
+          progressCompleted += pageSet.numPages
           @trigger 'progress', progressCompleted, progressTotal
           return callback()
 
@@ -39,7 +40,7 @@ module.exports = class GPSLoggerDownloader
         # Store records
         @col.upsert records, () =>
           # Report progress
-          progressCompleted += 1
+          progressCompleted += pageSet.numPages
           @trigger 'progress', progressCompleted, progressTotal
 
           callback()
@@ -47,21 +48,21 @@ module.exports = class GPSLoggerDownloader
       , error
 
     downloadPageRange = (startPage, numberPages, minRecordId) =>
-      # Download 1 page at a time
-      #pagesPerQuery = 1
+      pagesPerQuery = 20
       progressTotal = numberPages
 
       # Create list of page sets to download
       pageSets = []
-      startPage = startPage
+      page = startPage
       endPage = startPage + numberPages - 1
-      for i in [startPage..endPage]
+      while page <= endPage
         pageSet = { 
-          pageNumber: i 
-          numPages: 1
+          pageNumber: page 
+          numPages: Math.min(pagesPerQuery, endPage - page + 1)
           minRecordId: minRecordId
         }
         pageSets.push(pageSet)
+        page += pagesPerQuery
 
       # For each page set
       async.eachSeries pageSets, downloadPageSet, (err) =>

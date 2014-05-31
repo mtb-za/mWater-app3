@@ -168,8 +168,8 @@ describe "GPSLoggerDownloader", ->
     , assert.fail    
 
   it "cancels", (done) ->
-    # Set up two pages
-    for i in [0...111]
+    # Set up 100 pages
+    for i in [0...1100]
       @prot.records.push { rec: i + 1, lat: i }
 
     oldGetRecords = @prot.getRecords
@@ -188,8 +188,7 @@ describe "GPSLoggerDownloader", ->
     , =>
       # Check that only first batch of records made it
       @db.sensor_data.find({}, { sort: ['rec']}).fetch (docs) =>
-        assert docs.length <= 110
-        # TODO assert.deepEqual stripDbFields(docs), @prot.records.slice(0, 110)
+        assert docs.length <= @prot.records.length
         done()
 
   it "aborts on error", (done) ->
@@ -233,17 +232,21 @@ describe "GPSLoggerDownloader", ->
   #     done()
 
   it "reports progress", (done) ->
-    # Set up ten pages
-    for i in [0...110]
+    # Set up one hundred pages
+    for i in [0...1100]
       @prot.records.push { rec: i + 1, lat: i }
 
     callCount = 0
+    finalCompleted = 0
+    finalTotal = 0
     @downloader.on "progress", (completed, total) =>
       callCount += 1
 
-      assert.equal total, 10
-      assert.equal completed, callCount
+      assert.equal total, 100
+      assert completed > 0
+      finalCompleted = completed
+      finalTotal = total
 
     @downloader.download () =>
-      assert.equal callCount, 10
+      assert.equal finalCompleted, finalTotal
       done()
