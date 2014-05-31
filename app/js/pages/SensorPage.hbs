@@ -28,7 +28,9 @@
 {{#if stats.enabled}}
 	<div class="lead text-success">Logging Enabled</div>
 	<button id="disable_logging" type="button" class="btn btn-default">Disable Logging</button>
-{{else}}
+{{/if}}
+
+{{#if stats.disabled}}
 	<div class="lead text-danger">Logging Disabled</div>
 	<button id="enable_logging" type="button" class="btn btn-primary">Enable Logging</button>
 {{/if}}
@@ -48,7 +50,11 @@
 </div>
 
 <h4>Data</h4>
-{{#if stats.numberToDownloadKnown}}
+<div>
+	<button id="download_data" type="button" class="btn btn-primary btn-lg" {{#if downloading}}disabled="disabled"{{/if}}>Download Data</button>
+</div>
+
+<!--{{#if stats.numberToDownloadKnown}}
 	{{#if stats.numberToDownload}}
 	<div class="lead">{{stats.numberToDownload}} records to download</div>
 	<div>
@@ -59,12 +65,12 @@
 	{{/if}}
 {{else}}
 	<div>Calculating...</div>
-{{/if}}
+{{/if}}-->
 
 {{#if downloading}}
 <h4>Downloading data</h4>
 <div class="progress">
-  <div id="progress_bar" class="progress-bar progress-striped active" style="width: {{progress}}%;">
+  <div id="progress_bar" class="progress-bar" style="width: {{progress}}%;">
   </div>
 </div>
 {{/if}}

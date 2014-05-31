@@ -183,6 +183,13 @@ describe "GPSLoggerProtocol", ->
     @prot.startCommandMode () =>
       done()
 
+  it "gets last page number with data", (done) ->
+    @mgr.setExpected("fp", "0")
+    @mgr.setResponse("FP", "00000008")
+    @prot.getLastDataPage (page) ->
+      assert.equal page, 8
+      done()
+
   # it "waits a bit before timeout", (done) ->
   #   @mgr.setExpected("dl", "0")
   #   @prot.enableLogging ->

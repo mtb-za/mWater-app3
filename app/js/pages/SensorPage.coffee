@@ -66,6 +66,13 @@ module.exports = class SensorPage extends Page
 
     console.log "Updating stats"
 
+    @protocol.getStatus (enabled, sampleRate) =>
+      @stats.enabled = enabled
+      @stats.disabled = not enabled
+      @stats.sampleRate = sampleRate
+      @render()
+    , updateError
+
     # Get battery status
     @protocol.getBatteryVoltage (volts) =>
       @stats.batteryVoltage = volts
@@ -92,21 +99,18 @@ module.exports = class SensorPage extends Page
       @render()
     , updateError
 
-    # Create downloader to get records to download
-    downloader = new GPSLoggerDownloader(@protocol, @db.sensor_data, @address)
-    downloader.getDownloadRange (startIndex, number) =>
-      console.log "Got download range #{startIndex} + #{number}"
-      @stats.numberToDownload = number
-      @stats.numberToDownloadKnown = true
-      @render()
+      # No easy way to know number to download now
+      # # Create downloader to get records to download
+      # downloader = new GPSLoggerDownloader(@protocol, @db.sensor_data, @address)
+      # downloader.getDownloadRange (startIndex, number) =>
+      #   console.log "Got download range #{startIndex} + #{number}"
+      #   @stats.numberToDownload = number
+      #   @stats.numberToDownloadKnown = true
+      #   @render()
+      # , updateError
+
     , updateError
     
-    @protocol.getStatus (enabled, sampleRate) =>
-      @stats.enabled = enabled
-      @stats.sampleRate = sampleRate
-      @render()
-    , updateError
-
     @protocol.getNumberRecords (totalRecords, lowestRecord, highestRecord) =>
       @stats.totalRecords = totalRecords
       @stats.lowestRecord = lowestRecord
@@ -246,7 +250,10 @@ module.exports = class SensorPage extends Page
       @render()
       @updateStats()
       _.defer ->
-        alert("Successfully downloaded #{number} records")
+        if number > 0
+          alert("Successfully downloaded #{number} records")
+        else
+          alert("No new records were available to download")
 
     error = (err) =>
       @downloading = false
