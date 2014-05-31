@@ -2,7 +2,7 @@
   {{#if error}}
   <div class="alert alert-danger">{{error}}</div>
   {{else}}
-  <div class="alert alert-info">Searching for sensors (attempt #{{attempt}})</div>
+  <div class="alert alert-info">Searching for sensors...</div>
   <table class="table" id="sensor_table">
     {{#each devices}}
     <tr class="tappable" id="{{address}}"><td>{{name}}</td><td>{{address}}</td></tr>

@@ -56,7 +56,7 @@ module.exports = class SensorListPage extends Page
       return
 
     # Make name friendly
-    device.name = "Sparx GPS Logger #{device.name.substr(5)}"
+    device.name = "Sparx GPS Logger"
 
     # Store discovery attempt number to cull old ones
     device.attempt = @discoveryAttempt

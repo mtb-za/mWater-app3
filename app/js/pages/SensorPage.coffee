@@ -235,7 +235,7 @@ module.exports = class SensorPage extends Page
       stats: @stats
       downloading: @downloading
       progress: @progress
-      address: @address
+      address: @options.address
     }
 
     @$el.html require('./SensorPage.hbs')(data)
@@ -260,16 +260,12 @@ module.exports = class SensorPage extends Page
       @render()
       @error(err)
 
-    # Get deviceUid
-    @protocol.getFirmwareInfo (deviceUid, channel, version) =>
-      # Create downloader.
-      # NOTE: Use Bluetooth address for duid, not internal deviceUid
-      downloader = new GPSLoggerDownloader(@protocol, @db.sensor_data, @address)
-      downloader.on 'progress', (completed, total) =>
-        @progress = completed*100/total
-        @render()
-      downloader.download success, error
-    , @error
+    # NOTE: Use Bluetooth address for duid, not internal deviceUid
+    downloader = new GPSLoggerDownloader(@protocol, @db.sensor_data, @address)
+    downloader.on 'progress', (completed, total) =>
+      @progress = completed*100/total
+      @render()
+    downloader.download success, error
 
   enableLogging: =>
     @protocol.enableLogging () =>

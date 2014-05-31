@@ -40,12 +40,17 @@ class MainPage extends Page
       @stopListening @imageSync
 
   render: ->
+    # Determine if base app out of date
+    if @baseVersion and @baseVersion.match(/^3\.[0-3]/)
+      outdated = true
+
     data = {
       login: @login
       version: @version
       baseVersion: @baseVersion
       lastSyncDate: @dataSync.lastSuccessDate if @dataSync?
       imagesRemaining: @imageSync.lastSuccessMessage if @imageSync?
+      outdated: outdated
     }
 
     @$el.html require('./MainPage.hbs')(data)
