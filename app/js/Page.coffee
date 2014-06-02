@@ -8,6 +8,8 @@ class Page extends Backbone.View
   constructor: (ctx, options={}) ->
     super(options)
 
+    @destroyed = false
+
     # Save options
     @options = options
 

@@ -77,6 +77,9 @@ module.exports = class SourceListPage extends Page
     @pager.openPage(require("./NewSourcePage"), {onSelect: onSelect})
     
   locationFound: (pos) =>
+    if @destroyed
+      return
+
     @$("#location_msg").hide()
 
     # Save position
@@ -129,6 +132,8 @@ module.exports = class SourceListPage extends Page
             @thumbnailQueue.push(source.thumbnail)
 
   locationError: (pos) =>
+    if @destroyed
+      return
     @$("#location_msg").hide()
     @pager.flash T("Unable to determine location"), "danger"
 

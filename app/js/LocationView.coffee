@@ -8,6 +8,9 @@ GeoJSON = require './GeoJSON'
 class LocationView extends Backbone.View
   constructor: (options) ->
     super()
+
+    @hasBeenRemoved = false
+
     @loc = options.loc
     @readonly = options.readonly
     @hideMap = options.hideMap
@@ -36,6 +39,7 @@ class LocationView extends Backbone.View
     'click #cancel_button' : 'cancelEditLocation'
 
   remove: ->
+    @hasBeenRemoved = true
     @locationFinder.stopWatch()
     super()
 
@@ -81,19 +85,21 @@ class LocationView extends Backbone.View
     @errorFindingLocation = false
 
     locationSuccess = (pos) =>
-      @settingLocation = false
-      @errorFindingLocation = false
+      if not @hasBeenRemoved
+        @settingLocation = false
+        @errorFindingLocation = false
 
-      # Set location
-      @loc = GeoJSON.posToPoint(pos)
-      @currentLoc = GeoJSON.posToPoint(pos)
-      @trigger('locationset', @loc)
-      @render()
+        # Set location
+        @loc = GeoJSON.posToPoint(pos)
+        @currentLoc = GeoJSON.posToPoint(pos)
+        @trigger('locationset', @loc)
+        @render()
 
     locationError = (err) =>
-      @settingLocation = false
-      @errorFindingLocation = true
-      @render()
+      if not @hasBeenRemoved
+        @settingLocation = false
+        @errorFindingLocation = true
+        @render()
 
     @locationFinder.getLocation locationSuccess, locationError
     @render()
