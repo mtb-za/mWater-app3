@@ -171,8 +171,9 @@ module.exports = class SourceListPage extends Page
             score -= dist/1000
 
           # Name match is a 100000 bump
-          if s.name.match(new RegExp(@searchText, "i"))
-            score += 100000
+          if name
+            if s.name.match(new RegExp(@searchText, "i"))
+              score += 100000
 
           # Since sorts by score ascending
           return -score
