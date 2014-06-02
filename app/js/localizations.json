@@ -1549,6 +1549,12 @@
       "en": "No surveys available. Please contact info@mwater.co to learn how to set one up",
       "es": "",
       "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Your app is out of date. Please update in Google Play store.",
+      "es": "",
+      "sw": ""
     }
   ]
 }
