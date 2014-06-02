@@ -92,10 +92,10 @@ module.exports = class SourceListPage extends Page
 
   renderList: ->
     # Append located and unlocated sources
-    if not @searchText
-      sources = @unlocatedSources.concat(@nearSources)
-    else
+    if @searchText and @searchSources?
       sources = @searchSources
+    else
+      sources = @unlocatedSources.concat(@nearSources)
 
     # Clone list as we will modify source list items and don't want to confuse minimongo
     sources = _.cloneDeep(sources)
