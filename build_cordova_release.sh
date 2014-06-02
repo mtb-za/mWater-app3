@@ -7,9 +7,7 @@ cd cordova
 echo "Copying files"
 grunt cordova_release
 
-echo "Preparing"
-cordova -d build
+echo "Building"
+cordova build android --release
 
-echo "Signing"
-ant release -f "./platforms/android/build.xml"
 cd ..
