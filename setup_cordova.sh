@@ -26,7 +26,7 @@ rm -r www/*
 
 echo "key.store=/home/clayton/.ssh/mwater.keystore" >> ./platforms/android/ant.properties
 echo "key.alias=mwater" >> ./platforms/android/ant.properties
-echo "TODO: Adjust minSdkVersion in AndroidManifest.xml to 8"
+# echo "TODO: Adjust minSdkVersion in AndroidManifest.xml to 8"
 # echo "TODO: Set versionCode and versionName in AndroidManifest.xml for EACH release" 
 echo 'TODO: Add android:name="co.mwater.acraplugin.MyApplication" to application element of AndroidManifest.xml'
 echo 'TODO: Add <uses-feature android:name="android.hardware.camera" android:required="false" /> to AndroidManifest.xml'
