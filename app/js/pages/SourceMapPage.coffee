@@ -142,13 +142,13 @@ class SourceMapPage extends Page
 
   gotoMyLocation: ->
     # Goes to current location
-    locationHasBeenSetAtLestOnce = false
+    locationHasBeenSetAtLeastOnce = false
     locationFinder = new LocationFinder()
     locationFinder.getLocation (pos) =>
       if not @destroyed
         latLng = new L.LatLng(pos.coords.latitude, pos.coords.longitude)
         # if the view has been set at least once (by a lower accuracy location)
-        if locationHasBeenSetAtLestOnce
+        if locationHasBeenSetAtLeastOnce
           # do not set the view again if the higher accuracy location is inside the current view
           # the idea is to avoid setting the map view many times
           if @map.getBounds().contains(latLng)
@@ -156,7 +156,7 @@ class SourceMapPage extends Page
 
         zoom = @map.getZoom()
         @map.setView(latLng, if zoom > 15 then zoom else 15)
-        locationHasBeenSetAtLestOnce = true
+        locationHasBeenSetAtLeastOnce = true
     , =>
       if not @destroyed
         @pager.flash(T("Unable to determine location"), "warning")

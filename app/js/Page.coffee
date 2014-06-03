@@ -3,6 +3,7 @@
 # Context is mixed in to the page object
 # Static method "canOpen(ctx)", if present, can forbid opening page if it returns false
 # Useful for displaying menus with page lists.
+# destroyed is set true once page is destroyed
 
 class Page extends Backbone.View
   constructor: (ctx, options={}) ->
