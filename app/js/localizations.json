@@ -441,24 +441,6 @@
       "_base": "en"
     },
     {
-      "en": "Preview Sources",
-      "es": "Muestras de las Fuentes",
-      "sw": "Hakiki Vyanzo",
-      "_unused": true
-    },
-    {
-      "en": "Import sources? This cannot be undone.",
-      "es": "Importar fuentes ? Esto no se puede deshacer.",
-      "sw": "Ingiza Vyanzo? Hii haiwezi kubadilishwa.",
-      "_unused": true
-    },
-    {
-      "en": "{0} sources inserted",
-      "es": "{0} fuentes insertadas",
-      "sw": "{0} vyanzo vimeingizwa",
-      "_unused": true
-    },
-    {
       "en": "Report Problem",
       "es": "Reportar Problema",
       "sw": "Ripoti Tatizo",
@@ -963,72 +945,6 @@
       "_base": "en"
     },
     {
-      "en": "Paste CSV here",
-      "es": "Pega CSV aquí",
-      "sw": "Weka CSV hapa",
-      "_unused": true
-    },
-    {
-      "en": "Fields are all optional",
-      "es": "Campos son todos opcionales",
-      "sw": "Nyanja zote hizi ni za hiari",
-      "_unused": true
-    },
-    {
-      "en": "name: name of source",
-      "es": "nombre: nombre de fuente",
-      "sw": "jina: jina la chanzo",
-      "_unused": true
-    },
-    {
-      "en": "desc: description of source",
-      "es": "desc: descripción de la fuente",
-      "sw": "desc: maelezo ya chanzo",
-      "_unused": true
-    },
-    {
-      "en": "type: type of source (see http://api.mwater.co/v3/source_types)",
-      "es": "tipo: tipo de fuente (vea http://api.mwater.co/v3/source_types)",
-      "sw": "aina: aina ya chanzo (tembelea http://api.mwater.co/v3/source_types)",
-      "_unused": true
-    },
-    {
-      "en": "latitude: latitude of source",
-      "es": "latitud: latitud de fuente",
-      "sw": "latitudo: latitudo ya chanzo",
-      "_unused": true
-    },
-    {
-      "en": "longitude: longitude of source",
-      "es": "longitud: longitud de fuente",
-      "sw": "longitudo: longitudo ya chanzo",
-      "_unused": true
-    },
-    {
-      "en": "private: \"true\" if source should be private",
-      "es": "privado: \"true\" si fuente debe de ser privada",
-      "sw": "binafsi: \"true\" endapo chanzo ni binafsi",
-      "_unused": true
-    },
-    {
-      "en": "org: organization to upload as (available to admin only)",
-      "es": "org: organización para subir (disponible sólo bajo admin)",
-      "sw": "shr: shirika litapakia data kama (inapatikana kwa msimamizi pekee)",
-      "_unused": true
-    },
-    {
-      "en": "Other fields will be added as custom fields and preserved.",
-      "es": "Otros campos serán agregados como campos personalizados y conservados",
-      "sw": "Nyanja nyingine zitaongezwa kama nyanja maalum na kuhifadhiwa",
-      "_unused": true
-    },
-    {
-      "en": "Preview",
-      "es": "Muestra",
-      "sw": "Hakiki",
-      "_unused": true
-    },
-    {
       "en": "Demo",
       "es": "Demo",
       "sw": "Demo",
@@ -1087,18 +1003,6 @@
       "es": "Seleccione el tipo de prueba para comenzar",
       "sw": "Chagua aina ya testi ya kuanza",
       "_base": "en"
-    },
-    {
-      "en": "Sources to Import",
-      "es": "Fuentes para Importar",
-      "sw": "Vyanzo vya Kuingiza",
-      "_unused": true
-    },
-    {
-      "en": "Import Now",
-      "es": "Importar ahora",
-      "sw": "Ingiza sasa",
-      "_unused": true
     },
     {
       "en": "Test EC Compact Dry Plate Counter",
@@ -1242,18 +1146,6 @@
       "en": "Completed",
       "es": "Completado",
       "sw": "Imekamilika",
-      "_unused": true
-    },
-    {
-      "en": "Desc",
-      "es": "Descripción",
-      "sw": "Maelezo",
-      "_unused": true
-    },
-    {
-      "en": "Type",
-      "es": "Tipo",
-      "sw": "Aina",
       "_unused": true
     },
     {
