@@ -1,4 +1,5 @@
 # Objects that help with synchronizing with the server
+async = require 'async'
 
 # Class which repeats an operation every n ms or when called
 # Puts mutex on action
@@ -73,10 +74,28 @@ exports.DataSync = class DataSync extends Repeater
 
   _sync: (success, error) =>
     @hybridDb.upload () =>
-      @sourceCodesManager.replenishCodes 5, =>
+      # Replenish offline source codes available
+      @sourceCodesManager.replenishCodes 50, =>
         success()
       , error      
     , error
+
+  # Gets the number of upserts pending (calls success with number)
+  numUpsertsPending: (success, error) ->
+    localDb = @hybridDb.localDb
+
+    cols = _.values(localDb.collections)
+    async.map cols, (col, cb) =>
+      col.pendingUpserts (upserts) =>
+        cb(null, upserts.length)
+      , cb
+    , (err, results) =>
+      if err
+        return error(err)
+      sum = 0
+      for result in results
+        sum += result
+      success(sum)
 
 exports.ImageSync = class ImageSync extends Repeater
   constructor: (imageManager) ->

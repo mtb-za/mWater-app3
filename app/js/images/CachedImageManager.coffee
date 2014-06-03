@@ -84,16 +84,17 @@ module.exports = class CachedImageManager
     ), error
 
   downloadImage: (imageId, url, dirEntry, success, error) ->
-    @fileTransfer.download encodeURI(url), dirEntry.fullPath + "/" + imageId + ".jpg", ((entry) ->
+    @fileTransfer.download encodeURI(url), dirEntry.toURL() + "/" + imageId + ".jpg", ((entry) ->
       success entry.toURL()
     ), (err) ->
       # Delete file on disk if present
-      dirEntry.getFile imageId + ".jpg", {}, ((imageFile) ->
-        imageFile.remove (->
-        ), ->
-      ), ->
-      # Call error function
-      error(err)
+      dirEntry.getFile imageId + ".jpg", {}, (imageFile) ->
+        imageFile.remove ->
+          error(err)
+        , ->
+          error(err)
+      , ->
+        error(err)
 
   findImageFile: (dir, imageId, found, notfound, error) ->
     console.log "checking in: " + dir
@@ -157,7 +158,7 @@ module.exports = class CachedImageManager
             error fileTransferError
 
         # Upload file
-        fileName = files[0].fullPath
+        fileName = files[0].toURL()
         destUrl = encodeURI(@apiUrl + "images/" + files[0].name.split(".")[0] + "?client=" + @client)
         console.log "About to upload image #{fileName} to #{destUrl}"
         @fileTransfer.upload fileName, destUrl, 

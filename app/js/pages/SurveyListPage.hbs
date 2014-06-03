@@ -7,9 +7,15 @@
 </style>
 
 <div>
+  <button type="button" id="add_survey" class="btn btn-primary btn-lg btn-block">
+    <span class="glyphicon glyphicon-plus"></span>
+    {{T "Start Survey"}}
+  </button>
+
   <h4>{{T "Incomplete Surveys"}}</h4>
   <table class="table" id="incomplete_table">
   </table>
+  
   <h4>{{T "Recent Completed Surveys"}}</h4>
   <table class="table" id="recent_table">
   </table>

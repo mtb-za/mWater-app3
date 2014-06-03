@@ -82,6 +82,7 @@ class Pager extends Backbone.View
     console.log "Closing page #{page.constructor.name}"
 
     page.deactivate()
+    page.destroyed = true
     page.destroy()
     page.remove()
 

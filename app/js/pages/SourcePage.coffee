@@ -1,7 +1,7 @@
 Page = require("../Page")
-LocationView = require ("../LocationView")
+LocationView = require('mwater-forms').LocationView
 forms = require '../forms'
-
+GeoJSON = require '../GeoJSON'
 
 # Displays a source
 # Options: setLocation - true to autoset location
@@ -63,17 +63,24 @@ module.exports = class SourcePage extends Page
         if sourceType? then @$("#source_type").text(sourceType.name)
 
     # Add location view
-    locationView = new LocationView(loc: @source.geo, readonly: not @auth.update("sources", @source))
+    locationView = new LocationView(
+      loc: GeoJSON.geoToLoc(@source.geo)
+      readonly: not @auth.update("sources", @source)
+      T: T)
     if @setLocation
       locationView.setLocation()
       @setLocation = false
 
     @listenTo locationView, 'locationset', (loc) ->
-      @source.geo = loc
+      geo = GeoJSON.locToPoint(loc)
+      if geo?
+        @source.geo = geo
+      else  
+        delete @source.geo
       @db.sources.upsert @source, => @render()
 
     @listenTo locationView, 'map', (loc) =>
-      @pager.openPage(require("./SourceMapPage"), {initialGeo: loc})
+      @pager.openPage(require("./SourceMapPage"), {initialGeo: GeoJSON.locToPoint(loc)})
       
     @addSubview(locationView)
     @$("#location").append(locationView.el)

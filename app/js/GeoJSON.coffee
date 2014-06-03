@@ -7,6 +7,28 @@ exports.posToPoint = (pos) ->
     coordinates: [pos.coords.longitude, pos.coords.latitude]
   }
 
+# Converts navigator location to point
+exports.locToPoint = (loc) ->
+  if not loc?
+    return null
+
+  geo = {
+    type: 'Point'
+    coordinates: [loc.longitude, loc.latitude]
+  }
+  # Do not include altitude due to Mongo bug
+  # if loc.altitude?
+  #   geo.coordinates.push loc.altitude
+  return geo
+
+# Converts geojson geometry to location. Implemented only for point
+exports.geoToLoc = (geo) ->
+  if not geo?
+    return null
+  if geo.type == "Point"
+    return { latitude: geo.coordinates[1], longitude: geo.coordinates[0], altitude: geo.coordinates[2] }
+  else
+    throw new Error("Unknown geo type: " + geo.type)
 
 exports.latLngBoundsToGeoJSON = (bounds) ->
   s = bounds.getSouth()
@@ -54,6 +76,21 @@ exports.pointInPolygon = (point, polygon) ->
 
   return bounds.contains(new L.LatLng(pointLat, pointLng))
 
+# Get distance
+exports.getDistance = (from, to) ->
+  x1 = from.coordinates[0]
+  y1 = from.coordinates[1]
+  x2 = to.coordinates[0]
+  y2 = to.coordinates[1]
+  
+  # Convert to relative position (approximate)
+  dy = (y2 - y1) / 57.3 * 6371000
+  dx = Math.cos(y1 / 57.3) * (x2 - x1) / 57.3 * 6371000
+  
+  # Determine direction and angle
+  dist = Math.sqrt(dx * dx + dy * dy)
+
+  return dist
 
 exports.getRelativeLocation = (from, to) ->
   x1 = from.coordinates[0]

@@ -5,7 +5,7 @@ PageMenu = require("./PageMenu")
 context = require './context'
 login = require './login'
 ProblemReporter = require './ProblemReporter'
-Localizer = require './localization/Localizer'
+ezlocalize = require 'ez-localize'
 
 MainPage = require './pages/MainPage'
 LoginPage = require './pages/LoginPage'
@@ -27,8 +27,8 @@ exports.start = (options = {}) ->
   Swag.registerHelpers(handlebars)
   
   # Setup localizer
-  localizationData = require './localization/localizations.json'
-  localizer = new Localizer(localizationData, "en")
+  localizationData = require './localizations.json'
+  localizer = new ezlocalize.Localizer(localizationData, "en")
   localizer.makeGlobal(handlebars)
   localizer.restoreCurrentLocale()
 
@@ -64,35 +64,37 @@ exports.start = (options = {}) ->
 
   # Step 2 of setup
   step2 = ->
+    withCtx = (ctx) ->
+      problemReporter = ProblemReporter.register ctx.apiUrl + 'problem_reports', "//VERSION//", ->
+        return ctx.login
+        
+      ProblemReporter.default = problemReporter
+
+      # Set pager context
+      pager.setContext(ctx)
+
+      # Add slider sub-menus
+      slideMenu.addSubmenu(pager.getContextMenu())
+      slideMenu.addSubmenu(new PageMenu(ctx: ctx))
+
+      $ -> 
+        # If explicit page
+        if options.initialPage == "SourceMapPage"
+          pager.openPage(SourceMapPage)
+        # If logged in, open main page
+        else if ctx.login?
+          pager.openPage(MainPage)
+        else
+          pager.openPage(LoginPage)
+
     # Create context
     if options.demo  
-      ctx = context.createDemoContext()
+      context.createDemoContext(withCtx)
     else if login.getLogin()
-      ctx = context.createLoginContext(login.getLogin())
+      context.createLoginContext(login.getLogin(), withCtx)
     else  
-      ctx = context.createAnonymousContext()
+      context.createAnonymousContext(withCtx)
 
-    problemReporter = ProblemReporter.register ctx.apiUrl + 'problem_reports', "//VERSION//", ->
-      return ctx.login
-      
-    ProblemReporter.default = problemReporter
-
-    # Set pager context
-    pager.setContext(ctx)
-
-    # Add slider sub-menus
-    slideMenu.addSubmenu(pager.getContextMenu())
-    slideMenu.addSubmenu(new PageMenu(ctx: ctx))
-
-    $ -> 
-      # If explicit page
-      if options.initialPage == "SourceMapPage"
-        pager.openPage(SourceMapPage)
-      # If logged in, open main page
-      else if ctx.login?
-        pager.openPage(MainPage)
-      else
-        pager.openPage(LoginPage)
 
   # Start cordova (if needed)
   cordova.setup { update: options.update }, (isCordova) =>

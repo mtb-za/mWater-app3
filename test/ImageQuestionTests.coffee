@@ -3,7 +3,7 @@ forms = require('forms')
 UIDriver = require './helpers/UIDriver'
 ImagePage = require '../app/js/pages/ImagePage'
 
-Localizer = require '../app/js/localization/Localizer'
+Localizer = require('ez-localize').Localizer
 new Localizer().makeGlobal(require("hbsfy/runtime"))
 
 class MockImageManager 

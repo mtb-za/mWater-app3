@@ -1,0 +1,1560 @@
+{
+  "locales": [
+    {
+      "code": "en",
+      "name": "English"
+    },
+    {
+      "code": "es",
+      "name": "Español"
+    },
+    {
+      "code": "sw",
+      "name": "Kiswahili"
+    }
+  ],
+  "strings": [
+    {
+      "en": "<b>{0} images to upload</b>",
+      "es": "<b>{0} imágenes para cargar</b>",
+      "sw": "<b>{0} picha za kupakia </b>",
+      "_base": "en"
+    },
+    {
+      "en": "Add Water Source",
+      "es": "Agregar Fuente de Agua",
+      "sw": "Ongeza Chanzo cha Maji",
+      "_base": "en"
+    },
+    {
+      "en": "Start Water Test",
+      "es": "Comenzar Prueba de Agua",
+      "sw": "Anzisha Testi ya Maji",
+      "_base": "en"
+    },
+    {
+      "en": "Start Survey",
+      "es": "Comenzar Tasación",
+      "sw": "Anzisha Fomu ya Utafiti",
+      "_base": "en"
+    },
+    {
+      "en": "User:",
+      "es": "Usario:",
+      "sw": "Mtumiaji",
+      "_base": "en"
+    },
+    {
+      "en": "Sync:",
+      "es": "Sincronizar:",
+      "sw": "Landanisha:",
+      "_base": "en"
+    },
+    {
+      "en": "Version:",
+      "es": "Version:",
+      "sw": "Toleo",
+      "_base": "en"
+    },
+    {
+      "en": "Map Water Sources",
+      "es": "Trazar un Mapa de los Fuentes de Agua",
+      "sw": "Ramani ya Vyanzo vya Maji",
+      "_base": "en"
+    },
+    {
+      "en": "List Water Sources",
+      "es": "Hacer un Lista de los Fuentes de Agua",
+      "sw": "Orodha ya Vyanzo vya Maji",
+      "_base": "en"
+    },
+    {
+      "en": "Language:",
+      "es": "Idioma:",
+      "sw": "Lugha",
+      "_base": "en"
+    },
+    {
+      "en": "Advanced",
+      "es": "Avanzado",
+      "sw": "Muendelezo",
+      "_base": "en"
+    },
+    {
+      "en": "Reset Local Storage",
+      "es": "Reinicializar el Almacenaje de Local",
+      "sw": "Anza upya hifadhi ya ndani",
+      "_base": "en"
+    },
+    {
+      "en": "This will completely reset any cached data and cause you to lose any pending changes that you have not uploaded",
+      "es": "Esto completamente restablecerá los datos almacenados en memoria caché y hacerle perder cualquier cambio pendiente que no haya subido",
+      "sw": "Hii itafuta kabisa data zozote zilizotunzwa katika kumbukumbu na kusababisha upoteze mabadiliko yoyote yanayosubiri kuhamishwa",
+      "_base": "en"
+    },
+    {
+      "en": "N",
+      "es": "Norte",
+      "sw": "Kaskazini",
+      "_base": "en"
+    },
+    {
+      "en": "NE",
+      "es": "Noreste",
+      "sw": "Kaskazini Mashariki",
+      "_base": "en"
+    },
+    {
+      "en": "E",
+      "es": "Este",
+      "sw": "Mashariki",
+      "_base": "en"
+    },
+    {
+      "en": "SE",
+      "es": "Sureste",
+      "sw": "Kusini Mashariki",
+      "_base": "en"
+    },
+    {
+      "en": "S",
+      "es": "Sur",
+      "sw": "Kusini",
+      "_base": "en"
+    },
+    {
+      "en": "SW",
+      "es": "Suroeste",
+      "sw": "Kusini Magharibi",
+      "_base": "en"
+    },
+    {
+      "en": "W",
+      "es": "Oeste",
+      "sw": "Magharibi",
+      "_base": "en"
+    },
+    {
+      "en": "NW",
+      "es": "Noroeste",
+      "sw": "Kaskazini Magharibi",
+      "_base": "en"
+    },
+    {
+      "en": "No geolocation available",
+      "es": "Geolocalización no disponible",
+      "sw": "Huduma ya kupatikana kijiografia haipo",
+      "_base": "en"
+    },
+    {
+      "en": "Cannot find location",
+      "es": "No se puede encontrar ubicación",
+      "sw": "Haiwezekani kupata eneo hili",
+      "_base": "en"
+    },
+    {
+      "en": "Unspecified location",
+      "es": "ubicación no especificada",
+      "sw": "Mahali pasipojulikana",
+      "_base": "en"
+    },
+    {
+      "en": "Setting location...",
+      "es": "Configurando ubicación...",
+      "sw": "Inaweka mahali...",
+      "_base": "en"
+    },
+    {
+      "en": "Waiting for GPS...",
+      "es": "Esperando el GPS...",
+      "sw": "Inasubiria GPS...",
+      "_base": "en"
+    },
+    {
+      "en": "Invalid latitude",
+      "es": "Latitud no válido",
+      "sw": "Latitudo batili",
+      "_base": "en"
+    },
+    {
+      "en": "Invalid longitude",
+      "es": "Longitud no válido",
+      "sw": "Longitudo batili",
+      "_base": "en"
+    },
+    {
+      "en": "Internal Error",
+      "es": "Error Interno",
+      "sw": "Hitilafu ya Ndani",
+      "_base": "en"
+    },
+    {
+      "en": "Internal error",
+      "es": "Error Interno",
+      "sw": "Hitilafu ya ndani",
+      "_base": "en"
+    },
+    {
+      "en": "Failed to take picture",
+      "es": "No se pudo tomar foto",
+      "sw": "Imeshindikana kupiga picha",
+      "_base": "en"
+    },
+    {
+      "en": "A new version is available. Restart app?",
+      "es": "Está disponible una nueva versión. Reiniciar la aplicación?",
+      "sw": "Toleo jipya linapatikana. Anzisha upya programu?",
+      "_base": "en"
+    },
+    {
+      "en": "Loading mWater...",
+      "es": "Cargando mWater...",
+      "sw": "mWater inafunguka...",
+      "_base": "en"
+    },
+    {
+      "en": "Images not available",
+      "es": "Imagenes no disponibles",
+      "sw": "Picha hazipatikani",
+      "_base": "en"
+    },
+    {
+      "en": "Save",
+      "es": "Guardar",
+      "sw": "Hifadhi",
+      "_base": "en"
+    },
+    {
+      "en": "Cancel",
+      "es": "Cancelar",
+      "sw": "Sitisha",
+      "_base": "en"
+    },
+    {
+      "en": "Discard",
+      "es": "Desechar",
+      "sw": "Ondoa",
+      "_base": "en"
+    },
+    {
+      "en": "Save for Later",
+      "es": "Guardar para luego",
+      "sw": "Hifadhi kwa ajili ya baadaye",
+      "_base": "en"
+    },
+    {
+      "en": "Complete",
+      "es": "Completar",
+      "sw": "Kamilisha",
+      "_base": "en"
+    },
+    {
+      "en": "Image must be a jpeg file",
+      "es": "Imagen tiene que ser un archivo jpeg",
+      "sw": "Muundo wa picha lazima uwe ni jpeg",
+      "_base": "en"
+    },
+    {
+      "en": "Upload failed: {0}",
+      "es": "No se pudo cargar: {0}",
+      "sw": "Imeshindwa kupakia: {0}",
+      "_base": "en"
+    },
+    {
+      "en": "Error uploading file",
+      "es": "Error al cargar el archivo",
+      "sw": "Hitilafu katika kupakia faili",
+      "_base": "en"
+    },
+    {
+      "en": "Upload cancelled",
+      "es": "Carga cancelada",
+      "sw": "kupakia data kumesitishwa",
+      "_base": "en"
+    },
+    {
+      "en": "Create Water Source",
+      "es": "Crear Fuente de Agua",
+      "sw": "Unda Chanzo cha Maji",
+      "_base": "en"
+    },
+    {
+      "en": "Pending...",
+      "es": "Pendiente...",
+      "sw": "Inasubiri...",
+      "_base": "en"
+    },
+    {
+      "en": "No Data",
+      "es": "No Hay Datos",
+      "sw": "Hakuna data",
+      "_base": "en"
+    },
+    {
+      "en": "High",
+      "es": "Alto",
+      "sw": "Refu",
+      "_base": "en"
+    },
+    {
+      "en": "Water source",
+      "es": "Fuente de Agua",
+      "sw": "Chanzo cha Maji",
+      "_base": "en"
+    },
+    {
+      "en": "Name",
+      "es": "Nombre",
+      "sw": "Jina",
+      "_base": "en"
+    },
+    {
+      "en": "E.Coli / 100mL",
+      "es": "E.Coli / 100mL",
+      "sw": "E.Coli / 100mL",
+      "_base": "en"
+    },
+    {
+      "en": "Open",
+      "es": "Abierto",
+      "sw": "Fungua",
+      "_base": "en"
+    },
+    {
+      "en": "Admin",
+      "es": "Administración",
+      "sw": "Msimamizi",
+      "_base": "en"
+    },
+    {
+      "en": "Select Survey",
+      "es": "Seleccione encuesta",
+      "sw": "Chagua Fomu ya Utafiti",
+      "_base": "en"
+    },
+    {
+      "en": "Image",
+      "es": "Imagen",
+      "sw": "Picha",
+      "_base": "en"
+    },
+    {
+      "en": "Remove image?",
+      "es": "Quitar Imagen?",
+      "sw": "Ondoa picha?",
+      "_base": "en"
+    },
+    {
+      "en": "Import Sources",
+      "es": "Importar Fuentes",
+      "sw": "Ingiza Vyanzo",
+      "_unused": true
+    },
+    {
+      "en": "Error in data",
+      "es": "Error en los datos",
+      "sw": "Hitilafu katika data",
+      "_unused": true
+    },
+    {
+      "en": "Login as {0} successful",
+      "es": "Iniciar sesión como {0} exitoso ",
+      "sw": "Umefanikiwa kuingia kama {0}",
+      "_base": "en"
+    },
+    {
+      "en": "Running in Demo mode. No changes will be saved",
+      "es": "Ejecutando en modo de demostración. Los cambios no se guardarán",
+      "sw": "Inafanya kazi kama modeli ya demo. Mabadiliko yoyote hayatahifadhiwa",
+      "_base": "en"
+    },
+    {
+      "en": "New Source",
+      "es": "Fuente Nueva",
+      "sw": "Chanzo kipya",
+      "_base": "en"
+    },
+    {
+      "en": "Enter Source Type",
+      "es": "Introducir Tipo de Fuente",
+      "sw": "Chagua Aina ya Chanzo",
+      "_base": "en"
+    },
+    {
+      "en": "Zoom in to see more",
+      "es": "Zoom para ver más",
+      "sw": "Kuza ili kuona zaidi",
+      "_base": "en"
+    },
+    {
+      "en": "Enter optional name",
+      "es": "Introduzca nombre opcional",
+      "sw": "Jaza jina la hiari",
+      "_base": "en"
+    },
+    {
+      "en": "Enter optional description",
+      "es": "Introduzca una descripción opcional",
+      "sw": "Jaza maelezo ya hiari",
+      "_base": "en"
+    },
+    {
+      "en": "Privacy",
+      "es": "Privacidad",
+      "sw": "Usiri",
+      "_base": "en"
+    },
+    {
+      "en": "Water source is private",
+      "es": "Fuente de agua es privada",
+      "sw": "Chanzo cha Maji ni binafsi",
+      "_base": "en"
+    },
+    {
+      "en": "This should only be used for sources that are not publically accessible",
+      "es": "Esto sólo debe usarse para fuentes que no son públicamente accesibles",
+      "sw": "Hii itumike kwa vyanzo ambavyo havitumiki na jamii pekee",
+      "_base": "en"
+    },
+    {
+      "en": "Set to current location?",
+      "es": "Establecer la ubicación actual?",
+      "sw": "Weka mahali ulipo sasa?",
+      "_base": "en"
+    },
+    {
+      "en": "Unable to generate source id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range.",
+      "es": "Es incapaz de generar código fuente Por favor asegúrese de que tiene una conexión o utilizar las configuraciones para obtener más información antes de salir del rango de conexión",
+      "sw": "Haiwezekani kuzalisha namba ya pekee (id) ya chanzo. Tafadhali hakikisha umeunganishwa na mtandao au fungua Mipangilio ili kupata vyanzo zaidi kabla ya kutoka nje ya eneo lenye mawasiliano",
+      "_base": "en"
+    },
+    {
+      "en": "Form not found",
+      "es": "Forma no encontrada",
+      "sw": "Fomu haipatikani",
+      "_base": "en"
+    },
+    {
+      "en": "Select Test",
+      "es": "Elegir Prueba",
+      "sw": "Chagua Testi",
+      "_base": "en"
+    },
+    {
+      "en": "Preview Sources",
+      "es": "Muestras de las Fuentes",
+      "sw": "Hakiki Vyanzo",
+      "_unused": true
+    },
+    {
+      "en": "Import sources? This cannot be undone.",
+      "es": "Importar fuentes ? Esto no se puede deshacer.",
+      "sw": "Ingiza Vyanzo? Hii haiwezi kubadilishwa.",
+      "_unused": true
+    },
+    {
+      "en": "{0} sources inserted",
+      "es": "{0} fuentes insertadas",
+      "sw": "{0} vyanzo vimeingizwa",
+      "_unused": true
+    },
+    {
+      "en": "Report Problem",
+      "es": "Reportar Problema",
+      "sw": "Ripoti Tatizo",
+      "_base": "en"
+    },
+    {
+      "en": "Enter username",
+      "es": "Introduzca el nombre de usuario",
+      "sw": "Andika jina la mtumiaji",
+      "_base": "en"
+    },
+    {
+      "en": "Enter email address",
+      "es": "Introducir dirección de correo electrónico",
+      "sw": "Andika anwani yako ya barua pepe",
+      "_base": "en"
+    },
+    {
+      "en": "Describe the problem",
+      "es": "Describir el Problema",
+      "sw": "Elezea tatizo",
+      "_base": "en"
+    },
+    {
+      "en": "Report sent",
+      "es": "Reportaje mandado",
+      "sw": "Ripoti imetumwa",
+      "_base": "en"
+    },
+    {
+      "en": "Debugging with code <b>{0}</b>",
+      "es": "Depuración de código <b>{0}</b>",
+      "sw": "Chambua kwa kutumia kanuni <b>{0}</b>",
+      "_base": "en"
+    },
+    {
+      "en": "Completely discard local data, logout and lose unsubmitted changes?",
+      "es": "Totalmente descartar datos locales, logout y perderá los cambios inéditos?",
+      "sw": "Ondoa kabisa data za ndani, toka na poteza mabadiliko ambayo hayajawasilishwa?",
+      "_base": "en"
+    },
+    {
+      "en": "Error",
+      "es": "Error",
+      "sw": "Hitilafu",
+      "_base": "en"
+    },
+    {
+      "en": "E.Coli",
+      "es": "E.Coli",
+      "sw": "E.Coli",
+      "_base": "en"
+    },
+    {
+      "en": "TC",
+      "es": "TC",
+      "sw": "TC",
+      "_base": "en"
+    },
+    {
+      "en": "Algorithm",
+      "es": "Algoritmo",
+      "sw": "Algorithm",
+      "_base": "en"
+    },
+    {
+      "en": "Start remote debugger (this will give developers temporary access to the app on your phone)?",
+      "es": "Iniciar el depurador remoto (esto le dará los desarrolladores acceso temporal a la aplicación en su teléfono)?",
+      "sw": "Anzisha kichambuzi cha mbali (waruhusu wabunifu wa programu wajaribu kutatua tatizo la simu yako kupitia Intaneti)?",
+      "_base": "en"
+    },
+    {
+      "en": "Debugger started with code {0}",
+      "es": "Depurador comenzado con código {0}",
+      "sw": "Kichambuzi kimeanzishwa na kanuni {0}",
+      "_base": "en"
+    },
+    {
+      "en": "Failed to load weinre",
+      "es": "Error al cargar weinre",
+      "sw": "Imeshindikana kupakia weinre",
+      "_base": "en"
+    },
+    {
+      "en": "Username required",
+      "es": "Nombre de usuario requerido",
+      "sw": "Weka jina la mtumiaji",
+      "_base": "en"
+    },
+    {
+      "en": "Password of at least 5 characters required",
+      "es": "Contraseña de al menos 5 caracteres requerida",
+      "sw": "Weka neno la siri lisilo chini ya herufi 5",
+      "_base": "en"
+    },
+    {
+      "en": "Email required",
+      "es": "Correo electrónico obligatorio",
+      "sw": "Weka barua pepe",
+      "_base": "en"
+    },
+    {
+      "en": "Unable to signup. Please check that you are connected to Internet",
+      "es": "No puede registrarse. Por favor, compruebe que está conectado a Internet",
+      "sw": "Imeshindikana kusajili. Tafadhali hakikisha umeunganishwa na Intaneti",
+      "_base": "en"
+    },
+    {
+      "en": "Edit Source {0}",
+      "es": "Editar Fuente {0}",
+      "sw": "Hariri Chanzo {0}",
+      "_base": "en"
+    },
+    {
+      "en": "Nearby Sources",
+      "es": "Fuentes Cercanas",
+      "sw": "Vyanzo vilivyo Jirani",
+      "_base": "en"
+    },
+    {
+      "en": "Unable to determine location",
+      "es": "Incapaz de determinar la ubicación",
+      "sw": "Inashindikana kutambua mahali",
+      "_base": "en"
+    },
+    {
+      "en": "Enter search text or ID of water source",
+      "es": "Introduzca el texto de búsqueda o el código de fuente de agua",
+      "sw": "Andika maandishi ya kutafuta au ID ya chanzo cha maji",
+      "_base": "en"
+    },
+    {
+      "en": "Source Map",
+      "es": "Mapa de los Fuentes",
+      "sw": "Ramani ya Vyanzo",
+      "_base": "en"
+    },
+    {
+      "en": "All Sources",
+      "es": "Todas las Fuentes",
+      "sw": "Vyanzo Vyote",
+      "_base": "en"
+    },
+    {
+      "en": "Only My Organization",
+      "es": "Sólo mi organización",
+      "sw": "Shirika Langu Tu",
+      "_base": "en"
+    },
+    {
+      "en": "Only Mine",
+      "es": "Solo el Mio",
+      "sw": "Yangu Pekee",
+      "_base": "en"
+    },
+    {
+      "en": "Note for Source {0}",
+      "es": "Nota para la fuente {0}",
+      "sw": "Noti ya Chanzo {0}",
+      "_base": "en"
+    },
+    {
+      "en": "Date of Visit",
+      "es": "Feche de Visita",
+      "sw": "Siku ya Ziara",
+      "_base": "en"
+    },
+    {
+      "en": "Status of Water Source",
+      "es": "Estado de la Fuente de Agua",
+      "sw": "Hali ya Chanzo cha Maji",
+      "_base": "en"
+    },
+    {
+      "en": "Functional",
+      "es": "Funcional",
+      "sw": "Kinafanya kazi",
+      "_base": "en"
+    },
+    {
+      "en": "Needs maintenance",
+      "es": "Necesita mantenimiento",
+      "sw": "Kinahitaji matengenezo",
+      "_base": "en"
+    },
+    {
+      "en": "Non-functional",
+      "es": "No funcional",
+      "sw": "Hakifanyi kazi",
+      "_base": "en"
+    },
+    {
+      "en": "No longer exists",
+      "es": "Ya no existe",
+      "sw": "Haipo tena",
+      "_base": "en"
+    },
+    {
+      "en": "Notes",
+      "es": "Notas",
+      "sw": "Maelezo",
+      "_base": "en"
+    },
+    {
+      "en": "Source not found",
+      "es": "Fuente no encontrada",
+      "sw": "Chanzo hakipatikani",
+      "_base": "en"
+    },
+    {
+      "en": "Delete Source",
+      "es": "Eliminar fuente",
+      "sw": "Futa Chanzo",
+      "_base": "en"
+    },
+    {
+      "en": "Add Note",
+      "es": "Agregar Nota",
+      "sw": "Ongeza Noti",
+      "_base": "en"
+    },
+    {
+      "en": "Permanently delete source?",
+      "es": "Eliminar permanentemente la fuente?",
+      "sw": "Futa chanzo kwa kudumu?",
+      "_base": "en"
+    },
+    {
+      "en": "Source deleted",
+      "es": "Fuente eliminada",
+      "sw": "Chanzo kimefutwa",
+      "_base": "en"
+    },
+    {
+      "en": "Survey",
+      "es": "Encuesta",
+      "sw": "Fomu ya Utafiti",
+      "_base": "en"
+    },
+    {
+      "en": "Test not found",
+      "es": "Prueba no encontrada",
+      "sw": "Testi haipatikani",
+      "_base": "en"
+    },
+    {
+      "en": "Delete Survey",
+      "es": "Eliminar Encuesta",
+      "sw": "Futa Fomu ya Utafiti",
+      "_base": "en"
+    },
+    {
+      "en": "Survey form {0} not found",
+      "es": "Formulario de encuesta {0} no encontrado",
+      "sw": "Fomu ya Utafiti {0} haipatikani",
+      "_unused": true
+    },
+    {
+      "en": "Survey saved as draft.",
+      "es": "Encuesta guardada como borrador",
+      "sw": "Fomu ya Utafiti imehifadhiwa kama rasimu",
+      "_base": "en"
+    },
+    {
+      "en": "Survey completed successfully",
+      "es": "Encuesta completada con éxito",
+      "sw": "Fomu ya Utafiti imekamilika kwa mafanikio",
+      "_base": "en"
+    },
+    {
+      "en": "Permanently delete survey?",
+      "es": "Eliminar encuesta permanentemente?",
+      "sw": "Futa Fomu ya Utafiti kwa kudumu?",
+      "_base": "en"
+    },
+    {
+      "en": "Survey deleted",
+      "es": "Encuesta eliminada",
+      "sw": "Fomu ya Utafiti imefutwa",
+      "_base": "en"
+    },
+    {
+      "en": "Recent Tests",
+      "es": "Pruebas recientes",
+      "sw": "Testi za karibuni",
+      "_base": "en"
+    },
+    {
+      "en": "Water Test",
+      "es": "Prueba de Agua",
+      "sw": "Testi ya Maji",
+      "_base": "en"
+    },
+    {
+      "en": "Delete Test",
+      "es": "Eliminar Prueba",
+      "sw": "Futa Testi",
+      "_base": "en"
+    },
+    {
+      "en": "Test form {0} not found",
+      "es": "Prueba formulario {0} no encontrada",
+      "sw": "Fomu ya testi {0} haipatikani",
+      "_base": "en"
+    },
+    {
+      "en": "Test saved as draft.",
+      "es": "Prueba guardada como borrador.",
+      "sw": "Testi imehifadhiwa kama rasimu.",
+      "_base": "en"
+    },
+    {
+      "en": "Test completed successfully",
+      "es": "Prueba completada con exito",
+      "sw": "Testi imekamilika kwa mafanikio",
+      "_base": "en"
+    },
+    {
+      "en": "Permanently delete test?",
+      "es": "Eliminar prueba permanentemente?",
+      "sw": "Futa testi kwa kudumu?",
+      "_base": "en"
+    },
+    {
+      "en": "Test deleted",
+      "es": "Prueba eliminada",
+      "sw": "Testi imefutwa",
+      "_base": "en"
+    },
+    {
+      "en": "Unable to login. Please check that you are connected to Internet",
+      "es": "No se pudo iniciar sesión. Por favor, compruebe que está conectado a Internet",
+      "sw": "Imeshindikana kuingia. Tafadhali hakikisha umeunganishwa na Intaneti.",
+      "_base": "en"
+    },
+    {
+      "en": "Latitude",
+      "es": "Latitud",
+      "sw": "Latitudo",
+      "_base": "en"
+    },
+    {
+      "en": "Longitude",
+      "es": "Longitud",
+      "sw": "Longitudo",
+      "_base": "en"
+    },
+    {
+      "en": "Home",
+      "es": "Página inicial",
+      "sw": "Ukurasa wa nyumbani",
+      "_base": "en"
+    },
+    {
+      "en": "Login",
+      "es": "Conexión",
+      "sw": "Ingia",
+      "_base": "en"
+    },
+    {
+      "en": "List of Sources",
+      "es": "Lista de las Fuentes",
+      "sw": "Orodha ya Vyanzo",
+      "_base": "en"
+    },
+    {
+      "en": "Map of Sources",
+      "es": "Mapa de las Fuentes",
+      "sw": "Ramani ya Vyanzo",
+      "_base": "en"
+    },
+    {
+      "en": "Start New Water Test",
+      "es": "Comenzar Prueba de Agua Nueva",
+      "sw": "Anza Testi mpya ya Maji",
+      "_unused": true
+    },
+    {
+      "en": "Recent Water Tests",
+      "es": "Pruebas de agua recientes",
+      "sw": "Testi za Maji za karibuni",
+      "_unused": true
+    },
+    {
+      "en": "Start New Survey",
+      "es": "Comenzar Encuesta Nueva",
+      "sw": "Anza Utafiti mpya",
+      "_unused": true
+    },
+    {
+      "en": "Recent Surveys",
+      "es": "Encuestas Recientes",
+      "sw": "Tafiti za hivi karibuni",
+      "_unused": true
+    },
+    {
+      "en": "Settings",
+      "es": "Ajustes",
+      "sw": "Mipangilio",
+      "_base": "en"
+    },
+    {
+      "en": "Report a Problem",
+      "es": "Reportar un Problema",
+      "sw": "Ripoti Tatizo",
+      "_base": "en"
+    },
+    {
+      "en": "Logout",
+      "es": "Cerrar sesión",
+      "sw": "Toka",
+      "_base": "en"
+    },
+    {
+      "en": "Back",
+      "es": "Atrás",
+      "sw": "Rudi",
+      "_base": "en"
+    },
+    {
+      "en": "Next",
+      "es": "Siguente",
+      "sw": "Inayofuata",
+      "_base": "en"
+    },
+    {
+      "en": "Finish",
+      "es": "Terminar",
+      "sw": "Hitimisha",
+      "_base": "en"
+    },
+    {
+      "en": "Upload Image",
+      "es": "Cargar Imagen",
+      "sw": "Pakia Picha",
+      "_base": "en"
+    },
+    {
+      "en": "Close",
+      "es": "Cerrar",
+      "sw": "Funga",
+      "_base": "en"
+    },
+    {
+      "en": "Upload",
+      "es": "Subir",
+      "sw": "Pakia",
+      "_base": "en"
+    },
+    {
+      "en": "Change user's password",
+      "es": "Cambiar la Contraseña de Usario",
+      "sw": "Badilisha neno la siri la mtumiaji",
+      "_base": "en"
+    },
+    {
+      "en": "Change Password",
+      "es": "Cambiar la Contraseña",
+      "sw": "Badilisha Neno la Siri",
+      "_base": "en"
+    },
+    {
+      "en": "Set user's organization",
+      "es": "Establecer la Organización del Usuario",
+      "sw": "Weka shirika la mtumiaji",
+      "_base": "en"
+    },
+    {
+      "en": "Move user's existing data to new organization",
+      "es": "Mover los datos existentes del usuario a la nueva organización",
+      "sw": "Hamisha data za mtumiaji zilizopo kwenda shirika jipya",
+      "_base": "en"
+    },
+    {
+      "en": "Change Organization",
+      "es": "Cambiar Organización",
+      "sw": "Badili shirika",
+      "_base": "en"
+    },
+    {
+      "en": "Crash!",
+      "es": "Choque!",
+      "sw": "Mvurugiko!",
+      "_base": "en"
+    },
+    {
+      "en": "Incomplete Surveys",
+      "es": "Encuestas Incompletadas",
+      "sw": "Tafiti ambazo hazijakamilika",
+      "_base": "en"
+    },
+    {
+      "en": "Recent Completed Surveys",
+      "es": "Encuestas Completadas Recientes",
+      "sw": "Tafiti zilizokamilika karibuni",
+      "_base": "en"
+    },
+    {
+      "en": "Loading image",
+      "es": "Cargando Imagen",
+      "sw": "Inafungua picha",
+      "_base": "en"
+    },
+    {
+      "en": "Paste CSV here",
+      "es": "Pega CSV aquí",
+      "sw": "Weka CSV hapa",
+      "_unused": true
+    },
+    {
+      "en": "Fields are all optional",
+      "es": "Campos son todos opcionales",
+      "sw": "Nyanja zote hizi ni za hiari",
+      "_unused": true
+    },
+    {
+      "en": "name: name of source",
+      "es": "nombre: nombre de fuente",
+      "sw": "jina: jina la chanzo",
+      "_unused": true
+    },
+    {
+      "en": "desc: description of source",
+      "es": "desc: descripción de la fuente",
+      "sw": "desc: maelezo ya chanzo",
+      "_unused": true
+    },
+    {
+      "en": "type: type of source (see http://api.mwater.co/v3/source_types)",
+      "es": "tipo: tipo de fuente (vea http://api.mwater.co/v3/source_types)",
+      "sw": "aina: aina ya chanzo (tembelea http://api.mwater.co/v3/source_types)",
+      "_unused": true
+    },
+    {
+      "en": "latitude: latitude of source",
+      "es": "latitud: latitud de fuente",
+      "sw": "latitudo: latitudo ya chanzo",
+      "_unused": true
+    },
+    {
+      "en": "longitude: longitude of source",
+      "es": "longitud: longitud de fuente",
+      "sw": "longitudo: longitudo ya chanzo",
+      "_unused": true
+    },
+    {
+      "en": "private: \"true\" if source should be private",
+      "es": "privado: \"true\" si fuente debe de ser privada",
+      "sw": "binafsi: \"true\" endapo chanzo ni binafsi",
+      "_unused": true
+    },
+    {
+      "en": "org: organization to upload as (available to admin only)",
+      "es": "org: organización para subir (disponible sólo bajo admin)",
+      "sw": "shr: shirika litapakia data kama (inapatikana kwa msimamizi pekee)",
+      "_unused": true
+    },
+    {
+      "en": "Other fields will be added as custom fields and preserved.",
+      "es": "Otros campos serán agregados como campos personalizados y conservados",
+      "sw": "Nyanja nyingine zitaongezwa kama nyanja maalum na kuhifadhiwa",
+      "_unused": true
+    },
+    {
+      "en": "Preview",
+      "es": "Muestra",
+      "sw": "Hakiki",
+      "_unused": true
+    },
+    {
+      "en": "Demo",
+      "es": "Demo",
+      "sw": "Demo",
+      "_base": "en"
+    },
+    {
+      "en": "Try out app",
+      "es": "Probar app",
+      "sw": "Jaribu programu",
+      "_base": "en"
+    },
+    {
+      "en": "Login to mWater",
+      "es": "Iniciar sesión en mWater",
+      "sw": "Ingia mWater",
+      "_base": "en"
+    },
+    {
+      "en": "Username or Email",
+      "es": "Nombre de usuario o correo electrónico",
+      "sw": "Jina la mtumiaji au Barua pepe",
+      "_base": "en"
+    },
+    {
+      "en": "Username",
+      "es": "Nombre de Usario",
+      "sw": "Jina la mtumiaji",
+      "_base": "en"
+    },
+    {
+      "en": "Password",
+      "es": "Contraseña",
+      "sw": "Neno la siri",
+      "_base": "en"
+    },
+    {
+      "en": "or",
+      "es": "o",
+      "sw": "au",
+      "_base": "en"
+    },
+    {
+      "en": "Signup",
+      "es": "Registrarse",
+      "sw": "Jisajili",
+      "_base": "en"
+    },
+    {
+      "en": "Select type of survey to start",
+      "es": "Seleccione el tipo de encuesta para comenzar",
+      "sw": "Chagua aina ya utafiti wa kuanza",
+      "_unused": true
+    },
+    {
+      "en": "Select type of test to start",
+      "es": "Seleccione el tipo de prueba para comenzar",
+      "sw": "Chagua aina ya testi ya kuanza",
+      "_base": "en"
+    },
+    {
+      "en": "Sources to Import",
+      "es": "Fuentes para Importar",
+      "sw": "Vyanzo vya Kuingiza",
+      "_unused": true
+    },
+    {
+      "en": "Import Now",
+      "es": "Importar ahora",
+      "sw": "Ingiza sasa",
+      "_unused": true
+    },
+    {
+      "en": "Test EC Compact Dry Plate Counter",
+      "es": "Probar Contador Compacto Placa Seca CE",
+      "sw": "Jaribu kaunta ya EC Compact Dry Plate",
+      "_base": "en"
+    },
+    {
+      "en": "Start Remote Debugger",
+      "es": "Iniciar el depurador remoto",
+      "sw": "Anzisha kichambuzi cha mbali",
+      "_base": "en"
+    },
+    {
+      "en": "Signup with mWater",
+      "es": "Registrarse con mWater",
+      "sw": "Jisajili na mWater",
+      "_base": "en"
+    },
+    {
+      "en": "Note: Your username is visible on water sources you create",
+      "es": "Nota: Su nombre de usuario es visible en las fuentes de agua que se crea",
+      "sw": "Noti: Jina lako la utumiaji linaonekana katika vyanzo vya maji unavyounda",
+      "_base": "en"
+    },
+    {
+      "en": "Email address",
+      "es": "Dirección de correo electrónico",
+      "sw": "Anwani ya barua pepe",
+      "_base": "en"
+    },
+    {
+      "en": "Email",
+      "es": "Correo electrónico",
+      "sw": "Barua pepe",
+      "_base": "en"
+    },
+    {
+      "en": "Note: Your email address will never be shared",
+      "es": "Nota: Tu dirección de correo electrónico nunca será compartida",
+      "sw": "Noti: Anwani yako ya barua pepe kamwe haitawekwa wazi kwa wengine",
+      "_base": "en"
+    },
+    {
+      "en": "Waiting for GPS location...",
+      "es": "En espera de ubicación GPS...",
+      "sw": "Subiri kupata mahali kwa GPS...",
+      "_base": "en"
+    },
+    {
+      "en": "Search results for:",
+      "es": "Los resultados de la búsqueda",
+      "sw": "Matokeo ya utafutaji wa:",
+      "_base": "en"
+    },
+    {
+      "en": "ID:",
+      "es": "ID:",
+      "sw": "ID:",
+      "_base": "en"
+    },
+    {
+      "en": "Type:",
+      "es": "Tipo",
+      "sw": "Aina",
+      "_base": "en"
+    },
+    {
+      "en": "Edit Source",
+      "es": "Editar fuente",
+      "sw": "Hariri Chanzo",
+      "_base": "en"
+    },
+    {
+      "en": "Location",
+      "es": "Ubicación",
+      "sw": "Mahali",
+      "_base": "en"
+    },
+    {
+      "en": "Add",
+      "es": "Agregar",
+      "sw": "Ongeza",
+      "_base": "en"
+    },
+    {
+      "en": "Water Tests",
+      "es": "Pruebas de Agua",
+      "sw": "Testi za Maji",
+      "_base": "en"
+    },
+    {
+      "en": "Surveys",
+      "es": "Encuestas",
+      "sw": "Fomu za Utafiti",
+      "_base": "en"
+    },
+    {
+      "en": "Photos",
+      "es": "Fotos",
+      "sw": "Picha",
+      "_base": "en"
+    },
+    {
+      "en": "Incomplete Tests",
+      "es": "Pruebas Incompletadas",
+      "sw": "Testi ambazo hazijakamilika",
+      "_base": "en"
+    },
+    {
+      "en": "Test",
+      "es": "Prueba",
+      "sw": "Testi",
+      "_base": "en"
+    },
+    {
+      "en": "of",
+      "es": "de",
+      "sw": "ya",
+      "_base": "en"
+    },
+    {
+      "en": "No images present",
+      "es": "Sin imágenes",
+      "sw": "Hakuna picha",
+      "_base": "en"
+    },
+    {
+      "en": "Taking photos not supported on this platform",
+      "es": "Esta plataforma no suporta la toma de fotografias",
+      "sw": "Upigaji picha haukubaliwi katika mfumo huu wa uendeshaji",
+      "_base": "en"
+    },
+    {
+      "en": "started",
+      "es": "empezado",
+      "sw": "Imeanzwa",
+      "_base": "en"
+    },
+    {
+      "en": "Completed",
+      "es": "Completado",
+      "sw": "Imekamilika",
+      "_unused": true
+    },
+    {
+      "en": "Desc",
+      "es": "Descripción",
+      "sw": "Maelezo",
+      "_unused": true
+    },
+    {
+      "en": "Type",
+      "es": "Tipo",
+      "sw": "Aina",
+      "_unused": true
+    },
+    {
+      "en": "Offline Source Creation",
+      "es": "Creación de Fuente sin Conexión",
+      "sw": "Uundaji wa Vyanzo bila Intaneti",
+      "_base": "en"
+    },
+    {
+      "en": "Number of sources that can be created offline:",
+      "es": "Número de fuentes que se pueden crear sin conexión",
+      "sw": "Idadi ya vyanzo inayoweza kuundwa bila kuunganishwa na Intaneti",
+      "_base": "en"
+    },
+    {
+      "en": "Request more",
+      "es": "Pedir más",
+      "sw": "Omba zaidi",
+      "_base": "en"
+    },
+    {
+      "en": "Select Source",
+      "es": "Seleccionar fuente",
+      "sw": "Chagua Chanzo",
+      "_base": "en"
+    },
+    {
+      "en": "Private",
+      "es": "Privado",
+      "sw": "Binafsi",
+      "_base": "en"
+    },
+    {
+      "en": "Needs repair",
+      "es": "Necesidades reparadas",
+      "sw": "Ukarabati unahitajika",
+      "_base": "en"
+    },
+    {
+      "en": "Edit Survey",
+      "es": "Editar Encuesta",
+      "sw": "Hariri Fomu ya Utafiti",
+      "_base": "en"
+    },
+    {
+      "en": "Source",
+      "es": "Fuente",
+      "sw": "Chanzo",
+      "_base": "en"
+    },
+    {
+      "en": "Edit Test",
+      "es": "Editar Prueba",
+      "sw": "Hariri Testi",
+      "_base": "en"
+    },
+    {
+      "en": "Select units",
+      "es": "Seleccionar unidades",
+      "sw": "Chagua kipimo",
+      "_base": "en"
+    },
+    {
+      "en": "Draft",
+      "es": "Borrador",
+      "sw": "Rasimu",
+      "_base": "en"
+    },
+    {
+      "en": "None",
+      "es": "Ninguna",
+      "sw": "Hakuna",
+      "_base": "en"
+    },
+    {
+      "en": "Not logged in",
+      "es": "No iniciado",
+      "sw": "Hujaingia",
+      "_base": "en"
+    },
+    {
+      "en": "Unlocated",
+      "es": "Sin localizar",
+      "sw": "Haina mahali",
+      "_base": "en"
+    },
+    {
+      "en": "See the map for a global view if no sources are found.",
+      "es": "Vea el mapa para obtener una vista global si no encuentra fuentes",
+      "sw": "Angalia ramani kwa muonekano wa ulimwengu kama hakuna vyanzo vinanvyoonekana",
+      "_base": "en"
+    },
+    {
+      "en": "Incomplete",
+      "es": "Incompleto",
+      "sw": "Haijakamilika",
+      "_base": "en"
+    },
+    {
+      "en": "unnamed",
+      "es": "sin nombre",
+      "sw": "haina jina",
+      "_base": "en"
+    },
+    {
+      "en": "Set",
+      "es": "Fijar",
+      "sw": "Weka",
+      "_base": "en"
+    },
+    {
+      "en": "Clear",
+      "es": "Borrar",
+      "sw": "Ondoa",
+      "_base": "en"
+    },
+    {
+      "en": "Map",
+      "es": "Mapa",
+      "sw": "Ramani",
+      "_base": "en"
+    },
+    {
+      "en": "Edit",
+      "es": "Editar",
+      "sw": "Hariri",
+      "_base": "en"
+    },
+    {
+      "en": "Source {0}",
+      "es": "Fuente {0}",
+      "sw": "Chanzo {0}",
+      "_base": "en"
+    },
+    {
+      "_base": "en",
+      "en": "Username must be composed of letters, numbers, spaces, period and dash and must be at least 7 characters long. It must start with a letter.",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Pending",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Final",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Rejected",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Select survey to start",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Survey form not found",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Select",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Images not available on this platform",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "GPS not available",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Location Set Successfully",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Use Anyway",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Low GPS Accuracy",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Very Low GPS Accuracy. Waiting for better signal...",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Setting Location...",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "km",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "m",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "N/A",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Don't know",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Comments",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Image not available",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "<b>{0} records to upload</b>",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Sensors",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Only available on Android app",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Unable to connect to Bluetooth",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Sensor",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Survey not found",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "No surveys available. Please contact info@mwater.co to learn how to set one up",
+      "es": "",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Your app is out of date. Please update in Google Play store.",
+      "es": "",
+      "sw": ""
+    }
+  ]
+}

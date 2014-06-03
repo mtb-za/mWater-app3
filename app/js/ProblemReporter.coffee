@@ -44,7 +44,7 @@ ProblemReporter = (url, version, getLogin) ->
       user_agent: navigator.userAgent
       log: log
       desc: desc
-      device: window.device
+      device: JSON.stringify(window.device)
       url: window.location.href
       date: new Date().toISOString()
 
@@ -59,6 +59,9 @@ ProblemReporter = (url, version, getLogin) ->
     req.fail =>
       if error?
         error()
+
+  # Don't overload the server with errors
+  @reportProblem = _.debounce(@reportProblem, 30000, true)
   
   # # Capture error logs
   # debouncedReportProblem = _.debounce(@reportProblem, 5000, true)
@@ -73,10 +76,7 @@ ProblemReporter = (url, version, getLogin) ->
   # Prevent recursion
   reportingError = false
 
-  window.onerror = (errorMsg, url, lineNumber) ->
-    if reportingError 
-      console.error "Ignoring error: #{errorMsg}"
-      return
+  handleOnError = (errorMsg, url, lineNumber) ->
     reportingError = true
 
     # Put up alert instead of old action
@@ -86,6 +86,17 @@ ProblemReporter = (url, version, getLogin) ->
       reportingError = false
     , ->
       reportingError = false
+
+  # Don't overload the user with errors
+  debouncedHandleOnError = _.debounce(handleOnError, 5000, true)
+
+  window.onerror = (errorMsg, url, lineNumber) ->
+    if reportingError 
+      console.error "Ignoring error: #{errorMsg}"
+      return
+
+    debouncedHandleOnError(errorMsg, url, lineNumber)
+
 
   @restore = ->
     _.each _.keys(_captured), (key) ->

@@ -17,23 +17,22 @@ module.exports = class PageMenu extends Backbone.View
     "click #source_map" : "gotoSourceMap"
     "click #settings" : "gotoSettings"
     "click #new_test" : "gotoNewTest"
-    "click #existing_test" : "gotoExistingTest"
-    "click #new_survey" : "gotoNewSurvey"
-    "click #existing_survey" : "gotoExistingSurvey"
+    "click #test_list" : "gotoTestList"
+    "click #survey_list" : "gotoSurveyList"
     "click #report_problem" : 'gotoProblemReport'
-    "click #import_sources" : 'gotoImportSources'
     "click #admin" : 'gotoAdmin'
+    "click #sensor_list" : 'gotoSensorList'
 
   render: ->
     @$el.html require('./PageMenu.hbs')()
     @$("#new_test").toggle(require("./pages/NewTestPage").canOpen(@options.ctx))
-    @$("#new_survey").toggle(require("./pages/NewSurveyPage").canOpen(@options.ctx))
-    @$("#existing_survey").toggle(require("./pages/ExistingSurveyPage").canOpen(@options.ctx))
-    @$("#existing_test").toggle(require("./pages/TestListPage").canOpen(@options.ctx))
+    @$("#survey_list").toggle(require("./pages/SurveyListPage").canOpen(@options.ctx))
+    @$("#test_list").toggle(require("./pages/TestListPage").canOpen(@options.ctx))
     @$("#admin").toggle(require("./pages/AdminPage").canOpen(@options.ctx))
 
     @$("#login").toggle(not @options.ctx.login?)
     @$("#logout").toggle(@options.ctx.login?)
+    @$("#sensor_list").toggle(@options.ctx.login?)
 
   gotoHome: ->
     while @pager.multiplePages()
@@ -45,9 +44,9 @@ module.exports = class PageMenu extends Backbone.View
     
     # Update context, first stopping old one
     @options.ctx.stop()
-    _.extend @options.ctx, context.createAnonymousContext()
-
-    @gotoLogin()
+    context.createAnonymousContext (ctx) =>
+      _.extend @options.ctx, ctx
+      @gotoLogin()
 
   gotoLogin: ->
     while @pager.multiplePages()
@@ -70,20 +69,17 @@ module.exports = class PageMenu extends Backbone.View
   gotoNewTest: ->
     @pager.openPage(require("./pages/NewTestPage"))
 
-  gotoExistingTest: ->
+  gotoTestList: ->
     @pager.openPage(require("./pages/TestListPage"))
 
-  gotoNewSurvey: ->
-    @pager.openPage(require("./pages/NewSurveyPage"))
-
-  gotoExistingSurvey: ->
-    @pager.openPage(require("./pages/ExistingSurveyPage"))
+  gotoSurveyList: ->
+    @pager.openPage(require("./pages/SurveyListPage"))
 
   gotoProblemReport: ->
     @pager.openPage(require("./pages/ProblemReportPage"))
 
-  gotoImportSources: ->
-    @pager.openPage(require("./pages/ImportSourcesPage"))
-
   gotoAdmin: ->
     @pager.openPage(require("./pages/AdminPage"))
+
+  gotoSensorList: ->
+    @pager.openPage(require("./pages/SensorListPage"))

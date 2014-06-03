@@ -1,4 +1,4 @@
-queueasync = require 'queue-async'
+async = require 'async'
 
 class SourceLayerCreator 
   # Calls success with { source: source, layer: layer }
@@ -95,7 +95,11 @@ class EColi extends SourceLayerCreator
     @ecoliAnalyzer = ecoliAnalyzer
 
     # Create queue of analyses to be run 
-    @taskQueue = queueasync(8)  # 8 in parallel
+    @taskQueue = async.queue(@worker, 8)  # 8 in parallel
+
+  # Worker for async queue just calls task with callback
+  worker: (task, callback) =>
+    task(callback)
 
   # Level is E.Coli level/100ml. Can also be 'pending' and 'nodata' and 'high'
   getPopupHtmlElement: (source, level) ->
@@ -115,12 +119,19 @@ class EColi extends SourceLayerCreator
       throw "Invalid level: " + level
 
     # Create popup
+    thumbnail = "" 
+    if source.photos and source.photos.length 
+      thumbnail = "<img class='thumb' src='https://api.mwater.co/v3/images/" + source.photos[0].id + "?h=100' >"
+
     html = _.template('''
       <div>
-      ''' + T("Water source") + ''' <b><%=source.code%></b><br>
-      ''' + T("Name") + ''': <b><%=source.name%></b><br>
-      ''' + T("E.Coli / 100mL") + ''': <b><%=levelStr%><br>
-      <button class="btn btn-primary btn-block">''' + T("Open") + '''</button>
+        ''' + thumbnail + '''
+        <div class='data'>
+          ''' + T("Name") + ''' <b><%=source.name%></b><br>
+          ''' + T("Water source") + ''' <b><%=source.code%></b><br>
+          ''' + T("E.Coli / 100mL") + ''': <b><%=levelStr%></b><br>
+        </div>
+        <button class="btn btn-primary btn-block">''' + T("Open") + '''</button>
       </div>''', 
       { source: source, levelStr: levelStr })
 
@@ -197,10 +208,10 @@ class EColi extends SourceLayerCreator
     success(source: source, layer: layer)
 
     # Create async task to be queued
-    task = (next) =>
+    task = (callback) =>
       # If layer removed, skip
       if layer.removed
-        return next()
+        return callback()
 
       # Call EColi analyzer to get actual level
       @ecoliAnalyzer.analyzeSource source, (level) =>
@@ -215,15 +226,14 @@ class EColi extends SourceLayerCreator
             opacity: 1.0
             fillOpacity: 1.0
           }
-        next()
+        callback()
       , (err) =>
         error(err)
         
         # Tell queue of error
-        # TODO keep processing in case of error?
-        next(err)
+        callback(err)
 
-    @taskQueue.defer(task)
+    @taskQueue.push(task)
 
   createLegend: ->
     html = '''
