@@ -26,9 +26,10 @@ class MainPage extends Page
         @render()
 
     # Cache groups
-    @db.groups.find({ members: @login.user }).fetch (groups) =>
-      # Do nothing, just querying caches them
-      return
+    if @login
+      @db.groups.find({ members: @login.user }).fetch (groups) =>
+        # Do nothing, just querying caches them
+        return
 
     @render()
 
