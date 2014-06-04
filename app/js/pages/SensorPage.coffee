@@ -24,8 +24,8 @@ module.exports = class SensorPage extends Page
 
     # Setup menu
     menu = [
-      { text: "Upgrade Firmware", id: "upgradeFirmware", click: @upgradeFirmware }
-      { text: "Delete All Records", id: "deleteAllRecords", click: @deleteAllRecords }
+      { text: T("Upgrade Firmware"), id: "upgradeFirmware", click: @upgradeFirmware }
+      { text: T("Delete All Records"), id: "deleteAllRecords", click: @deleteAllRecords }
     ]
     @setupButtonBar [
       { icon: "gear.png", menu: menu }
@@ -62,7 +62,7 @@ module.exports = class SensorPage extends Page
     @stats.numberToDownloadKnown = false
     
     updateError = (error) =>
-      @displayEvent("Update error: " + error)
+      @displayEvent(T("Update error") + ": " + error)
 
     console.log "Updating stats"
 
@@ -136,7 +136,7 @@ module.exports = class SensorPage extends Page
     connectionError = (error) =>
       @state = "disconnected"
       console.error "Error connecting: " + JSON.stringify(error)
-      @status = "Error connecting"
+      @status = T("Error connecting")
       @render()
 
     updateStatus = (status) =>
@@ -145,7 +145,7 @@ module.exports = class SensorPage extends Page
       @render()
 
     startCommandMode = =>
-      updateStatus("Entering command mode...")
+      updateStatus(T("Finalizing connection..."))
 
       async.retry 10, (callback) =>
         @protocol.startCommandMode () =>
@@ -164,12 +164,10 @@ module.exports = class SensorPage extends Page
           return
 
         @state = "connected"
-        updateStatus("Connected")
+        updateStatus(T("Connected"))
         @updateStats()
 
     startConnectionManager = =>
-      updateStatus("Starting connection manager...")
-
       @connection = {
         write: (data, success, error) ->
           window.bluetooth.write success, error, data
@@ -182,7 +180,7 @@ module.exports = class SensorPage extends Page
       onError = (error) =>
         @state = "disconnected"
         console.error "Error in connection manager: " + JSON.stringify(error)
-        @status = "Error in connection manager: " + JSON.stringify(error)
+        @status = T("Error connecting")
         @render()
 
       # Manage connection
@@ -199,7 +197,7 @@ module.exports = class SensorPage extends Page
       startCommandMode()
 
     makeConnection = () =>
-      updateStatus("Connecting...")
+      updateStatus(T("Connecting..."))
       opts = { address: @options.address, uuid: "00001101-0000-1000-8000-00805f9b34fb", conn: "Hax" }
       console.log "Connecting to " + JSON.stringify(opts)
 
@@ -209,12 +207,11 @@ module.exports = class SensorPage extends Page
 
     checkPairing = =>
       # Check pairing
-      updateStatus("Checking pairing...")
       window.bluetooth.isPaired (paired) =>
         if paired
           return makeConnection()
 
-        updateStatus("Pairing...")
+        updateStatus(T("Pairing with sensor..."))
         window.bluetooth.pair makeConnection, connectionError, @options.address
       , connectionError, @options.address
 
@@ -251,9 +248,9 @@ module.exports = class SensorPage extends Page
       @updateStats()
       _.defer ->
         if number > 0
-          alert("Successfully downloaded #{number} records")
+          alert(T("Successfully downloaded {0} records", number))
         else
-          alert("No new records were available to download")
+          alert(T("No new records were available to download"))
 
     error = (err) =>
       @downloading = false
@@ -271,36 +268,36 @@ module.exports = class SensorPage extends Page
     @protocol.enableLogging () =>
       @updateStats()
     , (error) =>
-      alert("Unable to enable logging")
+      alert(T("Unable to enable logging"))
 
   disableLogging: =>
     @protocol.disableLogging () =>
       @updateStats()
     , (error) =>
-      alert("Unable to disable logging")
+      alert(T("Unable to disable logging"))
 
   upgradeFirmware: =>
     if @state != "connected"
-      return alert("Not connected")
+      return alert(T("Not connected"))
 
-    if confirm("You will need an Ant+ connection and PC and a binary ready. This cannot be undone. Proceed?")
-      if confirm("Are you really sure you want to do this?")
+    if confirm(T("You will need an Ant+ connection and PC and a binary ready. This cannot be undone. Proceed?"))
+      if confirm(T("Are you really sure you want to do this?"))
         @protocol.upgradeFirmware () =>
           @connected = false
           @pager.closePage()
-          alert("Now upload new firmware, following instructions carefully")
+          alert(T("Now upload new firmware, following instructions carefully"))
         , ->
-          alert("Unable to upgrade firmware")
+          alert(T("Unable to upgrade firmware"))
 
   deleteAllRecords: =>
     if @state != "connected"
-      return alert("Not connected")
+      return alert(T("Not connected"))
       
-    if confirm("This will delete all records on the device. This cannot be undone. Proceed?")
-      if confirm("Are you really sure you want to do this?")
+    if confirm(T("This will delete all records on the device. This cannot be undone. Proceed?"))
+      if confirm(T("Are you really sure you want to do this?"))
         @protocol.deleteAllRecords () =>
-          alert("All records deleted")
+          alert(T("All records deleted"))
           @updateStats()
         , ->
-          alert("Unable to delete all records")
+          alert(T("Unable to delete all records"))
 

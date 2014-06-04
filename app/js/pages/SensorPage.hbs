@@ -1,9 +1,9 @@
 
 </div>
 
-<h4>Status</h4>
+<h4>{{T "Status"}}</h4>
 
-<div>Connection Status: 
+<div>{{T "Connection Status"}}:
 {{#if connected}}
 <span class="text-success">{{status}}</span>
 {{/if}}
@@ -17,41 +17,43 @@
 <br/>
 <button type="button" id="connect" class="btn btn-default">
 	<span class="glyphicon glyphicon-repeat"></span>
-	Reconnect
+	{{T "Reconnect"}}
 </button>
 {{/if}}
 
 {{#if connected}}
 
-<div>Device ID: {{address}}</div>
+<div>{{T "Device ID"}}: {{address}}</div>
 
 {{#if stats.enabled}}
-	<div class="lead text-success">Logging Enabled</div>
-	<button id="disable_logging" type="button" class="btn btn-default">Disable Logging</button>
+	<div class="lead text-success">{{T "Logging Enabled"}}</div>
+	<button id="disable_logging" type="button" class="btn btn-default">{{T "Disable Logging"}}</button>
 {{/if}}
 
 {{#if stats.disabled}}
-	<div class="lead text-danger">Logging Disabled</div>
-	<button id="enable_logging" type="button" class="btn btn-primary">Enable Logging</button>
+	<div class="lead text-danger">{{T "Logging Disabled"}}</div>
+	<button id="enable_logging" type="button" class="btn btn-primary">{{T "Enable Logging"}}</button>
 {{/if}}
 
-<h4>Battery</h4>
+<h4>{{T "Battery"}}</h4>
 <div class="progress">
   <div id="progress_bar" class="progress-bar progress-bar-{{stats.batteryState}}" style="width: {{stats.batteryPercentage}}%;">
   	{{stats.batteryPercentage}}%
   </div>
 </div>
 
-<h4>Memory</h4>
+<h4>{{T "Memory"}}</h4>
 <div class="progress">
   <div id="progress_bar" class="progress-bar progress-bar-{{stats.memoryState}}" style="width: {{stats.memoryPercentage}}%;">
   	{{stats.memoryPercentage}}%
   </div>
 </div>
 
-<h4>Data</h4>
+<h4>{{T "Data"}}</h4>
 <div>
-	<button id="download_data" type="button" class="btn btn-primary btn-lg" {{#if downloading}}disabled="disabled"{{/if}}>Download Data</button>
+	<button id="download_data" type="button" class="btn btn-primary btn-lg" {{#if downloading}}disabled="disabled"{{/if}}>
+		{{T "Download Data"}}
+	</button>
 </div>
 
 <!--{{#if stats.numberToDownloadKnown}}
@@ -68,7 +70,7 @@
 {{/if}}-->
 
 {{#if downloading}}
-<h4>Downloading data</h4>
+<h4>{{T "Downloading data"}}</h4>
 <div class="progress">
   <div id="progress_bar" class="progress-bar" style="width: {{progress}}%;">
   </div>
@@ -77,19 +79,19 @@
 
 <br/>
 
-<h4>Device Information</h4>
-<div class="text-muted">ID (Bluetooth Address): {{address}}</div>
+<h4>{{T "Device Information"}}</h4>
+<div class="text-muted">{{T "ID (Bluetooth Address)"}}: {{address}}</div>
 {{#with stats}}
-	<div class="text-muted">Battery voltage: {{batteryVoltage}}</div>
-	<div class="text-muted">Interal Device UID: {{deviceUid}}</div>
-	<div class="text-muted">Ant+ Channel: {{channel}}</div>
-	<div class="text-muted">Firmware version: {{version}}</div>
-	<div class="text-muted">Status: {{#if enabled}}Logging Enabled{{else}}Logging Disabled{{/if}}</div>
-	<div class="text-muted">Sample Rate: {{sampleRate}}</div>
-	<div class="text-muted">Records: {{totalRecords}} {{lowestRecord}}-{{highestRecord}}</div>
+	<div class="text-muted">{{T "Battery voltage"}}: {{batteryVoltage}}</div>
+	<div class="text-muted">{{T "Interal Device UID"}}: {{deviceUid}}</div>
+	<div class="text-muted">{{T "Ant+ Channel"}}: {{channel}}</div>
+	<div class="text-muted">{{T "Firmware version"}}: {{version}}</div>
+	<div class="text-muted">{{T "Status"}}: {{#if enabled}}Logging Enabled{{else}}Logging Disabled{{/if}}</div>
+	<div class="text-muted">{{T "Sample Rate"}}: {{sampleRate}}</div>
+	<div class="text-muted">{{T "Records"}}: {{totalRecords}} {{lowestRecord}}-{{highestRecord}}</div>
 {{/with}}
 
-<button id="update_status" type="button" class="btn btn-default btn-sm">Update Device Status</button>
+<button id="update_status" type="button" class="btn btn-default btn-sm">{{T "Update Device Status"}}</button>
 <br/>
 
 <!--

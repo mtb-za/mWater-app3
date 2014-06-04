@@ -1443,6 +1443,221 @@
       "en": "Your app is out of date. Please update in Google Play store.",
       "es": "",
       "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Searching for sensors...",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Upgrade Firmware",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Delete All Records",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Update error",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Error connecting",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Finalizing connection...",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Connected",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Connecting...",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Pairing with sensor...",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Successfully downloaded {0} records",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "No new records were available to download",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Unable to enable logging",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Unable to disable logging",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Not connected",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "You will need an Ant+ connection and PC and a binary ready. This cannot be undone. Proceed?",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Are you really sure you want to do this?",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Now upload new firmware, following instructions carefully",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Unable to upgrade firmware",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "This will delete all records on the device. This cannot be undone. Proceed?",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "All records deleted",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Unable to delete all records",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Status",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Connection Status",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Reconnect",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Device ID",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Logging Enabled",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Disable Logging",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Logging Disabled",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Enable Logging",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Battery",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Memory",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Data",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Download Data",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Downloading data",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Device Information",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "ID (Bluetooth Address)",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Battery voltage",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Interal Device UID",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Ant+ Channel",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Firmware version",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Sample Rate",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Records",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Update Device Status",
+      "sw": ""
     }
   ]
 }
