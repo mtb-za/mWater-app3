@@ -1658,6 +1658,16 @@
       "_base": "en",
       "en": "Update Device Status",
       "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Please update mWater App to use this form",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "This form is out of date and cannot be opened",
+      "sw": ""
     }
   ]
 }

@@ -60,6 +60,16 @@ class SurveyPage extends Page
         }
       }
 
+      # Check schema version
+      schema = @form.design._schema or 1
+      if schema > mwaterforms.schemaVersion
+        alert(T("Please update mWater App to use this form"))
+        return @pager.closePage()
+
+      if schema < mwaterforms.minSchemaVersion
+        alert(T("This form is out of date and cannot be opened"))
+        return @pager.closePage()
+
       # Create compiler
       compiler = new mwaterforms.FormCompiler(model: model, locale: @formLocale, ctx: ctx)
 
