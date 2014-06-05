@@ -37,7 +37,7 @@ authModule = require './auth'
 sourcecodes = require './sourcecodes'
 syncModule = require './sync'
 Camera = require './Camera'
-cordova = require './cordova'
+cordovaSetup = require './cordovaSetup'
 ImageUploader = require './images/ImageUploader'
 ProblemReporter = require './ProblemReporter'
 
@@ -78,7 +78,7 @@ createBaseContext = ->
     apiUrl: apiUrl
     camera: camera
     version: '//VERSION//'
-    baseVersion: cordova.baseVersion()
+    baseVersion: cordovaSetup.baseVersion()
     localizer: T.localizer
     stop: ->
     # db: null

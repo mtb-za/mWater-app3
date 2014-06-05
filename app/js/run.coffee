@@ -13,7 +13,7 @@ SourceMapPage = require './pages/SourceMapPage'
 
 AppUpdater = require './AppUpdater'
 
-cordova = require './cordova'
+cordovaSetup = require './cordovaSetup'
 
 handlebars = require("hbsfy/runtime")
 
@@ -97,7 +97,7 @@ exports.start = (options = {}) ->
 
 
   # Start cordova (if needed)
-  cordova.setup { update: options.update }, (isCordova) =>
+  cordovaSetup.setup { update: options.update }, (isCordova) =>
     # If cordova, get filesystems for context
     if isCordova
       # Get file systems
