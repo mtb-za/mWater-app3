@@ -1668,6 +1668,11 @@
       "_base": "en",
       "en": "This form is out of date and cannot be opened",
       "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Loading mWater App...",
+      "sw": ""
     }
   ]
 }
