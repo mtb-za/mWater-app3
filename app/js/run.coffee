@@ -27,6 +27,9 @@ exports.start = (options = {}) ->
   # Start recording console immediately
   consoleCapture.setup()
 
+  # Report URL right away (cordova bug)
+  console.log "Loading at: " + window.location.href
+
   # Setup handlebars helpers
   Swag.registerHelpers(handlebars)
   

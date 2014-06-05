@@ -5,15 +5,22 @@ consoleCapture = require './consoleCapture'
 
 ProblemReporter = (url, version, getLogin) ->
   @reportProblem = (desc, success, error) ->
+    console.log "Reporting problem..."
+    device = "Unknown"
+    try 
+      device = JSON.stringify(window.device)
+    catch ex
+      console.error "Exception getting device"
+
     # Create log string
     log = consoleCapture.getHistory().join("\r\n")
-    console.log "Reporting problem..."
+
     report =
       version: version
       user_agent: navigator.userAgent
       log: log
       desc: desc
-      device: JSON.stringify(window.device)
+      device: device
       url: window.location.href
       date: new Date().toISOString()
 
