@@ -1,43 +1,12 @@
 # Reports problems (crashes) to a server. Catches window.onerror to catch unhandled
 # exceptions. Set ProblemReporter.default to the problem reporter that should be globally
 # available, if desired.
+consoleCapture = require './consoleCapture'
 
 ProblemReporter = (url, version, getLogin) ->
-  # IE9 hack
-  capture = (func) ->
-    old = console[func]
-    _captured[func] = old
-    console[func] = (arg) ->
-      history.push arg
-      history.splice 0, 20  if history.length > 200
-      old.call console, arg
-
-  # Get log
-  getLog = ->
-    log = ""
-    _.each history, (item) ->
-      log += String(item) + "\r\n"
-    log
-
-
-  history = []
-
-  that = this
-
-  if Function::bind and console and typeof console.log is "object"
-    ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"].forEach ((method) ->
-      console[method] = @bind(console[method], console)
-    ), Function::call
-
-  _captured = {}
-
-  capture "log"
-  capture "warn"
-  capture "error"
-  
   @reportProblem = (desc, success, error) ->
     # Create log string
-    log = getLog()
+    log = consoleCapture.getHistory().join("\r\n")
     console.log "Reporting problem..."
     report =
       version: version
@@ -60,15 +29,11 @@ ProblemReporter = (url, version, getLogin) ->
       if error?
         error()
 
+  # Capture console
+  consoleCapture.setup()
+
   # Don't overload the server with errors
   @reportProblem = _.debounce(@reportProblem, 30000, true)
-  
-  # # Capture error logs
-  # debouncedReportProblem = _.debounce(@reportProblem, 5000, true)
-  # oldConsoleError = console.error
-  # console.error = (arg) ->
-  #   oldConsoleError arg
-  #   debouncedReportProblem arg
   
   # Capture window.onerror
   oldWindowOnError = window.onerror
@@ -76,13 +41,13 @@ ProblemReporter = (url, version, getLogin) ->
   # Prevent recursion
   reportingError = false
 
-  handleOnError = (errorMsg, url, lineNumber) ->
+  handleOnError = (errorMsg, url, lineNumber) =>
     reportingError = true
 
     # Put up alert instead of old action
     alert T("Internal Error") + "\n" + errorMsg + "\n" + url + ":" + lineNumber
 
-    that.reportProblem "window.onerror:" + errorMsg + ":" + url + ":" + lineNumber, ->
+    @reportProblem "window.onerror:" + errorMsg + ":" + url + ":" + lineNumber, ->
       reportingError = false
     , ->
       reportingError = false
@@ -97,13 +62,8 @@ ProblemReporter = (url, version, getLogin) ->
 
     debouncedHandleOnError(errorMsg, url, lineNumber)
 
-
   @restore = ->
-    _.each _.keys(_captured), (key) ->
-      console[key] = _captured[key]
-
     window.onerror = oldWindowOnError
-
   return
 
 ProblemReporter.register = (url, version, getLogin) ->

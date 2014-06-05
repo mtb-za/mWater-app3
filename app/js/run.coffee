@@ -14,6 +14,7 @@ SourceMapPage = require './pages/SourceMapPage'
 AppUpdater = require './AppUpdater'
 
 cordovaSetup = require './cordovaSetup'
+consoleCapture = require './consoleCapture'
 
 handlebars = require("hbsfy/runtime")
 
@@ -22,6 +23,9 @@ startError = (err) ->
 
 exports.start = (options = {}) ->
   _.defaults(options, { update: true })
+
+  # Start recording console immediately
+  consoleCapture.setup()
 
   # Setup handlebars helpers
   Swag.registerHelpers(handlebars)
