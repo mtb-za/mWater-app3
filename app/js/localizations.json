@@ -596,7 +596,8 @@
       "en": "Note for Source {0}",
       "es": "Nota para la fuente {0}",
       "sw": "Noti ya Chanzo {0}",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Date of Visit",
@@ -1672,6 +1673,31 @@
     {
       "_base": "en",
       "en": "Loading mWater App...",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "as of",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Loading...",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Unknown",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Status Updates",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Status for Source {0}",
       "sw": ""
     }
   ]

@@ -10,7 +10,7 @@ module.exports = class SourceNotePage extends Page
   activate: ->
     # Find water source
     @db.sources.findOne {code: @options.source}, (source) =>
-      @setTitle T("Note for Source {0}", source.code)
+      @setTitle T("Status for Source {0}", source.code)
 
       # Find source note
       if @options._id
@@ -68,7 +68,7 @@ module.exports = class SourceNotePage extends Page
 
       # Load form from source note if exists
       if @sourceNote
-          @model.set(@sourceNote)
+        @model.set(@sourceNote)
       else
         # Create default entry
         @model.set(source: @options.source, date: new Date().toISOString().substring(0,10))
