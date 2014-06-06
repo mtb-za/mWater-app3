@@ -56,7 +56,7 @@ exports.setup = (options, success, error) ->
 
   # Determine base url and whether running in base
   baseUrl = "file:///android_asset/www/"
-  isOriginal = window.location.href.match("android_asset")
+  isOriginal = window.location.href.match("^file:\/\/\/android_asset\/www\/")
   console.log "isOriginal = #{isOriginal}"
 
   # Listen for deviceready event
