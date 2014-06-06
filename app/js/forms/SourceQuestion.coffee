@@ -1,5 +1,4 @@
 Question = require './Question'
-SourceListPage = require '../pages/SourceListPage'
 sourcecodes = require '../sourcecodes'
 
 module.exports = Question.extend
@@ -20,6 +19,8 @@ module.exports = Question.extend
     @model.set @id, @$("input").val()
 
   selectSource: ->
+    # Moved here for browserify circularity problem
+    SourceListPage = require '../pages/SourceListPage'
     @ctx.pager.openPage SourceListPage, 
       { onSelect: (source)=>
         @model.set @id, source.code
