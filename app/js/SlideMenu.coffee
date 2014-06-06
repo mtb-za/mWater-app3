@@ -17,8 +17,7 @@ class SlideMenu extends Backbone.View
 
   hide: ->
     if @visible
-      @$el.animate { right: -@width + "px" }, 200, =>
-        @$el.hide()
+      @$el.hide()
       @visible = false
 
   show: ->
@@ -33,9 +32,8 @@ class SlideMenu extends Backbone.View
 
     # Animate visibility
     @$el.css("width", @width + "px")
-    @$el.css("right", -@width + "px")
-    @$el.show().animate { right: "0px" }, 200, =>
-      @$el.show()  # Show again in case was hidden after close animation
+    @$el.css("right", "0px")
+    @$el.show()
     @visible = true
   
   # Menu to be added must be a backbone view. Render will be 
