@@ -152,7 +152,11 @@ module.exports = class SourceListPage extends Page
     @performSearch()
 
   performSearch: ->
-    @$("#search_bar").toggle(@searchText and @searchText.length>0)
+    if @searchText and @searchText.length>0
+      @$("#search_bar").show()
+    else
+      @$("#search_bar").hide()
+      
     @$("#search_text").text(@searchText)
     if @searchText
       # If digits, search for code
