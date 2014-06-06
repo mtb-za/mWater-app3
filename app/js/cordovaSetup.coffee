@@ -44,112 +44,60 @@ startUpdater = (appUpdater, success, error, relaunch) ->
   updater.perform() # Do right away
   success(true)
 
-# Set true
-cordovaReady = false
-pendingActions = []
-
-# Call when cordova is fully ready
-markCordovaReady = () ->
-  cordovaReady = true
-
-  # Run pending actions
-  for action in pendingActions
-    action()
-  pendingActions = []
-
-# Calls action if/when cordova is setup. May be called after cordova setup
-exports.whenReady = (action) ->
-  if cordovaReady
-    action()
-  else
-    pendingActions.push(action)
-
 # Gets the cordova base version. Null if not present
 exports.baseVersion = () ->
   return getQueryParameterByName("base_version")
 
-# Sets up cordova, loading cordova.js and updating as appropriate
-# Calls success with true for cordova, false for not
+# Sets up cordova, starting updater if requested and waiting for deviceread
 exports.setup = (options, success, error) ->
   _.defaults(options, { update: true })
 
-  # Determine base URL location for cordova (where to find cordova.js)
-  # Base url is set by cordova query parameter
-  baseUrl = options.baseUrl || getQueryParameterByName("cordova")
+  console.log "Starting cordova..." 
 
-  # Determine if running original install (baseUrl = "")
-  isOriginal = baseUrl == ""
+  # Determine base url and whether running in base
+  baseUrl = "file:///android_asset/www/"
+  isOriginal = window.location.href.match("android_asset")
+  console.log "isOriginal = #{isOriginal}"
 
-  # If not cordova (baseUrl null or undefined), call success
-  if not baseUrl?
-    console.log "Not cordova"
-    return success(false)
+  # Listen for deviceready event
+  document.addEventListener 'deviceready', () =>
+    # Cordova is now loaded
+    console.log "Cordova deviceready"
 
-  # Determine full base URL location if blank
-  if baseUrl == ""
-    match = /^(.*?)[^/]*$/.exec(window.location.href)
-    baseUrl = match[1]
+    # If update not requested, just call success
+    if not options.update
+      console.log "No cordova update requested"
+      return success()
 
-  console.log "cordova=#{baseUrl}" 
+    # Create app updater
+    createAppUpdater baseUrl, (appUpdater) =>
+      # Function called when relaunch is needed
+      relaunch = =>
+        if confirm(T("A new version is available. Restart app?"))
+          # Reload base url index_cordova.html
+          window.location.href = baseUrl + "index_cordova.html"
 
-  # Load cordova.js script
-  script = document.createElement("script")
-  script.onload = () =>
-    console.log "cordova.js loaded"
+      # If not original, that means we are running update
+      # Do not try to relaunch
+      if not isOriginal
+        console.log "Running in update at #{window.location.href}"
+        return startUpdater(appUpdater, success, error, relaunch)
 
-    # Force firing of DOMContentLoaded for Android 2.3.6 bug with script loading
-    # that leaves it in readyState of "loaded" instead of "interactive"
-    if window.cordova.fireDocumentEvent?
-      $ ->
-        window.cordova.fireDocumentEvent("DOMContentLoaded")
+      # If we are running original install of application from 
+      # native client. Get launcher
+      # Get launch url (base url of latest update)
+      appUpdater.launch (launchUrl) =>
+        console.log "Cordova launchUrl=#{launchUrl}" 
 
-    # Listen for deviceready event
-    document.addEventListener 'deviceready', () =>
-      # Cordova is now loaded
-      console.log "Cordova deviceready"
-
-      # If update not requested, just call success
-      if not options.update
-        console.log "No cordova update requested"
-        markCordovaReady()
-        return success(true)
-
-      # Create app updater
-      createAppUpdater baseUrl, (appUpdater) =>
-        # Function called when relaunch is needed
-        relaunch = =>
-          if confirm(T("A new version is available. Restart app?"))
-            # Reload base url index_cordova.html
-            window.location.href = baseUrl + "index_cordova.html?cordova="
-
-        # If not original, that means we are running update
-        # Do not try to relaunch
-        if not isOriginal
-          console.log "Running in update at #{baseUrl}"
-          markCordovaReady()
+        # If same as current baseUrl, proceed to starting updater, since are running latest version
+        if launchUrl == baseUrl
+          console.log "Running latest version"
           return startUpdater(appUpdater, success, error, relaunch)
 
-        # If we are running original install of application from 
-        # native client. Get launcher
-        # Get launch url (base url of latest update)
-        appUpdater.launch (launchUrl) =>
-          console.log "Cordova launchUrl=#{launchUrl}" 
-
-          # If same as current baseUrl, proceed to starting updater, since are running latest version
-          if launchUrl == baseUrl
-            console.log "Running latest version"
-            markCordovaReady()
-            return startUpdater(appUpdater, success, error, relaunch)
-
-          # Redirect, putting current full base Url in cordova and including base version
-          redir = launchUrl + "index_cordova.html?cordova=" + baseUrl + "&base_version=" + "//VERSION//"
-          console.log "Redirecting to #{redir}"
-          $("body").html('<div class="alert alert-info">' + T("Loading mWater...") + '</div>')
-          window.location.href = redir
-        , error
+        # Redirect, putting base version 
+        redir = launchUrl + "index_cordova.html?base_version=" + "//VERSION//"
+        console.log "Redirecting to #{redir}"
+        $("body").html('<div class="alert alert-info">' + T("Loading mWater...") + '</div>')
+        window.location.href = redir
       , error
-
-  script.onerror = ->
-    error("Failed to load cordova.js")
-  script.src = baseUrl + "cordova.js"
-  document.head.appendChild(script)
+    , error
