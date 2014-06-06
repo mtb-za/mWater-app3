@@ -188,6 +188,26 @@ exports.createDemoContext = (success) ->
     else
       imageManager = new SimpleImageManager(apiUrl)
 
+    baseContext = createBaseContext()
+
+    # Create image acquirer with camera and imageManager if temporaryFs and camera
+    if baseContext.camera? and temporaryFs
+      imageAcquirer = {
+        acquire: (success, error) ->
+          baseContext.camera.takePicture (url) ->
+            # Add image
+            imageManager.addImage url, (id) =>
+              success(id)
+          , (err) ->
+            alert(T("Failed to take picture"))
+      }
+    else 
+      # Use ImageUploader
+      imageAcquirer = {
+        acquire: (success, error) ->
+          ImageUploader.acquire(apiUrl, login.client, success, error) 
+      }
+
     # Allow everything
     auth = new authModule.AllAuth()
 
@@ -196,7 +216,7 @@ exports.createDemoContext = (success) ->
 
     sourceCodesManager = new sourcecodes.DemoSourceCodesManager()
 
-    ctx = _.extend createBaseContext(), {
+    ctx = _.extend baseContext, {
       db: db 
       imageManager: imageManager
       auth: auth
@@ -204,6 +224,7 @@ exports.createDemoContext = (success) ->
       sourceCodesManager: sourceCodesManager
       dataSync: null
       imageSync: null
+      imageAcquirer: imageAcquirer
     }
     success(ctx)
 
