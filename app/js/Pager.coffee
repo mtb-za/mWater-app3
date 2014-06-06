@@ -25,10 +25,9 @@ class Pager extends Backbone.View
       @contextMenu.$el.append(_.last(@stack).getContextMenu().el)
 
     # Listen to backbutton
-    cordovaSetup.whenReady =>
-      document.addEventListener "backbutton", =>
-        @closePage()
-      , false
+    document.addEventListener "backbutton", =>
+      @closePage()
+    , false
 
   setContext: (ctx) ->
     # Context contains pager

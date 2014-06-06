@@ -22,7 +22,7 @@ startError = (err) ->
   alert("Failed to start app: " + JSON.stringify(err))
 
 exports.start = (options = {}) ->
-  _.defaults(options, { update: true })
+  _.defaults(options, { update: true, cordova: false })
 
   # Start recording console immediately
   consoleCapture.setup()
@@ -103,10 +103,9 @@ exports.start = (options = {}) ->
       context.createAnonymousContext(withCtx)
 
 
-  # Start cordova (if needed)
-  cordovaSetup.setup { update: options.update }, (isCordova) =>
-    # If cordova, get filesystems for context
-    if isCordova
+  if options.cordova
+    # Start cordova 
+    cordovaSetup.setup { update: options.update },  =>
       # Get file systems
       console.log "Getting file systems..."
       window.requestFileSystem LocalFileSystem.PERSISTENT, 0, (persFs) ->
@@ -116,8 +115,8 @@ exports.start = (options = {}) ->
           step2()
         , startError
       , startError
-    else
-      step2()
+    , startError
+  else
+    step2()
 
-  , startError
     
