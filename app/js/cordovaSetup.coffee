@@ -40,7 +40,7 @@ startUpdater = (appUpdater, success, error, relaunch) ->
       console.log "Updater failed: " + err
       success(status)
 
-  updater.start(60*60*1000)   # one hour interval
+  updater.start(10*60*1000)   # 10 min interval
   updater.perform() # Do right away
   success(true)
 

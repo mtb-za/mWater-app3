@@ -60,7 +60,7 @@
     "lodash": "~2.4.1",
     "minimist": "0.0.8",
     "minimongo": "~2.2.3",
-    "mwater-forms": "^0.5.3",
+    "mwater-forms": "^0.5.11",
     "parse-appcache-manifest": "~0.2.0",
     "read": "~1.0.4",
     "request-json": "~0.4.4",
