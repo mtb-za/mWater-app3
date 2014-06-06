@@ -75,7 +75,7 @@ exports.setup = (options, success, error) ->
       relaunch = =>
         if confirm(T("A new version is available. Restart app?"))
           # Reload base url index_cordova.html
-          window.location.href = baseUrl + "index_cordova.html"
+          window.location.href = baseUrl + "index_cordova.html?cordova="  # cordova= for legacy reasons
 
       # If not original, that means we are running update
       # Do not try to relaunch
