@@ -5,10 +5,20 @@
 }
 
 #navbar_slidemenu_button {
-	background: url(img/menu.png) no-repeat 0; 
+	background: url(img/menu.png) black no-repeat 0; 
 	width: 50px;
 	background-position: 7px 9px;
 	height: 50px;
+}
+
+#navbar_title {
+	padding-left: 3px;
+	position: absolute;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	max-width: 90%;
+	color: #ccc;
 }
 </style>
 
@@ -22,7 +32,7 @@
 				<img src="img/black_logo_40.png" style="padding-top: 5px">
 			</a>
 	  		<a class="navbar-brand" style="margin-left: -15px">
-				<span id="navbar_title" style="padding-left: 3px;"></span>
+				<span id="navbar_title"></span>
 			</a>
 			<div style="float: right;">
 		  	  	<div id="navbar_slidemenu_button" class="menuitem">
