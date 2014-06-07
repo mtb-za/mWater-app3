@@ -258,7 +258,7 @@ module.exports = class SensorPage extends Page
       @error(err)
 
     # NOTE: Use Bluetooth address for duid, not internal deviceUid
-    downloader = new GPSLoggerDownloader(@protocol, @db.sensor_data, @address)
+    downloader = new GPSLoggerDownloader(@protocol, @db.sensor_data, @options.address)
     downloader.on 'progress', (completed, total) =>
       @progress = completed*100/total
       @render()
