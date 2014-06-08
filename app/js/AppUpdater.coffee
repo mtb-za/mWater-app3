@@ -140,7 +140,7 @@ downloadFiles = (fs, list, total, source, target, fileTransfer, success, error) 
     # Download file
     fileTransfer.download encodeURI(source + item), fs.root.toURL() + "/" + dest, =>
       # Trigger progress event with percentage
-      @trigger "progress", (total - list.length + 1) * 100 / total
+      #@trigger "progress", (total - list.length + 1) * 100 / total
 
       # Download next
       downloadFiles(fs, _.rest(list), total, source, target, fileTransfer, success, error)
