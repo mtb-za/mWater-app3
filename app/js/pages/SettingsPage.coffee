@@ -65,6 +65,11 @@ class SettingsPage extends Page
       @$("#weinre_details").html(T("Debugging with code <b>{0}</b>", window.debug.code))
       @$("#weinre").attr("disabled", true)
 
+  updateApp: ->
+    if cordovaSetup.appUpdater
+      cordovaSetup.appUpdater.perform()
+      @render()
+
   setLocale: ->
     @localizer.locale = @$("#locale").val()
     @localizer.saveCurrentLocale()
