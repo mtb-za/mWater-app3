@@ -20,6 +20,7 @@
 
 	<button id="update" class="btn btn-default" type="button" {{#if updating}}disabled="disabled"{{/if}}>{{T "Check for updates"}}</button>
 	{{#if updating}}
+		<br/>
 		<div class="progress">
 		  <div id="progress_bar" class="progress-bar" style="width: {{updateProgress}}%;">
 		  </div>
