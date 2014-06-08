@@ -1703,7 +1703,8 @@
     {
       "_base": "en",
       "en": "Ok",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
@@ -1729,7 +1730,8 @@
     {
       "_base": "en",
       "en": "Trying...",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
@@ -1759,6 +1761,11 @@
     {
       "_base": "en",
       "en": "Error updating",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "In progress...",
       "sw": ""
     }
   ]
