@@ -1437,7 +1437,8 @@
       "_base": "en",
       "en": "No surveys available. Please contact info@mwater.co to learn how to set one up",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
@@ -1766,6 +1767,11 @@
     {
       "_base": "en",
       "en": "In progress...",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "If no surveys appear, please contact info@mwater.co to learn how to set one up",
       "sw": ""
     }
   ]
