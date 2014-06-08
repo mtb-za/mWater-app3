@@ -98,6 +98,9 @@ class SurveyPage extends Page
 
     # Get response
     @db.responses.findOne {_id: @options._id}, (response) =>
+      # Ignore if page has been destroyed
+      return if @destroyed
+
       if not response
         alert(T("Survey not found"))
         return @pager.closePage()
