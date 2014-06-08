@@ -191,6 +191,10 @@ class SourceMapPage extends Page
     if @locationDisplay
       @locationDisplay.stop()
 
+    # Destroy map
+    if @map
+      @map.remove()
+
   resizeMap: =>
     # Calculate map height
     mapHeight = $("html").height() - 50
