@@ -23,10 +23,13 @@ createAppUpdater = (baseUrl, success, error) ->
   , error
 
 # Start an updater which checks for updates every interval
+# Fires "start", "progress", "success", "error"
 startUpdater = (appUpdater, success, error, relaunch) ->
   # Start repeating check for updates
   updater = new sync.Repeater (success, error) =>
     console.log "About to update"
+    # Trigger start event
+    updater.trigger "start"
     appUpdater.update (status, message) =>
       console.log "Updater status: #{status} (#{message})"
 
@@ -38,10 +41,19 @@ startUpdater = (appUpdater, success, error, relaunch) ->
       success(status)
     , (err) =>
       console.log "Updater failed: " + err
-      success(status)
+      error(err)
+
+  # Bubble up progress events 
+  appUpdater.on "progress", (progress) ->
+    # Save progress
+    updater.progress = progress
+    updater.trigger("progress", progress)
 
   updater.start(10*60*1000)   # 10 min interval
   updater.perform() # Do right away
+
+  # Save app updater
+  exports.appUpdater = updater
   success(true)
 
 # Gets the cordova base version. Null if not present

@@ -61,7 +61,7 @@ module.exports = class AppUpdater
           list.push "manifest.appcache"
 
           # Download all items
-          downloadFiles @fs, list, @updateUrl, @cachePath + "/download", @fileTransfer, =>
+          downloadFiles @fs, list, list.length, @updateUrl, @cachePath + "/download", @fileTransfer, =>
             console.log "Success called on download" # REMOVE
             removeSuccess = =>
               # Copy original manifest to update root folder
@@ -119,7 +119,7 @@ createDirs = (baseDirEntry, path, success, error) ->
       createDirs dir, segs.slice(1).join("/"), success, error
     ), error
 
-downloadFiles = (fs, list, source, target, fileTransfer, success, error) ->
+downloadFiles = (fs, list, total, source, target, fileTransfer, success, error) ->
   # Get target
   item = _.first(list)
   if not item
@@ -129,12 +129,16 @@ downloadFiles = (fs, list, source, target, fileTransfer, success, error) ->
   dest = target + "/" + item
 
   console.log "Downloading #{item} from #{source} to #{dest}..." # REMOVE
+
   # Get parent dir
   parent = _.initial(dest.split("/")).join("/")
   createDirs fs.root, parent, (parentDirEntry) =>
     # Download file
     fileTransfer.download encodeURI(source + item), fs.root.toURL() + "/" + dest, =>
+      # Trigger progress event with percentage
+      @trigger "progress", (total - list.length + 1) * 100 / total
+
       # Download next
-      downloadFiles(fs, _.rest(list), source, target, fileTransfer, success, error)
+      downloadFiles(fs, _.rest(list), total, source, target, fileTransfer, success, error)
     , error 
   , error

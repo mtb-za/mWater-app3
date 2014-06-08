@@ -1723,6 +1723,42 @@
     {
       "_base": "en",
       "en": "Working...",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Trying...",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Updates",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Check for updates",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Updating...",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "No Connection",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Up to date",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Error updating",
       "sw": ""
     }
   ]

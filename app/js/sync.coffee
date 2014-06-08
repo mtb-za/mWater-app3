@@ -4,6 +4,7 @@ async = require 'async'
 # Class which repeats an operation every n ms or when called
 # Puts mutex on action
 # action should have (success, error) signature
+# Fires "success", "error"
 exports.Repeater = class Repeater 
   constructor: (action) ->
     @action = action

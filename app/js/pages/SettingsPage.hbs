@@ -13,6 +13,20 @@
 <button id="request_source_codes" class="btn btn-default" type="button">{{T "Request more"}}</button>
 {{/if}}
 
+{{#if showUpdates}}
+	<h4>{{T "Updates"}}</h4>
+
+	<div>Status: <span class="label label-{{updateClass}}">{{updateText}}</span></div>
+
+	<button id="update" class="btn btn-default" type="button" {{#if updating}}disabled="disabled"{{/if}}>{{T "Check for updates"}}</button>
+	{{#if updating}}
+		<div class="progress">
+		  <div id="progress_bar" class="progress-bar" style="width: {{updateProgress}}%;">
+		  </div>
+		</div>
+	{{/if}}
+{{/if}}
+
 <h4>{{T "Advanced"}}</h4>
 <div>
   <button id="reset_db" class="btn btn-danger" type="button">{{T "Reset Local Storage"}}</button>
