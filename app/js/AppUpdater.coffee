@@ -11,6 +11,10 @@ module.exports = class AppUpdater
     @updateUrl = updateUrl
     @cachePath = cachePath
 
+    # Add events
+    _.extend(this, Backbone.Events)
+
+
   # Get launch folder. Url in success will end with "/"
   launch: (success, error) ->
     # Get directory of cache path
