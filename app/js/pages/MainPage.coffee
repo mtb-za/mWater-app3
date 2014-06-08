@@ -49,7 +49,7 @@ class MainPage extends Page
     # Determine data sync status
     if @dataSync?
       if @dataSync.inProgress
-        dataSyncText = T("Trying...")
+        dataSyncText = T("In progress...")
         dataSyncClass = "muted"
       else if @dataSync.lastError
         # Check if jQuery ajax error
@@ -68,7 +68,7 @@ class MainPage extends Page
           dataSyncText = @dataSync.lastError
           dataSyncClass = "danger"
       else
-        dataSyncText = T("Ok")
+        dataSyncText = T("Complete")
         dataSyncClass = "success"
 
     data = {
