@@ -8,7 +8,7 @@ exports.Repeater = class Repeater
   constructor: (action) ->
     @action = action
     @running = false
-    @inprogress = false
+    @inProgress = false
 
     # Add events
     _.extend(this, Backbone.Events)
@@ -26,7 +26,7 @@ exports.Repeater = class Repeater
       return
 
     success = (message) =>
-      @inprogress = false
+      @inProgress = false
       if @running
         setTimeout @_performRepeat, @every
       @lastSuccessDate = new Date()
@@ -35,22 +35,22 @@ exports.Repeater = class Repeater
       @trigger('success')
 
     error = (err) =>
-      @inprogress = false
+      @inProgress = false
       if @running
         setTimeout @_performRepeat, @every
       @lastError = err
       @trigger('error')
 
-    @inprogress = true
+    @inProgress = true
     @action(success, error)
 
   # Perform the action if not in progress. If in progress, does nothing without callback.
   perform: (success, error) ->
-    if @inprogress
+    if @inProgress
       return
 
     success2 = (message) =>
-      @inprogress = false
+      @inProgress = false
       @lastSuccessMessage = message
       @lastSuccessDate = new Date()
       @lastError = undefined
@@ -58,14 +58,17 @@ exports.Repeater = class Repeater
       @trigger('success')
 
     error2 = (err) =>
-      @inprogress = false
+      @inProgress = false
       @lastError = err
       error(err) if error?
       @trigger('error')
 
-    @inprogress = true
+    @inProgress = true
     @action(success2, error2)
 
+# Synchronizes database, uploading upserts and removes
+# Uses Repeater to run indefinitely
+# Triggers "error" and sets lastError 
 exports.DataSync = class DataSync extends Repeater
   constructor: (hybridDb, sourceCodesManager) ->
     super(@_sync)
@@ -78,7 +81,9 @@ exports.DataSync = class DataSync extends Repeater
       @sourceCodesManager.replenishCodes 50, =>
         success()
       , error      
-    , error
+    , (err) ->
+      console.log "Failed uploading database: " + JSON.stringify(err)
+      error(err)
 
   # Gets the number of upserts pending (calls success with number)
   numUpsertsPending: (success, error) ->

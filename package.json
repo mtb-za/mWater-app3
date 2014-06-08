@@ -59,7 +59,7 @@
     "handlebars": "~1.3.0",
     "lodash": "~2.4.1",
     "minimist": "0.0.8",
-    "minimongo": "^2.2.5",
+    "minimongo": "^2.2.6",
     "mwater-forms": "^0.5.12",
     "parse-appcache-manifest": "~0.2.0",
     "read": "~1.0.4",

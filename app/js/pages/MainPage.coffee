@@ -46,12 +46,38 @@ class MainPage extends Page
     if @baseVersion and @baseVersion.match(/^3\.[0-3]/)
       outdated = true
 
+    # Determine data sync status
+    if @dataSync.inProgress
+      dataSyncText = T("Trying...")
+      dataSyncClass = "muted"
+    else if @dataSync.lastError
+      # Check if jQuery ajax error
+      if @dataSync.lastError.status?
+        # If connection error
+        if @dataSync.lastError.status == 0
+          dataSyncText = T("No connection")
+          dataSyncClass = "warning"
+        else if @dataSync.lastError.status >= 500
+          dataSyncText = T("Server error")
+          dataSyncClass = "danger"
+        else if @dataSync.lastError.status >= 400
+          dataSyncText = T("Upload error")
+          dataSyncClass = "danger"
+      else
+        dataSyncText = @dataSync.lastError
+        dataSyncClass = "danger"
+    else
+      dataSyncText = T("Ok")
+      dataSyncClass = "success"
+
     data = {
       login: @login
       version: @version
       baseVersion: @baseVersion
       lastSyncDate: @dataSync.lastSuccessDate if @dataSync?
       imagesRemaining: @imageSync.lastSuccessMessage if @imageSync?
+      dataSyncText: dataSyncText
+      dataSyncClass: dataSyncClass
       outdated: outdated
     }
 

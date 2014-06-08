@@ -1,7 +1,9 @@
 <div class="text-muted">
 <small>{{T "User:"}}
 <b>{{#if login}}{{login.user}}{{else}}{{T "Not logged in"}}{{/if}}</b>
-{{T "Sync:"}} {{#if lastSyncDate}}<b>{{timeago lastSyncDate}}</b>{{/if}}
+{{T "Sync:"}} 
+<span class="text-{{dataSyncClass}}">{{dataSyncText}}</span>
+{{#if lastSyncDate}}<b>{{timeago lastSyncDate}}</b>{{/if}}
 <span id="upserts_pending"></span>
 <span id="images_pending"></span>
 {{T "Version:"}} <b>{{version}} {{#if baseVersion}}({{baseVersion}}){{/if}}</b>

@@ -1699,6 +1699,31 @@
       "_base": "en",
       "en": "Status for Source {0}",
       "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Ok",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "No connection",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Server error",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Upload error",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Working...",
+      "sw": ""
     }
   ]
 }
