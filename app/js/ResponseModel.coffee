@@ -25,7 +25,7 @@ module.exports = class ResponseModel
     @response.status = "draft"
 
     # Select deployment
-    subjects = ["user:" + @user]
+    subjects = ["user:" + @user, "all"]
     subjects = subjects.concat(_.map @groups, (g) -> "group:" + g)
     deployment = _.find @form.deployments, (dep) =>
       return _.intersection(dep.enumerators, subjects).length > 0 and dep.active
