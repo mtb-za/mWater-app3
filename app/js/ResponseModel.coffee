@@ -28,7 +28,7 @@ module.exports = class ResponseModel
     subjects = ["user:" + @user]
     subjects = subjects.concat(_.map @groups, (g) -> "group:" + g)
     deployment = _.find @form.deployments, (dep) =>
-      return _.intersection(dep.enumerators, subjects).length > 0
+      return _.intersection(dep.enumerators, subjects).length > 0 and dep.active
     if not deployment
       throw new Error("No matching deployments")
     @response.deployment = deployment._id
@@ -61,7 +61,17 @@ module.exports = class ResponseModel
     if not deployment
       throw new Error("No matching deployments")
 
-    @response.approvals.push { by: @user, on: new Date().toISOString() }
+    approval = { by: @user, on: new Date().toISOString() }
+
+    # Determine if approver (vs admin)
+    approvers = deployment.approvalStages[@response.approvals.length].approvers
+    subjects = ["user:" + @user]
+    subjects = subjects.concat(_.map @groups, (g) -> "group:" + g)
+
+    if _.intersection(approvers, subjects).length == 0
+      approval.override = true
+
+    @response.approvals.push approval
 
     # Check if last stage
     if @response.approvals.length == deployment.approvalStages.length
