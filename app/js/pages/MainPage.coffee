@@ -47,28 +47,29 @@ class MainPage extends Page
       outdated = true
 
     # Determine data sync status
-    if @dataSync.inProgress
-      dataSyncText = T("Trying...")
-      dataSyncClass = "muted"
-    else if @dataSync.lastError
-      # Check if jQuery ajax error
-      if @dataSync.lastError.status?
-        # If connection error
-        if @dataSync.lastError.status == 0
-          dataSyncText = T("No connection")
-          dataSyncClass = "warning"
-        else if @dataSync.lastError.status >= 500
-          dataSyncText = T("Server error")
-          dataSyncClass = "danger"
-        else if @dataSync.lastError.status >= 400
-          dataSyncText = T("Upload error")
+    if @dataSync?
+      if @dataSync.inProgress
+        dataSyncText = T("Trying...")
+        dataSyncClass = "muted"
+      else if @dataSync.lastError
+        # Check if jQuery ajax error
+        if @dataSync.lastError.status?
+          # If connection error
+          if @dataSync.lastError.status == 0
+            dataSyncText = T("No connection")
+            dataSyncClass = "warning"
+          else if @dataSync.lastError.status >= 500
+            dataSyncText = T("Server error")
+            dataSyncClass = "danger"
+          else if @dataSync.lastError.status >= 400
+            dataSyncText = T("Upload error")
+            dataSyncClass = "danger"
+        else
+          dataSyncText = @dataSync.lastError
           dataSyncClass = "danger"
       else
-        dataSyncText = @dataSync.lastError
-        dataSyncClass = "danger"
-    else
-      dataSyncText = T("Ok")
-      dataSyncClass = "success"
+        dataSyncText = T("Ok")
+        dataSyncClass = "success"
 
     data = {
       login: @login
