@@ -26,10 +26,10 @@ class SettingsPage extends Page
     data = {
       offlineSourceCodes: if @sourceCodesManager then @sourceCodesManager.getNumberAvailableCodes() else null
       locales: @localizer.getLocales()
-      showUpdates: appUpdater?
     }
 
     if appUpdater?
+      data.showUpdates = true
       data.updating = appUpdater.inProgress
       if appUpdater.inProgress
         data.updateProgress = appUpdater.progress or 0
