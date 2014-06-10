@@ -1347,19 +1347,22 @@
       "_base": "en",
       "en": "Low GPS Accuracy",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
       "en": "Very Low GPS Accuracy. Waiting for better signal...",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
       "en": "Setting Location...",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
@@ -1772,6 +1775,60 @@
     {
       "_base": "en",
       "en": "If no surveys appear, please contact info@mwater.co to learn how to set one up",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Very Low GPS Accuracy",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Very low GPS Accuracy",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Cannot set location",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Very Low GPS Accuracy ±{0}m",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Low GPS Accuracy ±{0}m",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Good GPS Accuracy ±{0}m",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Very low GPS Accuracy...",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Low GPS Accuracy...",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Very low GPS Accuracy (±{0}m)...",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Low GPS Accuracy (±{0}m)...",
       "sw": ""
     }
   ]
