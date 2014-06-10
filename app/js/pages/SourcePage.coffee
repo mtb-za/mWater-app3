@@ -25,6 +25,7 @@ module.exports = class SourcePage extends Page
 
   activate: ->
     @query()
+    @setTitle T('Source')
 
   query: ->
     @db.sources.findOne {_id: @options._id}, (source) =>
