@@ -158,9 +158,10 @@ class SurveyPage extends Page
     @db.responses.upsert @response, => @render()
 
   save: =>
-    # Save to db
-    @response.data = @formView.save()
-    @db.responses.upsert(@response)
+    if @formView.save
+      # Save to db
+      @response.data = @formView.save()
+      @db.responses.upsert(@response)
 
   close: ->
     @save()
