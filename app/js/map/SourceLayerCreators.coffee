@@ -211,7 +211,8 @@ class EColi extends SourceLayerCreator
     task = (callback) =>
       # If layer removed, skip
       if layer.removed
-        return callback()
+        _.defer(callback)
+        return 
 
       # Call EColi analyzer to get actual level
       @ecoliAnalyzer.analyzeSource source, (level) =>
