@@ -27,8 +27,8 @@ module.exports = class SignupPage extends Page
       alert(T("Username required"))
       return
 
-    if not username.match /^[a-zA-Z][a-zA-Z0-9.\- ]{6,}/
-      alert(T("Username must be composed of letters, numbers, spaces, period and dash and must be at least 7 characters long. It must start with a letter."))
+    if not username.match /^[a-zA-Z][a-zA-Z0-9.\- ]{3,}$/
+      alert(T("Username must be composed of letters, numbers, spaces, period and dash and must be at least 4 characters long. It must start with a letter."))
       return
 
     if password.length < 5
