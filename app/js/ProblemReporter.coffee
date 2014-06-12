@@ -27,6 +27,10 @@ ProblemReporter = (url, version, getLogin) ->
     login = getLogin()
     _.defaults report, login
 
+    # Hide client details
+    if report.client
+      report.client = report.client.substr(0,24) + "..."
+
     postUrl = if (login and login.client) then url + "?client=" + login.client else url
     req = $.post url, report
     req.done =>
