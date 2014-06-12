@@ -155,6 +155,7 @@ createDb = (login, success) ->
         minimongo.utils.migrateLocalDb oldDb, localDb, performSeed, error
       else
         performSeed()
+  , error
 
 # Anonymous context for not logged in
 exports.createAnonymousContext = (success) ->
