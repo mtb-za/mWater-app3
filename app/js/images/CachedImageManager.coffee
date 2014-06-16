@@ -131,10 +131,11 @@ module.exports = class CachedImageManager
       
       # Get a list of all the entries in the directory
       dirEntry.createReader().readEntries (files) =>
-        console.log "#{files.length} images to upload"
         if files.length is 0
           success 0
           return
+
+        console.log "#{files.length} images to upload"
        
         uploadSuccess = =>
           # Success uploading, move to cache
