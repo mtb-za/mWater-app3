@@ -1,55 +1,35 @@
 # Reports problems (crashes) to a server. Catches window.onerror to catch unhandled
 # exceptions. Set ProblemReporter.default to the problem reporter that should be globally
 # available, if desired.
+consoleCapture = require './consoleCapture'
 
 ProblemReporter = (url, version, getLogin) ->
-  # IE9 hack
-  capture = (func) ->
-    old = console[func]
-    _captured[func] = old
-    console[func] = (arg) ->
-      history.push arg
-      history.splice 0, 20  if history.length > 200
-      old.call console, arg
-
-  # Get log
-  getLog = ->
-    log = ""
-    _.each history, (item) ->
-      log += String(item) + "\r\n"
-    log
-
-
-  history = []
-
-  that = this
-
-  if Function::bind and console and typeof console.log is "object"
-    ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"].forEach ((method) ->
-      console[method] = @bind(console[method], console)
-    ), Function::call
-
-  _captured = {}
-
-  capture "log"
-  capture "warn"
-  capture "error"
-  
   @reportProblem = (desc, success, error) ->
-    # Create log string
-    log = getLog()
     console.log "Reporting problem..."
+    device = "Unknown"
+    try 
+      device = JSON.stringify(window.device)
+    catch ex
+      console.error "Exception getting device"
+
+    # Create log string
+    log = consoleCapture.getHistory().join("\r\n")
+
     report =
       version: version
       user_agent: navigator.userAgent
       log: log
       desc: desc
-      device: window.device
+      device: device
       url: window.location.href
       date: new Date().toISOString()
 
     login = getLogin()
     _.defaults report, login
+
+    # Hide client details
+    if report.client
+      report.client = report.client.substr(0,24) + "..."
 
     postUrl = if (login and login.client) then url + "?client=" + login.client else url
     req = $.post url, report
@@ -59,13 +39,12 @@ ProblemReporter = (url, version, getLogin) ->
     req.fail =>
       if error?
         error()
-  
-  # # Capture error logs
-  # debouncedReportProblem = _.debounce(@reportProblem, 5000, true)
-  # oldConsoleError = console.error
-  # console.error = (arg) ->
-  #   oldConsoleError arg
-  #   debouncedReportProblem arg
+
+  # Capture console
+  consoleCapture.setup()
+
+  # Don't overload the server with errors
+  @reportProblem = _.debounce(@reportProblem, 30000, true)
   
   # Capture window.onerror
   oldWindowOnError = window.onerror
@@ -73,26 +52,35 @@ ProblemReporter = (url, version, getLogin) ->
   # Prevent recursion
   reportingError = false
 
-  window.onerror = (errorMsg, url, lineNumber) ->
-    if reportingError 
-      console.error "Ignoring error: #{errorMsg}"
-      return
+  handleOnError = (errorMsg, url, lineNumber) =>
     reportingError = true
+
+    # Try to stringify error
+    try 
+      errorMsg = JSON.stringify(errorMsg)
+    catch ex
+      console.error "Exception stringifying error message"
 
     # Put up alert instead of old action
     alert T("Internal Error") + "\n" + errorMsg + "\n" + url + ":" + lineNumber
 
-    that.reportProblem "window.onerror:" + errorMsg + ":" + url + ":" + lineNumber, ->
+    @reportProblem "window.onerror:" + errorMsg + ":" + url + ":" + lineNumber, ->
       reportingError = false
     , ->
       reportingError = false
 
+  # Don't overload the user with errors
+  debouncedHandleOnError = _.debounce(handleOnError, 5000, true)
+
+  window.onerror = (errorMsg, url, lineNumber) ->
+    if reportingError 
+      console.error "Ignoring error: #{errorMsg}"
+      return
+
+    debouncedHandleOnError(errorMsg, url, lineNumber)
+
   @restore = ->
-    _.each _.keys(_captured), (key) ->
-      console[key] = _captured[key]
-
     window.onerror = oldWindowOnError
-
   return
 
 ProblemReporter.register = (url, version, getLogin) ->

@@ -1,11 +1,18 @@
 <div class="text-muted">
 <small>{{T "User:"}}
 <b>{{#if login}}{{login.user}}{{else}}{{T "Not logged in"}}{{/if}}</b>
-{{T "Sync:"}} {{#if lastSyncDate}}<b>{{timeago lastSyncDate}}</b>{{/if}}
+{{T "Sync:"}} 
+<span class="text-{{dataSyncClass}}">{{dataSyncText}}</span>
+{{#if lastSyncDate}}<b>{{timeago lastSyncDate}}</b>{{/if}}
+<span id="upserts_pending"></span>
 <span id="images_pending"></span>
 {{T "Version:"}} <b>{{version}} {{#if baseVersion}}({{baseVersion}}){{/if}}</b>
 </small>
 </div>
+
+{{#if outdated}}
+<div class="alert alert-warning">{{T "Your app is out of date. Please update in Google Play store."}}</div>
+{{/if}}
 
 <style>
 td {
@@ -34,11 +41,11 @@ td {
 		{{T "List Water Sources"}}</td>
 	</tr>
 	<tr>
-		<td id="new_test" align="center" class="tappable"><img id="tests" class="main_icon tappable" src="img/test_icon.png"/>
+		<td id="test_list" align="center" class="tappable"><img id="tests" class="main_icon tappable" src="img/test_icon.png"/>
 		<br/>
-		{{T "Start Water Test"}}</td>
-		<td id="new_survey" align="center" class="tappable"><img id="settings" class="main_icon tappable" src="img/survey_icon.png"/>
+		{{T "Water Tests"}}</td>
+		<td id="survey_list" align="center" class="tappable"><img id="settings" class="main_icon tappable" src="img/survey_icon.png"/>
 		<br/>
-		{{T "Start Survey"}}</td>
+		{{T "Surveys"}}</td>
 	</tr>
 </table>

@@ -11,7 +11,12 @@ module.exports = Question.extend
 
   renderAnswer: (answerEl) ->
     answerEl.html _.template("<input class=\"needsclick\" name=\"date\" />", this)
-    answerEl.find("input").val @model.get(@id)
+    date = @model.get(@id)
+
+    # Remove time
+    if date
+      date = date.substr(0, 10)
+    answerEl.find("input").val date
 
     # Support readonly
     if @options.readonly

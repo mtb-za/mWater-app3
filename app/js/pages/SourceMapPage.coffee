@@ -40,11 +40,12 @@ class SourceMapPage extends Page
 
     # Wait very short time for location
     setTimeout =>
-      # If no location, create map with no location
-      if currentLatLng
-        @createMap(currentLatLng, 14)
-      else
-        @createMap()
+      if not @destroyed
+        # If no location, create map with no location
+        if currentLatLng
+          @createMap(currentLatLng, 14)
+        else
+          @createMap()
     , 500
 
   createMap: (center, zoom, scope) ->
@@ -170,13 +171,24 @@ class SourceMapPage extends Page
 
   gotoMyLocation: ->
     # Goes to current location
+    locationHasBeenSetAtLeastOnce = false
     locationFinder = new LocationFinder()
     locationFinder.getLocation (pos) =>
-      latLng = new L.LatLng(pos.coords.latitude, pos.coords.longitude)
-      zoom = @map.getZoom()
-      @map.setView(latLng, if zoom > 15 then zoom else 15)
+      if not @destroyed
+        latLng = new L.LatLng(pos.coords.latitude, pos.coords.longitude)
+        # if the view has been set at least once (by a lower accuracy location)
+        if locationHasBeenSetAtLeastOnce
+          # do not set the view again if the higher accuracy location is inside the current view
+          # the idea is to avoid setting the map view many times
+          if @map.getBounds().contains(latLng)
+            return
+
+        zoom = @map.getZoom()
+        @map.setView(latLng, if zoom > 15 then zoom else 15)
+        locationHasBeenSetAtLeastOnce = true
     , =>
-      @pager.flash(T("Unable to determine location"), "warning")
+      if not @destroyed
+        @pager.flash(T("Unable to determine location"), "warning")
 
   activate: ->
     # Get the current scope to be used to set the active dropdown item
@@ -213,6 +225,10 @@ class SourceMapPage extends Page
     $(window).off('resize', @resizeMap)
     if @locationDisplay
       @locationDisplay.stop()
+
+    # Destroy map
+    if @map
+      @map.remove()
 
   resizeMap: =>
     # Calculate map height

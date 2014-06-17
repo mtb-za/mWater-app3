@@ -11,6 +11,9 @@ module.exports = class AppUpdater
     @updateUrl = updateUrl
     @cachePath = cachePath
 
+    # Add events
+    _.extend(this, Backbone.Events)
+
   # Get launch folder. Url in success will end with "/"
   launch: (success, error) ->
     # Get directory of cache path
@@ -61,12 +64,12 @@ module.exports = class AppUpdater
           list.push "manifest.appcache"
 
           # Download all items
-          downloadFiles @fs, list, @updateUrl, @cachePath + "/download", @fileTransfer, =>
+          @downloadFiles @fs, list, list.length, @updateUrl, @cachePath + "/download", @fileTransfer, =>
             console.log "Success called on download" # REMOVE
             removeSuccess = =>
               # Copy original manifest to update root folder
               source = encodeURI(@origUrl + "manifest.appcache")
-              target = @fs.root.fullPath + "/" + @cachePath + "/manifest.appcache"
+              target = @fs.root.toURL() + "/" + @cachePath + "/manifest.appcache"
               console.log "Copying original manifest from #{source} to #{target}..." # REMOVE
               @fileTransfer.download source, target, =>
 
@@ -106,6 +109,30 @@ module.exports = class AppUpdater
             success("noconnection", "Download failed: " + JSON.stringify(err))
       , error
 
+  downloadFiles: (fs, list, total, source, target, fileTransfer, success, error) =>
+    # Get target
+    item = _.first(list)
+    if not item
+      console.log "Downloads complete" # REMOVE
+      return success()
+
+    dest = target + "/" + item
+
+    console.log "Downloading #{item} from #{source} to #{dest}..." # REMOVE
+
+    # Get parent dir
+    parent = _.initial(dest.split("/")).join("/")
+    createDirs fs.root, parent, (parentDirEntry) =>
+      # Download file
+      fileTransfer.download encodeURI(source + item), fs.root.toURL() + "/" + dest, =>
+        # Trigger progress event with percentage
+        @trigger "progress", (total - list.length + 1) * 100 / total
+
+        # Download next
+        @downloadFiles(fs, _.rest(list), total, source, target, fileTransfer, success, error)
+      , error 
+    , error
+
 createDirs = (baseDirEntry, path, success, error) ->
   segs = path.split("/")
   if segs.length is 1
@@ -119,22 +146,3 @@ createDirs = (baseDirEntry, path, success, error) ->
       createDirs dir, segs.slice(1).join("/"), success, error
     ), error
 
-downloadFiles = (fs, list, source, target, fileTransfer, success, error) ->
-  # Get target
-  item = _.first(list)
-  if not item
-    console.log "Downloads complete" # REMOVE
-    return success()
-
-  dest = target + "/" + item
-
-  console.log "Downloading #{item} from #{source} to #{dest}..." # REMOVE
-  # Get parent dir
-  parent = _.initial(dest.split("/")).join("/")
-  createDirs fs.root, parent, (parentDirEntry) =>
-    # Download file
-    fileTransfer.download encodeURI(source + item), fs.root.fullPath + "/" + dest, =>
-      # Download next
-      downloadFiles(fs, _.rest(list), source, target, fileTransfer, success, error)
-    , error 
-  , error

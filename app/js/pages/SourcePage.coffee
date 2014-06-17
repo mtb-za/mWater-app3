@@ -1,7 +1,7 @@
 Page = require("../Page")
-LocationView = require ("../LocationView")
+LocationView = require('mwater-forms').LocationView
 forms = require '../forms'
-
+GeoJSON = require '../GeoJSON'
 
 # Displays a source
 # Options: setLocation - true to autoset location
@@ -15,12 +15,17 @@ module.exports = class SourcePage extends Page
     'click .note' : 'openNote'
     'click .survey' : 'openSurvey'
     'click #select_source' : 'selectSource'
+    'click #status_ok': -> @updateStatus('ok')
+    'click #status_repair': -> @updateStatus('repair')
+    'click #status_broken': -> @updateStatus('broken')
+    'click #status_missing': -> @updateStatus('missing')
 
   create: ->
     @setLocation = @options.setLocation
 
   activate: ->
     @query()
+    @setTitle T('Source')
 
   query: ->
     @db.sources.findOne {_id: @options._id}, (source) =>
@@ -63,23 +68,30 @@ module.exports = class SourcePage extends Page
         if sourceType? then @$("#source_type").text(sourceType.name)
 
     # Add location view
-    locationView = new LocationView(loc: @source.geo, readonly: not @auth.update("sources", @source))
+    locationView = new LocationView(
+      loc: GeoJSON.geoToLoc(@source.geo)
+      readonly: not @auth.update("sources", @source)
+      T: T)
     if @setLocation
       locationView.setLocation()
       @setLocation = false
 
     @listenTo locationView, 'locationset', (loc) ->
-      @source.geo = loc
+      geo = GeoJSON.locToPoint(loc)
+      if geo?
+        @source.geo = geo
+      else  
+        delete @source.geo
       @db.sources.upsert @source, => @render()
 
     @listenTo locationView, 'map', (loc) =>
-      @pager.openPage(require("./SourceMapPage"), {initialGeo: loc})
+      @pager.openPage(require("./SourceMapPage"), {initialGeo: GeoJSON.locToPoint(loc)})
       
     @addSubview(locationView)
     @$("#location").append(locationView.el)
 
     # Add tests
-    @db.tests.find({"data.source": @source.code}).fetch (tests) =>
+    @db.tests.find({"data.source": @source.code}, {sort: [['started','desc']]}).fetch (tests) =>
       @$("#tests").html require('./SourcePage_tests.hbs')(tests:tests)
 
       # Fill in names
@@ -88,8 +100,18 @@ module.exports = class SourcePage extends Page
           @$("#test_name_"+test._id).text(if form then form.name else "???")
 
     # Add notes
-    @db.source_notes.find({source: @source.code}).fetch (notes) => 
+    @db.source_notes.find({source: @source.code}, {sort: [['date','desc']]}).fetch (notes) => 
       @$("#notes").html require('./SourcePage_notes.hbs')(notes:notes)
+
+      # Determine status
+      if notes.length > 0
+        status = notes[0].status
+        date = notes[0].date
+      else
+        status = null
+        date = null
+
+      @$("#status").html require('./SourcePage_status.hbs')(status:status, date: date, canUpdate: @auth.insert("source_notes"))
 
     # Add surveys
     @db.responses.find({"data.source": @source.code}).fetch (surveys) =>
@@ -140,3 +162,23 @@ module.exports = class SourcePage extends Page
     if @options.onSelect?
       @pager.closePage()
       @options.onSelect(@source)
+
+  updateStatus: (status) ->
+    # Find existing note to update
+    @db.source_notes.findOne {source: @source.code, user: @login.user}, {sort: [['date','desc']]}, (sourceNote) =>
+      # If same day by me
+      if sourceNote and sourceNote.date.substr(0, 10) == new Date().toISOString().substr(0, 10)
+        sourceNote.status = status
+      else
+        sourceNote = {
+          source: @source.code
+          status: status
+          date: new Date().toISOString()
+          user: @login.user
+        }
+
+      @db.source_notes.upsert sourceNote, =>
+        @render()
+      , @error
+    , @error
+

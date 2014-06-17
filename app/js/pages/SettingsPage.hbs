@@ -5,6 +5,23 @@
 	{{/each}}
 </select>
 
+{{#if showUpdates}}
+	<h4>{{T "Updates"}}</h4>
+
+	<div>Status: <span class="text-{{updateClass}}">{{updateText}}</span></div>
+
+	<button id="update" class="btn btn-default" type="button" {{#if updating}}disabled="disabled"{{/if}}>{{T "Check for updates"}}</button>
+	{{#if updating}}
+		<br/>
+		<br/>
+		<div class="progress">
+		  <div id="progress_bar" class="progress-bar" style="width: {{updateProgress}}%;">
+		  </div>
+		</div>
+	{{/if}}
+{{/if}}
+
+
 {{#if offlineSourceCodes}}
 <h4>{{T "Offline Source Creation"}}</h4>
 <div>

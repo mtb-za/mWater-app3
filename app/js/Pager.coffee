@@ -1,4 +1,4 @@
-cordova = require './cordova'
+cordovaSetup = require './cordovaSetup'
 
 class Pager extends Backbone.View
   id: 'pager'
@@ -25,10 +25,9 @@ class Pager extends Backbone.View
       @contextMenu.$el.append(_.last(@stack).getContextMenu().el)
 
     # Listen to backbutton
-    cordova.whenReady =>
-      document.addEventListener "backbutton", =>
-        @closePage()
-      , false
+    document.addEventListener "backbutton", =>
+      @closePage()
+    , false
 
   setContext: (ctx) ->
     # Context contains pager
@@ -82,6 +81,7 @@ class Pager extends Backbone.View
     console.log "Closing page #{page.constructor.name}"
 
     page.deactivate()
+    page.destroyed = true
     page.destroy()
     page.remove()
 

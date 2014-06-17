@@ -47,8 +47,8 @@ module.exports = class LoginPage extends Page
     # Prevent actual submit
     e.preventDefault()
 
-    username = @$("#login_username").val()
-    password = @$("#login_password").val()
+    username = @$("#login_username").val().trim()
+    password = @$("#login_password").val().trim()
 
     @login(username, password)
     return
@@ -56,7 +56,8 @@ module.exports = class LoginPage extends Page
   demoClicked: ->
     # Update context, first stopping old one
     @ctx.stop()
-    _.extend @ctx, context.createDemoContext()
+    context.createDemoContext (ctx) =>
+      _.extend @ctx, ctx
 
-    @pager.closePage(MainPage)
-    @pager.flash T("Running in Demo mode. No changes will be saved"), "warning", 10000
+      @pager.closePage(MainPage)
+      @pager.flash T("Running in Demo mode. No changes will be saved"), "warning", 10000

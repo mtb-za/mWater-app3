@@ -1,0 +1,39 @@
+<style>
+.status {
+	font-size: 100%;
+}
+</style>
+
+<div>
+	<h4>{{T "Status"}}
+		{{#if date}}
+		<small>{{T "as of"}} {{formatDate date "%F"}}</small>
+		{{/if}}
+	</h4>
+
+	<div>
+		{{#if status}}
+		 	{{#is status "ok"}}<span class="status label label-success">{{T "Functional"}}</span>{{/is}}
+	      	{{#is status "repair"}}<span class="status label label-warning">{{T "Needs repair"}}</span>{{/is}}
+      		{{#is status "broken"}}<span class="status label label-danger">{{T "Non-functional"}}</span>{{/is}}
+      		{{#is status "missing"}}<span class="status label label-danger">{{T "No longer exists"}}</span>{{/is}}
+		{{else}}
+			<span class="status label label-default">{{T "Unknown"}}</span>
+		{{/if}}
+		&nbsp; &nbsp;
+		{{#if canUpdate}}
+		<div class="btn-group" style="margin-top: 5px;">
+		  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+		    Update Status <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu" role="menu" style="font-size: 125%;">
+		      <li><a id="status_ok"><span class="text-success">{{T "Functional"}}</span></a></li>
+		      <li><a id="status_repair"><span class="text-warning">{{T "Needs repair"}}</span></a></li>
+		      <li><a id="status_broken"><span class="text-danger">{{T "Non-functional"}}</span></a></li>
+		      <li><a id="status_missing"><span class="text-danger">{{T "No longer exists"}}</span></a></li>
+		  </ul>
+		</div>
+		{{/if}}
+	</div>
+</div>
+<br/>

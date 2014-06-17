@@ -1,5 +1,6 @@
 Page = require "../Page"
 ECPlates = require '../forms/ECPlates'
+cordovaSetup = require '../cordovaSetup'
 
 class SettingsPage extends Page
   events: 
@@ -8,16 +9,46 @@ class SettingsPage extends Page
     "click #test_ecplates" : "testECPlates"
     "click #weinre" : "startWeinre"
     "change #locale": "setLocale"
+    "click #update": "updateApp"
 
   activate: ->
     @setTitle T("Settings")
     @render()
 
+    # Listen to events from app updater
+    if cordovaSetup.appUpdater
+      @listenTo cordovaSetup.appUpdater, "success error progress start", =>
+        @render()
+
   render: ->
-    @$el.html require('./SettingsPage.hbs')(
+    appUpdater = cordovaSetup.appUpdater
+
+    data = {
       offlineSourceCodes: if @sourceCodesManager then @sourceCodesManager.getNumberAvailableCodes() else null
       locales: @localizer.getLocales()
-    )
+    }
+
+    if appUpdater?
+      data.showUpdates = true
+      data.updating = appUpdater.inProgress
+      if appUpdater.inProgress
+        data.updateProgress = appUpdater.progress or 0
+        data.updateText = T("Updating...")
+        data.updateClass = "info"
+      else if appUpdater.lastSuccessMessage == "noconnection"
+        data.updateText = T("No Connection")
+        data.updateClass = "warning"
+      else if appUpdater.lastSuccessMessage == "uptodate"
+        data.updateText = T("Up to date")
+        data.updateClass = "success"
+      else if appUpdater.lastError
+        data.updateText = T("Error updating")
+        data.updateClass = "danger"
+      else
+        data.updateText = T("Unknown")
+        data.updateClass = "muted"
+
+    @$el.html require('./SettingsPage.hbs')(data)
 
     # Select current locale
     @$("#locale").val(@localizer.locale)
@@ -33,6 +64,11 @@ class SettingsPage extends Page
     if window.debug
       @$("#weinre_details").html(T("Debugging with code <b>{0}</b>", window.debug.code))
       @$("#weinre").attr("disabled", true)
+
+  updateApp: ->
+    if cordovaSetup.appUpdater
+      cordovaSetup.appUpdater.perform()
+      @render()
 
   setLocale: ->
     @localizer.locale = @$("#locale").val()

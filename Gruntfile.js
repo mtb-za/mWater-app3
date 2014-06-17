@@ -2,6 +2,7 @@ var zlib = require('zlib');
 var compileForms = require('./compile-forms-task');
 var upsertForms = require('./upsert-forms-task');
 var seeds = require('./seeds-task');
+var localization = require('./localization-task');
 
 module.exports = function(grunt) {
 
@@ -12,20 +13,27 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         files: {
-          'dist/js/app.js': [],
-          'dist/js/preload.js': ['./app/js/preload']
+          'dist/js/app.js': []
         },
         options: {
           transform: [require('./versionXform')],
           browserifyOptions: { extensions: [ '.coffee', '.js' ] },
           alias: [
             './app/js/run.coffee:run',
-            './app/js/forms:forms',
+            './app/js/forms/index.coffee:forms',
             './app/js/jquery-shim:jquery',
             './app/js/lodash-shim:lodash',
             './app/js/lodash-shim:underscore',
             './app/js/backbone-shim:backbone'
             ]
+        }
+      },
+      preload: {
+        files: {
+          'dist/js/preload.js': ['./app/js/preload']
+        },
+        options: {
+          browserifyOptions: { extensions: [ '.coffee', '.js' ] }
         }
       }
     },
@@ -37,32 +45,62 @@ module.exports = function(grunt) {
               'vendor/leaflet/leaflet.css'],
         dest: 'dist/css/libs.css'
       },
-      css: {
-          src: ['app/css/*.css'],
-          dest: 'dist/css/app.css'
+      libsjs: {
+        // src: ['bower_components/jquery/dist/jquery.min.js', 
+        //     'bower_components/lodash/dist/lodash.min.js', 
+        //     'bower_components/backbone/backbone.js', 
+        //     'vendor/bootstrap/js/bootstrap.min.js',  // Custom bootstrap with larger fonts
+        //     'bower_components/handlebars/handlebars.runtime.min.js',
+        //     'bower_components/swag/lib/swag.min.js',
+        //     'bower_components/overthrow-dist/overthrow.js',
+        //     'vendor/mobiscroll.custom-2.5.4.min.js',
+        //     'vendor/jquery.scrollintoview.min.js',
+        //     'vendor/leaflet/leaflet-src.js'],
+        src: ['bower_components/jquery/dist/jquery.js', 
+            'bower_components/lodash/dist/lodash.js', 
+            'bower_components/backbone/backbone.js', 
+            'vendor/bootstrap/js/bootstrap.js',  // Custom bootstrap with larger fonts
+            'bower_components/handlebars/handlebars.runtime.js',
+            'bower_components/swag/lib/swag.js',
+            'bower_components/overthrow-dist/overthrow.js',
+            'vendor/mobiscroll.custom-2.5.4.min.js',
+            'vendor/jquery.scrollintoview.min.js',
+            'vendor/leaflet/leaflet-src.js'],
+        dest: 'dist/js/libs.js'
       }
     },
+
+   rework: {
+      'dist/css/app.css': 'app/css/index.css',
+      options: {
+        use: [
+          [require('rework-npm')]
+        ],
+        vendors: ['-moz-', '-webkit-']
+      }
+    },
+
 
     uglify: {
       options: {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-      },
-      libsjs: {
-        files: {
-          // the files to uglify
-          'dist/js/libs.js': 
-            ['bower_components/jquery/dist/jquery.min.js', 
-            'bower_components/lodash/dist/lodash.min.js', 
-            'bower_components/backbone/backbone.js', 
-            'vendor/bootstrap/js/bootstrap.min.js',  // Custom bootstrap with larger fonts
-            'bower_components/handlebars/handlebars.runtime.min.js',
-            'bower_components/swag/lib/swag.min.js',
-            'bower_components/overthrow-dist/overthrow.js',
-            'vendor/mobiscroll.custom-2.5.4.min.js',
-            'vendor/jquery.scrollintoview.min.js',
-            'vendor/leaflet/leaflet-src.js']
-        }
       }
+      // libsjs: {
+      //   files: {
+      //     // the files to uglify
+      //     'dist/js/libs.js': 
+      //       ['bower_components/jquery/dist/jquery.min.js', 
+      //       'bower_components/lodash/dist/lodash.min.js', 
+      //       'bower_components/backbone/backbone.js', 
+      //       'vendor/bootstrap/js/bootstrap.min.js',  // Custom bootstrap with larger fonts
+      //       'bower_components/handlebars/handlebars.runtime.min.js',
+      //       'bower_components/swag/lib/swag.min.js',
+      //       'bower_components/overthrow-dist/overthrow.js',
+      //       'vendor/mobiscroll.custom-2.5.4.min.js',
+      //       'vendor/jquery.scrollintoview.min.js',
+      //       'vendor/leaflet/leaflet-src.js']
+      //   }
+      // }
     },
 
     copy: {
@@ -107,6 +145,12 @@ module.exports = function(grunt) {
         cwd: 'dist/',
         src: '**',
         dest: 'cordova/www/'
+      },  
+      cordova_config: {
+        expand: true,
+        cwd: 'app/cordova/',
+        src: 'config.xml',
+        dest: 'cordova/'
       },  
       cordova_override_debug: {
         expand: true,
@@ -171,13 +215,13 @@ module.exports = function(grunt) {
           }
         }
       },
-      deploy_beta2: {
+      deploy_beta: {
         command: 's3cmd sync --acl-public --guess-mime-type ' +
           '--add-header "Cache-Control: no-cache, must-revalidate" ' +
           '--add-header "Pragma: no-cache" ' +
           '--add-header "Expires: 0" ' + 
           '--add-header "Content-Encoding: gzip" '+
-          '* s3://beta2.mwater.co',
+          '* s3://beta.mwater.co',
         options: {
           stdout: true,
           execOptions: {
@@ -285,6 +329,7 @@ module.exports = function(grunt) {
   grunt.registerTask('upsert-forms', 'Upsert forms to server', upsertForms);
   grunt.registerTask('compile-forms', 'Make forms into js', compileForms);
   grunt.registerTask('seeds', 'Seed database with some tables', seeds);
+  grunt.registerTask('localization', 'Localize strings in the app, updating localizations.json', localization);
 
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -295,14 +340,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-text-replace');
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-rework');
 
-  grunt.registerTask('cordova_debug', ['copy:cordova_www', 'copy:cordova_override_debug']);
-  grunt.registerTask('cordova_release', ['copy:cordova_www', 'copy:cordova_override_release']);
+  grunt.registerTask('cordova_debug', ['copy:cordova_config', 'copy:cordova_www', 'copy:cordova_override_debug']);
+  grunt.registerTask('cordova_release', ['copy:cordova_config', 'copy:cordova_www', 'copy:cordova_override_release']);
   grunt.registerTask('run_cordova_debug', ['default', 'cordova_debug', 'shell:cordova_run']);
 
   grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages']);
-  grunt.registerTask('default', ['browserify', 'seeds', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
+  grunt.registerTask('default', ['localization', 'browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
 
+  grunt.registerTask('deploy_beta', ['default', 'shell:deploy_beta']);
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
   grunt.registerTask('deploy_map', ['default', 'shell:deploy_map']);
   grunt.registerTask('deploy_app', ['shell:bump_version', 'default', 'shell:deploy_app']);

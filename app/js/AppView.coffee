@@ -33,8 +33,11 @@ class AppView extends Backbone.View
   hideSlideMenu: -> @slideMenu.hide()
 
   pageChanged: ->
+    # Remove loading if present
+    @$("#appview_loading").remove()
+
     # Set title and back button
-    @$("#navbar_back").css("visibility", if @pager.multiplePages() then "visible" else "hidden")
+    @$("#navbar_back").toggle(@pager.multiplePages())
     title = @pager.getTitle()
 
     # Show brand logo if no title

@@ -2,13 +2,15 @@
 	{{#each sources}}
 	<tr class="tappable source" id="{{_id}}">
 	    <td>
-	    	{{#if thumbnail}}<img class='thumb' src='https://api.mwater.co/v3/images/{{thumbnail}}?h=100' >{{/if}}
+	    	{{#if thumbnail}}
+	    	<img id="{{thumbnail}}" class="thumb" src="img/image-loading.png" onError="this.onerror=null;this.src='img/no-image-icon.jpg';" />
+	    	{{/if}}
 	    	<strong>{{name}}</strong> 
-	    	<td>{{#if geo}}{{else}}<span class="text-error"><b>{{T "Unlocated"}}</b></span>{{/if}}</td>
 	    	<br/>
+	    	<span class="text-muted"><em>{{typeName}}</em>&nbsp;</span>
 	    	<span class="text-muted">{{desc}}&nbsp;</span>
 	    </td>
-    	<td><strong>{{code}}</strong></td>
+    	<td>{{#unless geo}}<span class="label label-warning"><b>{{T "Unlocated"}}</b></span>{{/unless}} <strong>{{code}}</strong></td>
 	    <td style="vertical-align:middle; border-left:none; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>
 	</tr>
 	{{else}}

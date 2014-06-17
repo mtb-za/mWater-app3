@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="co.mwater.clientapp" version="3.0.40" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="co.mwater.clientapp" version="3.5.38" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>mWater</name>
     <description>
         mWater Client App
@@ -14,4 +14,5 @@
     <preference name="webviewbounce" value="false" />
     <preference name="loadingDialog" value="mWater, Loading..."/>
     <preference name="disallowOverscroll" value="true"/>
+    <preference name="orientation" value="portrait" />
 </widget>

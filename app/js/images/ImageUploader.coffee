@@ -15,7 +15,7 @@ class ImageUploaderView extends Backbone.View
     @render()
 
   render: ->
-    @$el.html require('.//ImageUploader.hbs')()
+    @$el.html require('./ImageUploader.hbs')()
 
     # Destroy when hidden
     @$("#modal").on 'hidden.bs.modal', =>
@@ -65,7 +65,9 @@ class ImageUploaderView extends Backbone.View
   uploadProgress: (evt) =>
     if evt.lengthComputable
       percentComplete = Math.round(evt.loaded * 100 / evt.total)
-      @$(".bar").width("#{percentComplete}%")
+      @$(".progress-bar").width("#{percentComplete}%")
+    else
+      @$(".progress-bar").width("100%")
 
   uploadComplete: (evt) =>
     # This event is raised when the server send back a response 

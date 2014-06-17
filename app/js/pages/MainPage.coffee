@@ -1,5 +1,7 @@
 Page = require("../Page")
 NewSurveyPage = require("./NewSurveyPage")
+SurveyListPage = require("./SurveyListPage")
+TestListPage = require("./TestListPage")
 NewTestPage = require("./NewTestPage")
 NewSourcePage = require("./NewSourcePage")
 SourceListPage = require("./SourceListPage")
@@ -9,8 +11,8 @@ class MainPage extends Page
   events:
     "click #source_list" : "gotoSourceList"
     "click #source_map" : "gotoSourceMap"
-    "click #new_test" : "addTest"
-    "click #new_survey" : "addSurvey"
+    "click #test_list" : "gotoTestList"
+    "click #survey_list" : "gotoSurveyList"
 
   activate: ->
     @setTitle ""
@@ -24,6 +26,12 @@ class MainPage extends Page
       @listenTo @imageSync, "success error", =>
         @render()
 
+    # Cache groups
+    if @login
+      @db.groups.find({ members: @login.user }).fetch (groups) =>
+        # Do nothing, just querying caches them
+        return
+
     @render()
 
   deactivate: ->
@@ -34,15 +42,56 @@ class MainPage extends Page
       @stopListening @imageSync
 
   render: ->
-    data = {}
-    data.login = @login
-    data.version = @version
-    data.baseVersion = @baseVersion
-    data.lastSyncDate = @dataSync.lastSuccessDate if @dataSync?
+    # Determine if base app out of date
+    if @baseVersion and @baseVersion.match(/^3\.[0-3]/)
+      outdated = true
 
-    data.imagesRemaining = @imageSync.lastSuccessMessage if @imageSync?
+    # Determine data sync status
+    if @dataSync?
+      if @dataSync.inProgress
+        dataSyncText = T("In progress...")
+        dataSyncClass = "muted"
+      else if @dataSync.lastError
+        # Check if jQuery ajax error
+        if @dataSync.lastError.status?
+          # If connection error
+          if @dataSync.lastError.status == 0
+            dataSyncText = T("No connection")
+            dataSyncClass = "warning"
+          else if @dataSync.lastError.status >= 500
+            dataSyncText = T("Server error")
+            dataSyncClass = "danger"
+          else if @dataSync.lastError.status >= 400
+            dataSyncText = T("Upload error")
+            dataSyncClass = "danger"
+        else
+          dataSyncText = @dataSync.lastError
+          dataSyncClass = "danger"
+      else
+        dataSyncText = T("Complete")
+        dataSyncClass = "success"
+
+    data = {
+      login: @login
+      version: @version
+      baseVersion: @baseVersion
+      lastSyncDate: @dataSync.lastSuccessDate if @dataSync?
+      imagesRemaining: @imageSync.lastSuccessMessage if @imageSync?
+      dataSyncText: dataSyncText
+      dataSyncClass: dataSyncClass
+      outdated: outdated
+    }
 
     @$el.html require('./MainPage.hbs')(data)
+
+    # Display upserts pending
+    if @dataSync
+      @dataSync.numUpsertsPending (num) =>
+        if num > 0
+          $("#upserts_pending").html(T("<b>{0} records to upload</b>", num))
+        else
+          $("#upserts_pending").html("")
+      , @error
 
     # Display images pending
     if @imageManager? and @imageManager.numPendingImages?
@@ -56,7 +105,7 @@ class MainPage extends Page
     menu = []
     if NewSourcePage.canOpen(@ctx)
       menu.push({ text: T("Add Water Source"), click: => @addSource() })
-    if NewTestPage.canOpen(@ctx)
+    if TestListPage.canOpen(@ctx)
       menu.push({ text: T("Start Water Test"), click: => @addTest() })
     if NewSurveyPage.canOpen(@ctx)
       menu.push({ text: T("Start Survey"), click: => @addSurvey() })
@@ -78,4 +127,10 @@ class MainPage extends Page
   gotoSourceMap: ->
     @pager.openPage(SourceMapPage)
 
+  gotoSurveyList: ->
+    @pager.openPage(SurveyListPage)
+
+  gotoTestList: ->
+    @pager.openPage(TestListPage)
+    
 module.exports = MainPage

@@ -1,5 +1,6 @@
 Page = require '../Page'
 forms = require '../forms'
+consoleCapture = require '../consoleCapture'
 
 # Allows creating of a source
 module.exports = class ProblemReportPage extends Page
@@ -42,7 +43,7 @@ module.exports = class ProblemReportPage extends Page
       report.user_agent = navigator.userAgent
       report.device = window.device
       report.url = window.location.href
-      # TODO add log
+      report.log = consoleCapture.getHistory().join("\r\n")
       
       # Post to api
       url = @apiUrl + 'problem_reports' + (if (@login? and @login.client?) then "?client=" + @client else "")

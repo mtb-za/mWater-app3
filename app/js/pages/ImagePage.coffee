@@ -6,10 +6,11 @@ module.exports = class ImagePage extends Page
     @$el.html require('./ImagePage.hbs')()
 
     # Get image url
-    @imageManager.getImageUrl(@options.id, (url) =>
+    @imageManager.getImageUrl @options.id, (url) =>
       @$("#message_bar").hide()
       @$("#image").attr("src", url).show()
-    , @error)
+    , =>
+      alert(T("Image not available"))
 
   activate: ->
     @setTitle T("Image")

@@ -3,22 +3,39 @@
 	padding-left: 0;
 	padding-right: 0;
 }
+
+#navbar_slidemenu_button {
+	background: url(img/menu.png) black no-repeat 0; 
+	width: 50px;
+	background-position: 7px 9px;
+	height: 50px;
+}
+
+#navbar_title {
+	padding-left: 3px;
+	position: absolute;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	max-width: 90%;
+	color: #ccc;
+}
 </style>
 
 <nav class="navbar navbar-inverse navbar-fixed-top" id="header" style="background-color: black;">
 	<div class="container container-nopadding">
 		<div class="navbar-header" style="width: 100%; margin-left: 0px; margin-right: 0px;">
 			<span class="glyphicon glyphicon-chevron-left" id="navbar_back" 
-				style="margin-top: 16px; margin-left: 1px; float: left; color: white; visibility: visible;">
+				style="margin-top: 16px; margin-left: 1px; float: left; color: white; display: none;">
 			</span>
-			<a class="navbar-brand" style="padding-top: 0; padding-bottom: 0; ">
-				<img id="brand_logo" src="img/black_logo_40.png" style="padding-top: 5px; display: none;">
+			<a id="brand_logo" class="navbar-brand" style="padding-top: 0; padding-bottom: 0; ">
+				<img src="img/black_logo_40.png" style="padding-top: 5px">
 			</a>
 	  		<a class="navbar-brand" style="margin-left: -15px">
-				<span id="navbar_title" style="padding-left: 3px;"></span>
+				<span id="navbar_title"></span>
 			</a>
 			<div style="float: right;">
-		  	  	<div id="navbar_slidemenu_button" class="menuitem" style="background: url(img/menu.png) no-repeat 0; width: 40px; margin-top: 8px; height: 35px;">
+		  	  	<div id="navbar_slidemenu_button" class="menuitem">
 		    		&nbsp;
 		  		</div>
 		  	</div>
@@ -30,6 +47,11 @@
 <div class="container" style="padding-left: 0px; padding-right: 0px;">
 	<div class="row" style="margin-left: 0px; margin-right: 0px;">
 		<div id="appview_content" class="col-md-12" style="padding-left: 0px; padding-right: 0px;">
+			<div id="appview_loading">
+				<div class="alert alert-info">
+					<span class="glyphicon glyphicon-cog"></span> {{T "Loading mWater App..."}}
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

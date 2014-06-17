@@ -7,6 +7,7 @@
     <title>mWater</title>
     <link rel="stylesheet" type="text/css" href="css/libs.css">
     <link rel="stylesheet" type="text/css" href="css/app.css">
+    <script src="file:///android_asset/www/cordova.js"></script>
     <script src="js/preload.js"></script>
     <script src="js/libs.js"></script>
     <script src="js/seeds.js"></script>
@@ -16,7 +17,7 @@
     <script src="js/app.js"></script>
     <script>
         console.log("Running debug version of index_cordova");
-        require("run").start({update: false});
+        require("run").start({update: false, cordova: true});
     </script>
 </body>
 </html>

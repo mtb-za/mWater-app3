@@ -2,28 +2,53 @@ assert = chai.assert
 
 fail = (err) ->
   console.error err
-  assert.fail()
+  assert.ok(false, err)
 
 exports.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem
 
 exports.resolveLocalFileSystemURI = window.resolveLocalFileSystemURI || window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL
 
-exports.createFile = (fs, path, text, success) ->
-  fs.root.getFile path, {create: true}, (fileEntry) =>
-    # Create a FileWriter object for our FileEntry 
-    fileEntry.createWriter (fileWriter) =>
-      fileWriter.onwriteend = (e) =>
-        console.log('Write completed.')
+resolveLocalFileSystemURI = exports.resolveLocalFileSystemURI
 
-      fileWriter.onerror = (e) =>
-        console.log('Write failed: ' + e.toString())
-    
-      # Create a new Blob and write it to log.txt.
-      blob = new Blob([text], {type: 'text/plain'})
-      fileWriter.write(blob)
-      success(fileEntry.toURL())
+exports.createFile = (fs, path, text, success) ->
+  # If path is a url, handle specially
+  if path.match(/:\/\//)
+    # Get parent URL
+    dir = path.substring( 0, path.lastIndexOf( "/" ) + 1)
+    filename = path.substring(path.lastIndexOf( "/" ) + 1)
+    resolveLocalFileSystemURI dir, (dirEntry) =>
+      dirEntry.getFile filename, { create:true }, (fileEntry) =>
+        # Create a FileWriter object for our FileEntry 
+        fileEntry.createWriter (fileWriter) =>
+          fileWriter.onwriteend = (e) =>
+            console.log('Write completed.')
+
+          fileWriter.onerror = (e) =>
+            console.log('Write failed: ' + e.toString())
+        
+          # Create a new Blob and write it to log.txt.
+          blob = new Blob([text], {type: 'text/plain'})
+          fileWriter.write(blob)
+          success(fileEntry.toURL())
+        , fail
+      , fail
     , fail
-  , fail
+  else
+    fs.root.getFile path, {create: true}, (fileEntry) =>
+      # Create a FileWriter object for our FileEntry 
+      fileEntry.createWriter (fileWriter) =>
+        fileWriter.onwriteend = (e) =>
+          console.log('Write completed.')
+
+        fileWriter.onerror = (e) =>
+          console.log('Write failed: ' + e.toString())
+      
+        # Create a new Blob and write it to log.txt.
+        blob = new Blob([text], {type: 'text/plain'})
+        fileWriter.write(blob)
+        success(fileEntry.toURL())
+      , fail
+    , fail
 
 exports.readFileEntry = (fileEntry, success) ->
   $.get fileEntry.toURL(), (data) -> 

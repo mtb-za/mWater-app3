@@ -9,7 +9,7 @@ module.exports = class ImagesQuestion extends Question
   renderAnswer: (answerEl) ->
     # Render image using image manager
     if not @ctx.imageManager
-      answerEl.html '<div class="text-error">' + T("Images not available") + '</div>'
+      answerEl.html '<div class="text-danger">' + T("Images not available") + '</div>'
     else
       images = @model.get(@id)
 
@@ -37,7 +37,10 @@ module.exports = class ImagesQuestion extends Question
   setThumbnailUrl: (id) ->
     success = (url) =>
       @$("#" + id).attr("src", url)
-    @ctx.imageManager.getImageThumbnailUrl id, success, @error
+    @ctx.imageManager.getImageThumbnailUrl id, success, =>
+      # Display this image on error
+      @$("#" + id).attr("src", "img/no-image-icon.jpg")
+      
 
   addClick: ->
     # Call imageAcquirer

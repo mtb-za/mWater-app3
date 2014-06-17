@@ -5,7 +5,7 @@ PageMenu = require("./PageMenu")
 context = require './context'
 login = require './login'
 ProblemReporter = require './ProblemReporter'
-Localizer = require './localization/Localizer'
+ezlocalize = require 'ez-localize'
 
 MainPage = require './pages/MainPage'
 LoginPage = require './pages/LoginPage'
@@ -13,7 +13,8 @@ SourceMapPage = require './pages/SourceMapPage'
 
 AppUpdater = require './AppUpdater'
 
-cordova = require './cordova'
+cordovaSetup = require './cordovaSetup'
+consoleCapture = require './consoleCapture'
 
 handlebars = require("hbsfy/runtime")
 
@@ -21,14 +22,20 @@ startError = (err) ->
   alert("Failed to start app: " + JSON.stringify(err))
 
 exports.start = (options = {}) ->
-  _.defaults(options, { update: true })
+  _.defaults(options, { update: true, cordova: false })
+
+  # Start recording console immediately
+  consoleCapture.setup()
+
+  # Report URL right away (cordova bug)
+  console.log "Loading at: " + window.location.href
 
   # Setup handlebars helpers
   Swag.registerHelpers(handlebars)
   
   # Setup localizer
-  localizationData = require './localization/localizations.json'
-  localizer = new Localizer(localizationData, "en")
+  localizationData = require './localizations.json'
+  localizer = new ezlocalize.Localizer(localizationData, "en")
   localizer.makeGlobal(handlebars)
   localizer.restoreCurrentLocale()
 
@@ -64,40 +71,41 @@ exports.start = (options = {}) ->
 
   # Step 2 of setup
   step2 = ->
+    withCtx = (ctx) ->
+      problemReporter = ProblemReporter.register ctx.apiUrl + 'problem_reports', "//VERSION//", ->
+        return ctx.login
+        
+      ProblemReporter.default = problemReporter
+
+      # Set pager context
+      pager.setContext(ctx)
+
+      # Add slider sub-menus
+      slideMenu.addSubmenu(pager.getContextMenu())
+      slideMenu.addSubmenu(new PageMenu(ctx: ctx))
+
+      $ -> 
+        # If explicit page
+        if options.initialPage == "SourceMapPage"
+          pager.openPage(SourceMapPage)
+        # If logged in, open main page
+        else if ctx.login?
+          pager.openPage(MainPage)
+        else
+          pager.openPage(LoginPage)
+
     # Create context
     if options.demo  
-      ctx = context.createDemoContext()
+      context.createDemoContext(withCtx)
     else if login.getLogin()
-      ctx = context.createLoginContext(login.getLogin())
+      context.createLoginContext(login.getLogin(), withCtx)
     else  
-      ctx = context.createAnonymousContext()
+      context.createAnonymousContext(withCtx)
 
-    problemReporter = ProblemReporter.register ctx.apiUrl + 'problem_reports', "//VERSION//", ->
-      return ctx.login
-      
-    ProblemReporter.default = problemReporter
 
-    # Set pager context
-    pager.setContext(ctx)
-
-    # Add slider sub-menus
-    slideMenu.addSubmenu(pager.getContextMenu())
-    slideMenu.addSubmenu(new PageMenu(ctx: ctx))
-
-    $ -> 
-      # If explicit page
-      if options.initialPage == "SourceMapPage"
-        pager.openPage(SourceMapPage)
-      # If logged in, open main page
-      else if ctx.login?
-        pager.openPage(MainPage)
-      else
-        pager.openPage(LoginPage)
-
-  # Start cordova (if needed)
-  cordova.setup { update: options.update }, (isCordova) =>
-    # If cordova, get filesystems for context
-    if isCordova
+  if options.cordova
+    # Start cordova 
+    cordovaSetup.setup { update: options.update },  =>
       # Get file systems
       console.log "Getting file systems..."
       window.requestFileSystem LocalFileSystem.PERSISTENT, 0, (persFs) ->
@@ -107,8 +115,8 @@ exports.start = (options = {}) ->
           step2()
         , startError
       , startError
-    else
-      step2()
+    , startError
+  else
+    step2()
 
-  , startError
     

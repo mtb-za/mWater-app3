@@ -1,12 +1,12 @@
 <tbody>
   {{#each notes}}
   <tr class="tappable note" id="{{_id}}">
-    <td><strong>{{date}}</strong></td>
+    <td><strong>{{formatDate date "%F"}}</strong></td>
     <td style="border-left:none;">
       {{#is status "ok"}}<span class="text-success">{{T "Functional"}}</span>{{/is}}
       {{#is status "repair"}}<span class="text-warning">{{T "Needs repair"}}</span>{{/is}}
-      {{#is status "broken"}}<span class="text-error">{{T "Non-functional"}}</span>{{/is}}
-      {{#is status "missing"}}<span class="text-error">{{T "No longer exists"}}</span>{{/is}}
+      {{#is status "broken"}}<span class="text-danger">{{T "Non-functional"}}</span>{{/is}}
+      {{#is status "missing"}}<span class="text-danger">{{T "No longer exists"}}</span>{{/is}}
     </td>
     <td>{{#if notes}}<span class="text-muted">{{truncate notes 31 "..."}}{{/if}}</td>
     <td style="vertical-align:middle; border-left:none; width: 16px"><span class="glyphicon glyphicon-chevron-right"></span></td>

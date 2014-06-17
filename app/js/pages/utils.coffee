@@ -49,9 +49,9 @@ exports.login = (username, password, ctx, success, error) ->
 
     # Update context, first stopping old one
     ctx.stop()
-    _.extend ctx, context.createLoginContext(response)
-
-    success()
+    context.createLoginContext response, (newctx) =>
+      _.extend ctx, newctx
+      success()
 
   req.fail (jqXHR, textStatus, errorThrown) =>
     console.error "Login failure: #{jqXHR.responseText} (#{jqXHR.status})"

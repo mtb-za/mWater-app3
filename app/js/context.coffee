@@ -28,20 +28,20 @@ TODO should any items be null of context?
 
 ###
 
-LocalDb = require('minimongo').LocalDb
-RemoteDb = require('minimongo').RemoteDb
-HybridDb = require('minimongo').HybridDb
+async = require 'async'
+minimongo = require 'minimongo'
+
 SimpleImageManager = require './images/SimpleImageManager'
 CachedImageManager = require './images/CachedImageManager'
 authModule = require './auth'
 sourcecodes = require './sourcecodes'
 syncModule = require './sync'
 Camera = require './Camera'
-cordova = require './cordova'
+cordovaSetup = require './cordovaSetup'
 ImageUploader = require './images/ImageUploader'
 ProblemReporter = require './ProblemReporter'
 
-collectionNames = ['sources', 'forms', 'responses', 'source_types', 'tests', 'source_notes']
+collectionNames = ['sources', 'forms', 'groups', 'responses', 'source_types', 'tests', 'source_notes', 'sensors', 'sensor_data']
 
 apiUrl = 'https://api.mwater.co/v3/'
 
@@ -53,25 +53,32 @@ exports.setupFileSystems = (tempFs, persFs) ->
   temporaryFs = tempFs
   persistentFs = persFs
 
+displayErrorAlert = _.debounce (msg) ->
+  alert(T("Internal error") + ": " + msg)
+, 5000, true
+
+error = (err) ->
+  str = if err? and err.message then err.message else err
+  if typeof str != "string"
+    str = JSON.stringify(str)
+
+  console.error("Internal Error Callback: " + str)
+  displayErrorAlert(str)
+  
+  # Call default problem reporter if present
+  if ProblemReporter.default?
+    ProblemReporter.default.reportProblem(str)
+
 # Base context
 createBaseContext = ->
   camera = if Camera.hasCamera() then Camera else null
-
-  error = (err) ->
-    console.error err
-    str = if err? and err.message then err.message else err
-    alert(T("Internal error") + ": " + err)
-    
-    # Call default problem reporter if present
-    if ProblemReporter.default?
-      ProblemReporter.default.reportProblem(err)
 
   return { 
     error: error
     apiUrl: apiUrl
     camera: camera
     version: '//VERSION//'
-    baseVersion: cordova.baseVersion()
+    baseVersion: cordovaSetup.baseVersion()
     localizer: T.localizer
     stop: ->
     # db: null
@@ -83,140 +90,201 @@ createBaseContext = ->
     # imageSync: null
   }
 
-# Setup database
-createDb = (login) ->
-  if login
-    # Namespace includes username to be safe
-    localDb = new LocalDb({namespace: "v3.db.#{login.user}"}) 
+createLocalDb = (namespace, success, error) ->
+  if namespace
+    # Autoselect database
+    minimongo.utils.autoselectLocalDb { namespace: namespace }, (localDb) =>
+      success(localDb)
+    , (err) =>
+      console.log "Error selecting database"
+      error(err)
   else
     # No local storage
-    localDb = new LocalDb() 
+    localDb = new minimongo.MemoryDb() 
+    success(localDb)
 
-  remoteDb = new RemoteDb(apiUrl, if login then login.client else undefined)
+# Setup database
+createDb = (login, success) ->
+  if login
+    # Namespace includes username to be safe
+    namespace = "v3.db.#{login.user}"
+  else
+    namespace = null
 
-  db = new HybridDb(localDb, remoteDb)
+  createLocalDb namespace, (localDb) =>
+    remoteDb = new minimongo.RemoteDb(apiUrl, if login then login.client else undefined)
+    db = new minimongo.HybridDb(localDb, remoteDb)
 
-  # Add collections
-  for col in collectionNames
-    localDb.addCollection(col)
-    remoteDb.addCollection(col)
-    db.addCollection(col)
+    # Add collections
+    async.eachSeries collectionNames, (col, callback) =>
+      localDb.addCollection col, =>
+        # Remote Db addCollection is synchronous
+        remoteDb.addCollection(col)
 
-  # Seed local db
-  if window.seeds
-    for col, docs of window.seeds
-      for doc in docs
-        localDb[col].seed(doc)
+        # Hybrid Db addCollection is synchronous
+        db.addCollection(col)
 
-  return db
+        callback()
+      , callback
+    , (err) =>
+      if err
+        return error(err)
+
+      performSeed = =>
+        # Seed local db with startup documents
+        if window.seeds
+          async.eachSeries _.keys(window.seeds), (col, callback) =>
+            async.eachSeries window.seeds[col], (doc, callback2) =>
+              localDb[col].seed doc, =>
+                callback2()
+              , callback2
+            , callback
+          , (err) =>
+            if err
+              return error(err)
+            success(db)
+        else
+          success(db)
+
+      # Migrate from LocalStorageDb if database is not LocalStorageDb (TODO remove after Oct 2014)
+      if namespace and localDb instanceof minimongo.IndexedDb or localDb instanceof minimongo.WebSQLDb
+        console.log "Migrating database"
+        oldDb = new minimongo.LocalStorageDb(namespace: namespace)
+        for col in collectionNames
+          oldDb.addCollection(col)
+        minimongo.utils.migrateLocalDb oldDb, localDb, performSeed, error
+      else
+        performSeed()
+  , error
 
 # Anonymous context for not logged in
-exports.createAnonymousContext = ->
-  db = createDb()
+exports.createAnonymousContext = (success) ->
+  createDb null, (db) =>
+    # Allow nothing
+    auth = new authModule.NoneAuth()
 
-  # Allow nothing
-  auth = new authModule.NoneAuth()
-
-  imageManager = new SimpleImageManager(apiUrl)
-
-  return _.extend createBaseContext(), {
-    db: db
-    imageManager: imageManager
-    auth: auth 
-    login: null
-    sourceCodesManager: null
-    dataSync: null
-    imageSync: null
-  }
-
-exports.createDemoContext = ->
-  db = createDb()
-
-  # Allow caching in demo mode in non-persistent storage
-  if temporaryFs
-    # Silently disable upload 
-    fileTransfer = new FileTransfer()
-    fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
-      successCallback()
-
-    imageManager = new CachedImageManager(temporaryFs, apiUrl, "images", "", fileTransfer) 
-  else
     imageManager = new SimpleImageManager(apiUrl)
 
-  # Allow everything
-  auth = new authModule.AllAuth()
+    ctx = _.extend createBaseContext(), {
+      db: db
+      imageManager: imageManager
+      auth: auth 
+      login: null
+      sourceCodesManager: null
+      dataSync: null
+      imageSync: null
+    }
+    success(ctx)
 
-  # No client or org
-  login = { user: "demo" }
+exports.createDemoContext = (success) ->
+  createDb null, (db) =>
+    # Allow caching in demo mode in non-persistent storage
+    if temporaryFs
+      # Silently disable upload 
+      fileTransfer = new FileTransfer()
+      fileTransfer.upload = (filePath, server, successCallback, errorCallback, options) =>
+        successCallback()
 
-  sourceCodesManager = new sourcecodes.DemoSourceCodesManager()
+      imageManager = new CachedImageManager(temporaryFs, apiUrl, "images", "", fileTransfer) 
+    else
+      imageManager = new SimpleImageManager(apiUrl)
 
-  return _.extend createBaseContext(), {
-    db: db 
-    imageManager: imageManager
-    auth: auth
-    login: login
-    sourceCodesManager: sourceCodesManager
-    dataSync: null
-    imageSync: null
-  }
+    baseContext = createBaseContext()
+
+    # Create image acquirer with camera and imageManager if temporaryFs and camera
+    if baseContext.camera? and temporaryFs
+      imageAcquirer = {
+        acquire: (success, error) ->
+          baseContext.camera.takePicture (url) ->
+            # Add image
+            imageManager.addImage url, (id) =>
+              success(id)
+          , (err) ->
+            alert(T("Failed to take picture"))
+      }
+    else 
+      # Use ImageUploader
+      imageAcquirer = {
+        acquire: (success, error) ->
+          ImageUploader.acquire(apiUrl, login.client, success, error) 
+      }
+
+    # Allow everything
+    auth = new authModule.AllAuth()
+
+    # No client or org
+    login = { user: "demo" }
+
+    sourceCodesManager = new sourcecodes.DemoSourceCodesManager()
+
+    ctx = _.extend baseContext, {
+      db: db 
+      imageManager: imageManager
+      auth: auth
+      login: login
+      sourceCodesManager: sourceCodesManager
+      dataSync: null
+      imageSync: null
+      imageAcquirer: imageAcquirer
+    }
+    success(ctx)
 
 # login must contain user, org, client, email members. "user" is username. "org" can be null
 # login can be obtained by posting to api /clients
-exports.createLoginContext = (login) ->
-  db = createDb(login)
+exports.createLoginContext = (login, success) ->
+  createDb login, (db) =>
+    if persistentFs
+      fileTransfer = new FileTransfer()
+      imageManager = new CachedImageManager(persistentFs, apiUrl, "Android/data/co.mwater.clientapp/images", login.client, fileTransfer)  
+    else
+      imageManager = new SimpleImageManager(apiUrl)
+    
+    auth = new authModule.UserAuth(login.user, login.org)
+    sourceCodesManager = new sourcecodes.SourceCodesManager(apiUrl + "source_codes?client=#{login.client}")
+    dataSync = new syncModule.DataSync(db, sourceCodesManager)
+    imageSync = new syncModule.ImageSync(imageManager)
 
-  if persistentFs
-    fileTransfer = new FileTransfer()
-    imageManager = new CachedImageManager(persistentFs, apiUrl, "Android/data/co.mwater.clientapp/images", login.client, fileTransfer)  
-  else
-    imageManager = new SimpleImageManager(apiUrl)
-  
-  auth = new authModule.UserAuth(login.user, login.org)
-  sourceCodesManager = new sourcecodes.SourceCodesManager(apiUrl + "source_codes?client=#{login.client}")
-  dataSync = new syncModule.DataSync(db, sourceCodesManager)
-  imageSync = new syncModule.ImageSync(imageManager)
+    # Start synchronizing
+    dataSync.start(30*1000)  # Every 30 seconds
+    imageSync.start(30*1000)  # Every 30 seconds
 
-  # Start synchronizing
-  dataSync.start(30*1000)  # Every 30 seconds
-  imageSync.start(30*1000)  # Every 30 seconds
+    # Perform sync immediately
+    dataSync.perform()
+    imageSync.perform()
 
-  # Perform sync immediately
-  dataSync.perform()
-  imageSync.perform()
+    stop = ->
+      dataSync.stop()
+      imageSync.stop()
 
-  stop = ->
-    dataSync.stop()
-    imageSync.stop()
+    baseContext = createBaseContext()
 
-  baseContext = createBaseContext()
+    # Create image acquirer with camera and imageManager if persistentFs and camera
+    if baseContext.camera? and persistentFs
+      imageAcquirer = {
+        acquire: (success, error) ->
+          baseContext.camera.takePicture (url) ->
+            # Add image
+            imageManager.addImage url, (id) =>
+              success(id)
+          , (err) ->
+            alert(T("Failed to take picture"))
+      }
+    else 
+      # Use ImageUploader
+      imageAcquirer = {
+        acquire: (success, error) ->
+          ImageUploader.acquire(apiUrl, login.client, success, error) 
+      }
 
-  # Create image acquirer with camera and imageManager if persistentFs and camera
-  if baseContext.camera? and persistentFs
-    imageAcquirer = {
-      acquire: (success, error) ->
-        baseContext.camera.takePicture (url) ->
-          # Add image
-          imageManager.addImage url, (id) =>
-            success(id)
-        , (err) ->
-          alert(T("Failed to take picture"))
+    ctx = _.extend baseContext, {
+      db: db 
+      imageManager: imageManager
+      auth: auth
+      login: login
+      sourceCodesManager: sourceCodesManager
+      dataSync: dataSync
+      imageSync: imageSync
+      stop: stop
+      imageAcquirer: imageAcquirer
     }
-  else 
-    # Use ImageUploader
-    imageAcquirer = {
-      acquire: (success, error) ->
-        ImageUploader.acquire(apiUrl, login.client, success, error) 
-    }
-
-  return _.extend baseContext, {
-    db: db 
-    imageManager: imageManager
-    auth: auth
-    login: login
-    sourceCodesManager: sourceCodesManager
-    dataSync: dataSync
-    imageSync: imageSync
-    stop: stop
-    imageAcquirer: imageAcquirer
-  }
+    success(ctx)
