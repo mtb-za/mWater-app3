@@ -55,6 +55,12 @@ ProblemReporter = (url, version, getLogin) ->
   handleOnError = (errorMsg, url, lineNumber) =>
     reportingError = true
 
+    # Try to stringify error
+    try 
+      errorMsg = JSON.stringify(errorMsg)
+    catch ex
+      console.error "Exception stringifying error message"
+
     # Put up alert instead of old action
     alert T("Internal Error") + "\n" + errorMsg + "\n" + url + ":" + lineNumber
 
