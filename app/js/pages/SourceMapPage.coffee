@@ -70,7 +70,6 @@ class SourceMapPage extends Page
     onReady = () =>
       @osmLayer.addTo(@map)
 
-    @noDb = false
     onError = (errorType, errorData1, errorData2) =>
       if errorType == "COULD_NOT_CREATE_DB"
         @noDb = true
@@ -94,6 +93,7 @@ class SourceMapPage extends Page
 
     # Setup base layers
     @osmLayer = BaseLayers.createOSMLayer(onReady, onError)
+    @noDb = not @osmLayer.useDB()
 
     # satelliteLayer = BaseLayers.createSatelliteLayer() # TODO re-add
 
@@ -260,7 +260,7 @@ class SourceMapPage extends Page
       @cacheProgressControl = new CacheProgressControl(@map, @osmLayer)
 
       # Save the tiles
-      @osmLayer.saveTiles(zoomLimit)
+      @cacheProgressControl.saveTiles(zoomLimit)
     else
       alert(T("You are trying to save too large of a region of the map. Please zoom in further."))
 

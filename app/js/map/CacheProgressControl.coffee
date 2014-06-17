@@ -32,6 +32,23 @@ module.exports = class CacheProgressControl extends Backbone.View
 
     map.addControl(@leafletControl)
 
+
+  saveTiles: (zoomLimit) ->
+    # Save the tiles
+    @offlineLayer.saveTiles(zoomLimit,
+      () =>
+        #ready (can cancel)
+        null
+      ,
+      () =>
+        #success
+        null
+      ,
+      (error) =>
+        #failure
+        null
+    )
+
   events: 
     "click #cancel": "cancel"
 
