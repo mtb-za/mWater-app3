@@ -1281,7 +1281,8 @@
       "_base": "en",
       "en": "Username must be composed of letters, numbers, spaces, period and dash and must be at least 7 characters long. It must start with a letter.",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
@@ -1834,6 +1835,11 @@
     {
       "_base": "en",
       "en": "Use location with very low accuracy (±{0}m)?",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Username must be composed of letters, numbers, spaces, period and dash and must be at least 4 characters long. It must start with a letter.",
       "sw": ""
     }
   ]
