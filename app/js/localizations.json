@@ -1381,7 +1381,8 @@
       "_base": "en",
       "en": "N/A",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
@@ -1840,6 +1841,11 @@
     {
       "_base": "en",
       "en": "Username must be composed of letters, numbers, spaces, period and dash and must be at least 4 characters long. It must start with a letter.",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Not Applicable",
       "sw": ""
     }
   ]
