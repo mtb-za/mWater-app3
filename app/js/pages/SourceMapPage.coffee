@@ -80,16 +80,25 @@ class SourceMapPage extends Page
             if errorType == "INDEXED_DB_BATCH"
               errorMsg = errorType
               throw Error(errorMsg)
-            if errorType == "INDEXED_DB_GET"
+            else if errorType == "COULD_NOT_CREATE_DB"
+              errorMsg = errorType
+              throw Error(errorMsg)
+            else if errorType == "INDEXED_DB_GET"
               errorMsg = errorType + ":" + errorData1
               throw Error(errorMsg)
-            if errorType == "GET_STATUS_ERROR"
+            else if errorType == "GET_STATUS_ERROR"
+              errorMsg = errorType + ":" + errorData1 + ":" + errorData2
+              throw Error(errorMsg)
+            else if errorType == "NETWORK_ERROR"
               errorMsg = errorType + ":" + errorData1 + ":" + errorData2
               console.log(errorMsg)
-            if errorType == "NETWORK_ERROR"
-              errorMsg = errorType + ":" + errorData1 + ":" + errorData2
-              console.log(errorMsg)
-            alert(errorMsg)
+              @pager.flash(T("Network error. Unable to save image."), "danger")
+            else if errorType == "SYSTEM_BUSY"
+              alert("System is busy");
+            else
+              errorMsg = errorType + ":" + errorData1
+              throw Error(errorMsg)
+
 
     # Setup base layers
     @osmLayer = BaseLayers.createOSMLayer(onReady, onError)
