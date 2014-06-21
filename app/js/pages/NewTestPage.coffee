@@ -43,3 +43,4 @@ module.exports = class NewTestPage extends Page
       
     @db.tests.upsert test, (test) =>
       @pager.closePage(TestPage, { _id: test._id })
+    , @error

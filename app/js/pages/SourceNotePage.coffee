@@ -61,7 +61,9 @@ module.exports = class SourceNotePage extends Page
           contents: questions
   
         @listenTo form, 'save', =>
-          @db.source_notes.upsert @model.toJSON(), => @pager.closePage()
+          @db.source_notes.upsert @model.toJSON(), => 
+            @pager.closePage()
+          , @error
 
         @listenTo form, 'cancel', =>
           @pager.closePage()

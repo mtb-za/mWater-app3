@@ -155,13 +155,17 @@ class SurveyPage extends Page
   edit: ->
     # Redraft
     @responseModel.draft()
-    @db.responses.upsert @response, => @render()
+    @db.responses.upsert @response, => 
+      @render()
+    , @error
 
   save: =>
     if @formView.save
       # Save to db
       @response.data = @formView.save()
-      @db.responses.upsert(@response)
+      @db.responses.upsert @response, =>
+        return
+      , @error
 
   close: ->
     @save()
@@ -172,9 +176,10 @@ class SurveyPage extends Page
     @response.data = @formView.save()
     @responseModel.submit()
 
-    @db.responses.upsert(@response)
-    @pager.closePage()
-    @pager.flash T("Survey completed successfully"), "success"
+    @db.responses.upsert @response, =>
+      @pager.closePage()
+      @pager.flash T("Survey completed successfully"), "success"
+    , @error
 
   removeResponse: ->
     if @auth.remove("responses", @response) and confirm(T("Permanently delete survey?"))
@@ -182,5 +187,6 @@ class SurveyPage extends Page
         @response = null
         @pager.closePage()
         @pager.flash T("Survey deleted"), "warning"
+      , @error
 
 module.exports = SurveyPage

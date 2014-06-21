@@ -21,6 +21,7 @@ exports.changeUserOrgDocs = (db, user, org, success, error) ->
           row.org = org
           table.upsert row, =>
             processRows(_.rest(rows))
+          , error
         processRows(rows)
 
     # For each main table

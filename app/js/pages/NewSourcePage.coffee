@@ -71,6 +71,7 @@ module.exports = class NewSourcePage extends Page
 
         @db.sources.upsert source, (source) => 
           @pager.closePage(SourcePage, { _id: source._id, setLocation: @model.get('setLocation'), onSelect: @options.onSelect })
+        , @error
 
       error = =>
         alert(T("Unable to generate source id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range."))

@@ -82,7 +82,9 @@ module.exports = class SourcePage extends Page
         @source.geo = geo
       else  
         delete @source.geo
-      @db.sources.upsert @source, => @render()
+      @db.sources.upsert @source, => 
+        @render()
+      , @error
 
     @listenTo locationView, 'map', (loc) =>
       @pager.openPage(require("./SourceMapPage"), {initialGeo: GeoJSON.locToPoint(loc)})
@@ -131,7 +133,9 @@ module.exports = class SourcePage extends Page
       
     # Upsert model as this.source may have changed on activate to new copy
     photosView.model.on 'change', =>
-      @db.sources.upsert photosView.model.toJSON(), => @query()
+      @db.sources.upsert photosView.model.toJSON(), => 
+        @query()
+      , @error
     @$('#photos').append(photosView.el)
 
   editSource: ->
@@ -142,6 +146,7 @@ module.exports = class SourcePage extends Page
       @db.sources.remove @source._id, =>
         @pager.closePage()
         @pager.flash T("Source deleted"), "success"
+      , @error
 
   addTest: ->
     @pager.openPage(require("./NewTestPage"), { source: @source.code})

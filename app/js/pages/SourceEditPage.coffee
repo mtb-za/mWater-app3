@@ -48,7 +48,10 @@ module.exports = class SourceEditPage extends Page
       @$el.empty().append(saveCancelForm.el)
 
       @listenTo saveCancelForm, 'save', =>
-        @db.sources.upsert @model.toJSON(), => @pager.closePage()
+        @db.sources.upsert @model.toJSON(), => 
+          @pager.closePage()
+        , @error 
+
 
       @listenTo saveCancelForm, 'cancel', =>
         @pager.closePage()

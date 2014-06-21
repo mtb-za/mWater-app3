@@ -69,12 +69,16 @@ class TestPage extends Page
   edit: ->
     # Mark as incomplete
     @test.completed = null
-    @db.tests.upsert @test, => @render()
+    @db.tests.upsert @test, => 
+      @render()
+    , @error
 
   save: =>
     # Save to db
     @test.data = @formView.save()
-    @db.tests.upsert(@test)
+    @db.tests.upsert @test, =>
+      return
+    , @error
 
   close: =>
     @save()
@@ -85,9 +89,10 @@ class TestPage extends Page
     @test.data = @formView.save()
     @test.completed = new Date().toISOString()
 
-    @db.tests.upsert @test, => @render()
-    @pager.closePage()
-    @pager.flash T("Test completed successfully"), "success"
+    @db.tests.upsert @test, => 
+      @pager.closePage()
+      @pager.flash T("Test completed successfully"), "success"
+    , @error
 
   removeTest: ->
     if @auth.remove("tests", @test) and confirm(T("Permanently delete test?"))
@@ -95,5 +100,6 @@ class TestPage extends Page
         @test = null
         @pager.closePage()
         @pager.flash T("Test deleted"), "warning"
+      , @error
 
 module.exports = TestPage
