@@ -2,11 +2,12 @@
 # Create it each time before starting caching and it will add itself to the map and destroy itself
 # as appropriate
 module.exports = class CacheProgressControl extends Backbone.View
-  constructor: (map, offlineLayer, position='topright') ->
+  constructor: (map, offlineLayer, page, position='topright') ->
     super()
 
     @map = map
     @offlineLayer = offlineLayer
+    @page = page
 
     # Add self to the map as a control
     @leafletControl = L.control({position: position})
@@ -41,12 +42,10 @@ module.exports = class CacheProgressControl extends Backbone.View
         null
       ,
       () =>
-        #success
-        null
+        @page.pager.flash T("All tiles have been saved successfully."), 'success'
       ,
       (error) =>
-        #failure
-        null
+        @page.pager.flash T("An error occurred while saving tiles."), 'danger'
     )
 
   events: 

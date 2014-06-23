@@ -93,6 +93,8 @@ class SourceMapPage extends Page
               errorMsg = errorType + ":" + errorData1 + ":" + errorData2
               console.log(errorMsg)
               @pager.flash(T("Network error. Unable to save image."), "danger")
+            else if errorType == "ZOOM_LEVEL_TOO_LOW"
+              alert(T("You are trying to save too large of a region of the map. Please zoom in further."))
             else if errorType == "SYSTEM_BUSY"
               alert("System is busy");
             else
@@ -247,13 +249,17 @@ class SourceMapPage extends Page
 
   # Caches tiles and makes them available offline
   cacheTiles: ->
+    maxNbTiles = 10000
+
     nbTiles = @osmLayer.calculateNbTiles();
+    # nbTiles of -1 means an error occurred
+    if nbTiles == -1
+      return
     console.log("Would be saving: " + nbTiles + " tiles")
 
     zoomLimit = @map.getMaxZoom()
     console.log("Trying to save: " + nbTiles)
 
-    maxNbTiles = 10000
     minZoomLimit = 15
     while zoomLimit > minZoomLimit && nbTiles > maxNbTiles
       nbTiles /= 4
@@ -261,12 +267,12 @@ class SourceMapPage extends Page
       console.log("Lowered zoom level to: " + zoomLimit)
       console.log("Would now save: " + nbTiles)
 
-    if nbTiles < 10000
-      if not confirm T("Download approximately {0} K of map data and make available offline?", Math.ceil(nbTiles*10))
+    if nbTiles < maxNbTiles
+      if not confirm T("Download approximately {0} MB of map data and make available offline?", Math.ceil(nbTiles*0.01))
         return
 
       # Add progress/cancel display
-      @cacheProgressControl = new CacheProgressControl(@map, @osmLayer)
+      @cacheProgressControl = new CacheProgressControl(@map, @osmLayer, this)
 
       # Save the tiles
       @cacheProgressControl.saveTiles(zoomLimit)
