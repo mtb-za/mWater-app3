@@ -41,6 +41,7 @@ module.exports = class SourceListPage extends Page
       @db.sources.find(geo: { $exists: false }, user: @login.user).fetch (sources) =>
         @unlocatedSources = sources
         @renderList()
+      , @error
 
     @performSearch()
 
@@ -92,6 +93,7 @@ module.exports = class SourceListPage extends Page
     @db.sources.find(selector, { limit: 100 }).fetch (sources) =>
       @nearSources = sources
       @renderList()
+    , @error
 
   renderList: ->
     # Append located and unlocated sources
@@ -130,6 +132,7 @@ module.exports = class SourceListPage extends Page
             @$("#" + source.thumbnail).attr("src", @thumbnailUrls[source.thumbnail])
           else
             @thumbnailQueue.push(source.thumbnail)
+    , @error
 
   locationError: (pos) =>
     if @destroyed
@@ -190,6 +193,7 @@ module.exports = class SourceListPage extends Page
         sources = _.sortBy sources, sourceScorer
         @searchSources = sources
         @renderList()
+      , @error
     else
       @renderList()
 

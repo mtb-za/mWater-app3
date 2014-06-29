@@ -17,11 +17,13 @@ module.exports = class SourceNotePage extends Page
         @db.source_notes.findOne {_id: @options._id}, (sourceNote) =>
           @sourceNote = sourceNote
           @render()
+        , @error
       else
         # New source note, just render
         if not @auth.insert("source_notes")
           return @pager.closePage()
         @render()
+    , @error
 
   render: ->
       # Create model 

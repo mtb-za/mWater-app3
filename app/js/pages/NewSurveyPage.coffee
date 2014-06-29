@@ -31,6 +31,8 @@ module.exports = class NewSurveyPage extends Page
             name: mwaterforms.formUtils.localizeString(form.design.name, @localizer.locale)
           }
         @$el.html require('./NewSurveyPage.hbs')(forms:data)
+      , @error
+    , @error
 
   startSurvey: (ev) ->
     surveyId = ev.currentTarget.id

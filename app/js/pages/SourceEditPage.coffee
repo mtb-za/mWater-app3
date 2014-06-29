@@ -25,6 +25,7 @@ module.exports = class SourceEditPage extends Page
       @db.source_types.find({}).fetch (sourceTypes) =>
         # Fill source types
         sourceTypesQuestion.setOptions _.map(sourceTypes, (st) => [st.code, st.name])
+      , @error
 
       saveCancelForm = new forms.SaveCancelForm
         contents: [
@@ -52,7 +53,7 @@ module.exports = class SourceEditPage extends Page
           @pager.closePage()
         , @error 
 
-
       @listenTo saveCancelForm, 'cancel', =>
         @pager.closePage()
+    , @error
  

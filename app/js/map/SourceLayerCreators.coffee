@@ -46,6 +46,7 @@ class EColiAnalyzer
       recent = new Date(tests[0].completed)
       recent.setDate(recent.getDate() - 1)
       success(_.filter(tests, (test) -> test.completed >= recent.toISOString()) )
+    , @error
 
   # Returns [min, max]/100mL for test. max of -1 means unlimited
   analyzeTest: (test) ->

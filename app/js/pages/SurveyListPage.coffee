@@ -29,6 +29,7 @@ module.exports = class SurveyListPage extends Page
       _.defer => # Defer to allow html to render
         for resp in responses
           @fillFormName(resp)
+    , @error
 
     # Get final/pending surveys
     # TODO eventually remove $exists filter when legacy forms are gone
@@ -44,6 +45,7 @@ module.exports = class SurveyListPage extends Page
       _.defer => # Defer to allow html to render
         for resp in responses
           @fillFormName(resp)
+    , @error
 
   # Fill in form names (since not present in response document)
   fillFormName: (resp) =>
@@ -63,11 +65,13 @@ module.exports = class SurveyListPage extends Page
         name = "???"
       @formNameCache[resp.form] = name
       @$("#name_"+resp._id).text(name)    
+    , @error
 
   openResponse: (ev) ->
     responseId = ev.currentTarget.id
     @db.responses.findOne { _id: responseId }, (response) =>
       @pager.openPage(SurveyPage, { _id: responseId})
+    , @error
 
   addSurvey: ->
     @pager.openPage(NewSurveyPage)

@@ -49,6 +49,8 @@ class TestPage extends Page
           @$("#edit_button").hide()
 
         @formView.load @test.data
+      , @error
+    , @error
 
   events:
     "click #edit_button" : "edit"

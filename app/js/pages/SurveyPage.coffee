@@ -127,6 +127,10 @@ class SurveyPage extends Page
 
           # Render survey page
           @displayFormView()
+        , @error
+      , @error
+    , @error
+
 
   events:
     "click #edit_button" : "edit"

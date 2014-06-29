@@ -41,6 +41,7 @@ module.exports = class SourcePage extends Page
       @$("#edit_source_button").toggle(@auth.update("sources", source))
       @$("#add_test_button").toggle(@auth.insert("tests"))
       @$("#add_note_button").toggle(@auth.insert("source_notes"))
+    , @error
 
   render: ->
     @setTitle T("Source {0}", @source.code)
@@ -66,6 +67,7 @@ module.exports = class SourcePage extends Page
     if @source.type?
       @db.source_types.findOne {code: @source.type}, (sourceType) =>
         if sourceType? then @$("#source_type").text(sourceType.name)
+      , @error
 
     # Add location view
     locationView = new LocationView(
@@ -100,6 +102,8 @@ module.exports = class SourcePage extends Page
       for test in tests
         @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
           @$("#test_name_"+test._id).text(if form then form.name else "???")
+        , @error
+    , @error
 
     # Add notes
     @db.source_notes.find({source: @source.code}, {sort: [['date','desc']]}).fetch (notes) => 
@@ -114,6 +118,7 @@ module.exports = class SourcePage extends Page
         date = null
 
       @$("#status").html require('./SourcePage_status.hbs')(status:status, date: date, canUpdate: @auth.insert("source_notes"))
+    , @error
 
     # Add surveys
     @db.responses.find({"data.source": @source.code}).fetch (surveys) =>
@@ -123,6 +128,8 @@ module.exports = class SourcePage extends Page
       for survey in surveys
         @db.forms.findOne { code:survey.type }, { mode: "local" }, (form) =>
           @$("#survey_name_"+survey._id).text(if form then form.name else "???")
+        , @error
+    , @error
 
     # Add photos
     photosView = new forms.ImagesQuestion

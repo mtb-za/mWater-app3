@@ -23,6 +23,7 @@ module.exports = class NewSourcePage extends Page
     @db.source_types.find({}).fetch (sourceTypes) =>
       # Fill source types
       sourceTypesQuestion.setOptions _.map(sourceTypes, (st) => [st.code, st.name])
+    , @error
 
     contents = []
 
