@@ -18,7 +18,11 @@ module.exports = class NewSurveyPage extends Page
       @groups = _.pluck(groups, "groupname")
       enumerators = [ "all", "user:" + @login.user ].concat(_.map(@groups, (g) -> "group:" + g))
   
-      filter = { deployments: { $elemMatch: { enumerators: { $in: enumerators }, active: true } } }
+      # Find forms deployed to me that are not deleted
+      filter = { 
+        deployments: { $elemMatch: { enumerators: { $in: enumerators }, active: true } } 
+        state: { $ne: "deleted" } 
+      }
       @db.forms.find(filter).fetch (forms) =>
         @forms = forms
         data = _.map forms, (form) =>
