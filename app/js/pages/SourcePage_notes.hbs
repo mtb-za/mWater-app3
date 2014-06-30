@@ -1,7 +1,7 @@
 <tbody>
   {{#each notes}}
   <tr class="tappable note" id="{{_id}}">
-    <td><strong>{{formatDate date "%F"}}</strong></td>
+    <td><strong>{{truncate date 10}}</strong></td>
     <td style="border-left:none;">
       {{#is status "ok"}}<span class="text-success">{{T "Functional"}}</span>{{/is}}
       {{#is status "repair"}}<span class="text-warning">{{T "Needs repair"}}</span>{{/is}}

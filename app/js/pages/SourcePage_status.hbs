@@ -7,7 +7,7 @@
 <div>
 	<h4>{{T "Status"}}
 		{{#if date}}
-		<small>{{T "as of"}} {{formatDate date "%F"}}</small>
+		<small>{{T "as of"}} {{truncate date 10}}</small>
 		{{/if}}
 	</h4>
 
