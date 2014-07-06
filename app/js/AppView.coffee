@@ -41,7 +41,8 @@ class AppView extends Backbone.View
     title = @pager.getTitle()
 
     # Show brand logo if no title
-    @$("#brand_logo").toggle(title == "")
+    @$("#brand_logo").toggle(not @pager.multiplePages())
+    @$("#navbar_title").toggle(@pager.multiplePages())
     @$("#navbar_title").text(@pager.getTitle())
 
     # Hide slide menu if multiple pages

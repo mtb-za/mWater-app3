@@ -32,6 +32,7 @@ module.exports = class SourceListPage extends Page
     @$("#location_msg").show()
 
     @setupButtonBar [
+      { text: "Map", click: => @pager.closePage(require("./SourceMapPage"))}
       { icon: "search.png", click: => @search() }
       { icon: "plus.png", click: => @addSource() }
     ]

@@ -173,6 +173,7 @@ class SourceMapPage extends Page
     )
 
     @setupButtonBar [
+      { text: "List", click: => @pager.closePage(require("./SourceListPage"))}
       { icon: "gear.png", menu: menu }
       { icon: "goto-my-location.png", click: => @gotoMyLocation() }
     ]

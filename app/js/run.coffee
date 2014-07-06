@@ -90,7 +90,7 @@ exports.start = (options = {}) ->
           pager.openPage(SourceMapPage)
         # If logged in, open main page
         else if ctx.login?
-          pager.openPage(MainPage)
+          pager.openPage(SourceMapPage)
         else
           pager.openPage(LoginPage)
 
