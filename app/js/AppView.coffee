@@ -44,6 +44,9 @@ class AppView extends Backbone.View
     @$("#brand_logo").toggle(title == "")
     @$("#navbar_title").text(@pager.getTitle())
 
+    # Hide slide menu if multiple pages
+    @$("#navbar_slidemenu_button").toggle(not @pager.multiplePages())
+
   back: ->
     @slideMenu.hide()
     @pager.closePage()
