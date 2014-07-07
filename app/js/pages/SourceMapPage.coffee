@@ -248,8 +248,13 @@ class SourceMapPage extends Page
     $("#map").css("height", mapHeight + "px")
     @map.invalidateSize()
 
+  cachingCompleted: ->
+    @cacheProgressControl = null
+
   # Caches tiles and makes them available offline
   cacheTiles: ->
+    if @cacheProgressControl?
+      return
     maxNbTiles = 10000
 
     nbTiles = @osmLayer.calculateNbTiles();

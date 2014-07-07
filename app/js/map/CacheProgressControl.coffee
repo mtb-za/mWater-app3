@@ -30,9 +30,12 @@ module.exports = class CacheProgressControl extends Backbone.View
       # Remove control
       @map.removeControl(@leafletControl)
       @remove()
+      @page.cachingCompleted()
 
     map.addControl(@leafletControl)
 
+  isBusy: () ->
+    return @map.isBusy()
 
   saveTiles: (zoomLimit) ->
     # Save the tiles
