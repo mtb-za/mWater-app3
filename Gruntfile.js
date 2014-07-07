@@ -30,7 +30,7 @@ module.exports = function(grunt) {
       },
       preload: {
         files: {
-          'dist/js/preload.js': ['./app/js/preload']
+          'dist/js/preload.js': ['./app/js/preload.coffee']
         },
         options: {
           browserifyOptions: { extensions: [ '.coffee', '.js' ] }

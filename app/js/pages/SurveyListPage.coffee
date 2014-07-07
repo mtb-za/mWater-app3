@@ -28,13 +28,8 @@ module.exports = class SurveyListPage extends Page
       # Fill in survey names
       _.defer => # Defer to allow html to render
         for resp in responses
-          do (resp) =>
-            @db.forms.findOne { _id: resp.form }, { mode: "local" }, (form) =>
-              if form
-                name = mwaterforms.formUtils.localizeString(form.design.name, @localizer.locale)
-              else
-                name = "???"
-              @$("#name_"+resp._id).text(name)
+          @fillFormName(resp)
+    , @error
 
     # Get final/pending surveys
     # TODO eventually remove $exists filter when legacy forms are gone
@@ -49,19 +44,34 @@ module.exports = class SurveyListPage extends Page
       # Fill in survey names
       _.defer => # Defer to allow html to render
         for resp in responses
-          do (resp) =>
-            @db.forms.findOne { _id: resp.form }, { mode: "local" }, (form) =>
-              if form
-                name = mwaterforms.formUtils.localizeString(form.design.name, @localizer.locale)
-              else
-                name = "???"
-              @$("#name_"+resp._id).text(name)
+          @fillFormName(resp)
+    , @error
 
+  # Fill in form names (since not present in response document)
+  fillFormName: (resp) =>
+    # Check/create cache
+    if not @formNameCache 
+      @formNameCache = {}
+
+    if @formNameCache[resp.form]
+      @$("#name_"+resp._id).text(@formNameCache[resp.form])
+      return
+
+    # Get database
+    @db.forms.findOne { _id: resp.form }, { mode: "local" }, (form) =>
+      if form
+        name = mwaterforms.formUtils.localizeString(form.design.name, @localizer.locale)
+      else
+        name = "???"
+      @formNameCache[resp.form] = name
+      @$("#name_"+resp._id).text(name)    
+    , @error
 
   openResponse: (ev) ->
     responseId = ev.currentTarget.id
     @db.responses.findOne { _id: responseId }, (response) =>
       @pager.openPage(SurveyPage, { _id: responseId})
+    , @error
 
   addSurvey: ->
     @pager.openPage(NewSurveyPage)

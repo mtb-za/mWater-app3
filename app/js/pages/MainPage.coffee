@@ -31,6 +31,7 @@ class MainPage extends Page
       @db.groups.find({ members: @login.user }).fetch (groups) =>
         # Do nothing, just querying caches them
         return
+      , @error
 
     @render()
 

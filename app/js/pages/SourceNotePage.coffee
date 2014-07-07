@@ -17,11 +17,13 @@ module.exports = class SourceNotePage extends Page
         @db.source_notes.findOne {_id: @options._id}, (sourceNote) =>
           @sourceNote = sourceNote
           @render()
+        , @error
       else
         # New source note, just render
         if not @auth.insert("source_notes")
           return @pager.closePage()
         @render()
+    , @error
 
   render: ->
       # Create model 
@@ -61,7 +63,9 @@ module.exports = class SourceNotePage extends Page
           contents: questions
   
         @listenTo form, 'save', =>
-          @db.source_notes.upsert @model.toJSON(), => @pager.closePage()
+          @db.source_notes.upsert @model.toJSON(), => 
+            @pager.closePage()
+          , @error
 
         @listenTo form, 'cancel', =>
           @pager.closePage()

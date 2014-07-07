@@ -27,6 +27,8 @@ module.exports = class TestListPage extends Page
           do (test) =>
             @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
               @$("#name_"+test._id).text(if form then form.name else "???")
+            , @error
+    , @error
 
     @db.tests.find({ completed: null, user: @login.user }, {sort:[['started','desc']]}).fetch (tests) =>
       @$("#incomplete_table").html require('./TestListPage_items.hbs')(tests:tests)
@@ -37,6 +39,8 @@ module.exports = class TestListPage extends Page
           do (test) =>
             @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
               @$("#name_"+test._id).text(if form then form.name else "???")
+            , @error
+    , @error
 
   testClicked: (ev) ->
     @pager.openPage(TestPage, {_id: ev.currentTarget.id})

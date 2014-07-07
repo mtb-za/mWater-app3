@@ -52,19 +52,24 @@ ProblemReporter = (url, version, getLogin) ->
   # Prevent recursion
   reportingError = false
 
-  handleOnError = (errorMsg, url, lineNumber) =>
+  handleOnError = (message, file, line, column, errorObj) ->
     reportingError = true
 
-    # Try to stringify error
-    try 
-      errorMsg = JSON.stringify(errorMsg)
-    catch ex
-      console.error "Exception stringifying error message"
+    # Get text of message
+    text = "window.onerror:" + message + ":" + file + ":" + line + " (" + column + ")"
 
     # Put up alert instead of old action
-    alert T("Internal Error") + "\n" + errorMsg + "\n" + url + ":" + lineNumber
+    alert T("Internal Error") + "\n" + text
 
-    @reportProblem "window.onerror:" + errorMsg + ":" + url + ":" + lineNumber, ->
+    # Add stack
+    if errorObj?
+      text = text + "\n" + errorObj.stack
+
+    if window.location.href.match(/^file:/) or window.location.href.match(/127\.0\.0\.1/)
+      console.log 'Ignoring because in debug mode'
+      return
+
+    @reportProblem "window.onerror:" + text, ->
       reportingError = false
     , ->
       reportingError = false
@@ -72,12 +77,12 @@ ProblemReporter = (url, version, getLogin) ->
   # Don't overload the user with errors
   debouncedHandleOnError = _.debounce(handleOnError, 5000, true)
 
-  window.onerror = (errorMsg, url, lineNumber) ->
+  window.onerror = (message, file, line, column, errorObj) ->
     if reportingError 
-      console.error "Ignoring error: #{errorMsg}"
+      console.error "Ignoring error: #{message}"
       return
 
-    debouncedHandleOnError(errorMsg, url, lineNumber)
+    debouncedHandleOnError(message, file, line, column, errorObj)
 
   @restore = ->
     window.onerror = oldWindowOnError

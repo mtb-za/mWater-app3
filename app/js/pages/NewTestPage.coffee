@@ -15,6 +15,7 @@ module.exports = class NewTestPage extends Page
     @db.forms.find({type:"WaterTest"}).fetch (forms) =>
       @forms = forms
       @$el.html require('./NewTestPage.hbs')(forms:forms)
+    , @error
 
   startTest: (ev) ->
     testCode = ev.currentTarget.id
@@ -43,3 +44,4 @@ module.exports = class NewTestPage extends Page
       
     @db.tests.upsert test, (test) =>
       @pager.closePage(TestPage, { _id: test._id })
+    , @error

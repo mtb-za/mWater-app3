@@ -18,7 +18,11 @@ module.exports = class NewSurveyPage extends Page
       @groups = _.pluck(groups, "groupname")
       enumerators = [ "all", "user:" + @login.user ].concat(_.map(@groups, (g) -> "group:" + g))
   
-      filter = { deployments: { $elemMatch: { enumerators: { $in: enumerators }, active: true } } }
+      # Find forms deployed to me that are not deleted
+      filter = { 
+        deployments: { $elemMatch: { enumerators: { $in: enumerators }, active: true } } 
+        state: { $ne: "deleted" } 
+      }
       @db.forms.find(filter).fetch (forms) =>
         @forms = forms
         data = _.map forms, (form) =>
@@ -27,6 +31,8 @@ module.exports = class NewSurveyPage extends Page
             name: mwaterforms.formUtils.localizeString(form.design.name, @localizer.locale)
           }
         @$el.html require('./NewSurveyPage.hbs')(forms:data)
+      , @error
+    , @error
 
   startSurvey: (ev) ->
     surveyId = ev.currentTarget.id
@@ -42,4 +48,6 @@ module.exports = class NewSurveyPage extends Page
 
     @db.responses.upsert response, (response) =>
       @pager.closePage(SurveyPage, {_id: response._id})
+    , @error
+
 

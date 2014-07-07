@@ -41,6 +41,7 @@ module.exports = class SourcePage extends Page
       @$("#edit_source_button").toggle(@auth.update("sources", source))
       @$("#add_test_button").toggle(@auth.insert("tests"))
       @$("#add_note_button").toggle(@auth.insert("source_notes"))
+    , @error
 
   render: ->
     @setTitle T("Source {0}", @source.code)
@@ -66,6 +67,7 @@ module.exports = class SourcePage extends Page
     if @source.type?
       @db.source_types.findOne {code: @source.type}, (sourceType) =>
         if sourceType? then @$("#source_type").text(sourceType.name)
+      , @error
 
     # Add location view
     locationView = new LocationView(
@@ -82,7 +84,9 @@ module.exports = class SourcePage extends Page
         @source.geo = geo
       else  
         delete @source.geo
-      @db.sources.upsert @source, => @render()
+      @db.sources.upsert @source, => 
+        @render()
+      , @error
 
     @listenTo locationView, 'map', (loc) =>
       @pager.openPage(require("./SourceMapPage"), {initialGeo: GeoJSON.locToPoint(loc)})
@@ -98,6 +102,8 @@ module.exports = class SourcePage extends Page
       for test in tests
         @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
           @$("#test_name_"+test._id).text(if form then form.name else "???")
+        , @error
+    , @error
 
     # Add notes
     @db.source_notes.find({source: @source.code}, {sort: [['date','desc']]}).fetch (notes) => 
@@ -112,6 +118,7 @@ module.exports = class SourcePage extends Page
         date = null
 
       @$("#status").html require('./SourcePage_status.hbs')(status:status, date: date, canUpdate: @auth.insert("source_notes"))
+    , @error
 
     # Add surveys
     @db.responses.find({"data.source": @source.code}).fetch (surveys) =>
@@ -121,6 +128,8 @@ module.exports = class SourcePage extends Page
       for survey in surveys
         @db.forms.findOne { code:survey.type }, { mode: "local" }, (form) =>
           @$("#survey_name_"+survey._id).text(if form then form.name else "???")
+        , @error
+    , @error
 
     # Add photos
     photosView = new forms.ImagesQuestion
@@ -131,7 +140,9 @@ module.exports = class SourcePage extends Page
       
     # Upsert model as this.source may have changed on activate to new copy
     photosView.model.on 'change', =>
-      @db.sources.upsert photosView.model.toJSON(), => @query()
+      @db.sources.upsert photosView.model.toJSON(), => 
+        @query()
+      , @error
     @$('#photos').append(photosView.el)
 
   editSource: ->
@@ -142,6 +153,7 @@ module.exports = class SourcePage extends Page
       @db.sources.remove @source._id, =>
         @pager.closePage()
         @pager.flash T("Source deleted"), "success"
+      , @error
 
   addTest: ->
     @pager.openPage(require("./NewTestPage"), { source: @source.code})

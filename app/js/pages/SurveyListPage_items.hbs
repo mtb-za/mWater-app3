@@ -2,7 +2,7 @@
 	{{#each responses}}
 	<tr class="response tappable" id="{{_id}}">
 		<td>
-			<span id="name_{{_id}}"></span> ({{T "started"}} {{formatDate startedOn "%F"}})
+			<span id="name_{{_id}}"></span> ({{T "started"}} {{truncate startedOn 10}})
 			{{#is status "draft"}}
 			<span class="label label-default">{{T "Draft"}}</span>
 			{{/is}}
