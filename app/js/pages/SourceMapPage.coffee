@@ -162,13 +162,12 @@ class SourceMapPage extends Page
 
   # Filter the sources by all, org, or user
   updateSourceScope: (scope) => 
-    # Update UI
-    @getButtonBar().$(".dropdown-menu .menuitem.active").removeClass("active")
-    @getButtonBar().$("#source-scope-" + scope.type).addClass("active")
-    
     # Update Map
     @sourcesLayer.setScope scope.value
     @sourcesLayer.update()
+
+    # Update UI
+    @setButtonBar()
 
     # Persist the view
     @saveView()
@@ -202,7 +201,8 @@ class SourceMapPage extends Page
       if not @destroyed
         @pager.flash(T("Unable to determine location"), "warning")
 
-  activate: ->
+
+  setButtonBar: ->
     # Get the current scope to be used to set the active dropdown item
     currentScope = if @sourcesLayer and @sourcesLayer.scope then @sourcesLayer.scope else {}
     # Create a dropdown menu using the Source Scope Options
@@ -219,10 +219,15 @@ class SourceMapPage extends Page
         click: => @cacheTiles()
       }
 
-    @setupButtonBar [
+    @menuData = [
       { icon: "gear.png", menu: menu }
       { icon: "goto-my-location.png", click: => @gotoMyLocation() }
     ]
+
+    @setupButtonBar @menuData
+
+  activate: ->
+    @setButtonBar()
     
     # Update markers
     if @sourcesLayer and @needsRefresh
