@@ -69,7 +69,8 @@ class Page extends Backbone.View
 
 # Standard button bar. Each item
 # has optional "text", optional "icon" and "click" (action).
-# For submenu, add array to "menu". One level nesting only.
+# For submenu, add array to "menu". One level nesting only. Submenu items can have "checked" true
+# to check the item or "separator" true to put a separator instead
 class ButtonBar extends Backbone.View
   events: 
     "click .menuitem" : "clickMenuItem"
