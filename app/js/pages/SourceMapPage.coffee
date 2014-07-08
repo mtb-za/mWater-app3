@@ -239,6 +239,9 @@ class SourceMapPage extends Page
     @needsRefresh = true
 
   destroy: ->
+    if @cacheProgressControl 
+      @cacheProgressControl.cancel()
+      
     $(window).off('resize', @resizeMap)
     if @locationDisplay
       @locationDisplay.stop()

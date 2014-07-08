@@ -45,7 +45,10 @@ module.exports = class CacheProgressControl extends Backbone.View
         null
       ,
       () =>
-        @page.pager.flash T("Map has been saved successfully"), 'success'
+        if @cancelling
+          @page.pager.flash T("Saving cancelled"), 'warning'
+        else
+          @page.pager.flash T("Map has been saved successfully"), 'success'
       ,
       (error) =>
         @page.pager.flash T("An error occurred downloading map"), 'danger'
