@@ -148,6 +148,15 @@ createDb = (login, success) ->
 
       # TOD remove Sept 2014
       migrateAndroid44 = =>
+        if navigator.userAgent.match(/Android 4.\4/)
+          console.log "Android 4.4"
+        if window.cordova
+          console.log "Cordova"
+        if localDb instanceof minimongo.WebSQLDb
+          console.log "WebSQLDb"
+        else
+          console.log JSON.stringify(localDb)
+
         if navigator.userAgent.match(/Android 4.\4/) and window.cordova and localDb instanceof minimongo.WebSQLDb
           console.log "Migrating Android 4.4 IndexedDb"
           idbDb = new minimongo.IndexedDb(namespace: namespace)
@@ -158,7 +167,7 @@ createDb = (login, success) ->
           performSeed()
 
       # Migrate from LocalStorageDb if database is not LocalStorageDb (TODO remove after Oct 2014)
-      if namespace and localDb instanceof minimongo.IndexedDb or localDb instanceof minimongo.WebSQLDb
+      if namespace and (localDb instanceof minimongo.IndexedDb or localDb instanceof minimongo.WebSQLDb)
         console.log "Migrating database"
         oldDb = new minimongo.LocalStorageDb(namespace: namespace)
         for col in collectionNames
