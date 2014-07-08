@@ -2,7 +2,8 @@ offlineMap = require 'offline-leaflet-map'
 
 # possible values for dbOption: 'None', 'IndexedDB', 'WebSQL'
 dbOption = 'None'
-forceDB = true
+forceDB = false 
+# Only use if in PhoneGap
 if window.cordova? or forceDB
   dbOption = 'WebSQL'
 
