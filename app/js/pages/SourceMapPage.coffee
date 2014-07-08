@@ -70,28 +70,17 @@ class SourceMapPage extends Page
     onReady = () =>
       @osmLayer.addTo(@map)
 
-    onError = (errorType, errorData1, errorData2) =>
+    onError = (errorType, errorData) =>
       if errorType == "COULD_NOT_CREATE_DB"
+        console.log("Could not created DB.")
         @noDb = true
       else
         if @cacheProgressControl?
           if not @cacheProgressControl.cancelling
             @cacheProgressControl.cancel();
             
-        if errorType == "INDEXED_DB_BATCH"
-          errorMsg = errorType
-          throw Error(errorMsg)
-        else if errorType == "COULD_NOT_CREATE_DB"
-          errorMsg = errorType
-          throw Error(errorMsg)
-        else if errorType == "INDEXED_DB_GET"
-          errorMsg = errorType + ":" + errorData1
-          throw Error(errorMsg)
-        else if errorType == "GET_STATUS_ERROR"
-          errorMsg = errorType + ":" + errorData1 + ":" + errorData2
-          throw Error(errorMsg)
-        else if errorType == "NETWORK_ERROR"
-          errorMsg = errorType + ":" + errorData1 + ":" + errorData2
+        if errorType == "NETWORK_ERROR"
+          errorMsg = errorType + ":" + errorData
           console.log(errorMsg)
           @pager.flash(T("Network error. Unable to save image."), "danger")
         else if errorType == "ZOOM_LEVEL_TOO_LOW"
@@ -99,9 +88,8 @@ class SourceMapPage extends Page
         else if errorType == "SYSTEM_BUSY"
           alert("System is busy");
         else
-          errorMsg = errorType + ":" + errorData1
+          errorMsg = errorType + ":" + errorData
           throw Error(errorMsg)
-
 
     # Setup base layers
     @osmLayer = BaseLayers.createOSMLayer(onReady, onError)
