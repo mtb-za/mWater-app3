@@ -10,7 +10,7 @@ cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-file.g
 cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-file-transfer.git
 cordova plugin add org.apache.cordova.device-orientation
 cordova plugin add org.apache.cordova.network-information
-cordova plugin add https://github.com/mWater/cordova-plugin-camera-foreground.git
+cordova plugin add https://github.com/mWater/cordova-plugin-wezka-nativecamera.git
 cordova plugin add https://github.com/mWater/OpenCVActivityPlugin.git
 cordova plugin add https://github.com/mWater/cordova-plugin-acra.git
 

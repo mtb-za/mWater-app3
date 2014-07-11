@@ -1847,6 +1847,56 @@
       "_base": "en",
       "en": "Not Applicable",
       "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Network error. Unable to save image.",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "You are trying to save too large of a region of the map. Please zoom in further.",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Make Available Offline",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Download approximately {0} MB of map data and make available offline?",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Saving cancelled",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Map has been saved successfully",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "An error occurred downloading map",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Cancelling...",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Saving {0}% complete",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Calculating...",
+      "sw": ""
     }
   ]
 }

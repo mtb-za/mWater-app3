@@ -6,6 +6,8 @@ LocationDisplay = require '../map/LocationDisplay'
 LocationFinder = require '../LocationFinder'
 ContextMenu = require '../map/ContextMenu'
 BaseLayers = require '../map/BaseLayers'
+offlineMap = require 'offline-leaflet-map'
+CacheProgressControl = require '../map/CacheProgressControl'
 
 # Map of water sources. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
@@ -65,11 +67,36 @@ class SourceMapPage extends Page
     # Recalculate on resize
     $(window).on('resize', @resizeMap)
 
+    onReady = () =>
+      @osmLayer.addTo(@map)
+
+    onError = (errorType, errorData) =>
+      if errorType == "COULD_NOT_CREATE_DB"
+        console.log("Could not created DB.")
+        @noDb = true
+      else
+        if @cacheProgressControl?
+          if not @cacheProgressControl.cancelling
+            @cacheProgressControl.cancel();
+            
+        if errorType == "NETWORK_ERROR"
+          errorMsg = errorType + ":" + errorData
+          console.log(errorMsg)
+          @pager.flash(T("Network error. Unable to save image."), "danger")
+        else if errorType == "ZOOM_LEVEL_TOO_LOW"
+          alert(T("You are trying to save too large of a region of the map. Please zoom in further."))
+        else if errorType == "SYSTEM_BUSY"
+          alert("System is busy");
+        else
+          errorMsg = errorType + ":" + errorData
+          throw Error(errorMsg)
+
     # Setup base layers
-    osmLayer = BaseLayers.createOSMLayer()
+    @osmLayer = BaseLayers.createOSMLayer(onReady, onError)
+    @noDb = not @osmLayer.useDB()
+
     # satelliteLayer = BaseLayers.createSatelliteLayer() # TODO re-add
-    
-    osmLayer.addTo(@map)
+
     # baseLayers = 
     #   "OpenStreetMap": osmLayer
     #   "Satellite": satelliteLayer
@@ -121,15 +148,16 @@ class SourceMapPage extends Page
         options.push { display: T("Only Mine"), type: "user", value: { user: @login.user } }
     return options
 
-  #Filter the sources by all, org, or user
+  # Filter the sources by all, org, or user
   updateSourceScope: (scope) => 
-    #Update UI
-    @getButtonBar().$(".dropdown-menu .menuitem.active").removeClass("active")
-    @getButtonBar().$("#source-scope-" + scope.type).addClass("active")
-    #Update Map
+    # Update Map
     @sourcesLayer.setScope scope.value
     @sourcesLayer.update()
-    #Persist the view
+
+    # Update UI
+    @setButtonBar()
+
+    # Persist the view
     @saveView()
     return
 
@@ -161,7 +189,8 @@ class SourceMapPage extends Page
       if not @destroyed
         @pager.flash(T("Unable to determine location"), "warning")
 
-  activate: ->
+
+  setButtonBar: ->
     # Get the current scope to be used to set the active dropdown item
     currentScope = if @sourcesLayer and @sourcesLayer.scope then @sourcesLayer.scope else {}
     # Create a dropdown menu using the Source Scope Options
@@ -171,12 +200,22 @@ class SourceMapPage extends Page
       click: => @updateSourceScope scope
       checked: (JSON.stringify(currentScope) == JSON.stringify(scope.value))      
     )
+    if not @noDb
+      menu.push { separator: true }
+      menu.push {
+        text: T("Make Available Offline")
+        click: => @cacheTiles()
+      }
 
-    @setupButtonBar [
-      { text: "List", click: => @pager.closePage(require("./SourceListPage"))}
+    @menuData = [
       { icon: "gear.png", menu: menu }
       { icon: "goto-my-location.png", click: => @gotoMyLocation() }
     ]
+
+    @setupButtonBar @menuData
+
+  activate: ->
+    @setButtonBar()
     
     # Update markers
     if @sourcesLayer and @needsRefresh
@@ -188,6 +227,9 @@ class SourceMapPage extends Page
     @needsRefresh = true
 
   destroy: ->
+    if @cacheProgressControl 
+      @cacheProgressControl.cancel()
+      
     $(window).off('resize', @resizeMap)
     if @locationDisplay
       @locationDisplay.stop()
@@ -201,6 +243,44 @@ class SourceMapPage extends Page
     mapHeight = $("html").height() - 50
     $("#map").css("height", mapHeight + "px")
     @map.invalidateSize()
+
+  cachingCompleted: ->
+    @cacheProgressControl = null
+
+  # Caches tiles and makes them available offline
+  cacheTiles: ->
+    if @cacheProgressControl?
+      return
+    maxNbTiles = 10000
+
+    nbTiles = @osmLayer.calculateNbTiles();
+    # nbTiles of -1 means an error occurred
+    if nbTiles == -1
+      return
+    console.log("Would be saving: " + nbTiles + " tiles")
+
+    zoomLimit = @map.getMaxZoom()
+    console.log("Trying to save: " + nbTiles)
+
+    minZoomLimit = 15
+    while zoomLimit > minZoomLimit && nbTiles > maxNbTiles
+      nbTiles /= 4
+      zoomLimit--
+      console.log("Lowered zoom level to: " + zoomLimit)
+      console.log("Would now save: " + nbTiles)
+
+    if nbTiles < maxNbTiles
+      if not confirm T("Download approximately {0} MB of map data and make available offline?", Math.ceil(nbTiles*0.01))
+        return
+
+      # Add progress/cancel display
+      @cacheProgressControl = new CacheProgressControl(@map, @osmLayer, this)
+
+      # Save the tiles
+      @cacheProgressControl.saveTiles(zoomLimit)
+    else
+      alert(T("You are trying to save too large of a region of the map. Please zoom in further."))
+
 
 setupMapTiles = ->
   mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png'

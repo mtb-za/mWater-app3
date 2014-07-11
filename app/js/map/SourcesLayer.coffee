@@ -154,7 +154,6 @@ module.exports = class SourcesLayer extends L.LayerGroup
 
   createZoomInToSeeMore: ->
     html = '''
-<div class="warning legend">
 <style>
 .warning {
   padding: 6px 8px;
@@ -169,6 +168,8 @@ module.exports = class SourcesLayer extends L.LayerGroup
     color: #555;
 }
 </style>
+<div class="warning legend">
 <b>''' + T('Zoom in to see more') + '''</b>
+</div>
 '''
     return $(html).get(0)
