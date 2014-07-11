@@ -11,6 +11,7 @@ module.exports = class SourceListPage extends Page
   events: 
     'click tr.tappable' : 'sourceClicked'
     'click #search_cancel' : 'cancelSearch'
+    'click #big_plus': 'addSource'
 
   create: ->
     @setTitle T('Nearby Sources')
@@ -33,7 +34,6 @@ module.exports = class SourceListPage extends Page
 
     @setupButtonBar [
       { icon: "buttonbar-search.png", click: => @search() }
-      { icon: "plus.png", click: => @addSource() }
       { icon: "buttonbar-map.png", click: => @pager.closePage(require("./SourceMapPage"))}  
     ]
 

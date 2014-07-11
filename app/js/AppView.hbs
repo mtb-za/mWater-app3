@@ -9,6 +9,15 @@
 	width: 50px;
 	background-position: 7px 9px;
 	height: 50px;
+	cursor: pointer;
+}
+
+#navbar_back_button {
+	background: url(img/buttonbar-back.png) black no-repeat 0; 
+	width: 50px;
+	background-position: 7px 9px;
+	height: 50px;
+	cursor: pointer;
 }
 
 #navbar_title {
@@ -18,7 +27,7 @@
 	white-space: nowrap;
 	overflow: hidden;
 	max-width: 90%;
-	color: #ccc;
+	color: white;
 }
 
 #brand_logo {
@@ -36,16 +45,16 @@
 		  	  	<div id="navbar_slidemenu_button" class="menuitem">
 		    		&nbsp;
 		  		</div>
+		  	  	<div id="navbar_back_button" class="menuitem" style="display: none">
+		    		&nbsp;
+		  		</div>
 		  	</div>
-			<span class="glyphicon glyphicon-chevron-left" id="navbar_back" 
-				style="margin-top: 16px; margin-left: 1px; float: left; color: white; display: none;">
-			</span>
 			<a id="brand_logo" class="navbar-brand" style="padding-left:0px">
 				<img src="img/black_logo_40.png" style="padding-top: 5px;">
 			</a>
-	  		<a class="navbar-brand" style="margin-left: -15px">
+	  		<span class="navbar-brand" style="margin-left: -15px">
 				<span id="navbar_title"></span>
-			</a>
+			</span>
 	   		<div id="navbar_buttons">
 			</div>
 		</div>
