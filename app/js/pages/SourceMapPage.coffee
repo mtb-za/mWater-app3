@@ -115,11 +115,12 @@ class SourceMapPage extends Page
       sourceLayerCreator = new SourceLayerCreators.EColi ecoliAnalyzer, (_id) =>
         @pager.openPage(SourcePage, {_id: _id})
       @sourcesLayer = new SourcesLayer(sourceLayerCreator, @db.sources, scope).addTo(@map)
-      # Add legend
-      @legend = L.control({position: 'bottomright'});
-      @legend.onAdd = (map) ->
-        return sourceLayerCreator.createLegend()
-      @legend.addTo(@map)
+      # TODO remove legend
+      # # Add legend
+      # @legend = L.control({position: 'bottomright'});
+      # @legend.onAdd = (map) ->
+      #   return sourceLayerCreator.createLegend()
+      # @legend.addTo(@map)
 
     # Setup context menu
     contextMenu = new ContextMenu(@map, @ctx)
@@ -208,8 +209,9 @@ class SourceMapPage extends Page
       }
 
     @menuData = [
-      { icon: "gear.png", menu: menu }
-      { icon: "goto-my-location.png", click: => @gotoMyLocation() }
+      { icon: "buttonbar-gear.png", menu: menu }
+      { icon: "buttonbar-goto-my-location.png", click: => @gotoMyLocation() }
+      { icon: "buttonbar-list.png", click: => @pager.closePage(require("./SourceListPage"))}  
     ]
 
     @setupButtonBar @menuData

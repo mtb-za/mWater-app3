@@ -76,7 +76,8 @@ class ButtonBar extends Backbone.View
     "click .menuitem" : "clickMenuItem"
 
   setup: (items) ->
-    @items = items
+    # Because right floating reverses natural order
+    @items = items.reverse()
     @itemMap = {}
 
     # Add id to all items if not present
