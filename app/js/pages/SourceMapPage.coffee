@@ -98,7 +98,7 @@ class SourceMapPage extends Page
         else if errorType == "ZOOM_LEVEL_TOO_LOW"
           alert(T("You are trying to save too large of a region of the map. Please zoom in further."))
         else if errorType == "SYSTEM_BUSY"
-          alert("System is busy");
+          alert(T("System is busy"))
         else
           errorMsg = errorType + ":" + errorData
           throw Error(errorMsg)
@@ -235,7 +235,7 @@ class SourceMapPage extends Page
 
     @setupButtonBar [
       { icon: "buttonbar-search.png", click: => return }
-      { text: "List", click: => @pager.closePage(require("./SourceListPage"))}  
+      { text: T("List"), click: => @pager.closePage(require("./SourceListPage"))}  
     ]
 
   activate: ->

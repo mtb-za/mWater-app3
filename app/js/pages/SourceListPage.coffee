@@ -40,7 +40,7 @@ module.exports = class SourceListPage extends Page
 
     @setupButtonBar [
       { icon: "buttonbar-search.png", click: => @search() }
-      { text: "Map", click: => @pager.closePage(require("./SourceMapPage"))}  
+      { text: T("Map"), click: => @pager.closePage(require("./SourceMapPage"))}  
     ]
 
     # Query database for unlocated sources

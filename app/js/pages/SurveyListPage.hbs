@@ -4,14 +4,28 @@
       background-color: transparent; // Prevent hover as is problem with touch
     }
 }
+
+  #bottom_navbar {
+    position: fixed;
+    bottom: 0px;
+    border-top: solid 1px #CCC;
+    height: 50px;
+    z-index: 100000;
+    left: 0;
+    right: 0;
+    background-color: white;
+  }
 </style>
 
-<div>
-  <button type="button" id="add_survey" class="btn btn-primary btn-lg btn-block">
+<div id="bottom_navbar" class="text-center">
+  <button id="add_survey" type="button" class="btn btn-link btn-lg">
     <span class="glyphicon glyphicon-plus"></span>
     {{T "Start Survey"}}
   </button>
+</div>
 
+
+<div>
   <h4>{{T "Incomplete Surveys"}}</h4>
   <table class="table" id="incomplete_table">
   </table>
