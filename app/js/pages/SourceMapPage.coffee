@@ -12,6 +12,9 @@ CacheProgressControl = require '../map/CacheProgressControl'
 # Map of water sources. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
 class SourceMapPage extends Page
+  events:
+    "click #goto_my_location": 'gotoMyLocation'
+
   create: ->
     @setTitle T("Source Map")
 
@@ -122,13 +125,11 @@ class SourceMapPage extends Page
       #   return sourceLayerCreator.createLegend()
       # @legend.addTo(@map)
 
-      # TODO Fix
+      # Add My Location control
       @myLocation = L.control({position: 'topright'})
       @myLocation.onAdd = (map) ->
         html = '''
-        <button type="button" class="btn btn-lg btn-default">
-          <span class="glyphicon glyphicon-screenshot"></span>
-        </button>
+        <img id="goto_my_location" class="image-control" src="img/goto-my-location.png">
         '''
         return $(html).get(0)
       @myLocation.addTo(@map)
@@ -202,7 +203,9 @@ class SourceMapPage extends Page
         @pager.flash(T("Unable to determine location"), "warning")
 
 
-  setButtonBar: ->
+  configureButtonBars: ->
+    # Configure gear menu
+
     # Get the current scope to be used to set the active dropdown item
     currentScope = if @sourcesLayer and @sourcesLayer.scope then @sourcesLayer.scope else {}
     # Create a dropdown menu using the Source Scope Options
@@ -219,17 +222,15 @@ class SourceMapPage extends Page
         click: => @cacheTiles()
       }
 
-    @menuData = [
+    @$("#gear_menu").html(require("./SourceMapPage_gearmenu.hbs")(menu: menu))
+
+    @setupButtonBar [
       { icon: "buttonbar-search.png", click: => return }
-      # { icon: "buttonbar-gear.png", menu: menu } TODO fix
-      # { icon: "buttonbar-goto-my-location.png", click: => @gotoMyLocation() } TODO fix
       { text: "List", click: => @pager.closePage(require("./SourceListPage"))}  
     ]
 
-    @setupButtonBar @menuData
-
   activate: ->
-    @setButtonBar()
+    @configureButtonBars()
     
     # Update markers
     if @sourcesLayer and @needsRefresh

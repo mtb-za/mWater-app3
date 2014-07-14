@@ -74,6 +74,7 @@ class Page extends Backbone.View
 class ButtonBar extends Backbone.View
   events: 
     "click .menuitem" : "clickMenuItem"
+    "click .buttonbar-item" : "clickMenuItem"
 
   setup: (items) ->
     # Because right floating reverses natural order

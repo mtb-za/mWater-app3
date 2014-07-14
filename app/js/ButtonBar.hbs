@@ -10,11 +10,22 @@
   display:inline;
 }
 
+.buttonbar-item {
+  width: 50px; 
+  height: 50px; 
+  background-position: 10px 9px;
+  color: white;
+  padding-top: 12px; 
+  padding-left: 5px; 
+  font-size: 125%;
+  cursor: pointer;
+}
+
 </style>
 {{#each items}}
 <div style="float:right; position:relative;">
   {{#if menu}}
-  <div data-toggle="dropdown" style="background: url(img/{{icon}}) black no-repeat 0; width: 50px; height: 50px; background-position: 10px 9px;">
+  <div data-toggle="dropdown" class="buttonbar-item" style="background: url(img/{{icon}}) black no-repeat 0;">
     {{#if text}}{{text}}{{else}}&nbsp;{{/if}}
   </div>
   <ul class="dropdown-menu" role="menu" style="right: 0; left: auto;">
@@ -28,7 +39,7 @@
   </ul>  
   </div>
   {{else}}
-  <div id="{{id}}" class="menuitem" style="background: url(img/{{icon}}) black no-repeat 0; width: 50px; height: 50px; background-position: 10px 9px; color: white; padding-top: 15px; padding-left: 5px;">
+  <div id="{{id}}" class="buttonbar-item" {{#if icon}}style="background: url(img/{{icon}}) black no-repeat 0;"{{/if}}>
     {{#if text}}{{text}}{{else}}&nbsp;{{/if}}
   </div>
   {{/if}}

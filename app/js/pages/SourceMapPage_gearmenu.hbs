@@ -1,0 +1,13 @@
+{{#each menu}}
+	{{#if separator}}
+		<li class="divider"></li>
+	{{else}}
+		<li>
+			<a id="{{id}}" class="menuitem {{#if checked }}checked{{/if}}">
+				<span class="glyphicon glyphicon-ok"></span> 
+				{{text}}
+			</a>
+		</li>
+	{{/if}}
+{{/each}}
+  
