@@ -1,19 +1,31 @@
 <style>
-/*  #big_plus {
-	position: absolute;
-	bottom: 27px;
-	z-index: 100000;
-	right: 27;
+  #bottom_navbar {
+    position: fixed;
+    bottom: 0px;
+    border-top: solid 1px #CCC;
+    height: 50px;
+    z-index: 100000;
+    left: 0;
+    right: 0;
+    background-color: white;
   }
-*/</style>
+</style>
 
+<div id="bottom_navbar" class="text-center">
+  <div class="btn-group dropup">
+    <button type="button" class="btn btn-link btn-lg dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-plus"></span>
+      Add
+    </button>
+    <ul class="dropdown-menu text-left" role="menu">
+      <li><a>Site</a></li>
+      <li><a>Survey</a></li>
+      <li><a>Water Test</a></li>
+    </ul>
+  </div>  
+</div>
 
 <div>
-	<h4>
-		<img id="big_plus" src="img/big-plus-shadow.png">
-		Nearby Sites
-	</h4>
-
 	<div id="location_msg" class="alert alert-info">
 		{{T "Waiting for GPS location..."}}
 	</div>

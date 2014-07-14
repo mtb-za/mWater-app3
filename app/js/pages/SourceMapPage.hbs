@@ -10,21 +10,43 @@
     border-radius: 3px;
   }
 
-  #big_plus {
-  	/* Centered at bottom */
-	position: absolute;
-	bottom: 27px;
-	z-index: 100000;
-	margin-left: auto;
-	margin-right: auto;
-	left: 0;
-	right: 0;
+  #bottom_navbar {
+    position: absolute;
+    bottom: -50px;
+    border-top: solid 1px #CCC;
+    height: 50px;
+    z-index: 100000;
+    left: 0;
+    right: 0;
+    background-color: white;
   }
 
 </style>
 
-<img id="big_plus" src="img/big-plus-shadow.png">
-
+<div id="bottom_navbar" class="text-center">
+  <div class="btn-group dropup pull-right">
+    <button type="button" class="btn btn-lg btn-link dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-cog"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right text-left" role="menu">
+      <li><a>My Sites</a></li>
+      <li><a>My Groups Sites</a></li>
+      <li class="divider"></li>
+      <li><a>Make Available Offline</a></li>
+    </ul>
+  </div>  
+  <div class="btn-group dropup">
+    <button type="button" class="btn btn-lg btn-link dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-plus"></span>
+      Add
+    </button>
+    <ul class="dropdown-menu text-left" role="menu">
+      <li><a>Site</a></li>
+      <li><a>Survey</a></li>
+      <li><a>Water Test</a></li>
+    </ul>
+  </div>  
+</div>
 <div id="map"></div>
 
 

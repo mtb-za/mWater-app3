@@ -122,6 +122,17 @@ class SourceMapPage extends Page
       #   return sourceLayerCreator.createLegend()
       # @legend.addTo(@map)
 
+      # TODO Fix
+      @myLocation = L.control({position: 'topright'})
+      @myLocation.onAdd = (map) ->
+        html = '''
+        <button type="button" class="btn btn-lg btn-default">
+          <span class="glyphicon glyphicon-screenshot"></span>
+        </button>
+        '''
+        return $(html).get(0)
+      @myLocation.addTo(@map)
+
     # Setup context menu
     contextMenu = new ContextMenu(@map, @ctx)
     
@@ -209,9 +220,10 @@ class SourceMapPage extends Page
       }
 
     @menuData = [
-      { icon: "buttonbar-gear.png", menu: menu }
-      { icon: "buttonbar-goto-my-location.png", click: => @gotoMyLocation() }
-      { icon: "buttonbar-list.png", click: => @pager.closePage(require("./SourceListPage"))}  
+      { icon: "buttonbar-search.png", click: => return }
+      # { icon: "buttonbar-gear.png", menu: menu } TODO fix
+      # { icon: "buttonbar-goto-my-location.png", click: => @gotoMyLocation() } TODO fix
+      { text: "List", click: => @pager.closePage(require("./SourceListPage"))}  
     ]
 
     @setupButtonBar @menuData
@@ -242,7 +254,7 @@ class SourceMapPage extends Page
 
   resizeMap: =>
     # Calculate map height
-    mapHeight = $("html").height() - 50
+    mapHeight = $("html").height() - 50 - 50
     $("#map").css("height", mapHeight + "px")
     @map.invalidateSize()
 
