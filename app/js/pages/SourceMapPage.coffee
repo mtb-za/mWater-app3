@@ -13,7 +13,16 @@ CacheProgressControl = require '../map/CacheProgressControl'
 # initialGeo: Geometry to zoom to. Point only supported.
 class SourceMapPage extends Page
   events:
-    "click #goto_my_location": 'gotoMyLocation'
+    "click #goto_my_location": "gotoMyLocation"
+    "click #new_site": -> 
+      # defer to Allow menu to close first
+      _.defer => @pager.openPage(require("./NewSourcePage"))
+    "click #new_survey": ->
+      # defer to Allow menu to close first
+      _.defer => @pager.openPage(require("./NewSurveyPage"))
+    "click #new_test": -> 
+      # defer to Allow menu to close first
+      _.defer => @pager.openPage(require("./NewTestPage"))
 
   create: ->
     @setTitle T("Source Map")

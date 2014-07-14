@@ -11,7 +11,13 @@ module.exports = class SourceListPage extends Page
   events: 
     'click tr.tappable' : 'sourceClicked'
     'click #search_cancel' : 'cancelSearch'
-    'click #big_plus': 'addSource'
+    "click #new_site": 'addSource'
+    "click #new_survey": ->
+      # defer to Allow menu to close first
+      _.defer => @pager.openPage(require("./NewSurveyPage"))
+    "click #new_test": -> 
+      # defer to Allow menu to close first
+      _.defer => @pager.openPage(require("./NewTestPage"))
 
   create: ->
     @setTitle T('Nearby Sources')
@@ -70,13 +76,15 @@ module.exports = class SourceListPage extends Page
         callback()
 
   addSource: ->
-    # Wrap onSelect
-    onSelect = undefined
-    if @options.onSelect
-      onSelect = (source) =>
-        @pager.closePage()
-        @options.onSelect(source)
-    @pager.openPage(require("./NewSourcePage"), {onSelect: onSelect})
+    # defer to Allow menu to close first
+    _.defer =>
+      # Wrap onSelect
+      onSelect = undefined
+      if @options.onSelect
+        onSelect = (source) =>
+          @pager.closePage()
+          @options.onSelect(source)
+      @pager.openPage(require("./NewSourcePage"), {onSelect: onSelect})
     
   locationFound: (pos) =>
     if @destroyed
