@@ -1,9 +1,24 @@
-<div>
-  <button type="button" id="add_test" class="btn btn-primary btn-lg btn-block">
+ <style>
+  #bottom_navbar {
+    position: fixed;
+    bottom: 0px;
+    border-top: solid 1px #CCC;
+    height: 50px;
+    z-index: 100000;
+    left: 0;
+    right: 0;
+    background-color: white;
+  }
+</style>
+
+<div id="bottom_navbar" class="text-center">
+  <button id="add_test" type="button" class="btn btn-link btn-lg">
     <span class="glyphicon glyphicon-plus"></span>
     {{T "Start Water Test"}}
   </button>
+</div>
 
+<div>
   <h4>{{T "Incomplete Tests"}}</h4>
   <table class="table" id="incomplete_table">
   </table>
