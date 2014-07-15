@@ -1,6 +1,6 @@
 async = require 'async'
 Page = require("../Page")
-SourcePage = require("./SourcePage")
+SitePage = require("./SitePage")
 LocationFinder = require '../LocationFinder'
 GeoJSON = require '../GeoJSON'
 
@@ -121,7 +121,7 @@ module.exports = class SiteListPage extends Page
           site.thumbnail = coverPhoto.id
 
       # Set type name
-      site.typeName = _.map(site.type, T).join(" ")
+      site.typeName = _.map(site.type, T).join(": ")
     
     # Kill all items in thumbnail queue (since we are re-rendering)
     @thumbnailQueue.kill()
@@ -150,7 +150,7 @@ module.exports = class SiteListPage extends Page
       onSelect = (site) =>
         @pager.closePage()
         @options.onSelect(site)
-    @pager.openPage(SourcePage, { _id: ev.currentTarget.id, onSelect: onSelect})
+    @pager.openPage(SitePage, { _id: ev.currentTarget.id, onSelect: onSelect})
 
   search: ->
     # Prompt for search

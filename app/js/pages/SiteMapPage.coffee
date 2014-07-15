@@ -1,5 +1,5 @@
 Page = require "../Page"
-SourcePage = require './SourcePage'
+SitePage = require './SitePage'
 SitesLayer = require '../map/SitesLayer'
 SiteLayerCreators = require '../map/SiteLayerCreators'
 LocationDisplay = require '../map/LocationDisplay'
@@ -125,7 +125,7 @@ class SiteMapPage extends Page
       ecoliAnalyzer = new SiteLayerCreators.EColiAnalyzer(@db)
 
       siteLayerCreator = new SiteLayerCreators.EColi ecoliAnalyzer, (_id) =>
-        @pager.openPage(SourcePage, {_id: _id})
+        @pager.openPage(SitePage, {_id: _id})
       @sitesLayer = new SitesLayer(siteLayerCreator, @db.sites, scope).addTo(@map)
       # TODO remove legend
       # # Add legend

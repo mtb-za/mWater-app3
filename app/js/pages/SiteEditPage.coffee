@@ -1,5 +1,6 @@
 Page = require '../Page'
 forms = require '../forms'
+siteTypes = require '../common/siteTypes'
 
 # Allows editing of site details
 module.exports = class SiteEditPage extends Page
@@ -14,7 +15,14 @@ module.exports = class SiteEditPage extends Page
       @setTitle T("Edit Site {0}", site.code)
 
       # Create model from site
-      @model = new Backbone.Model(site)
+      @model = new Backbone.Model()
+
+      # Set to subtype for now
+      @model.set({
+        name: site.name
+        desc: site.desc
+        type: site.type[1]
+      })
   
       # Create questions
       siteTypesQuestion = new forms.DropdownQuestion
@@ -40,7 +48,11 @@ module.exports = class SiteEditPage extends Page
       @$el.empty().append(saveCancelForm.el)
 
       @listenTo saveCancelForm, 'save', =>
-        @db.sites.upsert @model.toJSON(), => 
+        site.name = @model.get("name")
+        site.desc = @model.get("desc")
+        site.type[1] = @model.get("type")
+
+        @db.sites.upsert site, => 
           @pager.closePage()
         , @error 
 

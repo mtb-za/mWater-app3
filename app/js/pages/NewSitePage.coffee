@@ -1,6 +1,6 @@
 Page = require '../Page'
 forms = require '../forms'
-SourcePage = require "./SourcePage"
+SitePage = require "./SitePage"
 siteTypes = require '../common/siteTypes'
 
 # Allows creating of a site
@@ -83,7 +83,7 @@ module.exports = class NewSitePage extends Page
           site.location = @options.location          
 
         @db.sites.upsert site, (site) => 
-          @pager.closePage(SourcePage, { _id: site._id, setLocation: @model.get('setLocation'), onSelect: @options.onSelect })
+          @pager.closePage(SitePage, { _id: site._id, setLocation: @model.get('setLocation'), onSelect: @options.onSelect })
         , @error
 
       error = =>

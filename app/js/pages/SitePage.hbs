@@ -42,28 +42,28 @@
 
 <div class="page">
     {{#if select}}
-    <div><button id="select_source" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-ok"></span> {{T "Select Source"}}</button></div>
+    <div><button id="select_site" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-ok"></span> {{T "Select Site"}}</button></div>
     {{/if}}
-    <h3>{{source.name}}</h3>
+    <h3>{{site.name}}</h3>
     <div class="margined">
         <div style="color: Gray">
-            {{source.desc}}
+            {{site.desc}}
         </div>
         <div>
-            <b>{{T "ID:"}}</b> {{source.code}}
+            <b>{{T "ID:"}}</b> {{site.code}}
         </div>
         <div>
-            <b>{{T "Type:"}}</b> <span id="source_type"></span>
+            <b>{{T "Type:"}}</b>{{siteTypeName}}</span>
         </div>
-        {{#if source.private}}
-        <div class="text-warning">{{T "Private"}}</div>
-        {{/if}}
-        <button id="edit_source_button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> {{T "Edit Source"}}</button>
-        {{#if source.custom}}
+        <button id="edit_site_button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> {{T "Edit Site"}}</button>
+        {{#if site.custom}}
         <br/><br/>
         <div class="well well-small">
-          {{#eachProperty source.custom}}
-            <div><span class="text-muted">{{key}}</span>: {{value}}</div>
+          {{#eachProperty site.custom}}
+            <h4>{{key}}</h4>
+            {{#eachProperty value}}
+              <div><span class="text-muted">{{key}}</span>: {{value}}</div>
+            {{/eachProperty}}
           {{/eachProperty}}
         </div>
         {{/if}}
