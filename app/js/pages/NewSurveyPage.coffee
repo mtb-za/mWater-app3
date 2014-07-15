@@ -2,7 +2,7 @@ Page = require "../Page"
 SurveyPage = require "./SurveyPage"
 forms = require '../forms'
 mwaterforms = require 'mwater-forms'
-ResponseModel = require '../ResponseModel'
+ResponseModel = require '../common/ResponseModel'
 
 module.exports = class NewSurveyPage extends Page
   @canOpen: (ctx) -> ctx.auth.insert("responses")

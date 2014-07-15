@@ -1,6 +1,6 @@
 Page = require "../Page"
 mwaterforms = require 'mwater-forms'
-ResponseModel = require '../ResponseModel'
+ResponseModel = require '../common/ResponseModel'
 ImagePage = require './ImagePage'
 SourceListPage = require './SourceListPage'
 SourceMapPage = require './SourceMapPage'
