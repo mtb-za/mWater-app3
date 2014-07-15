@@ -147,7 +147,7 @@ module.exports = class SourcePage extends Page
     @$('#photos').append(photosView.el)
 
   editSource: ->
-    @pager.openPage(require("./SourceEditPage"), { _id: @source._id})
+    @pager.openPage(require("./SiteEditPage"), { _id: @source._id})
 
   deleteSource: ->
     if @auth.remove("sources", @source) and confirm(T("Permanently delete source?"))
