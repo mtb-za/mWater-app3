@@ -14,12 +14,33 @@
   .margined {
       margin-left: 5px;
   }
+
+  #bottom_navbar {
+    position: fixed;
+    bottom: 0px;
+    border-top: solid 1px #CCC;
+    height: 50px;
+    z-index: 100000;
+    left: 0;
+    right: 0;
+    background-color: white;
+  }
 </style>
 
+<div id="bottom_navbar" class="text-center">
+  <div class="btn-group dropup">
+    <button type="button" class="btn btn-link btn-lg dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-plus"></span>
+        {{T "Add"}}
+    </button>
+    <ul class="dropdown-menu text-left" role="menu">
+      <li><a id="add_test">{{T "Water Test"}}</a></li>
+      <li><a id="add_note">{{T "Note"}}</a></li>
+    </ul>
+  </div>  
+</div>
+
 <div class="page">
-    <!-- TODO <div style="border: 1px solid #A0A0A0; padding: 5px; width: 100px; min-height: 75px; float:right;">
-        <img id="photo" style="max-width: 100px; display: block; margin-left: auto; margin-right: auto"/>
-    </div>-->
     {{#if select}}
     <div><button id="select_source" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-ok"></span> {{T "Select Source"}}</button></div>
     {{/if}}

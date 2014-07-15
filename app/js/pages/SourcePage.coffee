@@ -11,6 +11,8 @@ module.exports = class SourcePage extends Page
     'click #edit_source_button' : 'editSource'
     'click #add_test_button' : 'addTest'
     'click #add_note_button' : 'addNote'
+    'click #add_test' : 'addTest'
+    'click #add_note' : 'addNote'
     'click .test' : 'openTest'
     'click .note' : 'openNote'
     'click .survey' : 'openSurvey'
@@ -51,17 +53,16 @@ module.exports = class SourcePage extends Page
     else 
       @setupContextMenu [ ]
 
-    menu = []
-    if @auth.insert("tests")
-      menu.push({ text: T("Start Water Test"), click: => @addTest() })
-    if @auth.insert("source_notes")
-      menu.push({ text: T("Add Note"), click: => @addNote() })
-
-    @setupButtonBar [ { icon: "plus.png", menu: menu } ]
+    @setupButtonBar [ ]
 
     # Re-render template
     @removeSubviews()
     @$el.html require('./SourcePage.hbs')(source: @source, select: @options.onSelect?)
+
+    # Set visibility of add buttons
+    menu = []
+    @$("#add_test").prop("disabled", not @auth.insert("tests"))
+    @$("#add_note").prop("disabled", not @auth.insert("source_notes"))
 
     # Set source type
     if @source.type?
