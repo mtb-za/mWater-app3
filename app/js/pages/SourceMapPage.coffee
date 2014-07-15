@@ -234,7 +234,7 @@ class SourceMapPage extends Page
     @$("#gear_menu").html(require("./SourceMapPage_gearmenu.hbs")(menu: menu))
 
     @setupButtonBar [
-      { icon: "buttonbar-search.png", click: => return }
+      # { icon: "buttonbar-search.png", click: => return }
       { text: T("List"), click: => @pager.closePage(require("./SourceListPage"))}  
     ]
 
