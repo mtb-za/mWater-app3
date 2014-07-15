@@ -3,15 +3,15 @@ forms = require '../forms'
 SourcePage = require "./SourcePage"
 siteTypes = require '../common/siteTypes'
 
-# Allows creating of a source
-# Options are geo to initialize the geo of the source
+# Allows creating of a site
+# Options are geo to initialize the geo of the site
 module.exports = class NewSitePage extends Page
   @canOpen: (ctx) -> ctx.auth.insert("sites")
 
   activate: ->
     @setTitle T("New Site")
 
-    # Create model for the source
+    # Create model for the site
     @model = new Backbone.Model(setLocation: not @options.geo?)
   
     # Create questions
@@ -25,7 +25,7 @@ module.exports = class NewSitePage extends Page
 
     contents = []
 
-    contents.push sourceTypesQuestion
+    contents.push siteTypesQuestion
 
     contents.push new forms.TextQuestion
       id: 'name'
@@ -42,7 +42,7 @@ module.exports = class NewSitePage extends Page
       model: @model
       prompt: T("Privacy")
       text: T('Site is private')
-      hint: T('This should only be used for sites that are not publically accessible')
+      hint: T('This should only be used for sites that are not publicly accessible')
 
     if not @options.geo?
       contents.push new forms.RadioQuestion
@@ -59,6 +59,8 @@ module.exports = class NewSitePage extends Page
     @listenTo saveCancelForm, 'save', =>
       site = _.pick(@model.toJSON(), 'name', 'desc')
 
+      site.type = ["Water Point", @model.get('type')]
+      
       # Set roles based on privacy
       if @model.get("private")
         site.roles = [
