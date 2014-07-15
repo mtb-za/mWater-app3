@@ -206,7 +206,7 @@ class EColi extends SiteLayerCreator
       #  console.log("no marker?")
 
     # Return initial layer
-    success(source: source, layer: layer)
+    success(site: source, layer: layer)
 
     # Create async task to be queued
     task = (callback) =>

@@ -41,7 +41,8 @@ cordovaSetup = require './cordovaSetup'
 ImageUploader = require './images/ImageUploader'
 ProblemReporter = require './ProblemReporter'
 
-collectionNames = ['sources', 'forms', 'groups', 'responses', 'source_types', 'tests', 'source_notes', 'sensors', 'sensor_data']
+# TODO remove sources
+collectionNames = ['sites', 'sources', 'forms', 'groups', 'responses', 'source_types', 'tests', 'source_notes', 'sensors', 'sensor_data']
 
 #apiUrl = 'https://api.mwater.co/v3/'
 apiUrl = "http://127.0.0.1:1234/v3/"
