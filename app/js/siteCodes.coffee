@@ -18,7 +18,7 @@ exports.isValid = (code) ->
 
   return exports.seqToCode(seq) == code
 
-exports.SourceCodesManager = class SourceCodesManager 
+exports.SiteCodesManager = class SiteCodesManager 
   # URL to obtain more codes from
   constructor: (url) ->
     @url = url
@@ -29,14 +29,14 @@ exports.SourceCodesManager = class SourceCodesManager
     cutoff.setDate(cutoff.getDate() + 30*3)
     return cutoff.toISOString()
 
-  # Gets list of cached source codes in form { code:<code>, expiry:<expiry in ISO datetime> }
+  # Gets list of cached site codes in form { code:<code>, expiry:<expiry in ISO datetime> }
   getLocalCodes: ->
-    return []  unless window.localStorage.getItem("v3.sourcecodes")
-    JSON.parse window.localStorage.getItem("v3.sourcecodes")
+    return []  unless window.localStorage.getItem("v3.sitecodes")
+    JSON.parse window.localStorage.getItem("v3.sitecodes")
   
-  # Sets list of cached source codes in form { code:<code>, expiry:<expiry in ISO datetime> }
+  # Sets list of cached site codes in form { code:<code>, expiry:<expiry in ISO datetime> }
   setLocalCodes: (codes) ->
-    window.localStorage.setItem "v3.sourcecodes", JSON.stringify(codes)
+    window.localStorage.setItem "v3.sitecodes", JSON.stringify(codes)
   
   # Purge expired code
   purgeCodes: (cutoff) ->
@@ -92,8 +92,8 @@ exports.SourceCodesManager = class SourceCodesManager
   reset: ->
     @setLocalCodes []
 
-# Fake source codes manager that returns valid, but non-unique codes
-exports.DemoSourceCodesManager = class DemoSourceCodesManager
+# Fake site codes manager that returns valid, but non-unique codes
+exports.DemoSiteCodesManager = class DemoSiteCodesManager
   constructor: ->
     @numAvail = 10
 

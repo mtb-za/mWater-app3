@@ -84,7 +84,7 @@ module.exports = class SourceListPage extends Page
         onSelect = (source) =>
           @pager.closePage()
           @options.onSelect(source)
-      @pager.openPage(require("./NewSourcePage"), {onSelect: onSelect})
+      @pager.openPage(require("./NewSitePage"), {onSelect: onSelect})
     
   locationFound: (pos) =>
     if @destroyed

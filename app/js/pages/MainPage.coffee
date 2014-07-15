@@ -3,7 +3,7 @@ NewSurveyPage = require("./NewSurveyPage")
 SurveyListPage = require("./SurveyListPage")
 TestListPage = require("./TestListPage")
 NewTestPage = require("./NewTestPage")
-NewSourcePage = require("./NewSourcePage")
+NewSitePage = require("./NewSitePage")
 SourceListPage = require("./SourceListPage")
 SourceMapPage = require("./SourceMapPage")
 
@@ -104,7 +104,7 @@ class MainPage extends Page
       , @error
 
     menu = []
-    if NewSourcePage.canOpen(@ctx)
+    if NewSitePage.canOpen(@ctx)
       menu.push({ text: T("Add Water Source"), click: => @addSource() })
     if TestListPage.canOpen(@ctx)
       menu.push({ text: T("Start Water Test"), click: => @addTest() })
@@ -120,7 +120,7 @@ class MainPage extends Page
     @pager.openPage(NewTestPage)
 
   addSource: ->
-    @pager.openPage(NewSourcePage)
+    @pager.openPage(NewSitePage)
 
   gotoSourceList: ->
     @pager.openPage(SourceListPage)

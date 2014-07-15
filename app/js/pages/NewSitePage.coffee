@@ -1,29 +1,27 @@
 Page = require '../Page'
 forms = require '../forms'
 SourcePage = require "./SourcePage"
+siteTypes = require '../common/siteTypes'
 
 # Allows creating of a source
 # Options are geo to initialize the geo of the source
-module.exports = class NewSourcePage extends Page
-  @canOpen: (ctx) -> ctx.auth.insert("sources")
+module.exports = class NewSitePage extends Page
+  @canOpen: (ctx) -> ctx.auth.insert("sites")
 
   activate: ->
-    @setTitle T("New Source")
+    @setTitle T("New Site")
 
     # Create model for the source
     @model = new Backbone.Model(setLocation: not @options.geo?)
   
     # Create questions
-    sourceTypesQuestion = new forms.DropdownQuestion
+    siteTypesQuestion = new forms.DropdownQuestion
       id: 'type'
       model: @model
-      prompt: T('Enter Source Type')
+      prompt: T('Enter Site Type')
       options: []
 
-    @db.source_types.find({}).fetch (sourceTypes) =>
-      # Fill source types
-      sourceTypesQuestion.setOptions _.map(sourceTypes, (st) => [st.code, st.name])
-    , @error
+    siteTypesQuestion.setOptions _.map(siteTypes[0].subtypes, (st) => [st, T(st)] )
 
     contents = []
 
@@ -43,8 +41,8 @@ module.exports = class NewSourcePage extends Page
       id: 'private'
       model: @model
       prompt: T("Privacy")
-      text: T('Water source is private')
-      hint: T('This should only be used for sources that are not publically accessible')
+      text: T('Site is private')
+      hint: T('This should only be used for sites that are not publically accessible')
 
     if not @options.geo?
       contents.push new forms.RadioQuestion
@@ -59,25 +57,37 @@ module.exports = class NewSourcePage extends Page
     @$el.empty().append(saveCancelForm.el)
 
     @listenTo saveCancelForm, 'save', =>
-      source = _.pick(@model.toJSON(), 'name', 'desc', 'type', 'private')
+      site = _.pick(@model.toJSON(), 'name', 'desc')
+
+      # Set roles based on privacy
+      if @model.get("private")
+        site.roles = [
+          { id: "user:#{this.login.user}", role: "admin" }
+        ]
+      else
+        site.roles = [
+          { id: "user:#{this.login.user}", role: "admin" }
+          { id: "all", role: "view" }
+        ]
 
       success = (code) =>
-        source.code = code
-        source.user = @login.user
-        source.org = @login.org
+        site.code = code
 
         # Set geo is present in options
         if @options.geo?
-          source.geo = @options.geo
+          site.geo = @options.geo
 
-        @db.sources.upsert source, (source) => 
-          @pager.closePage(SourcePage, { _id: source._id, setLocation: @model.get('setLocation'), onSelect: @options.onSelect })
+        if @options.location?
+          site.location = @options.location          
+
+        @db.sites.upsert site, (site) => 
+          @pager.closePage(SourcePage, { _id: site._id, setLocation: @model.get('setLocation'), onSelect: @options.onSelect })
         , @error
 
       error = =>
-        alert(T("Unable to generate source id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range."))
+        alert(T("Unable to generate site id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range."))
 
-      @sourceCodesManager.requestCode(success, error)
+      @siteCodesManager.requestCode(success, error)
 
     @listenTo saveCancelForm, 'cancel', =>
       @pager.closePage()

@@ -1,4 +1,4 @@
-NewSourcePage = require "../pages/NewSourcePage"
+NewSitePage = require "../pages/NewSitePage"
 normalizeLng = require('./utils').normalizeLng
 
 # Menu that displays when a right-click or long-press is detected
@@ -9,13 +9,17 @@ module.exports = class ContextMenu
     # Listen for event
     @map.on 'contextmenu', (e) =>
       # Ignore if not logged in
-      if not NewSourcePage.canOpen(ctx)
+      if not NewSitePage.canOpen(ctx)
         return
 
       # Get location
       geo = {
         type: "Point"
         coordinates: [normalizeLng(e.latlng.lng), e.latlng.lat]
+      }
+      location = {
+        latitude: e.latlng.lat
+        longitude: normalizeLng(e.latlng.lng)
       }
 
       # Create popup html
@@ -29,4 +33,4 @@ module.exports = class ContextMenu
 
       contents.find('button').on 'click', ->
         map.closePopup(popup)
-        ctx.pager.openPage(NewSourcePage, { geo: geo })
+        ctx.pager.openPage(NewSitePage, { geo: geo, location: location })

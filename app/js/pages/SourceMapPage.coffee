@@ -16,7 +16,7 @@ class SourceMapPage extends Page
     "click #goto_my_location": "gotoMyLocation"
     "click #new_site": -> 
       # defer to Allow menu to close first
-      _.defer => @pager.openPage(require("./NewSourcePage"))
+      _.defer => @pager.openPage(require("./NewSitePage"))
     "click #new_survey": ->
       # defer to Allow menu to close first
       _.defer => @pager.openPage(require("./NewSurveyPage"))

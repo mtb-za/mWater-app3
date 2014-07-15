@@ -28,7 +28,7 @@ exports.UserAuth = class UserAuth
     @user = user
     @org = org
 
-    @editableCols = ['sources', 'source_notes', 'tests', 'responses']
+    @editableCols = ['sites', 'source_notes', 'tests', 'responses']
 
   insert: (col) ->
     if not (col in @editableCols)

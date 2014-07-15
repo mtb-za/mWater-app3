@@ -34,7 +34,7 @@ minimongo = require 'minimongo'
 SimpleImageManager = require './images/SimpleImageManager'
 CachedImageManager = require './images/CachedImageManager'
 authModule = require './auth'
-sourcecodes = require './sourcecodes'
+siteCodes = require './siteCodes'
 syncModule = require './sync'
 Camera = require './Camera'
 cordovaSetup = require './cordovaSetup'
@@ -85,7 +85,7 @@ createBaseContext = ->
     # imageManager: null
     # auth: null 
     # login: null
-    # sourceCodesManager: null
+    # siteCodesManager: null
     # dataSync: null
     # imageSync: null
   }
@@ -182,7 +182,7 @@ exports.createAnonymousContext = (success) ->
       imageManager: imageManager
       auth: auth 
       login: null
-      sourceCodesManager: null
+      siteCodesManager: null
       dataSync: null
       imageSync: null
     }
@@ -227,14 +227,14 @@ exports.createDemoContext = (success) ->
     # No client or org
     login = { user: "demo" }
 
-    sourceCodesManager = new sourcecodes.DemoSourceCodesManager()
+    siteCodesManager = new siteCodes.DemoSiteCodesManager()
 
     ctx = _.extend baseContext, {
       db: db 
       imageManager: imageManager
       auth: auth
       login: login
-      sourceCodesManager: sourceCodesManager
+      siteCodesManager: siteCodesManager
       dataSync: null
       imageSync: null
       imageAcquirer: imageAcquirer
@@ -252,8 +252,8 @@ exports.createLoginContext = (login, success) ->
       imageManager = new SimpleImageManager(apiUrl)
     
     auth = new authModule.UserAuth(login.user, login.org)
-    sourceCodesManager = new sourcecodes.SourceCodesManager(apiUrl + "source_codes?client=#{login.client}")
-    dataSync = new syncModule.DataSync(db, sourceCodesManager)
+    siteCodesManager = new siteCodes.SiteCodesManager(apiUrl + "site_codes?client=#{login.client}")
+    dataSync = new syncModule.DataSync(db, siteCodesManager)
     imageSync = new syncModule.ImageSync(imageManager)
 
     # Start synchronizing
@@ -293,7 +293,7 @@ exports.createLoginContext = (login, success) ->
       imageManager: imageManager
       auth: auth
       login: login
-      sourceCodesManager: sourceCodesManager
+      siteCodesManager: siteCodesManager
       dataSync: dataSync
       imageSync: imageSync
       stop: stop
