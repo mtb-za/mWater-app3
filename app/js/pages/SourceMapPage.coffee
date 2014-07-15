@@ -235,7 +235,7 @@ class SourceMapPage extends Page
 
     @setupButtonBar [
       # { icon: "buttonbar-search.png", click: => return }
-      { text: T("List"), click: => @pager.closePage(require("./SourceListPage"))}  
+      { text: T("List"), click: => @pager.closePage(require("./SiteListPage"))}  
     ]
 
   activate: ->

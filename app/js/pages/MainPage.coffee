@@ -4,7 +4,7 @@ SurveyListPage = require("./SurveyListPage")
 TestListPage = require("./TestListPage")
 NewTestPage = require("./NewTestPage")
 NewSitePage = require("./NewSitePage")
-SourceListPage = require("./SourceListPage")
+SiteListPage = require("./SiteListPage")
 SourceMapPage = require("./SourceMapPage")
 
 class MainPage extends Page
@@ -123,7 +123,7 @@ class MainPage extends Page
     @pager.openPage(NewSitePage)
 
   gotoSourceList: ->
-    @pager.openPage(SourceListPage)
+    @pager.openPage(SiteListPage)
 
   gotoSourceMap: ->
     @pager.openPage(SourceMapPage)

@@ -57,7 +57,7 @@ module.exports = class PageMenu extends Backbone.View
     @gotoPage(require("./pages/LoginPage"))
 
   gotoSourceList: ->
-    @gotoPage(require("./pages/SourceListPage"))
+    @gotoPage(require("./pages/SiteListPage"))
 
   gotoSourceMap: ->
     @gotoPage(require("./pages/SourceMapPage"))

@@ -1,6 +1,6 @@
 <tbody>
-	{{#each sources}}
-	<tr class="tappable source" id="{{_id}}">
+	{{#each sites}}
+	<tr class="tappable site" id="{{_id}}">
 	    <td>
 	    	{{#if thumbnail}}
 	    	<img id="{{thumbnail}}" class="thumb" src="img/image-loading.png" onError="this.onerror=null;this.src='img/no-image-icon.jpg';" />
@@ -15,16 +15,16 @@
 	</tr>
 	{{else}}
 	<tr>
-	    <td> {{T "See the map for a global view if no sources are found."}} </td>
+	    <td> {{T "See the map for a global view if no sites are found."}} </td>
 	</tr>
 	{{/each}}
 </tbody> 
 
 <style>
-table tr.source td {
+table tr.site td {
 	vertical-align: middle;
 }
-.source td .thumb {
+.site td .thumb {
 	height: 60px;
 	margin-right: 10px;
 	border-radius: 3px;

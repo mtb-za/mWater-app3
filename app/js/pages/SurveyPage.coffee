@@ -2,7 +2,7 @@ Page = require "../Page"
 mwaterforms = require 'mwater-forms'
 ResponseModel = require '../common/ResponseModel'
 ImagePage = require './ImagePage'
-SourceListPage = require './SourceListPage'
+SiteListPage = require './SiteListPage'
 SourceMapPage = require './SourceMapPage'
 GeoJSON = require '../GeoJSON'
 
@@ -45,7 +45,7 @@ class SurveyPage extends Page
         imageManager: @ctx.imageManager
         imageAcquirer: @ctx.imageAcquirer
         selectSite: (success) =>
-          @pager.openPage SourceListPage, { onSelect: (source)=> success(source.code) }
+          @pager.openPage SiteListPage, { onSelect: (source)=> success(source.code) }
         displayMap: (location) =>
           @pager.openPage require("./SourceMapPage"), {
             initialGeo: { type: 'Point', coordinates: [location.longitude, location.latitude] }

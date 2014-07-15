@@ -20,8 +20,8 @@ module.exports = Question.extend
 
   selectSource: ->
     # Moved here for browserify circularity problem
-    SourceListPage = require '../pages/SourceListPage'
-    @ctx.pager.openPage SourceListPage, 
+    SiteListPage = require '../pages/SiteListPage'
+    @ctx.pager.openPage SiteListPage, 
       { onSelect: (source)=>
         @model.set @id, source.code
       }
