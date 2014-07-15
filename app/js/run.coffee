@@ -9,7 +9,7 @@ ezlocalize = require 'ez-localize'
 
 MainPage = require './pages/MainPage'
 LoginPage = require './pages/LoginPage'
-SourceMapPage = require './pages/SourceMapPage'
+SiteMapPage = require './pages/SiteMapPage'
 
 AppUpdater = require './AppUpdater'
 
@@ -86,11 +86,11 @@ exports.start = (options = {}) ->
 
       $ -> 
         # If explicit page
-        if options.initialPage == "SourceMapPage"
-          pager.openPage(SourceMapPage)
+        if options.initialPage == "SiteMapPage"
+          pager.openPage(SiteMapPage)
         # If logged in, open main page
         else if ctx.login?
-          pager.openPage(SourceMapPage)
+          pager.openPage(SiteMapPage)
         else
           pager.openPage(LoginPage)
 

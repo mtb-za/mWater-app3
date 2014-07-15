@@ -1,8 +1,8 @@
 async = require 'async'
 
-class SourceLayerCreator 
-  # Calls success with { source: source, layer: layer }
-  createLayer: (source, success, error) ->
+class SiteLayerCreator 
+  # Calls success with { site: site, layer: layer }
+  createLayer: (site, success, error) ->
 
   # Creates a legend for the layer. Will be added at bottom right
   createLegend: ->
@@ -89,7 +89,7 @@ class EColiAnalyzer
 
     return [min, max]
 
-class EColi extends SourceLayerCreator
+class EColi extends SiteLayerCreator
   # openSource will be called with _id of source to display
   constructor: (ecoliAnalyzer, openSource) ->
     @openSource = openSource

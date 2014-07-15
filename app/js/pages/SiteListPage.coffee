@@ -39,7 +39,7 @@ module.exports = class SiteListPage extends Page
 
     @setupButtonBar [
       { icon: "buttonbar-search.png", click: => @search() }
-      { text: T("Map"), click: => @pager.closePage(require("./SourceMapPage"))}  
+      { text: T("Map"), click: => @pager.closePage(require("./SiteMapPage"))}  
     ]
 
     # Query database for unlocated sites

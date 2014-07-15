@@ -1,7 +1,7 @@
 Page = require "../Page"
 SourcePage = require './SourcePage'
-SourcesLayer = require '../map/SourcesLayer'
-SourceLayerCreators = require '../map/SourceLayerCreators'
+SitesLayer = require '../map/SitesLayer'
+SiteLayerCreators = require '../map/SiteLayerCreators'
 LocationDisplay = require '../map/LocationDisplay'
 LocationFinder = require '../LocationFinder'
 ContextMenu = require '../map/ContextMenu'
@@ -9,9 +9,9 @@ BaseLayers = require '../map/BaseLayers'
 offlineMap = require 'offline-leaflet-map'
 CacheProgressControl = require '../map/CacheProgressControl'
 
-# Map of water sources. Options include:
+# Map of sites. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
-class SourceMapPage extends Page
+class SiteMapPage extends Page
   events:
     "click #goto_my_location": "gotoMyLocation"
     "click #new_site": -> 
@@ -25,10 +25,10 @@ class SourceMapPage extends Page
       _.defer => @pager.openPage(require("./NewTestPage"))
 
   create: ->
-    @setTitle T("Source Map")
+    @setTitle T("Site Map")
 
     # Calculate height
-    @$el.html require('./SourceMapPage.hbs')()
+    @$el.html require('./SiteMapPage.hbs')()
 
     # If initialGeo specified, use it
     if @options.initialGeo and @options.initialGeo.type=="Point"
@@ -36,8 +36,8 @@ class SourceMapPage extends Page
       return
 
     # If saved view
-    if window.localStorage['SourceMapPage.lastView']
-      lastView = JSON.parse(window.localStorage['SourceMapPage.lastView'])
+    if window.localStorage['SiteMapPage.lastView']
+      lastView = JSON.parse(window.localStorage['SiteMapPage.lastView'])
       @createMap(lastView.center, lastView.zoom, lastView.scope)
       return
 
@@ -122,16 +122,16 @@ class SourceMapPage extends Page
 
     # Setup marker display when map is loaded
     @map.whenReady =>
-      ecoliAnalyzer = new SourceLayerCreators.EColiAnalyzer(@db)
+      ecoliAnalyzer = new SiteLayerCreators.EColiAnalyzer(@db)
 
-      sourceLayerCreator = new SourceLayerCreators.EColi ecoliAnalyzer, (_id) =>
+      siteLayerCreator = new SiteLayerCreators.EColi ecoliAnalyzer, (_id) =>
         @pager.openPage(SourcePage, {_id: _id})
-      @sourcesLayer = new SourcesLayer(sourceLayerCreator, @db.sources, scope).addTo(@map)
+      @sitesLayer = new SitesLayer(siteLayerCreator, @db.sites, scope).addTo(@map)
       # TODO remove legend
       # # Add legend
       # @legend = L.control({position: 'bottomright'});
       # @legend.onAdd = (map) ->
-      #   return sourceLayerCreator.createLegend()
+      #   return siteLayerCreator.createLegend()
       # @legend.addTo(@map)
 
       # Add My Location control
@@ -159,8 +159,8 @@ class SourceMapPage extends Page
     @locationDisplay = new LocationDisplay(@map)
 
   # Options for the dropdown menu
-  getSourceScopeOptions: =>
-    options = [{ display: T("All Sources"), type: "all", value: {} }]
+  getSiteScopeOptions: =>
+    options = [{ display: T("All Sites"), type: "all", value: {} }]
     # Only show Organization choice if user has an org
     if @login?
       if @login.org?
@@ -170,11 +170,11 @@ class SourceMapPage extends Page
         options.push { display: T("Only Mine"), type: "user", value: { user: @login.user } }
     return options
 
-  # Filter the sources by all, org, or user
-  updateSourceScope: (scope) => 
+  # Filter the sites by all, org, or user
+  updateSiteScope: (scope) => 
     # Update Map
-    @sourcesLayer.setScope scope.value
-    @sourcesLayer.update()
+    @sitesLayer.setScope scope.value
+    @sitesLayer.update()
 
     # Update UI
     @setButtonBar()
@@ -184,10 +184,10 @@ class SourceMapPage extends Page
     return
 
   saveView: => 
-    window.localStorage['SourceMapPage.lastView'] = JSON.stringify({
+    window.localStorage['SiteMapPage.lastView'] = JSON.stringify({
       center: @map.getCenter() 
       zoom: @map.getZoom()
-      scope: @sourcesLayer.scope
+      scope: @sitesLayer.scope
     })
 
   gotoMyLocation: ->
@@ -214,14 +214,14 @@ class SourceMapPage extends Page
 
   configureButtonBars: ->
     # Configure gear menu
-
     # Get the current scope to be used to set the active dropdown item
-    currentScope = if @sourcesLayer and @sourcesLayer.scope then @sourcesLayer.scope else {}
-    # Create a dropdown menu using the Source Scope Options
-    menu = @getSourceScopeOptions().map((scope) =>
+    currentScope = if @sitesLayer and @sitesLayer.scope then @sitesLayer.scope else {}
+
+    # Create a dropdown menu using the Site Scope Options
+    menu = @getSiteScopeOptions().map((scope) =>
       text: scope.display
-      id: "source-scope-" + scope.type
-      click: => @updateSourceScope scope
+      id: "site_scope_" + scope.type
+      click: => @updateSiteScope scope
       checked: (JSON.stringify(currentScope) == JSON.stringify(scope.value))      
     )
     if not @noDb
@@ -231,7 +231,7 @@ class SourceMapPage extends Page
         click: => @cacheTiles()
       }
 
-    @$("#gear_menu").html(require("./SourceMapPage_gearmenu.hbs")(menu: menu))
+    @$("#gear_menu").html(require("./SiteMapPage_gearmenu.hbs")(menu: menu))
 
     @setupButtonBar [
       # { icon: "buttonbar-search.png", click: => return }
@@ -242,9 +242,9 @@ class SourceMapPage extends Page
     @configureButtonBars()
     
     # Update markers
-    if @sourcesLayer and @needsRefresh
-      @sourcesLayer.reset()
-      @sourcesLayer.update()
+    if @sitesLayer and @needsRefresh
+      @sitesLayer.reset()
+      @sitesLayer.update()
       needsRefresh = false
 
   deactivate: ->
@@ -313,4 +313,4 @@ setupMapTiles = ->
   return new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: subDomains})
 
 
-module.exports = SourceMapPage
+module.exports = SiteMapPage

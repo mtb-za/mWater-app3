@@ -90,7 +90,7 @@ module.exports = class SourcePage extends Page
       , @error
 
     @listenTo locationView, 'map', (loc) =>
-      @pager.openPage(require("./SourceMapPage"), {initialGeo: GeoJSON.locToPoint(loc)})
+      @pager.openPage(require("./SiteMapPage"), {initialGeo: GeoJSON.locToPoint(loc)})
       
     @addSubview(locationView)
     @$("#location").append(locationView.el)
