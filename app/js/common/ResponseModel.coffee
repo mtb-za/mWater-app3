@@ -1,4 +1,6 @@
-mwaterforms = require 'mwater-forms'
+_ = require 'lodash'
+# TODO this is subideal. Extract to mwater-common
+formUtils = require('mwater-forms/lib/formUtils')
 
 # Model of a response object that allows manipulation and asking of questions
 module.exports = class ResponseModel
@@ -11,7 +13,7 @@ module.exports = class ResponseModel
   # Setup draft
   draft: ->
     if not @response._id
-      @response._id = mwaterforms.formUtils.createUid()
+      @response._id = formUtils.createUid()
       @response.form = @form._id
       @response.user = @user
       @response.startedOn = new Date().toISOString()
@@ -19,7 +21,7 @@ module.exports = class ResponseModel
       @response.approvals = []
   
       # Create code. Not unique, but unique per user if logged in once.
-      @response.code = @user + "-" + mwaterforms.formUtils.createBase32TimeCode(new Date())
+      @response.code = @user + "-" + formUtils.createBase32TimeCode(new Date())
     
     @response.formRev = @form._rev
     @response.status = "draft"
@@ -131,7 +133,7 @@ module.exports = class ResponseModel
       viewers = _.union viewers, deployment.viewers
 
     # If already admin, don't include in viewers
-    viewers = _.without viewers, admins
+    viewers = _.difference viewers, admins
 
     @response.roles = _.map admins, (s) -> { id: s, role: "admin" }
     @response.roles = @response.roles.concat(_.map(viewers, (s) -> { id: s, role: "view" }))
