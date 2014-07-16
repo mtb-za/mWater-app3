@@ -238,6 +238,8 @@ class SourceMapPage extends Page
 
   activate: ->
     @configureButtonBars()
+
+    @resizeMap()
     
     # Update markers
     if @sourcesLayer and @needsRefresh
