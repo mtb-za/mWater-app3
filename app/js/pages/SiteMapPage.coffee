@@ -177,7 +177,7 @@ class SiteMapPage extends Page
     @sitesLayer.update()
 
     # Update UI
-    @setButtonBar()
+    @configureButtonBars()
 
     # Persist the view
     @saveView()
@@ -234,12 +234,14 @@ class SiteMapPage extends Page
     @$("#gear_menu").html(require("./SiteMapPage_gearmenu.hbs")(menu: menu))
 
     @setupButtonBar [
-      # { icon: "buttonbar-search.png", click: => return }
+      { icon: "buttonbar-gear.png", menu: menu }
       { text: T("List"), click: => @pager.closePage(require("./SiteListPage"))}  
     ]
 
   activate: ->
     @configureButtonBars()
+
+    @resizeMap()
     
     # Update markers
     if @sitesLayer and @needsRefresh

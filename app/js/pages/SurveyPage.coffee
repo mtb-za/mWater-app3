@@ -5,6 +5,7 @@ ImagePage = require './ImagePage'
 SiteListPage = require './SiteListPage'
 SiteMapPage = require './SiteMapPage'
 GeoJSON = require '../GeoJSON'
+SurveyListPage = require './SurveyListPage'
 
 class SurveyPage extends Page
   @canOpen: (ctx) -> ctx.auth.update("responses")
@@ -173,7 +174,13 @@ class SurveyPage extends Page
 
   close: ->
     @save()
-    @pager.closePage()
+    @returnToSurveyList()
+
+  returnToSurveyList: ->
+    if @pager.getParentPage() instanceof SurveyListPage
+      @pager.closePage()
+    else
+      @pager.closePage(SurveyListPage)
 
   completed: =>
     # Submit
@@ -181,7 +188,8 @@ class SurveyPage extends Page
     @responseModel.submit()
 
     @db.responses.upsert @response, =>
-      @pager.closePage()
+      @returnToSurveyList()
+
       @pager.flash T("Survey completed successfully"), "success"
     , @error
 
