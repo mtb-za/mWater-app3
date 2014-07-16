@@ -177,7 +177,7 @@ class SourceMapPage extends Page
     @sourcesLayer.update()
 
     # Update UI
-    @setButtonBar()
+    @configureButtonBars()
 
     # Persist the view
     @saveView()
@@ -213,8 +213,6 @@ class SourceMapPage extends Page
 
 
   configureButtonBars: ->
-    # Configure gear menu
-
     # Get the current scope to be used to set the active dropdown item
     currentScope = if @sourcesLayer and @sourcesLayer.scope then @sourcesLayer.scope else {}
     # Create a dropdown menu using the Source Scope Options
@@ -234,7 +232,7 @@ class SourceMapPage extends Page
     @$("#gear_menu").html(require("./SourceMapPage_gearmenu.hbs")(menu: menu))
 
     @setupButtonBar [
-      # { icon: "buttonbar-search.png", click: => return }
+      { icon: "buttonbar-gear.png", menu: menu }
       { text: T("List"), click: => @pager.closePage(require("./SourceListPage"))}  
     ]
 
