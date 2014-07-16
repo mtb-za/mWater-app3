@@ -69,7 +69,7 @@ module.exports = class SitePage extends Page
 
     # Add location view
     locationView = new LocationView(
-      loc: GeoJSON.geoToLoc(@site.geo)
+      loc: @site.location
       readonly: not @auth.update("sites", @site)
       T: T)
     if @setLocation
@@ -77,9 +77,9 @@ module.exports = class SitePage extends Page
       @setLocation = false
 
     @listenTo locationView, 'locationset', (loc) ->
-      geo = GeoJSON.locToPoint(loc)
-      if geo?
-        @site.geo = geo
+      if loc
+        @site.location = loc
+        @site.geo = GeoJSON.locToPoint(loc)
       else  
         delete @site.geo
       @db.sites.upsert @site, => 
