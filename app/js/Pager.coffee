@@ -102,12 +102,17 @@ class Pager extends Backbone.View
     # Indicate page change
     @trigger 'change'
 
-
   # Close all pages and replace with
   closeAllPages: (replaceWith, options) ->
     while @multiplePages()
       @closePage()
     @closePage(replaceWith, options)
+
+  # Gets page next down on the stack
+  getParentPage: ->
+    if @stack.length > 1
+      return @stack[@stack.length - 2]
+    return null
 
   # Get title of active page
   getTitle: ->
