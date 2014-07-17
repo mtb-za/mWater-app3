@@ -56,7 +56,7 @@ ProblemReporter = (url, version, getLogin) ->
     reportingError = true
 
     # Get text of message
-    text = "window.onerror:" + message + ":" + file + ":" + line + " (" + column + ")"
+    text = "window.onerror: #{message} at #{file}:#{line}:#{column}"
 
     # Put up alert instead of old action
     alert T("Internal Error") + "\n" + text
@@ -78,8 +78,15 @@ ProblemReporter = (url, version, getLogin) ->
   debouncedHandleOnError = _.debounce(handleOnError, 5000, true)
 
   window.onerror = (message, file, line, column, errorObj) ->
-    if reportingError 
-      console.error "Ignoring error: #{message}"
+    if reportingError
+      # Get text of message
+      text = "window.onerror: #{message} at #{file}:#{line}:#{column}"
+
+      # Add stack
+      if errorObj?
+        text = text + "\n" + errorObj.stack
+        
+      console.error "Ignoring error: #{text}"
       return
 
     debouncedHandleOnError(message, file, line, column, errorObj)

@@ -58,9 +58,12 @@ displayErrorAlert = _.debounce (msg) ->
 , 5000, true
 
 error = (err) ->
-  str = if err? and err.message then err.message else err
-  if typeof str != "string"
-    str = JSON.stringify(str)
+  try 
+    str = JSON.stringify(err)
+  catch
+    str = if err? and err.message then err.message else err
+    if typeof str != "string"
+      str = JSON.stringify(str)
 
   console.error("Internal Error Callback: " + str)
   displayErrorAlert(str)
