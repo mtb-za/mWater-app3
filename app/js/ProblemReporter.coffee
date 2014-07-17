@@ -4,7 +4,7 @@
 consoleCapture = require './consoleCapture'
 
 ProblemReporter = (url, version, getLogin) ->
-  @reportProblem = (desc, success, error) ->
+  @reportProblem = (desc, success, error) =>
     console.log "Reporting problem..."
     device = "Unknown"
     try 
@@ -52,7 +52,7 @@ ProblemReporter = (url, version, getLogin) ->
   # Prevent recursion
   reportingError = false
 
-  handleOnError = (message, file, line, column, errorObj) ->
+  handleOnError = (message, file, line, column, errorObj) =>
     reportingError = true
 
     # Get text of message
