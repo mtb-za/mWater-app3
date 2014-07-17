@@ -65,7 +65,7 @@ ProblemReporter = (url, version, getLogin) ->
     if errorObj?
       text = text + "\n" + errorObj.stack
 
-    if window.location.href.match(/^file:/) or window.location.href.match(/127\.0\.0\.1/)
+    if window.location.href.match(/127\.0\.0\.1/)
       console.log 'Ignoring because in debug mode'
       return
 
@@ -85,7 +85,7 @@ ProblemReporter = (url, version, getLogin) ->
       # Add stack
       if errorObj?
         text = text + "\n" + errorObj.stack
-        
+
       console.error "Ignoring error: #{text}"
       return
 
