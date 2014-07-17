@@ -270,6 +270,10 @@ class SourceMapPage extends Page
       @map.remove()
 
   resizeMap: =>
+    # TODO why does this prevent crashes?
+    if not @map
+      return
+
     # Calculate map height
     mapHeight = $("html").height() - 50 - 50
     $("#map").css("height", mapHeight + "px")
