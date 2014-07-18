@@ -23,10 +23,10 @@ exports.NoneAuth = class NoneAuth
     return false
 
 exports.UserAuth = class UserAuth
-  # user is username, org is org code
-  constructor: (user, org) ->
+  # user is username, groups is list of group names
+  constructor: (user, groups) ->
     @user = user
-    @org = org
+    @groups = groups
 
     @editableCols = ['sites', 'source_notes', 'tests', 'responses']
 
@@ -42,22 +42,16 @@ exports.UserAuth = class UserAuth
     if not doc
       return true
 
-    if doc.org and @org
-      return doc.user == @user || doc.org == @org || @user == "admin"
-    else
-      return doc.user == @user || @user == "admin"
+    # Legacy support
+    if col in ['source_notes', 'tests']
+      return doc.user == @user
 
-  remove: (col, doc) ->
-    if not (col in @editableCols)
+    return _.any doc.roles, (r) =>
+      if r.id == "user:#{this.user}" and r.role == "admin"
+        return true
+      if r.id in _.map(@groups, (g) -> "group:#{g}") and r.role == "admin"
+        return true
       return false
 
-    if not doc
-      return true
-
-    if doc.org and @org
-      return doc.user == @user || doc.org == @org || @user == "admin"
-    else
-      return doc.user == @user || @user == "admin" 
-
-
-    
+  remove: (col, doc) ->
+    return @update(col, doc)

@@ -60,13 +60,12 @@ module.exports = class SitePage extends Page
 
     # Re-render template
     @removeSubviews()
-    @$el.html require('./SitePage.hbs')(site: @site, siteTypeName: siteTypeName, select: @options.onSelect?)
+    @$el.html require('./SitePage.hbs')(site: @site, siteTypeName: siteTypeName, select: @options.onSelect?, isWaterPoint: @site.type[0] == "Water Point")
 
     # Set visibility of add buttons
-    menu = []
-    @$("#add_test").prop("disabled", not @auth.insert("tests"))
-    @$("#add_note").prop("disabled", not @auth.insert("source_notes"))
-
+    if @site.type[0] != "Water Point" or not @auth.insert("source_notes") or not @auth.insert("tests") 
+      @$("#bottom_navbar").hide()
+    
     # Add location view
     locationView = new LocationView(
       loc: @site.location
@@ -93,41 +92,42 @@ module.exports = class SitePage extends Page
     @$("#location").append(locationView.el)
 
     # Add tests
-    @db.tests.find({"data.source": @site.code}, {sort: [['started','desc']]}).fetch (tests) =>
-      @$("#tests").html require('./SitePage_tests.hbs')(tests:tests)
+    if @site.type[0] == "Water Point"
+      @db.tests.find({"data.source": @site.code}, {sort: [['started','desc']]}).fetch (tests) =>
+        @$("#tests").html require('./SitePage_tests.hbs')(tests:tests)
 
-      # Fill in names
-      for test in tests
-        @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
-          @$("#test_name_"+test._id).text(if form then form.name else "???")
-        , @error
-    , @error
+        # Fill in names
+        for test in tests
+          @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
+            @$("#test_name_"+test._id).text(if form then form.name else "???")
+          , @error
+      , @error
 
-    # Add notes
-    @db.source_notes.find({source: @site.code}, {sort: [['date','desc']]}).fetch (notes) => 
-      @$("#notes").html require('./SitePage_notes.hbs')(notes:notes)
+      # Add notes
+      @db.source_notes.find({source: @site.code}, {sort: [['date','desc']]}).fetch (notes) => 
+        @$("#notes").html require('./SitePage_notes.hbs')(notes:notes)
 
-      # Determine status
-      if notes.length > 0
-        status = notes[0].status
-        date = notes[0].date
-      else
-        status = null
-        date = null
+        # Determine status
+        if notes.length > 0
+          status = notes[0].status
+          date = notes[0].date
+        else
+          status = null
+          date = null
 
-      @$("#status").html require('./SitePage_status.hbs')(status:status, date: date, canUpdate: @auth.insert("source_notes"))
-    , @error
+        @$("#status").html require('./SitePage_status.hbs')(status:status, date: date, canUpdate: @auth.insert("source_notes"))
+      , @error
 
-    # Add surveys
-    @db.responses.find({"data.source": @site.code}).fetch (surveys) =>
-      @$("#surveys").html require('./SitePage_surveys.hbs')(surveys:surveys)
+      # Add surveys
+      @db.responses.find({"data.source": @site.code}).fetch (surveys) =>
+        @$("#surveys").html require('./SitePage_surveys.hbs')(surveys:surveys)
 
-      # Fill in names
-      for survey in surveys
-        @db.forms.findOne { code:survey.type }, { mode: "local" }, (form) =>
-          @$("#survey_name_"+survey._id).text(if form then form.name else "???")
-        , @error
-    , @error
+        # Fill in names
+        for survey in surveys
+          @db.forms.findOne { code:survey.type }, { mode: "local" }, (form) =>
+            @$("#survey_name_"+survey._id).text(if form then form.name else "???")
+          , @error
+      , @error
 
     # Add photos
     photosView = new forms.ImagesQuestion
@@ -136,9 +136,17 @@ module.exports = class SitePage extends Page
       ctx: @ctx
       readonly: not @auth.update("sites", @site)
       
-    # Upsert model as this.site may have changed on activate to new copy
     photosView.model.on 'change', =>
-      @db.sites.upsert photosView.model.toJSON(), => 
+      # Get photos
+      photos = photosView.model.get("photos")
+
+      # Set cover photo if not set
+      if photos.length > 0 and not _.findWhere(photos, { cover: true })
+        photos[0].cover = true
+
+      @site.photos = photos
+
+      @db.sites.upsert @site, => 
         @query()
       , @error
     @$('#photos').append(photosView.el)
