@@ -1,5 +1,5 @@
 Page = require '../Page'
-forms = require '../forms'
+forms = require 'mwater-forms'
 siteTypes = require '../common/siteTypes'
 
 # Allows editing of site details
@@ -16,10 +16,10 @@ module.exports = class SiteEditPage extends Page
 
       # Create model from site
       @model = new Backbone.Model({
-        name: site.name
-        desc: site.desc
-        type: site.type[0]
-        subtype: site.type[1]
+        name: { value: site.name }
+        desc: { value: site.desc }
+        type: { value: site.type[0] }
+        subtype: { value: site.type[1] }
       })
 
       # When type changes, clear subtype
@@ -30,10 +30,11 @@ module.exports = class SiteEditPage extends Page
       contents = []
 
       contents.push new forms.DropdownQuestion
+        T: T
         id: 'type'
         model: @model
-        prompt: T('Enter Site Type')
-        options: _.map(siteTypes, (st) => [st.name, T(st.name)])
+        prompt: T('Enter site type')
+        choices: _.map(siteTypes, (st) => { id: st.name, label: T(st.name)})
         required: true
 
       # Create subtype questions
@@ -43,35 +44,39 @@ module.exports = class SiteEditPage extends Page
 
         do (siteType) =>
           contents.push new forms.DropdownQuestion
+            T: T
             id: 'subtype'
             model: @model
-            prompt: T('Enter Site Subtype')
-            hint: T("Optional")
-            options: _.map(siteType.subtypes, (st) => [st, T(st)])
+            prompt: T('Enter optional site subtype')
+            choices: _.map(siteType.subtypes, (st) => { id: st, label: T(st) })
             conditional: () =>
-              return @model.get("type") == siteType.name
+              return @model.get("type").value == siteType.name
 
       contents.push new forms.TextQuestion
+        T: T
         id: 'name'
         model: @model
         prompt: T('Enter optional name')
 
       contents.push new forms.TextQuestion
+        T: T
         id: 'desc'
         model: @model
         prompt: T('Enter optional description')
 
       saveCancelForm = new forms.SaveCancelForm
+        T: T
         contents: contents
 
       @$el.empty().append(saveCancelForm.el)
 
       @listenTo saveCancelForm, 'save', =>
-        site.name = @model.get("name")
-        site.desc = @model.get("desc")
-        site.type[0] = @model.get("type")
-        site.type[1] = @model.get("subtype")
-        site.type = _.compact(site.type) # Remove undefined/null
+        site.name = @model.get("name").value
+        site.desc = @model.get("desc").value
+        site.type = []
+        site.type[0] = @model.get("type").value
+        if @model.get("subtype") and @model.get("subtype").value
+          site.type[1] = @model.get("subtype").value
 
         @db.sites.upsert site, => 
           @pager.closePage()
