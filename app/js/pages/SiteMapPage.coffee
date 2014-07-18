@@ -172,7 +172,7 @@ class SiteMapPage extends Page
         options.push { display: T("Only Mine"), type: "user", value: { "created.by": @login.user } }
     return options
 
-  # Filter the sites by all, org, or user
+  # Filter the sites by all, groups, or user
   updateSiteScope: (scope) => 
     # Update Map
     @sitesLayer.setScope scope.value

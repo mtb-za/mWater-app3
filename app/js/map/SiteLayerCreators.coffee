@@ -25,10 +25,10 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
       <div>
         ''' + thumbnail + '''
         <div class='data'>
-          ''' + T("Code") + ''' <b><%=site.code%></b><br>
-          ''' + T("Name") + ''' <b><%=site.name%></b><br>
-          ''' + T("Desc") + ''': <b><%=site.desc%></b><br>
           ''' + T("Type") + ''': <b><%=site.type.join(' - ')%></b><br>
+          ''' + T("Code") + ''': <b><%=site.code%></b><br>
+          ''' + T("Name") + ''': <b><%=site.name || T("---")%></b><br>
+          <%=site.desc%><br>
         </div>
         <button class="btn btn-primary btn-block">''' + T("Open") + '''</button>
       </div>''', 
