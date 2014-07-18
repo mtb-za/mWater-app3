@@ -13,25 +13,21 @@ module.exports = class NewSurveyPage extends Page
   activate: ->
     @setTitle T("Select Survey")
 
-    # Get user groups
-    @db.groups.find({ members: @login.user }, { fields: { groupname: 1 } }).fetch (groups) =>
-      @groups = _.pluck(groups, "groupname")
-      enumerators = [ "all", "user:" + @login.user ].concat(_.map(@groups, (g) -> "group:" + g))
-  
-      # Find forms deployed to me that are not deleted
-      filter = { 
-        deployments: { $elemMatch: { enumerators: { $in: enumerators }, active: true } } 
-        state: { $ne: "deleted" } 
-      }
-      @db.forms.find(filter).fetch (forms) =>
-        @forms = forms
-        data = _.map forms, (form) =>
-          return  {
-            _id: form._id
-            name: mwaterforms.formUtils.localizeString(form.design.name, @localizer.locale)
-          }
-        @$el.html require('./NewSurveyPage.hbs')(forms:data)
-      , @error
+    enumerators = [ "all", "user:" + @login.user ].concat(_.map(@login.groups, (g) -> "group:" + g))
+
+    # Find forms deployed to me that are not deleted
+    filter = { 
+      deployments: { $elemMatch: { enumerators: { $in: enumerators }, active: true } } 
+      state: { $ne: "deleted" } 
+    }
+    @db.forms.find(filter).fetch (forms) =>
+      @forms = forms
+      data = _.map forms, (form) =>
+        return  {
+          _id: form._id
+          name: mwaterforms.formUtils.localizeString(form.design.name, @localizer.locale)
+        }
+      @$el.html require('./NewSurveyPage.hbs')(forms:data)
     , @error
 
   startSurvey: (ev) ->
@@ -43,7 +39,7 @@ module.exports = class NewSurveyPage extends Page
       return
 
     response = {}
-    responseModel = new ResponseModel(response, form, @login.user, @groups) 
+    responseModel = new ResponseModel(response, form, @login.user, @login.groups) 
     responseModel.draft()
 
     @db.responses.upsert response, (response) =>

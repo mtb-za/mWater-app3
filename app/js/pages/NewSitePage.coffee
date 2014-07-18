@@ -9,7 +9,9 @@ GeoJSON = require '../GeoJSON'
 module.exports = class NewSitePage extends Page
   @canOpen: (ctx) -> ctx.auth.insert("sites")
 
-  displayForm: ->
+  activate: ->
+    @setTitle T("New Site")
+
     # Create model for the site
     @model = new Backbone.Model({ 
       location: { value: @options.location }
@@ -17,11 +19,11 @@ module.exports = class NewSitePage extends Page
       name: {}
       desc: {}
       type: {}
-      group: { value: _.first(@groups) }
+      group: { value: _.first(@login.groups) }
     })
     
     # Default WaterAid to private
-    if _.any(@groups, (g) -> g.match(/wateraid/i))
+    if _.any(@login.groups, (g) -> g.match(/wateraid/i))
       @model.set("privacy", { value: "private" })
 
     contents = commonUI.createBasicSiteQuestions(@model)
@@ -37,9 +39,9 @@ module.exports = class NewSitePage extends Page
       required: true
       hint: T('Private should only be used for sites that are not publicly accessible ')
 
-    if @groups.length > 0
+    if @login.groups.length > 0
       choices = [{ id: "(none)", label: T("(No Group)") }]
-      choices = choices.concat(_.map(@groups, (g) => { id: g, label: g }))
+      choices = choices.concat(_.map(@login.groups, (g) => { id: g, label: g }))
       contents.push new forms.DropdownQuestion
         id: 'group'
         model: @model
@@ -100,11 +102,3 @@ module.exports = class NewSitePage extends Page
 
     @listenTo saveCancelForm, 'cancel', =>
       @pager.closePage()
-
-  activate: ->
-    @setTitle T("New Site")
-
-    # Get user groups
-    @db.groups.find({ members: @login.user }, { fields: { groupname: 1 } }).fetch (groups) =>
-      @groups = _.pluck(groups, "groupname")
-      @displayForm()

@@ -51,13 +51,6 @@ module.exports = class SiteListPage extends Page
 
     @performSearch()
 
-    # Cache groups
-    if @login
-      @db.groups.find({ members: @login.user }).fetch (groups) =>
-        # Do nothing, just querying caches them
-        return
-      , @error
-
   deactivate: ->
     # Kill all items in thumbnail queuu
     @thumbnailQueue.kill()

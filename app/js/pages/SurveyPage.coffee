@@ -117,18 +117,15 @@ class SurveyPage extends Page
 
         @form = form
 
-        # Get user groups
-        @db.groups.find({ members: @login.user }, { fields: { groupname: 1 } }).fetch (groups) =>
-          @responseModel = new ResponseModel(response, form, @login.user, _.pluck(groups, "groupname"))
+        @responseModel = new ResponseModel(response, form, @login.user, @login.groups)
 
-          if @responseModel.canDelete()
-            @setupContextMenu [ { glyph: 'remove', text: T("Delete Survey"), click: => @removeResponse() } ]
-          else 
-            @setupContextMenu [ ]
+        if @responseModel.canDelete()
+          @setupContextMenu [ { glyph: 'remove', text: T("Delete Survey"), click: => @removeResponse() } ]
+        else 
+          @setupContextMenu [ ]
 
-          # Render survey page
-          @displayFormView()
-        , @error
+        # Render survey page
+        @displayFormView()
       , @error
     , @error
 

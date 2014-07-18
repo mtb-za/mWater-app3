@@ -247,13 +247,6 @@ class SiteMapPage extends Page
       @sitesLayer.update()
       needsRefresh = false
 
-    # Cache groups
-    if @login
-      @db.groups.find({ members: @login.user }).fetch (groups) =>
-        # Do nothing, just querying caches them
-        return
-      , @error
-
   deactivate: ->
     @needsRefresh = true
 
