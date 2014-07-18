@@ -45,7 +45,7 @@ ProblemReporter = require './ProblemReporter'
 collectionNames = ['sites', 'sources', 'forms', 'groups', 'responses', 'source_types', 'tests', 'source_notes', 'sensors', 'sensor_data']
 
 #apiUrl = 'https://api.mwater.co/v3/'
-apiUrl = "http://127.0.0.1:1234/v3/"
+apiUrl = "http://mwater-sites.elasticbeanstalk.com/v3/"
 
 # TODO this is not a pretty way to set these. But it is somewhat decoupled.
 temporaryFs = null

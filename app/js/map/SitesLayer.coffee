@@ -1,14 +1,18 @@
 GeoJSON = require '../GeoJSON'
 normalizeLng = require('./utils').normalizeLng
 
+# All sites layers should extend SiteLayerCreator and then use a standard
+# SitesLayer with the site layer creator passed in
+# SitesLayer takes care of basic filtering and gives the individual layer (site)
+# creation to site layer
 module.exports = class SitesLayer extends L.LayerGroup
-
   constructor: (siteLayerCreator, sitesDb, scope) ->
     super()
     @maxSitesReturned = 300
     @siteLayerCreator = siteLayerCreator
     @sitesDb = sitesDb
     @scope = scope || {}
+
     # Layers, by _id
     @layers = {}
 
@@ -27,6 +31,7 @@ module.exports = class SitesLayer extends L.LayerGroup
 
   setScope: (scope) => 
     @scope = scope
+
   # Builds a selector based on bounds and scope (all, org, user)
   # then queries the database
   update: =>

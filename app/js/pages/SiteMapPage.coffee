@@ -122,9 +122,7 @@ class SiteMapPage extends Page
 
     # Setup marker display when map is loaded
     @map.whenReady =>
-      ecoliAnalyzer = new SiteLayerCreators.EColiAnalyzer(@db)
-
-      siteLayerCreator = new SiteLayerCreators.EColi ecoliAnalyzer, (_id) =>
+      siteLayerCreator = new SiteLayerCreators.SimpleSitesLayerCreator @ctx, (_id) =>
         @pager.openPage(SitePage, {_id: _id})
       @sitesLayer = new SitesLayer(siteLayerCreator, @db.sites, scope).addTo(@map)
       # TODO remove legend
