@@ -1,7 +1,8 @@
 Page = require '../Page'
-forms = require '../forms'
+forms = require 'mwater-forms'
 SitePage = require "./SitePage"
-siteTypes = require '../common/siteTypes'
+commonUI = require './commonUI'
+GeoJSON = require '../GeoJSON'
 
 # Allows creating of a site
 # Options are geo to initialize the geo of the site
@@ -12,57 +13,43 @@ module.exports = class NewSitePage extends Page
     @setTitle T("New Site")
 
     # Create model for the site
-    @model = new Backbone.Model(setLocation: not @options.geo?)
+    @model = new Backbone.Model({ 
+      location: { value: @options.location }
+      private: {}
+      name: {}
+      desc: {}
+      type: {}
+    })
   
-    # Create questions
-    siteTypesQuestion = new forms.DropdownQuestion
-      id: 'type'
-      model: @model
-      prompt: T('Enter Site Type')
-      options: []
-
-    siteTypesQuestion.setOptions _.map(siteTypes[0].subtypes, (st) => [st, T(st)] )
-
-    contents = []
-
-    contents.push siteTypesQuestion
-
-    contents.push new forms.TextQuestion
-      id: 'name'
-      model: @model
-      prompt: T('Enter optional name')
-
-    contents.push new forms.TextQuestion
-      id: 'desc'
-      model: @model
-      prompt: T('Enter optional description')
+    contents = commonUI.createBasicSiteQuestions(@model)
 
     contents.push new forms.CheckQuestion
       id: 'private'
       model: @model
       prompt: T("Privacy")
-      text: T('Site is private')
+      label: T('Site is private')
       hint: T('This should only be used for sites that are not publicly accessible')
 
-    if not @options.geo?
-      contents.push new forms.RadioQuestion
-        id: 'setLocation'
-        model: @model
-        prompt: T('Set to current location?')
-        options: [[true, 'Yes'], [false, 'No']]
-
     saveCancelForm = new forms.SaveCancelForm
+      T: T
       contents: contents
 
     @$el.empty().append(saveCancelForm.el)
 
     @listenTo saveCancelForm, 'save', =>
-      site = _.pick(@model.toJSON(), 'name', 'desc')
+      site = {}
+      site.name = @model.get("name").value
+      site.desc = @model.get("desc").value
+      site.type = []
+      site.type[0] = @model.get("type").value
+      if @model.get("subtype") and @model.get("subtype").value
+        site.type[1] = @model.get("subtype").value
+      site.location = @model.get("location").value
+      if site.location
+        site.geo = GeoJSON.locToPoint(site.location)
 
-      site.type = ["Water Point", @model.get('type')]
-      
       # Set roles based on privacy
-      if @model.get("private")
+      if @model.get("private").value
         site.roles = [
           { id: "user:#{this.login.user}", role: "admin" }
         ]
