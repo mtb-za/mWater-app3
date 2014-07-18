@@ -4,7 +4,7 @@
 consoleCapture = require './consoleCapture'
 
 ProblemReporter = (url, version, getLogin) ->
-  @reportProblem = (desc, success, error) ->
+  @reportProblem = (desc, success, error) =>
     console.log "Reporting problem..."
     device = "Unknown"
     try 
@@ -52,11 +52,11 @@ ProblemReporter = (url, version, getLogin) ->
   # Prevent recursion
   reportingError = false
 
-  handleOnError = (message, file, line, column, errorObj) ->
+  handleOnError = (message, file, line, column, errorObj) =>
     reportingError = true
 
     # Get text of message
-    text = "window.onerror:" + message + ":" + file + ":" + line + " (" + column + ")"
+    text = "window.onerror: #{message} at #{file}:#{line}:#{column}"
 
     # Put up alert instead of old action
     alert T("Internal Error") + "\n" + text
@@ -65,7 +65,7 @@ ProblemReporter = (url, version, getLogin) ->
     if errorObj?
       text = text + "\n" + errorObj.stack
 
-    if window.location.href.match(/^file:/) or window.location.href.match(/127\.0\.0\.1/)
+    if window.location.href.match(/127\.0\.0\.1/)
       console.log 'Ignoring because in debug mode'
       return
 
@@ -78,8 +78,15 @@ ProblemReporter = (url, version, getLogin) ->
   debouncedHandleOnError = _.debounce(handleOnError, 5000, true)
 
   window.onerror = (message, file, line, column, errorObj) ->
-    if reportingError 
-      console.error "Ignoring error: #{message}"
+    if reportingError
+      # Get text of message
+      text = "window.onerror: #{message} at #{file}:#{line}:#{column}"
+
+      # Add stack
+      if errorObj?
+        text = text + "\n" + errorObj.stack
+
+      console.error "Ignoring error: #{text}"
       return
 
     debouncedHandleOnError(message, file, line, column, errorObj)

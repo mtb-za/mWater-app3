@@ -249,6 +249,13 @@ class SiteMapPage extends Page
       @sitesLayer.update()
       needsRefresh = false
 
+    # Cache groups
+    if @login
+      @db.groups.find({ members: @login.user }).fetch (groups) =>
+        # Do nothing, just querying caches them
+        return
+      , @error
+
   deactivate: ->
     @needsRefresh = true
 
@@ -265,6 +272,10 @@ class SiteMapPage extends Page
       @map.remove()
 
   resizeMap: =>
+    # TODO why does this prevent crashes?
+    if not @map
+      return
+
     # Calculate map height
     mapHeight = $("html").height() - 50 - 50
     $("#map").css("height", mapHeight + "px")

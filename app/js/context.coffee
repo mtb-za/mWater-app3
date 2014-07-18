@@ -64,6 +64,9 @@ error = (err) ->
   if typeof str != "string"
     str = JSON.stringify(str)
 
+  if err? and err.code
+    str = str + " code: #{err.code}"
+
   console.error("Internal Error Callback: " + str)
   displayErrorAlert(str)
   

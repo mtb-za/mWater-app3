@@ -20,14 +20,59 @@ class SettingsPage extends Page
       @listenTo cordovaSetup.appUpdater, "success error progress start", =>
         @render()
 
+    # Rerender on error/success of sync
+    if @dataSync?
+      @listenTo @dataSync, "success error", =>
+        @render()
+
+    if @imageSync?
+      @listenTo @imageSync, "success error", =>
+        @render()
+
   render: ->
-    appUpdater = cordovaSetup.appUpdater
+    # Determine if base app out of date
+    if @baseVersion and @baseVersion.match(/^3\.[0-3]/)
+      outdated = true
+
+    # Determine data sync status
+    if @dataSync?
+      if @dataSync.inProgress
+        dataSyncText = T("In progress...")
+        dataSyncClass = "muted"
+      else if @dataSync.lastError
+        # Check if jQuery ajax error
+        if @dataSync.lastError.status?
+          # If connection error
+          if @dataSync.lastError.status == 0
+            dataSyncText = T("No connection")
+            dataSyncClass = "warning"
+          else if @dataSync.lastError.status >= 500
+            dataSyncText = T("Server error")
+            dataSyncClass = "danger"
+          else if @dataSync.lastError.status >= 400
+            dataSyncText = T("Upload error")
+            dataSyncClass = "danger"
+        else
+          dataSyncText = @dataSync.lastError
+          dataSyncClass = "danger"
+      else
+        dataSyncText = T("Complete")
+        dataSyncClass = "success"
 
     data = {
+      login: @login
+      version: @version
+      baseVersion: @baseVersion
+      lastSyncDate: @dataSync.lastSuccessDate if @dataSync?
+      imagesRemaining: @imageSync.lastSuccessMessage if @imageSync?
+      dataSyncText: dataSyncText
+      dataSyncClass: dataSyncClass
+      outdated: outdated
       offlineSourceCodes: if @sourceCodesManager then @sourceCodesManager.getNumberAvailableCodes() else null
       locales: @localizer.getLocales()
     }
 
+    appUpdater = cordovaSetup.appUpdater
     if appUpdater?
       data.showUpdates = true
       data.updating = appUpdater.inProgress
