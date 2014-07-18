@@ -32,7 +32,7 @@ module.exports = class SitesLayer extends L.LayerGroup
   setScope: (scope) => 
     @scope = scope
 
-  # Builds a selector based on bounds and scope (all, org, user)
+  # Builds a selector based on bounds and scope (all, groups, user)
   # then queries the database
   update: =>
     selector = {}
@@ -40,8 +40,10 @@ module.exports = class SitesLayer extends L.LayerGroup
     bounds = @map.getBounds().pad(0.1)
     # add bounds to the selector
     @boundsQuery bounds, selector
+
     # add scope to the selector
-    @scopeQuery @scope, selector
+    _.extend(selector, @scope)
+
     # TODO pass error?
     @getSites selector, @updateFromList
 
@@ -107,20 +109,11 @@ module.exports = class SitesLayer extends L.LayerGroup
         code: 1
         geo: 1
         type: 1
-        org: 1
-        user: 1
+        created: 1
         photos: 1
 
     @sitesDb.find(selector, queryOptions).fetch success, error
 
-  # Update the selector to filter by scope
-  scopeQuery: (scope, selector) =>
-    return unless scope
-    if scope.user
-      selector.user = scope.user
-    else selector.org = scope.org  if scope.org
-    return
-  
   # Update the selector to filter by bounds
   boundsQuery: (bounds, selector) =>
     return  unless bounds.isValid()

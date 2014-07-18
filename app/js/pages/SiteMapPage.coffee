@@ -159,13 +159,17 @@ class SiteMapPage extends Page
   # Options for the dropdown menu
   getSiteScopeOptions: =>
     options = [{ display: T("All Sites"), type: "all", value: {} }]
-    # Only show Organization choice if user has an org
+    # Only show groups choice if user has groups
     if @login?
-      if @login.org?
-        options.push { display: T("Only My Organization"), type: "org", value: { org: @login.org } }
+      if @login.groups.length > 0
+        options.push { 
+          display: T("Only My Groups")
+          type: "groups"
+          value: { "created.for": { $in: @login.groups } }
+        }
 
       if @login.user?
-        options.push { display: T("Only Mine"), type: "user", value: { user: @login.user } }
+        options.push { display: T("Only Mine"), type: "user", value: { "created.by": @login.user } }
     return options
 
   # Filter the sites by all, org, or user

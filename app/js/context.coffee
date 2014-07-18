@@ -229,8 +229,8 @@ exports.createDemoContext = (success) ->
     # Allow everything
     auth = new authModule.AllAuth()
 
-    # No client or org
-    login = { user: "demo" }
+    # No client 
+    login = { user: "demo", groups: [] }
 
     siteCodesManager = new siteCodes.DemoSiteCodesManager()
 
