@@ -17,4 +17,36 @@ module.exports = [
       "Cart with Small Tank/Drum"
     ]
   }
+  { 
+    name: "Household"
+    subtypes: []
+  }
+  { 
+    name: "Sanitation Facility"
+    subtypes: [
+      "Flush / Pour Flush Toilet"
+      "Ventilated improved pit latrine"
+      "Pit latrine with slab"
+      "Composting toilet"
+      "Pit latrine without slab"
+      "Hanging latrine"
+      "Bucket"
+      "No facilities or bush or field"
+    ]
+  }
+  { 
+    name: "Community"
+    subtypes: []
+  }
+  { 
+    name: "School"
+    subtypes: []
+  }
+  { 
+    name: "Health Facility"
+    subtypes: []
+  }
 ]   
+
+
+
