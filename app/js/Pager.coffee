@@ -58,14 +58,14 @@ class Pager extends Backbone.View
     # Scroll to top
     window.scrollTo(0, 0)
 
+    # Listen to page changes and bubble up
+    @listenTo page, 'change', (options) ->
+      @trigger 'change', options
+
     page.create()
     page.activate()
 
     console.log "Opened page #{pageClass.name} (" + JSON.stringify(options) + ")"
-
-    # Listen to page changes and bubble up
-    @listenTo page, 'change', (options) ->
-      @trigger 'change', options
 
     # Indicate page change
     @trigger 'change'

@@ -19,7 +19,7 @@ exports.createBasicSiteQuestions = (model) ->
     T: T
     id: 'type'
     model: model
-    prompt: T('Enter site type')
+    prompt: T('Select site type')
     choices: _.map(siteTypes, (st) => { id: st.name, label: T(st.name)})
     required: true
 
@@ -33,7 +33,7 @@ exports.createBasicSiteQuestions = (model) ->
         T: T
         id: 'subtype'
         model: model
-        prompt: T('Enter optional site subtype')
+        prompt: T('Select optional site subtype')
         choices: _.map(siteType.subtypes, (st) => { id: st, label: T(st) })
         conditional: () =>
           return model.get("type").value == siteType.name

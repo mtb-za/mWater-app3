@@ -9,26 +9,43 @@ GeoJSON = require '../GeoJSON'
 module.exports = class NewSitePage extends Page
   @canOpen: (ctx) -> ctx.auth.insert("sites")
 
-  activate: ->
-    @setTitle T("New Site")
-
+  displayForm: ->
     # Create model for the site
     @model = new Backbone.Model({ 
       location: { value: @options.location }
-      private: {}
+      privacy: {}
       name: {}
       desc: {}
       type: {}
+      group: { value: _.first(@groups) }
     })
-  
+    
+    # Default WaterAid to private
+    if _.any(@groups, (g) -> g.match(/wateraid/i))
+      @model.set("privacy", { value: "private" })
+
     contents = commonUI.createBasicSiteQuestions(@model)
 
-    contents.push new forms.CheckQuestion
-      id: 'private'
+    contents.push new forms.RadioQuestion
+      id: 'privacy'
       model: @model
-      prompt: T("Privacy")
-      label: T('Site is private')
-      hint: T('This should only be used for sites that are not publicly accessible')
+      prompt: T("Site privacy")
+      choices: [
+        { id: "public", label: T("Public"), hint: "Anyone can see the site, but only you or your group can edit it"}
+        { id: "private", label: T("Private"), hint: "Only you or your group can edit site"}
+      ]
+      required: true
+      hint: T('Private should only be used for sites that are not publicly accessible ')
+
+    if @groups.length > 0
+      choices = [{ id: "(none)", label: T("(No Group)") }]
+      choices = choices.concat(_.map(@groups, (g) => { id: g, label: g }))
+      contents.push new forms.DropdownQuestion
+        id: 'group'
+        model: @model
+        prompt: T("Create site for group")
+        required: true
+        choices: choices
 
     saveCancelForm = new forms.SaveCancelForm
       T: T
@@ -48,29 +65,32 @@ module.exports = class NewSitePage extends Page
       if site.location
         site.geo = GeoJSON.locToPoint(site.location)
 
+      # Set group
+      group = @model.get("group").value
+      if group == "(none)"
+        group = null
+
+      # Set who created for
+      site.created = { by: @login.user }
+      if group
+        site.created.for = group
+
       # Set roles based on privacy
-      if @model.get("private").value
-        site.roles = [
-          { id: "user:#{this.login.user}", role: "admin" }
-        ]
+      if @model.get("privacy").value == "public"
+        site.roles = [ { id: "all", role: "view" } ]
       else
-        site.roles = [
-          { id: "user:#{this.login.user}", role: "admin" }
-          { id: "all", role: "view" }
-        ]
+        site.roles = [ ]
+
+      if group
+        site.roles.push { id: "group:#{group}", role: "admin" }
+      else
+        site.roles.push { id: "user:#{this.login.user}", role: "admin" }
 
       success = (code) =>
         site.code = code
 
-        # Set geo is present in options
-        if @options.geo?
-          site.geo = @options.geo
-
-        if @options.location?
-          site.location = @options.location          
-
         @db.sites.upsert site, (site) => 
-          @pager.closePage(SitePage, { _id: site._id, setLocation: @model.get('setLocation'), onSelect: @options.onSelect })
+          @pager.closePage(SitePage, { _id: site._id, onSelect: @options.onSelect })
         , @error
 
       error = =>
@@ -80,4 +100,11 @@ module.exports = class NewSitePage extends Page
 
     @listenTo saveCancelForm, 'cancel', =>
       @pager.closePage()
- 
+
+  activate: ->
+    @setTitle T("New Site")
+
+    # Get user groups
+    @db.groups.find({ members: @login.user }, { fields: { groupname: 1 } }).fetch (groups) =>
+      @groups = _.pluck(groups, "groupname")
+      @displayForm()
