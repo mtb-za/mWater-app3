@@ -13,8 +13,8 @@ module.exports = class PageMenu extends Backbone.View
     "click #home" : "gotoHome"
     "click #login" : "gotoLogin"
     "click #logout" : "logout"
-    "click #source_list" : "gotoSourceList"
-    "click #source_map" : "gotoSourceMap"
+    "click #site_list" : "gotoSiteList"
+    "click #site_map" : "gotoSiteMap"
     "click #settings" : "gotoSettings"
     "click #new_test" : "gotoNewTest"
     "click #test_list" : "gotoTestList"
@@ -56,10 +56,10 @@ module.exports = class PageMenu extends Backbone.View
   gotoLogin: ->
     @gotoPage(require("./pages/LoginPage"))
 
-  gotoSourceList: ->
+  gotoSiteList: ->
     @gotoPage(require("./pages/SiteListPage"))
 
-  gotoSourceMap: ->
+  gotoSiteMap: ->
     @gotoPage(require("./pages/SiteMapPage"))
 
   gotoSettings: ->

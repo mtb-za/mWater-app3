@@ -14,7 +14,7 @@ camera: Camera that has a single function: takePicture(success, error).
   error: error function to be called with unexpected errors
 auth: see auth module
 login: { user: <username>, org: <org code>, client: <client id> }. Can be null if not logged in.
-dataSync: synchronizer for data including db and source codes. Success message is to be displayed.
+dataSync: synchronizer for data including db and site codes. Success message is to be displayed.
 imageSync: synchronizer for images. Success message is to be displayed.
 imageAcquirer: source of images (either camera or file selection). Has single function: acquire(success, error)
   that calls success with id of image. If not present, not available.

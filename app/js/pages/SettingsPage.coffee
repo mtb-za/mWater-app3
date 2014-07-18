@@ -5,7 +5,7 @@ cordovaSetup = require '../cordovaSetup'
 class SettingsPage extends Page
   events: 
     "click #reset_db" : "resetDb"
-    "click #request_source_codes": "requestSourceCodes"
+    "click #request_site_codes": "requestSiteCodes"
     "click #test_ecplates" : "testECPlates"
     "click #weinre" : "startWeinre"
     "change #locale": "setLocale"
@@ -68,7 +68,7 @@ class SettingsPage extends Page
       dataSyncText: dataSyncText
       dataSyncClass: dataSyncClass
       outdated: outdated
-      offlineSourceCodes: if @sourceCodesManager then @sourceCodesManager.getNumberAvailableCodes() else null
+      offlineSiteCodes: if @siteCodesManager then @siteCodesManager.getNumberAvailableCodes() else null
       locales: @localizer.getLocales()
     }
 
@@ -127,8 +127,8 @@ class SettingsPage extends Page
         @pager.closePage()
       @pager.closePage(require("./LoginPage"))
 
-  requestSourceCodes: ->
-    @sourceCodesManager.replenishCodes @sourceCodesManager.getNumberAvailableCodes() + 5, =>
+  requestSiteCodes: ->
+    @siteCodesManager.replenishCodes @siteCodesManager.getNumberAvailableCodes() + 5, =>
       @render()
     , ->
       alert("Unable to contact server")

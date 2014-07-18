@@ -71,15 +71,15 @@ exports.Repeater = class Repeater
 # Uses Repeater to run indefinitely
 # Triggers "error" and sets lastError 
 exports.DataSync = class DataSync extends Repeater
-  constructor: (hybridDb, sourceCodesManager) ->
+  constructor: (hybridDb, siteCodesManager) ->
     super(@_sync)
     @hybridDb = hybridDb
-    @sourceCodesManager = sourceCodesManager
+    @siteCodesManager = siteCodesManager
 
   _sync: (success, error) =>
     @hybridDb.upload () =>
-      # Replenish offline source codes available
-      @sourceCodesManager.replenishCodes 50, =>
+      # Replenish offline site codes available
+      @siteCodesManager.replenishCodes 50, =>
         success()
       , error      
     , (err) ->

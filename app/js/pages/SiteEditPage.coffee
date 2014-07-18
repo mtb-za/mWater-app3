@@ -1,6 +1,7 @@
 Page = require '../Page'
 forms = require 'mwater-forms'
-siteTypes = require '../common/siteTypes'
+commonUI = require './commonUI'
+GeoJSON = require '../GeoJSON'
 
 # Allows editing of site details
 module.exports = class SiteEditPage extends Page
@@ -20,49 +21,10 @@ module.exports = class SiteEditPage extends Page
         desc: { value: site.desc }
         type: { value: site.type[0] }
         subtype: { value: site.type[1] }
+        location: { value: site.location }
       })
 
-      # When type changes, clear subtype
-      @model.on "change:type", =>
-        @model.unset("subtype")
-
-      # Create questions
-      contents = []
-
-      contents.push new forms.DropdownQuestion
-        T: T
-        id: 'type'
-        model: @model
-        prompt: T('Enter site type')
-        choices: _.map(siteTypes, (st) => { id: st.name, label: T(st.name)})
-        required: true
-
-      # Create subtype questions
-      for siteType in siteTypes
-        if siteType.subtypes.length == 0
-          continue
-
-        do (siteType) =>
-          contents.push new forms.DropdownQuestion
-            T: T
-            id: 'subtype'
-            model: @model
-            prompt: T('Enter optional site subtype')
-            choices: _.map(siteType.subtypes, (st) => { id: st, label: T(st) })
-            conditional: () =>
-              return @model.get("type").value == siteType.name
-
-      contents.push new forms.TextQuestion
-        T: T
-        id: 'name'
-        model: @model
-        prompt: T('Enter optional name')
-
-      contents.push new forms.TextQuestion
-        T: T
-        id: 'desc'
-        model: @model
-        prompt: T('Enter optional description')
+      contents = commonUI.createBasicSiteQuestions(@model)
 
       saveCancelForm = new forms.SaveCancelForm
         T: T
@@ -77,6 +39,9 @@ module.exports = class SiteEditPage extends Page
         site.type[0] = @model.get("type").value
         if @model.get("subtype") and @model.get("subtype").value
           site.type[1] = @model.get("subtype").value
+        site.location = @model.get("location").value
+        if site.location
+          site.geo = GeoJSON.locToPoint(site.location)
 
         @db.sites.upsert site, => 
           @pager.closePage()

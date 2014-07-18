@@ -7,7 +7,6 @@ login = require './login'
 ProblemReporter = require './ProblemReporter'
 ezlocalize = require 'ez-localize'
 
-MainPage = require './pages/MainPage'
 LoginPage = require './pages/LoginPage'
 SiteMapPage = require './pages/SiteMapPage'
 
