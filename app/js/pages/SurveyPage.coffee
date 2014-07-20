@@ -5,7 +5,6 @@ ImagePage = require './ImagePage'
 SourceListPage = require './SourceListPage'
 SourceMapPage = require './SourceMapPage'
 GeoJSON = require '../GeoJSON'
-SurveyListPage = require './SurveyListPage'
 
 class SurveyPage extends Page
   @canOpen: (ctx) -> ctx.auth.update("responses")
@@ -177,6 +176,8 @@ class SurveyPage extends Page
     @returnToSurveyList()
 
   returnToSurveyList: ->
+    # Here to solve circularity bug
+    SurveyListPage = require './SurveyListPage'
     if @pager.getParentPage() instanceof SurveyListPage
       @pager.closePage()
     else
