@@ -14,7 +14,7 @@
 	<div>
 		{{#if status}}
 		 	{{#is status "ok"}}<span class="status label label-success">{{T "Functional"}}</span>{{/is}}
-	      	{{#is status "repair"}}<span class="status label label-warning">{{T "Needs repair"}}</span>{{/is}}
+	      	{{#is status "maint"}}<span class="status label label-warning">{{T "Needs repair"}}</span>{{/is}}
       		{{#is status "broken"}}<span class="status label label-danger">{{T "Non-functional"}}</span>{{/is}}
       		{{#is status "missing"}}<span class="status label label-danger">{{T "No longer exists"}}</span>{{/is}}
 		{{else}}

@@ -4,7 +4,7 @@
     <td><strong>{{truncate date 10}}</strong></td>
     <td style="border-left:none;">
       {{#is status "ok"}}<span class="text-success">{{T "Functional"}}</span>{{/is}}
-      {{#is status "repair"}}<span class="text-warning">{{T "Needs repair"}}</span>{{/is}}
+      {{#is status "maint"}}<span class="text-warning">{{T "Needs repair"}}</span>{{/is}}
       {{#is status "broken"}}<span class="text-danger">{{T "Non-functional"}}</span>{{/is}}
       {{#is status "missing"}}<span class="text-danger">{{T "No longer exists"}}</span>{{/is}}
     </td>

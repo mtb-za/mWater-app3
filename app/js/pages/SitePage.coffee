@@ -18,7 +18,7 @@ module.exports = class SitePage extends Page
     'click .survey' : 'openSurvey'
     'click #select_site' : 'selectSite'
     'click #status_ok': -> @updateStatus('ok')
-    'click #status_repair': -> @updateStatus('repair')
+    'click #status_maint': -> @updateStatus('maint')
     'click #status_broken': -> @updateStatus('broken')
     'click #status_missing': -> @updateStatus('missing')
 
