@@ -1,20 +1,20 @@
 module.exports = [
   { 
-    name: "Water Point"
+    name: "Water point"
     subtypes: [
-      "Protected Dug Well"
-      "Unprotected Dug Well"
-      "Borehole or Tubewell"
-      "Protected Spring"
-      "Unprotected Spring"
+      "Protected dug well"
+      "Unprotected dug well"
+      "Borehole or tubewell"
+      "Protected spring"
+      "Unprotected spring"
       "Rainwater"
-      "Surface Water"
-      "Piped into Dwelling"
-      "Piped into Yard/Plot"
-      "Piped into Public Tap or Basin"
-      "Bottled Water"
-      "Tanker Truck"
-      "Cart with Small Tank/Drum"
+      "Surface water"
+      "Piped into dwelling"
+      "Piped into yard/plot"
+      "Piped into public tap or basin"
+      "Bottled water"
+      "Tanker truck"
+      "Cart with small tank/drum"
     ]
   }
   { 
@@ -22,9 +22,9 @@ module.exports = [
     subtypes: []
   }
   { 
-    name: "Sanitation Facility"
+    name: "Sanitation facility"
     subtypes: [
-      "Flush / Pour Flush Toilet"
+      "Flush/pour flush toilet"
       "Ventilated improved pit latrine"
       "Pit latrine with slab"
       "Composting toilet"
@@ -43,7 +43,7 @@ module.exports = [
     subtypes: []
   }
   { 
-    name: "Health Facility"
+    name: "Health facility"
     subtypes: []
   }
 ]   

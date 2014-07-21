@@ -60,10 +60,10 @@ module.exports = class SitePage extends Page
 
     # Re-render template
     @removeSubviews()
-    @$el.html require('./SitePage.hbs')(site: @site, siteTypeName: siteTypeName, select: @options.onSelect?, isWaterPoint: @site.type[0] == "Water Point")
+    @$el.html require('./SitePage.hbs')(site: @site, siteTypeName: siteTypeName, select: @options.onSelect?, isWaterPoint: @site.type[0] == "Water point")
 
     # Set visibility of add buttons
-    if @site.type[0] != "Water Point" or not @auth.insert("source_notes") or not @auth.insert("tests") 
+    if @site.type[0] != "Water point" or not @auth.insert("source_notes") or not @auth.insert("tests") 
       @$("#bottom_navbar").hide()
     
     # Add location view
@@ -92,7 +92,7 @@ module.exports = class SitePage extends Page
     @$("#location").append(locationView.el)
 
     # Add tests
-    if @site.type[0] == "Water Point"
+    if @site.type[0] == "Water point"
       @db.tests.find({"data.source": @site.code}, {sort: [['started','desc']]}).fetch (tests) =>
         @$("#tests").html require('./SitePage_tests.hbs')(tests:tests)
 
