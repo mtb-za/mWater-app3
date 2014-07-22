@@ -49,7 +49,7 @@ class Pager extends Backbone.View
     # Deactivate current page
     if @stack.length > 0
       _.last(@stack).deactivate()
-      _.last(@stack).$el.detach()
+      _.last(@stack).$el.hide()
 
     # Activate new page
     @stack.push(page)
@@ -96,7 +96,7 @@ class Pager extends Backbone.View
     else
       page = _.last(@stack)
 
-      @$el.append(page.el)
+      page.$el.show()
       page.activate()
       
     # Indicate page change
