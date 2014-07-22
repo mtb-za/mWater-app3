@@ -76,11 +76,15 @@ module.exports = class SourceListPage extends Page
         # Cache url
         @thumbnailUrls[imageId] = imageUrl
         @$("#" + imageId).attr("src", imageUrl)
-        callback()
+
+        # Don't overload the client with lookups
+        setTimeout callback, 20
       , =>
         # Display this image on error
         @$("#" + imageId).attr("src", "img/no-image-icon.jpg")
-        callback()
+
+        # Don't overload the client with lookups
+        setTimeout callback, 20
 
   addSource: ->
     # defer to Allow menu to close first
