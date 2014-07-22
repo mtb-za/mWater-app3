@@ -130,7 +130,6 @@ class EColi extends SourceLayerCreator
         <div class='data'>
           ''' + T("Name") + ''' <b><%=source.name%></b><br>
           ''' + T("Water source") + ''' <b><%=source.code%></b><br>
-          ''' + T("E.Coli / 100mL") + ''': <b><%=levelStr%></b><br>
         </div>
         <button class="btn btn-primary btn-block">''' + T("Open") + '''</button>
       </div>''', 
@@ -170,10 +169,10 @@ class EColi extends SourceLayerCreator
           opacity: 1.0
           fillOpacity: 1.0
         }
-      pointToLayer: (data, latLng) =>
-        L.circleMarker latLng, {
-          radius: 8
-        }
+      # pointToLayer: (data, latLng) =>
+      #   L.circleMarker latLng, {
+      #     radius: 8
+      #   }
     }
 
     layer.bindPopup(@getPopupHtmlElement(source, 'pending'))
@@ -235,41 +234,42 @@ class EColi extends SourceLayerCreator
         # Tell queue of error
         callback(err)
 
-    @taskQueue.push(task)
+    # @taskQueue.push(task)
 
   createLegend: ->
     html = '''
-<div class="info legend">
-<style>
-.info .header {
-  font-weight: bold;
-}
-.info {
-  padding: 6px 8px;
-  font: 14px/16px Arial, Helvetica, sans-serif;
-  background: white;
-  background: rgba(255,255,255,0.8);
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
-  border-radius: 5px;
-}
-.legend {
-    line-height: 18px;
-    color: #555;
-}
-.legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-    opacity: 0.8;
-}
-</style>
-<div class="header">E.Coli /100mL</div>
-  <i style="background: #888"></i> No Data<br>
-  <i style="background: #0D0"></i> &lt; 1<br>
-  <i style="background: #DD0"></i> 1-99<br>
-  <i style="background: #D00"></i> 100+
-</div>    
+    <div></div>
+# <div class="info legend">
+# <style>
+# .info .header {
+#   font-weight: bold;
+# }
+# .info {
+#   padding: 6px 8px;
+#   font: 14px/16px Arial, Helvetica, sans-serif;
+#   background: white;
+#   background: rgba(255,255,255,0.8);
+#   box-shadow: 0 0 15px rgba(0,0,0,0.2);
+#   border-radius: 5px;
+# }
+# .legend {
+#     line-height: 18px;
+#     color: #555;
+# }
+# .legend i {
+#     width: 18px;
+#     height: 18px;
+#     float: left;
+#     margin-right: 8px;
+#     opacity: 0.8;
+# }
+# </style>
+# <div class="header">E.Coli /100mL</div>
+#   <i style="background: #888"></i> No Data<br>
+#   <i style="background: #0D0"></i> &lt; 1<br>
+#   <i style="background: #DD0"></i> 1-99<br>
+#   <i style="background: #D00"></i> 100+
+# </div>    
 '''
 
     return $(html).get(0)
