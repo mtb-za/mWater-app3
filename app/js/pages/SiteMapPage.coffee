@@ -8,6 +8,7 @@ ContextMenu = require '../map/ContextMenu'
 BaseLayers = require '../map/BaseLayers'
 offlineMap = require 'offline-leaflet-map'
 CacheProgressControl = require '../map/CacheProgressControl'
+GeoJSON = require '../GeoJSON'
 
 # Map of sites. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
