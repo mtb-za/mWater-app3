@@ -31,7 +31,7 @@ class SiteMapPage extends Page
     @$el.html require('./SiteMapPage.hbs')()
 
     # If initialGeo specified, use it
-    if @options.initialGeo and @options.initialGeo.type=="Point"
+    if @options.initialGeo and @options.initialGeo.type == "Point"
       @createMap(L.GeoJSON.coordsToLatLng(@options.initialGeo.coordinates), 15)
       return
 
@@ -46,6 +46,8 @@ class SiteMapPage extends Page
     locationFinder = new LocationFinder()
     locationFinder.getLocation (pos) =>
       currentLatLng = new L.LatLng(pos.coords.latitude, pos.coords.longitude)
+
+      @cacheNearbySites(pos)
     , ->
       # Do nothing on error
       currentLatLng = null
@@ -59,6 +61,18 @@ class SiteMapPage extends Page
         else
           @createMap()
     , 500
+
+  # Since most uses use the map only, we need to cache local sites to the database.
+  # This is done by simply querying them
+  cacheNearbySites: (pos) ->
+    selector = geo: 
+      $near: { $geometry: GeoJSON.posToPoint(pos) }
+
+    # Query database for near sources
+    @db.sites.find(selector, { limit: 200 }).fetch (sites) =>
+      # Just cache them
+      return
+    , @error
 
   createMap: (center, zoom, scope) ->
     # Fix leaflet image path
