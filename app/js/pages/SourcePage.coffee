@@ -38,11 +38,6 @@ module.exports = class SourcePage extends Page
 
       @source = source
       @render()
-
-      # Hide add/edit if not authorized
-      @$("#edit_source_button").toggle(@auth.update("sources", source))
-      @$("#add_test_button").toggle(@auth.insert("tests"))
-      @$("#add_note_button").toggle(@auth.insert("source_notes"))
     , @error
 
   render: ->
@@ -58,6 +53,11 @@ module.exports = class SourcePage extends Page
     # Re-render template
     @removeSubviews()
     @$el.html require('./SourcePage.hbs')(source: @source, select: @options.onSelect?)
+
+    # Hide add/edit if not authorized
+    @$("#edit_source_button").toggle(@auth.update("sources", @source))
+    @$("#add_test_button").toggle(@auth.insert("tests"))
+    @$("#add_note_button").toggle(@auth.insert("source_notes"))
 
     # Set visibility of add buttons
     menu = []
