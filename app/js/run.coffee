@@ -94,6 +94,10 @@ exports.start = (options = {}) ->
         else
           pager.openPage(LoginPage)
 
+        # Determine if base app out of date
+        if ctx.baseVersion and ctx.baseVersion.match(/^3\.[0-6]/)
+          pager.flash(T("Your app is out of date. Please update mWater App on Google Play"), "warning", 10000)
+
     # Create context
     if options.demo  
       context.createDemoContext(withCtx)
