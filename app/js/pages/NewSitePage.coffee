@@ -56,7 +56,10 @@ module.exports = class NewSitePage extends Page
     @$el.empty().append(saveCancelForm.el)
 
     @listenTo saveCancelForm, 'save', =>
-      site = {}
+      site = {
+        photos: []
+        tags: []
+      }
       site.name = @model.get("name").value
       site.desc = @model.get("desc").value
       site.type = []
