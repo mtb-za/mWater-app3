@@ -25,6 +25,11 @@
     right: 0;
     background-color: white;
   }
+
+  .bottom-padded {
+    padding-bottom: 50px;
+  }
+
 </style>
 
 <div id="bottom_navbar" class="text-center">
@@ -40,7 +45,7 @@
   </div>  
 </div>
 
-<div class="page">
+<div class="page bottom-padded">
     {{#if select}}
     <div><button id="select_site" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-ok"></span> {{T "Select Site"}}</button></div>
     {{/if}}
