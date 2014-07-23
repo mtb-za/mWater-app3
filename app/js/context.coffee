@@ -44,8 +44,7 @@ ProblemReporter = require './ProblemReporter'
 # TODO remove sources
 collectionNames = ['sites', 'sources', 'forms', 'groups', 'responses', 'source_types', 'tests', 'source_notes', 'sensors', 'sensor_data']
 
-#apiUrl = 'https://api.mwater.co/v3/'
-apiUrl = "http://mwater-sites.elasticbeanstalk.com/v3/"
+apiUrl = 'https://api.mwater.co/v3/'
 
 # TODO this is not a pretty way to set these. But it is somewhat decoupled.
 temporaryFs = null
