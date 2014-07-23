@@ -1,19 +1,25 @@
 async = require 'async'
 Page = require("../Page")
-SourcePage = require("./SourcePage")
+SitePage = require("./SitePage")
 LocationFinder = require '../LocationFinder'
 GeoJSON = require '../GeoJSON'
 
-
-# Lists nearby and unlocated sources
-# Options: onSelect - function to call with source doc when selected
-module.exports = class SourceListPage extends Page
+# Lists nearby and unlocated sites
+# Options: onSelect - function to call with site doc when selected
+module.exports = class SiteListPage extends Page
   events: 
-    'click tr.tappable' : 'sourceClicked'
+    'click tr.tappable' : 'siteClicked'
     'click #search_cancel' : 'cancelSearch'
+    "click #new_site": 'addSite'
+    "click #new_survey": ->
+      # defer to Allow menu to close first
+      _.defer => @pager.openPage(require("./NewSurveyPage"))
+    "click #new_test": -> 
+      # defer to Allow menu to close first
+      _.defer => @pager.openPage(require("./NewTestPage"))
 
   create: ->
-    @setTitle T('Nearby Sources')
+    @setTitle T('Nearby Sites')
 
     # Create cache of thumbnail urls by image id
     @thumbnailUrls = {}
@@ -22,9 +28,9 @@ module.exports = class SourceListPage extends Page
     @thumbnailQueue = async.queue(@processThumbnail, 1)
 
   activate: ->
-    @$el.html require('./SourceListPage.hbs')()
-    @nearSources = []
-    @unlocatedSources = []
+    @$el.html require('./SiteListPage.hbs')()
+    @nearSites = []
+    @unlocatedSites = []
 
     # Find location
     @locationFinder = new LocationFinder()
@@ -32,14 +38,14 @@ module.exports = class SourceListPage extends Page
     @$("#location_msg").show()
 
     @setupButtonBar [
-      { icon: "search.png", click: => @search() }
-      { icon: "plus.png", click: => @addSource() }
+      { icon: "buttonbar-search.png", click: => @search() }
+      { text: T("Map"), click: => @pager.closePage(require("./SiteMapPage"))}  
     ]
 
-    # Query database for unlocated sources
+    # Query database for unlocated sites
     if @login
-      @db.sources.find(geo: { $exists: false }, user: @login.user).fetch (sources) =>
-        @unlocatedSources = sources
+      @db.sites.find(geo: { $exists: false }, user: @login.user).fetch (sites) =>
+        @unlocatedSites = sites
         @renderList()
       , @error
 
@@ -62,20 +68,26 @@ module.exports = class SourceListPage extends Page
         # Cache url
         @thumbnailUrls[imageId] = imageUrl
         @$("#" + imageId).attr("src", imageUrl)
-        callback()
+
+        # Don't overload the client with lookups
+        setTimeout callback, 20
       , =>
         # Display this image on error
         @$("#" + imageId).attr("src", "img/no-image-icon.jpg")
-        callback()
 
-  addSource: ->
-    # Wrap onSelect
-    onSelect = undefined
-    if @options.onSelect
-      onSelect = (source) =>
-        @pager.closePage()
-        @options.onSelect(source)
-    @pager.openPage(require("./NewSourcePage"), {onSelect: onSelect})
+        # Don't overload the client with lookups
+        setTimeout callback, 20
+
+  addSite: ->
+    # defer to Allow menu to close first
+    _.defer =>
+      # Wrap onSelect
+      onSelect = undefined
+      if @options.onSelect
+        onSelect = (site) =>
+          @pager.closePage()
+          @options.onSelect(site)
+      @pager.openPage(require("./NewSitePage"), {onSelect: onSelect})
     
   locationFound: (pos) =>
     if @destroyed
@@ -89,50 +101,45 @@ module.exports = class SourceListPage extends Page
       $near: 
         $geometry: GeoJSON.posToPoint(pos)
 
-    # Query database for near sources
-    @db.sources.find(selector, { limit: 100 }).fetch (sources) =>
-      @nearSources = sources
+    # Query database for near sites
+    @db.sites.find(selector, { limit: 100 }).fetch (sites) =>
+      @nearSites = sites
       @renderList()
     , @error
 
   renderList: ->
-    # Append located and unlocated sources
-    if @searchText and @searchSources?
-      sources = @searchSources
+    # Append located and unlocated sites
+    if @searchText and @searchSites?
+      sites = @searchSites
     else
-      sources = @unlocatedSources.concat(@nearSources)
+      sites = @unlocatedSites.concat(@nearSites)
 
-    # Clone list as we will modify source list items and don't want to confuse minimongo
-    sources = _.cloneDeep(sources)
+    # Clone list as we will modify site list items and don't want to confuse minimongo
+    sites = _.cloneDeep(sites)
 
-    # If there are photos, use the first one as the thumbnail
-    sources.forEach (source) ->
-      source.thumbnail = if source.photos and source.photos.length then source.photos[0].id else null
+    sites.forEach (site) ->
+      # If there is a cover photo, use it as the thumbnail
+      if site.photos
+        coverPhoto = _.findWhere(site.photos, { cover: true })
+        if coverPhoto
+          site.thumbnail = coverPhoto.id
+
+      # Set type name
+      site.typeName = _.map(site.type, T).join(": ")
     
-    # Query for source types
-    @db.source_types.find({}).fetch (sourceTypes) =>
-      # Create map of types
-      typeMap = _.object(_.pluck(sourceTypes, "code"), sourceTypes)
+    # Kill all items in thumbnail queue (since we are re-rendering)
+    @thumbnailQueue.kill()
 
-      for source in sources
-        type = typeMap[source.type]
-        if type
-          source.typeName = type.name
-      
-      # Kill all items in thumbnail queue (since we are re-rendering)
-      @thumbnailQueue.kill()
+    @$("#table").html require('./SiteListPage_items.hbs')(sites:sites)
 
-      @$("#table").html require('./SourceListPage_items.hbs')(sources:sources)
-
-      # Look up cached image thumbnails
-      for source in sources
-        if source.thumbnail
-          # If cached
-          if @thumbnailUrls[source.thumbnail]
-            @$("#" + source.thumbnail).attr("src", @thumbnailUrls[source.thumbnail])
-          else
-            @thumbnailQueue.push(source.thumbnail)
-    , @error
+    # Look up cached image thumbnails
+    for site in sites
+      if site.thumbnail
+        # If cached
+        if @thumbnailUrls[site.thumbnail]
+          @$("#" + site.thumbnail).attr("src", @thumbnailUrls[site.thumbnail])
+        else
+          @thumbnailQueue.push(site.thumbnail)
 
   locationError: (pos) =>
     if @destroyed
@@ -140,18 +147,18 @@ module.exports = class SourceListPage extends Page
     @$("#location_msg").hide()
     @pager.flash T("Unable to determine location"), "danger"
 
-  sourceClicked: (ev) ->
+  siteClicked: (ev) ->
     # Wrap onSelect
     onSelect = undefined
     if @options.onSelect
-      onSelect = (source) =>
+      onSelect = (site) =>
         @pager.closePage()
-        @options.onSelect(source)
-    @pager.openPage(SourcePage, { _id: ev.currentTarget.id, onSelect: onSelect})
+        @options.onSelect(site)
+    @pager.openPage(SitePage, { _id: ev.currentTarget.id, onSelect: onSelect})
 
   search: ->
     # Prompt for search
-    @searchText = prompt(T("Enter search text or ID of water source"))
+    @searchText = prompt(T("Enter search text or ID of site"))
     @performSearch()
 
   performSearch: ->
@@ -168,8 +175,8 @@ module.exports = class SourceListPage extends Page
       else
         selector = { $or: [ { name: { $regex : @searchText,  $options: 'i' } }, { desc: { $regex : @searchText,  $options: 'i' } } ] }
         
-      @db.sources.find(selector, {limit: 100}).fetch (sources) =>
-        sourceScorer = (s) =>
+      @db.sites.find(selector, {limit: 100}).fetch (sites) =>
+        siteScorer = (s) =>
           # Calculate score
           score = 0
 
@@ -190,8 +197,8 @@ module.exports = class SourceListPage extends Page
           # Since sorts by score ascending
           return -score
 
-        sources = _.sortBy sources, sourceScorer
-        @searchSources = sources
+        sites = _.sortBy sites, siteScorer
+        @searchSites = sites
         @renderList()
       , @error
     else

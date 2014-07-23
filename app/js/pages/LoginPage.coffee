@@ -1,6 +1,6 @@
 Page = require "../Page"
 context = require '../context'
-MainPage = require './MainPage'
+SiteMapPage = require './SiteMapPage'
 utils = require './utils'
 SignupPage = require './SignupPage'
 
@@ -32,7 +32,7 @@ module.exports = class LoginPage extends Page
 
   login: (username, password) ->
     success = =>
-      @pager.closeAllPages(MainPage)
+      @pager.closeAllPages(SiteMapPage)
       @pager.flash T("Login as {0} successful", username), "success"
 
     error = =>
@@ -59,5 +59,5 @@ module.exports = class LoginPage extends Page
     context.createDemoContext (ctx) =>
       _.extend @ctx, ctx
 
-      @pager.closePage(MainPage)
+      @pager.closePage(SiteMapPage)
       @pager.flash T("Running in Demo mode. No changes will be saved"), "warning", 10000

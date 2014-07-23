@@ -5,6 +5,8 @@
 # Useful for displaying menus with page lists.
 # destroyed is set true once page is destroyed
 
+ButtonBar = require './ButtonBar'
+
 class Page extends Backbone.View
   constructor: (ctx, options={}) ->
     super(options)
@@ -67,44 +69,6 @@ class Page extends Backbone.View
     # Setup context menu
     @contextMenu.setup(items)
 
-# Standard button bar. Each item
-# has optional "text", optional "icon" and "click" (action).
-# For submenu, add array to "menu". One level nesting only. Submenu items can have "checked" true
-# to check the item or "separator" true to put a separator instead
-class ButtonBar extends Backbone.View
-  events: 
-    "click .menuitem" : "clickMenuItem"
-
-  setup: (items) ->
-    @items = items
-    @itemMap = {}
-
-    # Add id to all items if not present
-    id = 1
-    for item in items
-      if not item.id?
-        item.id = id
-        id=id+1
-      @itemMap[item.id] = item
-
-      # Add to submenu
-      if item.menu
-        for subitem in item.menu
-          if not subitem.id?
-            subitem.id = id.toString()
-            id=id+1
-          @itemMap[subitem.id] = subitem
-
-    @render()
-
-  render: ->
-    @$el.html require('./ButtonBar.hbs')(items: @items)
-
-  clickMenuItem: (e) ->
-    id = e.currentTarget.id
-    item = @itemMap[id]
-    if item.click?
-      item.click()
 
 # Context menu to go in slide menu
 # Standard button bar. Each item "text", optional "glyph" (bootstrap glyph without glyphicon- prefix) and "click" (action).

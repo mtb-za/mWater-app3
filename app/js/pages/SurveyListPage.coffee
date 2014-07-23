@@ -1,6 +1,5 @@
 # Continue an existing survey
 Page = require "../Page"
-SurveyPage = require "./SurveyPage"
 NewSurveyPage = require './NewSurveyPage'
 mwaterforms = require 'mwater-forms'
 
@@ -70,7 +69,8 @@ module.exports = class SurveyListPage extends Page
   openResponse: (ev) ->
     responseId = ev.currentTarget.id
     @db.responses.findOne { _id: responseId }, (response) =>
-      @pager.openPage(SurveyPage, { _id: responseId})
+      # Solve circularity bug by requiring here
+      @pager.openPage(require("./SurveyPage"), { _id: responseId})
     , @error
 
   addSurvey: ->

@@ -10,7 +10,7 @@ module.exports = class SourceNotePage extends Page
   activate: ->
     # Find water source
     @db.sources.findOne {code: @options.source}, (source) =>
-      @setTitle T("Status for Source {0}", source.code)
+      @setTitle T("Status for Site {0}", source.code)
 
       # Find source note
       if @options._id
@@ -42,7 +42,7 @@ module.exports = class SourceNotePage extends Page
         new forms.RadioQuestion
           id: 'status'
           model: @model
-          prompt: T('Status of Water Source')
+          prompt: T('Status of Site')
           options: [['ok', T('Functional')], ['maint', T('Needs maintenance')], ['broken', T('Non-functional')], ['missing', T('No longer exists')]]
           required: true
           readonly: readonly

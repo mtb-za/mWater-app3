@@ -1,10 +1,10 @@
 assert = chai.assert
-sourcecodes = require '../app/js/sourcecodes'
+siteCodes = require '../app/js/siteCodes'
 JsonServer = require './helpers/JsonServer'
 
-describe "Source Code Manager", ->
+describe "Site Code Manager", ->
   beforeEach ->
-    @mgr = new sourcecodes.SourceCodesManager("source_codes")
+    @mgr = new siteCodes.SiteCodesManager("site_codes")
     @mgr.reset()
 
     @server = new JsonServer()
@@ -19,7 +19,7 @@ describe "Source Code Manager", ->
     @mgr.requestCode(success, error, cutoff)
 
   it "Calls server for more codes if none", (done) ->
-    @server.respond "POST", "source_codes", (request) =>
+    @server.respond "POST", "site_codes", (request) =>
       assert.equal request.params.number, 1
       return [ 
         { code: 10007, expiry: "2013-01-01T00:00:00Z"} 
@@ -68,7 +68,7 @@ describe "Source Code Manager", ->
       { code: 10014, expiry: "2013-01-01T00:00:00Z"} 
     ]
     cutoff = "2012-06-01T00:00:00Z"
-    mgr2 = new sourcecodes.SourceCodesManager()
+    mgr2 = new siteCodes.SiteCodesManager()
     assert.equal mgr2.getNumberAvailableCodes(cutoff), 1
 
 

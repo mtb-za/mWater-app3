@@ -1,9 +1,9 @@
 assert = chai.assert
 
-SourcesLayer = require '../app/js/map/SourcesLayer'
+SitesLayer = require '../app/js/map/SitesLayer'
 
 # TODO Rename marker to layer
-describe "SourcesLayer", ->
+describe "SitesLayer", ->
   describe "updateFromList", ->
     it 'adds created layers', ->
       layers = 
@@ -11,17 +11,17 @@ describe "SourcesLayer", ->
         '2': L.circleMarker()
 
       layerCreator = 
-        createLayer: (source, success, error) ->
-          success(source: source, layer: layers[source._id])
+        createLayer: (site, success, error) ->
+          success(site: site, layer: layers[site._id])
       
-      sl = new SourcesLayer(layerCreator)
+      sl = new SitesLayer(layerCreator)
 
-      sources = [
+      sites = [
         { _id: "1" }
         { _id: "2" }
       ]
 
-      sl.updateFromList(sources)
+      sl.updateFromList(sites)
 
       assert.equal sl.getLayers().length, 2
       assert.equal sl.getLayers()[0], layers['1']
@@ -33,18 +33,18 @@ describe "SourcesLayer", ->
         '2': L.circleMarker()
         '2a': L.circleMarker()
       layerCreator = 
-        createLayer: (source, success, error) =>
-          success(source: source, layer: layers[source._id])
-          success(source: source, layer: layers[source._id + 'a'])
+        createLayer: (site, success, error) =>
+          success(site: site, layer: layers[site._id])
+          success(site: site, layer: layers[site._id + 'a'])
       
-      sl = new SourcesLayer(layerCreator)
+      sl = new SitesLayer(layerCreator)
 
-      sources = [
+      sites = [
         { _id: "1" }
         { _id: "2" }
       ]
 
-      sl.updateFromList(sources)
+      sl.updateFromList(sites)
 
       assert.equal sl.getLayers().length, 2
       assert.equal sl.getLayers()[0], layers['1a']
@@ -58,42 +58,42 @@ describe "SourcesLayer", ->
           '3': L.circleMarker()
 
         @layerCreator = 
-          createLayer: (source, success, error) =>
-            success(source: source, layer: @layers[source._id])
+          createLayer: (site, success, error) =>
+            success(site: site, layer: @layers[site._id])
         
-        @sl = new SourcesLayer(@layerCreator)
+        @sl = new SitesLayer(@layerCreator)
 
-        @sources = [
+        @sites = [
           { _id: "1" }
           { _id: "2" }
         ]
 
-        @sl.updateFromList(@sources)
+        @sl.updateFromList(@sites)
 
-      it "removes missing source layers", ->
-        sources = [
+      it "removes missing site layers", ->
+        sites = [
           { _id: "1" }
         ]
-        @sl.updateFromList(sources)
+        @sl.updateFromList(sites)
 
         assert.equal @sl.getLayers().length, 1
         assert.equal @sl.getLayers()[0], @layers['1']
 
-      it "does not recompute existing source layers", ->
+      it "does not recompute existing site layers", ->
         @layerCreator.create = ->
           throw "Fail"
         
-        sources = [
+        sites = [
           { _id: "1" }
           { _id: "2" }
         ]
-        @sl.updateFromList(sources)
+        @sl.updateFromList(sites)
 
-      it "adds new source layers", ->
-        sources = [
+      it "adds new site layers", ->
+        sites = [
           { _id: "3" }
         ]
-        @sl.updateFromList(sources)
+        @sl.updateFromList(sites)
 
         assert.equal @sl.getLayers().length, 1
         assert.equal @sl.getLayers()[0], @layers['3']
@@ -109,7 +109,7 @@ describe "SourcesLayer", ->
       northEast = new L.LatLng(20, 120)
       bounds = new L.LatLngBounds(southWest, northEast)
 
-      sl = new SourcesLayer();
+      sl = new SitesLayer();
       sl.boundsQuery(bounds, selector)
 
       assert.deepEqual selector, {
@@ -127,7 +127,7 @@ describe "SourcesLayer", ->
 
   describe "scopeQuery", ->
     selector = {}
-    sl = new SourcesLayer()
+    sl = new SitesLayer()
 
     beforeEach ->
       selector = {}
@@ -149,13 +149,13 @@ describe "SourcesLayer", ->
 
   describe "update", ->
     it "queries bounds and scope", ->
-      sourcesDb = 
+      sitesDb = 
         find: (sel, opt) =>
           @sel = sel
           @opt = opt
           return { fetch: -> }
 
-      sl = new SourcesLayer(null, sourcesDb)
+      sl = new SitesLayer(null, sitesDb)
 
       southWest = new L.LatLng(10, 110)
       northEast = new L.LatLng(20, 120)

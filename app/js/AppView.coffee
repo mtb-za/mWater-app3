@@ -18,9 +18,7 @@ class AppView extends Backbone.View
 
   events:
     'click #navbar_slidemenu_button': 'toggleSlideMenu'
-    'click #navbar_back': 'back'
-    'click #navbar_title': 'back'
-    'click .navbar-brand': 'back'
+    'click #navbar_back_button': 'back'
     'click #appview_content': 'hideSlideMenu'
 
   render: ->  	
@@ -37,12 +35,16 @@ class AppView extends Backbone.View
     @$("#appview_loading").remove()
 
     # Set title and back button
-    @$("#navbar_back").toggle(@pager.multiplePages())
+    @$("#navbar_back_button").toggle(@pager.multiplePages())
     title = @pager.getTitle()
 
     # Show brand logo if no title
-    @$("#brand_logo").toggle(title == "")
+    @$("#brand_logo").toggle(not @pager.multiplePages())
+    @$("#navbar_title").toggle(@pager.multiplePages())
     @$("#navbar_title").text(@pager.getTitle())
+
+    # Hide slide menu if multiple pages
+    @$("#navbar_slidemenu_button").toggle(not @pager.multiplePages())
 
   back: ->
     @slideMenu.hide()

@@ -7,9 +7,8 @@ login = require './login'
 ProblemReporter = require './ProblemReporter'
 ezlocalize = require 'ez-localize'
 
-MainPage = require './pages/MainPage'
 LoginPage = require './pages/LoginPage'
-SourceMapPage = require './pages/SourceMapPage'
+SiteMapPage = require './pages/SiteMapPage'
 
 AppUpdater = require './AppUpdater'
 
@@ -86,13 +85,17 @@ exports.start = (options = {}) ->
 
       $ -> 
         # If explicit page
-        if options.initialPage == "SourceMapPage"
-          pager.openPage(SourceMapPage)
+        if options.initialPage == "SiteMapPage"
+          pager.openPage(SiteMapPage)
         # If logged in, open main page
         else if ctx.login?
-          pager.openPage(MainPage)
+          pager.openPage(SiteMapPage)
         else
           pager.openPage(LoginPage)
+
+        # Determine if base app out of date
+        if ctx.baseVersion and ctx.baseVersion.match(/^3\.[0-6]/)
+          pager.flash(T("Your app is out of date. Please update mWater App on Google Play"), "warning", 10000)
 
     # Create context
     if options.demo  

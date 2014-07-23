@@ -13,8 +13,8 @@ camera: Camera that has a single function: takePicture(success, error).
   success is called with url to be passed to imageManager.addImage(url, success, error)
   error: error function to be called with unexpected errors
 auth: see auth module
-login: { user: <username>, org: <org code>, client: <client id> }. Can be null if not logged in.
-dataSync: synchronizer for data including db and source codes. Success message is to be displayed.
+login: { user: <username>, groups: [<groupname>], client: <client id> }. Can be null if not logged in.
+dataSync: synchronizer for data including db and site codes. Success message is to be displayed.
 imageSync: synchronizer for images. Success message is to be displayed.
 imageAcquirer: source of images (either camera or file selection). Has single function: acquire(success, error)
   that calls success with id of image. If not present, not available.
@@ -34,14 +34,15 @@ minimongo = require 'minimongo'
 SimpleImageManager = require './images/SimpleImageManager'
 CachedImageManager = require './images/CachedImageManager'
 authModule = require './auth'
-sourcecodes = require './sourcecodes'
+siteCodes = require './siteCodes'
 syncModule = require './sync'
 Camera = require './Camera'
 cordovaSetup = require './cordovaSetup'
 ImageUploader = require './images/ImageUploader'
 ProblemReporter = require './ProblemReporter'
 
-collectionNames = ['sources', 'forms', 'groups', 'responses', 'source_types', 'tests', 'source_notes', 'sensors', 'sensor_data']
+# TODO remove sources
+collectionNames = ['sites', 'sources', 'forms', 'groups', 'responses', 'source_types', 'tests', 'source_notes', 'sensors', 'sensor_data']
 
 apiUrl = 'https://api.mwater.co/v3/'
 
@@ -61,6 +62,9 @@ error = (err) ->
   str = if err? and err.message then err.message else err
   if typeof str != "string"
     str = JSON.stringify(str)
+
+  if err? and err.code
+    str = str + " code: #{err.code}"
 
   console.error("Internal Error Callback: " + str)
   displayErrorAlert(str)
@@ -85,7 +89,7 @@ createBaseContext = ->
     # imageManager: null
     # auth: null 
     # login: null
-    # sourceCodesManager: null
+    # siteCodesManager: null
     # dataSync: null
     # imageSync: null
   }
@@ -146,7 +150,7 @@ createDb = (login, success) ->
         else
           success(db)
 
-      # TOD remove Sept 2014
+      # TODO remove Sept 2014
       migrateAndroid44 = =>
         if navigator.userAgent.match(/Android 4\.4/) and window.cordova and localDb instanceof minimongo.WebSQLDb
           console.log "Migrating Android 4.4 IndexedDb"
@@ -182,7 +186,7 @@ exports.createAnonymousContext = (success) ->
       imageManager: imageManager
       auth: auth 
       login: null
-      sourceCodesManager: null
+      siteCodesManager: null
       dataSync: null
       imageSync: null
     }
@@ -224,24 +228,24 @@ exports.createDemoContext = (success) ->
     # Allow everything
     auth = new authModule.AllAuth()
 
-    # No client or org
-    login = { user: "demo" }
+    # No client 
+    login = { user: "demo", groups: [] }
 
-    sourceCodesManager = new sourcecodes.DemoSourceCodesManager()
+    siteCodesManager = new siteCodes.DemoSiteCodesManager()
 
     ctx = _.extend baseContext, {
       db: db 
       imageManager: imageManager
       auth: auth
       login: login
-      sourceCodesManager: sourceCodesManager
+      siteCodesManager: siteCodesManager
       dataSync: null
       imageSync: null
       imageAcquirer: imageAcquirer
     }
     success(ctx)
 
-# login must contain user, org, client, email members. "user" is username. "org" can be null
+# login must contain user, client, email members. "user" is username. 
 # login can be obtained by posting to api /clients
 exports.createLoginContext = (login, success) ->
   createDb login, (db) =>
@@ -250,53 +254,60 @@ exports.createLoginContext = (login, success) ->
       imageManager = new CachedImageManager(persistentFs, apiUrl, "Android/data/co.mwater.clientapp/images", login.client, fileTransfer)  
     else
       imageManager = new SimpleImageManager(apiUrl)
+
+    # Get list of groups from database
+    db.groups.find({ members: login.user }, { fields: { groupname: 1 } }).fetch (groups) =>
+      groups = _.pluck(groups, "groupname")
+
+      # Store in login
+      login.groups = groups
     
-    auth = new authModule.UserAuth(login.user, login.org)
-    sourceCodesManager = new sourcecodes.SourceCodesManager(apiUrl + "source_codes?client=#{login.client}")
-    dataSync = new syncModule.DataSync(db, sourceCodesManager)
-    imageSync = new syncModule.ImageSync(imageManager)
+      auth = new authModule.UserAuth(login.user, login.groups)
+      siteCodesManager = new siteCodes.SiteCodesManager(apiUrl + "site_codes?client=#{login.client}")
+      dataSync = new syncModule.DataSync(db, siteCodesManager)
+      imageSync = new syncModule.ImageSync(imageManager)
 
-    # Start synchronizing
-    dataSync.start(30*1000)  # Every 30 seconds
-    imageSync.start(30*1000)  # Every 30 seconds
+      # Start synchronizing
+      dataSync.start(30*1000)  # Every 30 seconds
+      imageSync.start(30*1000)  # Every 30 seconds
 
-    # Perform sync immediately
-    dataSync.perform()
-    imageSync.perform()
+      # Perform sync immediately
+      dataSync.perform()
+      imageSync.perform()
 
-    stop = ->
-      dataSync.stop()
-      imageSync.stop()
+      stop = ->
+        dataSync.stop()
+        imageSync.stop()
 
-    baseContext = createBaseContext()
+      baseContext = createBaseContext()
 
-    # Create image acquirer with camera and imageManager if persistentFs and camera
-    if baseContext.camera? and persistentFs
-      imageAcquirer = {
-        acquire: (success, error) ->
-          baseContext.camera.takePicture (url) ->
-            # Add image
-            imageManager.addImage url, (id) =>
-              success(id)
-          , (err) ->
-            alert(T("Failed to take picture"))
+      # Create image acquirer with camera and imageManager if persistentFs and camera
+      if baseContext.camera? and persistentFs
+        imageAcquirer = {
+          acquire: (success, error) ->
+            baseContext.camera.takePicture (url) ->
+              # Add image
+              imageManager.addImage url, (id) =>
+                success(id)
+            , (err) ->
+              alert(T("Failed to take picture"))
+        }
+      else 
+        # Use ImageUploader
+        imageAcquirer = {
+          acquire: (success, error) ->
+            ImageUploader.acquire(apiUrl, login.client, success, error) 
+        }
+
+      ctx = _.extend baseContext, {
+        db: db 
+        imageManager: imageManager
+        auth: auth
+        login: login
+        siteCodesManager: siteCodesManager
+        dataSync: dataSync
+        imageSync: imageSync
+        stop: stop
+        imageAcquirer: imageAcquirer
       }
-    else 
-      # Use ImageUploader
-      imageAcquirer = {
-        acquire: (success, error) ->
-          ImageUploader.acquire(apiUrl, login.client, success, error) 
-      }
-
-    ctx = _.extend baseContext, {
-      db: db 
-      imageManager: imageManager
-      auth: auth
-      login: login
-      sourceCodesManager: sourceCodesManager
-      dataSync: dataSync
-      imageSync: imageSync
-      stop: stop
-      imageAcquirer: imageAcquirer
-    }
-    success(ctx)
+      success(ctx)

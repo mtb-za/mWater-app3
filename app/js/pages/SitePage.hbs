@@ -1,0 +1,106 @@
+<style>
+  .date {
+    white-space: nowrap;
+  }
+  .name {
+    font-weight: bold;
+  }
+  .text {
+    padding: 2px;
+  }
+  h3 {
+      margin-bottom: 0px;
+  }
+  .margined {
+      margin-left: 5px;
+  }
+
+  #bottom_navbar {
+    position: fixed;
+    bottom: 0px;
+    border-top: solid 1px #CCC;
+    height: 50px;
+    z-index: 100000;
+    left: 0;
+    right: 0;
+    background-color: white;
+  }
+
+  .bottom-padded {
+    padding-bottom: 50px;
+  }
+
+</style>
+
+<div id="bottom_navbar" class="text-center">
+  <div class="btn-group dropup">
+    <button type="button" class="btn btn-link btn-lg dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-plus"></span>
+        {{T "Add"}}
+    </button>
+    <ul class="dropdown-menu text-left" role="menu">
+      <li><a id="add_test">{{T "Water Test"}}</a></li>
+      <li><a id="add_note">{{T "Note"}}</a></li>
+    </ul>
+  </div>  
+</div>
+
+<div class="page bottom-padded">
+    {{#if select}}
+    <div><button id="select_site" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-ok"></span> {{T "Select Site"}}</button></div>
+    {{/if}}
+    <h3>{{site.name}}</h3>
+    <div class="margined">
+        <div style="color: Gray">
+            {{site.desc}}
+        </div>
+        <div>
+            <b>{{T "ID:"}}</b> {{site.code}}
+        </div>
+        <div>
+            <b>{{T "Type:"}}</b>{{siteTypeName}}</span>
+        </div>
+        <button id="edit_site_button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> {{T "Edit Site"}}</button>
+        {{#if site.custom}}
+        <br/><br/>
+        <div class="well well-small">
+          {{#eachProperty site.custom}}
+            <h4>{{key}}</h4>
+            {{#eachProperty value}}
+              <div><span class="text-muted">{{key}}</span>: {{value}}</div>
+            {{/eachProperty}}
+          {{/eachProperty}}
+        </div>
+        {{/if}}
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h4>{{T "Location"}}</h4>
+            <div id="location"></div>
+
+            {{#if isWaterPoint}}
+              <div id="status">
+                <h4>{{T "Status"}}</h4>
+                <span class="text-muted">{{T "Loading..."}}</span>
+              </div>
+
+              <button id="add_test_button" class="btn btn-default pull-right margined"><span class="glyphicon glyphicon-plus-sign"></span> {{T "Add"}}</button>
+              <h4 class="buttoned">{{T "Water Tests"}}</h4>
+              <table id="tests" class="table"></table>
+
+              <button id="add_note_button" class="btn btn-default pull-right margined"><span class="glyphicon glyphicon-plus-sign"></span> {{T "Add"}}</button>
+              <h4 class="buttoned">{{T "Status Updates"}}</h4>
+              <table id="notes" class="table"></table>
+      
+              <h4 class="buttoned">{{T "Surveys"}}</h4>
+              <table id="surveys" class="table"></table>
+            {{/if}}
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h4>{{T "Photos"}}</h4>
+        <div id="photos"></div>
+      </div>
+    </div>
+</div>

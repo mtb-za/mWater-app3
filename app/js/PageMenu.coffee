@@ -13,14 +13,13 @@ module.exports = class PageMenu extends Backbone.View
     "click #home" : "gotoHome"
     "click #login" : "gotoLogin"
     "click #logout" : "logout"
-    "click #source_list" : "gotoSourceList"
-    "click #source_map" : "gotoSourceMap"
+    "click #site_list" : "gotoSiteList"
+    "click #site_map" : "gotoSiteMap"
     "click #settings" : "gotoSettings"
     "click #new_test" : "gotoNewTest"
     "click #test_list" : "gotoTestList"
     "click #survey_list" : "gotoSurveyList"
     "click #report_problem" : 'gotoProblemReport'
-    "click #admin" : 'gotoAdmin'
     "click #sensor_list" : 'gotoSensorList'
 
   render: ->
@@ -28,16 +27,20 @@ module.exports = class PageMenu extends Backbone.View
     @$("#new_test").toggle(require("./pages/NewTestPage").canOpen(@options.ctx))
     @$("#survey_list").toggle(require("./pages/SurveyListPage").canOpen(@options.ctx))
     @$("#test_list").toggle(require("./pages/TestListPage").canOpen(@options.ctx))
-    @$("#admin").toggle(require("./pages/AdminPage").canOpen(@options.ctx))
 
     @$("#login").toggle(not @options.ctx.login?)
     @$("#logout").toggle(@options.ctx.login?)
     @$("#sensor_list").toggle(@options.ctx.login?)
 
-  gotoHome: ->
+  gotoPage: (page) ->
     while @pager.multiplePages()
       @pager.closePage()
-    @pager.closePage(require("./pages/MainPage"))
+    @pager.closePage(page)
+
+  # gotoHome: ->
+  #   while @pager.multiplePages()
+  #     @pager.closePage()
+  #   @pager.closePage(require("./pages/MainPage"))
 
   logout: ->
     login.setLogin(null)
@@ -49,19 +52,13 @@ module.exports = class PageMenu extends Backbone.View
       @gotoLogin()
 
   gotoLogin: ->
-    while @pager.multiplePages()
-      @pager.closePage()
-    @pager.closePage(require("./pages/LoginPage"))
+    @gotoPage(require("./pages/LoginPage"))
 
-  gotoSourceList: ->
-    while @pager.multiplePages()
-      @pager.closePage()
-    @pager.openPage(require("./pages/SourceListPage"))
+  gotoSiteList: ->
+    @gotoPage(require("./pages/SiteListPage"))
 
-  gotoSourceMap: ->
-    while @pager.multiplePages()
-      @pager.closePage()
-    @pager.openPage(require("./pages/SourceMapPage"))
+  gotoSiteMap: ->
+    @gotoPage(require("./pages/SiteMapPage"))
 
   gotoSettings: ->
     @pager.openPage(require("./pages/SettingsPage"))
@@ -70,16 +67,13 @@ module.exports = class PageMenu extends Backbone.View
     @pager.openPage(require("./pages/NewTestPage"))
 
   gotoTestList: ->
-    @pager.openPage(require("./pages/TestListPage"))
+    @gotoPage(require("./pages/TestListPage"))
 
   gotoSurveyList: ->
-    @pager.openPage(require("./pages/SurveyListPage"))
+    @gotoPage(require("./pages/SurveyListPage"))
 
   gotoProblemReport: ->
     @pager.openPage(require("./pages/ProblemReportPage"))
-
-  gotoAdmin: ->
-    @pager.openPage(require("./pages/AdminPage"))
 
   gotoSensorList: ->
     @pager.openPage(require("./pages/SensorListPage"))

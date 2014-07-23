@@ -1,5 +1,5 @@
 Question = require './Question'
-sourcecodes = require '../sourcecodes'
+siteCodes = require '../siteCodes'
 
 module.exports = Question.extend
   renderAnswer: (answerEl) ->
@@ -20,8 +20,8 @@ module.exports = Question.extend
 
   selectSource: ->
     # Moved here for browserify circularity problem
-    SourceListPage = require '../pages/SourceListPage'
-    @ctx.pager.openPage SourceListPage, 
+    SiteListPage = require '../pages/SiteListPage'
+    @ctx.pager.openPage SiteListPage, 
       { onSelect: (source)=>
         @model.set @id, source.code
       }
@@ -30,7 +30,7 @@ module.exports = Question.extend
     if not @$("input").val()
       return false
 
-    if sourcecodes.isValid(@$("input").val())
+    if siteCodes.isValid(@$("input").val())
       return false
 
     return "Invalid Source"

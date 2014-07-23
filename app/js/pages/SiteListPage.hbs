@@ -1,0 +1,42 @@
+<style>
+  #bottom_navbar {
+    position: fixed;
+    bottom: 0px;
+    border-top: solid 1px #CCC;
+    height: 50px;
+    z-index: 100000;
+    left: 0;
+    right: 0;
+    background-color: white;
+  }
+
+  .bottom-padded {
+    padding-bottom: 50px;
+  }
+</style>
+
+<div id="bottom_navbar" class="text-center">
+  <div class="btn-group dropup">
+    <button type="button" class="btn btn-link btn-lg dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-plus"></span>
+        {{T "Add"}}
+    </button>
+    <ul class="dropdown-menu text-left" role="menu">
+      <li><a id="new_site">{{T "Site"}}</a></li>
+      <li><a id="new_survey">{{T "Survey"}}</a></li>
+      <li><a id="new_test">{{T "Water Test"}}</a></li>
+    </ul>
+  </div>  
+</div>
+
+<div class="bottom-padded">
+	<div id="location_msg" class="alert alert-info">
+		{{T "Waiting for GPS location..."}}
+	</div>
+	<div id="search_bar" class="alert alert-info">
+		<button type="button" class="close" id="search_cancel">&times;</button>
+		{{T "Search results for:"}} <span id="search_text" style="font-weight:bold"></span>
+	</div>
+	<table class="table" id="table">
+	</table>
+</div>

@@ -2,7 +2,6 @@ Page = require '../Page'
 forms = require '../forms'
 consoleCapture = require '../consoleCapture'
 
-# Allows creating of a source
 module.exports = class ProblemReportPage extends Page
   activate: ->
     @setTitle T("Report Problem")

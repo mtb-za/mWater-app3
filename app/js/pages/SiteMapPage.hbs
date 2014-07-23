@@ -1,0 +1,48 @@
+<style>
+  html, body { height: 100%; overflow: hidden; }
+  .page { padding: 0px;}
+  #map { width: 100%;}
+
+  .leaflet-popup-content-wrapper .thumb,
+  .leaflet-popup-content-wrapper .data {
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 3px;
+  }
+
+  .image-control {
+    padding: 6px 6px;
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+  }
+
+  #bottom_navbar {
+    position: absolute;
+    bottom: -50px;
+    border-top: solid 1px #CCC;
+    height: 50px;
+    z-index: 100000;
+    left: 0;
+    right: 0;
+    background-color: white;
+  }
+
+</style>
+
+<div id="bottom_navbar" class="text-center">
+  <div class="btn-group dropup">
+    <button type="button" class="btn btn-lg btn-link dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-plus"></span>
+      {{T "Add"}}
+    </button>
+    <ul class="dropdown-menu text-left" role="menu">
+      <li><a id="new_site">{{T "Site"}}</a></li>
+      <li><a id="new_survey">{{T "Survey"}}</a></li>
+      <li><a id="new_test">{{T "Water Test"}}</a></li>
+    </ul>
+  </div>  
+</div>
+<div id="map"></div>
+
+

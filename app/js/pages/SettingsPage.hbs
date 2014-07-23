@@ -1,3 +1,20 @@
+<div class="text-muted">
+	<small>
+		{{T "User:"}}
+		<b>{{#if login}}{{login.user}}{{else}}{{T "Not logged in"}}{{/if}}</b>
+		{{T "Sync:"}} 
+		<span class="text-{{dataSyncClass}}">{{dataSyncText}}</span>
+		{{#if lastSyncDate}}<b>{{timeago lastSyncDate}}</b>{{/if}}
+		<span id="upserts_pending"></span>
+		<span id="images_pending"></span>
+		{{T "Version:"}} <b>{{version}} {{#if baseVersion}}({{baseVersion}}){{/if}}</b>
+	</small>
+</div>
+
+{{#if outdated}}
+	<div class="alert alert-warning">{{T "Your app is out of date. Please update in Google Play store."}}</div>
+{{/if}}
+
 {{T "Language:"}}
 <select class="form-control" id="locale" style="width: auto; display: inline-block">
 	{{#each locales}}
@@ -22,12 +39,12 @@
 {{/if}}
 
 
-{{#if offlineSourceCodes}}
-<h4>{{T "Offline Source Creation"}}</h4>
+{{#if offlineSiteCodes}}
+<h4>{{T "Offline Site Creation"}}</h4>
 <div>
-    {{T "Number of sources that can be created offline:"}} <b>{{offlineSourceCodes}}</b>
+    {{T "Number of sites that can be created offline:"}} <b>{{offlineSiteCodes}}</b>
 </div>
-<button id="request_source_codes" class="btn btn-default" type="button">{{T "Request more"}}</button>
+<button id="request_site_codes" class="btn btn-default" type="button">{{T "Request more"}}</button>
 {{/if}}
 
 <h4>{{T "Advanced"}}</h4>

@@ -36,7 +36,6 @@ module.exports = class NewTestPage extends Page
       started: new Date().toISOString()
       completed: null
       user: @login.user
-      org: @login.org
     }
 
     if @options.source

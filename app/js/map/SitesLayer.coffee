@@ -1,14 +1,18 @@
 GeoJSON = require '../GeoJSON'
 normalizeLng = require('./utils').normalizeLng
 
-module.exports = class SourcesLayer extends L.LayerGroup
-
-  constructor: (sourceLayerCreator, sourcesDb, scope) ->
+# All sites layers should extend SiteLayerCreator and then use a standard
+# SitesLayer with the site layer creator passed in
+# SitesLayer takes care of basic filtering and gives the individual layer (site)
+# creation to site layer
+module.exports = class SitesLayer extends L.LayerGroup
+  constructor: (siteLayerCreator, sitesDb, scope) ->
     super()
-    @maxSourcesReturned = 200
-    @sourceLayerCreator = sourceLayerCreator
-    @sourcesDb = sourcesDb
+    @maxSitesReturned = 300
+    @siteLayerCreator = siteLayerCreator
+    @sitesDb = sitesDb
     @scope = scope || {}
+
     # Layers, by _id
     @layers = {}
 
@@ -27,7 +31,8 @@ module.exports = class SourcesLayer extends L.LayerGroup
 
   setScope: (scope) => 
     @scope = scope
-  # Builds a selector based on bounds and scope (all, org, user)
+
+  # Builds a selector based on bounds and scope (all, groups, user)
   # then queries the database
   update: =>
     selector = {}
@@ -35,20 +40,22 @@ module.exports = class SourcesLayer extends L.LayerGroup
     bounds = @map.getBounds().pad(0.1)
     # add bounds to the selector
     @boundsQuery bounds, selector
+
     # add scope to the selector
-    @scopeQuery @scope, selector
+    _.extend(selector, @scope)
+
     # TODO pass error?
-    @getSources selector, @updateFromList
+    @getSites selector, @updateFromList
 
   reset: =>
     @clearLayers()
     @layers = {}    
 
-  updateFromList: (sources, success, error) =>
-    # Display "zoom to see more" warning when there is 200 sources
+  updateFromList: (sites, success, error) =>
+    # Display "zoom to see more" warning when there is 200 sites
     # To make this 100% clean, we would need to deal with the special case when the result was not truncated
-    # and actually contained 200 sources.
-    if sources.length == @maxSourcesReturned
+    # and actually contained 200 sites.
+    if sites.length == @maxSitesReturned
       if not @zoomToSeeMoreMsgDisplayed
         @zoomToSeeMoreMsgDisplayed = true
         @map.addControl(@zoomToSeeMoreMsg)
@@ -56,28 +63,28 @@ module.exports = class SourcesLayer extends L.LayerGroup
       @zoomToSeeMoreMsgDisplayed = false
       @map.removeControl(@zoomToSeeMoreMsg)
 
-    for source in sources
+    for site in sites
       # If layer exists, ignore
-      if source._id of @layers
+      if site._id of @layers
         continue
 
       # Call creator
-      @sourceLayerCreator.createLayer source, (result) =>
+      @siteLayerCreator.createLayer site, (result) =>
         # Remove layer if exists
-        if result.source._id of @layers
-          @removeLayer(@layers[result.source._id])
-          delete @layers[result.source._id]
+        if result.site._id of @layers
+          @removeLayer(@layers[result.site._id])
+          delete @layers[result.site._id]
 
         # Add layer
-        @layers[result.source._id] = result.layer
+        @layers[result.site._id] = result.layer
         @addLayer(result.layer)
       , error
 
     # Remove layers not present
-    sourceMap = _.object(_.pluck(sources, '_id'), sources)
+    siteMap = _.object(_.pluck(sites, '_id'), sites)
     toRemove = []
     for id, layer of @layers
-      if not (id of sourceMap)
+      if not (id of siteMap)
         toRemove.push(id)
 
     for id in toRemove
@@ -91,31 +98,22 @@ module.exports = class SourcesLayer extends L.LayerGroup
     success() if success?
 
   # Query the db
-  getSources: (selector, success, error) =>
+  getSites: (selector, success, error) =>
     _this = this
     queryOptions =
       sort: ["_id"]
-      limit: @maxSourcesReturned
+      limit: @maxSitesReturned
       mode: "remote"
       fields:
         name: 1
         code: 1
         geo: 1
         type: 1
-        org: 1
-        user: 1
+        created: 1
         photos: 1
 
-    @sourcesDb.find(selector, queryOptions).fetch success, error
+    @sitesDb.find(selector, queryOptions).fetch success, error
 
-  # Update the selector to filter by scope
-  scopeQuery: (scope, selector) =>
-    return unless scope
-    if scope.user
-      selector.user = scope.user
-    else selector.org = scope.org  if scope.org
-    return
-  
   # Update the selector to filter by bounds
   boundsQuery: (bounds, selector) =>
     return  unless bounds.isValid()

@@ -1,9 +1,9 @@
 Page = require "../Page"
 mwaterforms = require 'mwater-forms'
-ResponseModel = require '../ResponseModel'
+ResponseModel = require '../common/ResponseModel'
 ImagePage = require './ImagePage'
-SourceListPage = require './SourceListPage'
-SourceMapPage = require './SourceMapPage'
+SiteListPage = require './SiteListPage'
+SiteMapPage = require './SiteMapPage'
 GeoJSON = require '../GeoJSON'
 
 class SurveyPage extends Page
@@ -45,9 +45,9 @@ class SurveyPage extends Page
         imageManager: @ctx.imageManager
         imageAcquirer: @ctx.imageAcquirer
         selectSite: (success) =>
-          @pager.openPage SourceListPage, { onSelect: (source)=> success(source.code) }
+          @pager.openPage SiteListPage, { onSelect: (source)=> success(source.code) }
         displayMap: (location) =>
-          @pager.openPage require("./SourceMapPage"), {
+          @pager.openPage require("./SiteMapPage"), {
             initialGeo: { type: 'Point', coordinates: [location.longitude, location.latitude] }
           }
         stickyStorage: {
@@ -116,18 +116,15 @@ class SurveyPage extends Page
 
         @form = form
 
-        # Get user groups
-        @db.groups.find({ members: @login.user }, { fields: { groupname: 1 } }).fetch (groups) =>
-          @responseModel = new ResponseModel(response, form, @login.user, _.pluck(groups, "groupname"))
+        @responseModel = new ResponseModel(response, form, @login.user, @login.groups)
 
-          if @responseModel.canDelete()
-            @setupContextMenu [ { glyph: 'remove', text: T("Delete Survey"), click: => @removeResponse() } ]
-          else 
-            @setupContextMenu [ ]
+        if @responseModel.canDelete()
+          @setupContextMenu [ { glyph: 'remove', text: T("Delete Survey"), click: => @removeResponse() } ]
+        else 
+          @setupContextMenu [ ]
 
-          # Render survey page
-          @displayFormView()
-        , @error
+        # Render survey page
+        @displayFormView()
       , @error
     , @error
 
@@ -173,7 +170,15 @@ class SurveyPage extends Page
 
   close: ->
     @save()
-    @pager.closePage()
+    @returnToSurveyList()
+
+  returnToSurveyList: ->
+    # Here to solve circularity bug
+    SurveyListPage = require './SurveyListPage'
+    if @pager.getParentPage() instanceof SurveyListPage
+      @pager.closePage()
+    else
+      @pager.closePage(SurveyListPage)
 
   completed: =>
     # Submit
@@ -181,7 +186,8 @@ class SurveyPage extends Page
     @responseModel.submit()
 
     @db.responses.upsert @response, =>
-      @pager.closePage()
+      @returnToSurveyList()
+
       @pager.flash T("Survey completed successfully"), "success"
     , @error
 

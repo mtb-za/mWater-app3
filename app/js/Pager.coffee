@@ -58,14 +58,14 @@ class Pager extends Backbone.View
     # Scroll to top
     window.scrollTo(0, 0)
 
+    # Listen to page changes and bubble up
+    @listenTo page, 'change', (options) ->
+      @trigger 'change', options
+
     page.create()
     page.activate()
 
     console.log "Opened page #{pageClass.name} (" + JSON.stringify(options) + ")"
-
-    # Listen to page changes and bubble up
-    @listenTo page, 'change', (options) ->
-      @trigger 'change', options
 
     # Indicate page change
     @trigger 'change'
@@ -102,12 +102,17 @@ class Pager extends Backbone.View
     # Indicate page change
     @trigger 'change'
 
-
   # Close all pages and replace with
   closeAllPages: (replaceWith, options) ->
     while @multiplePages()
       @closePage()
     @closePage(replaceWith, options)
+
+  # Gets page next down on the stack
+  getParentPage: ->
+    if @stack.length > 1
+      return @stack[@stack.length - 2]
+    return null
 
   # Get title of active page
   getTitle: ->
