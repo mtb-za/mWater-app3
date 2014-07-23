@@ -39,10 +39,6 @@ module.exports = class SitePage extends Page
       @site = site
       @render()
 
-      # Hide add/edit if not authorized
-      @$("#edit_site_button").toggle(@auth.update("sites", site))
-      @$("#add_test_button").toggle(@auth.insert("tests"))
-      @$("#add_note_button").toggle(@auth.insert("source_notes"))
     , @error
 
   render: ->
@@ -61,6 +57,11 @@ module.exports = class SitePage extends Page
     # Re-render template
     @removeSubviews()
     @$el.html require('./SitePage.hbs')(site: @site, siteTypeName: siteTypeName, select: @options.onSelect?, isWaterPoint: @site.type[0] == "Water point")
+
+    # Hide add/edit if not authorized
+    @$("#edit_site_button").toggle(@auth.update("sites", @site))
+    @$("#add_test_button").toggle(@auth.insert("tests"))
+    @$("#add_note_button").toggle(@auth.insert("source_notes"))
 
     # Set visibility of add buttons
     if @site.type[0] != "Water point" or not @auth.insert("source_notes") or not @auth.insert("tests") 
