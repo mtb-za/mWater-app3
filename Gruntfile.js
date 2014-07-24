@@ -64,7 +64,6 @@ module.exports = function(grunt) {
             'bower_components/swag/lib/swag.js',
             'bower_components/overthrow-dist/overthrow.js',
             'vendor/mobiscroll.custom-2.5.4.min.js',
-            'vendor/jquery.scrollintoview.min.js',
             'vendor/leaflet/leaflet-src.js'],
         dest: 'dist/js/libs.js'
       }

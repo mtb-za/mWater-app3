@@ -46,38 +46,44 @@
 </div>
 
 <div class="page bottom-padded">
-    {{#if select}}
+  {{#if select}}
     <div><button id="select_site" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-ok"></span> {{T "Select Site"}}</button></div>
-    {{/if}}
-    <h3>{{site.name}}</h3>
-    <div class="margined">
-        <div style="color: Gray">
-            {{site.desc}}
-        </div>
-        <div>
-            <b>{{T "ID:"}}</b> {{site.code}}
-        </div>
-        <div>
-            <b>{{T "Type:"}}</b>{{siteTypeName}}</span>
-        </div>
-        <button id="edit_site_button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> {{T "Edit Site"}}</button>
-        {{#if site.custom}}
-        <br/><br/>
-        <div class="well well-small">
-          {{#eachProperty site.custom}}
-            <h4>{{key}}</h4>
-            {{#eachProperty value}}
-              <div><span class="text-muted">{{key}}</span>: {{value}}</div>
-            {{/eachProperty}}
-          {{/eachProperty}}
-        </div>
-        {{/if}}
+  {{/if}}
+
+  <h3>{{site.name}}</h3>
+
+  <button id="edit_site_button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> {{T "Edit Site"}}</button>
+
+  <div>
+    {{site.desc}}
+  </div>
+
+  <div>
+      <b>{{T "Type:"}}</b> {{siteTypeName}}</span>
+  </div>
+
+  <div>
+      <b>{{T "Code:"}}</b> {{site.code}}
+  </div>
+
+  {{#if site.custom}}
+    <br/><br/>
+    <div class="well well-small">
+      {{#eachProperty site.custom}}
+        <h4>{{key}}</h4>
+        {{#eachProperty value}}
+          <div><span class="text-muted">{{key}}</span>: {{value}}</div>
+        {{/eachProperty}}
+      {{/eachProperty}}
     </div>
+  {{/if}}
+
+  <br/>
+  <div id="location"></div>
+
+  <br/>
     <div class="row">
         <div class="col-md-12">
-            <h4>{{T "Location"}}</h4>
-            <div id="location"></div>
-
             {{#if isWaterPoint}}
               <div id="status">
                 <h4>{{T "Status"}}</h4>

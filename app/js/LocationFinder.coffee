@@ -1,3 +1,4 @@
+# TODO REMOVE
 # Improved location finder
 class LocationFinder
   constructor: ->

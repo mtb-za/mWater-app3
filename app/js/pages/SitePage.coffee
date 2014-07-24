@@ -1,10 +1,9 @@
 Page = require("../Page")
-LocationView = require('mwater-forms').LocationView
+RelativeLocationView = require '../RelativeLocationView'
 forms = require '../forms'
 GeoJSON = require '../GeoJSON'
 
 # Displays a site
-# Options: setLocation - true to autoset location
 # onSelect - call when site is selected via button that appears
 module.exports = class SitePage extends Page
   events:
@@ -21,9 +20,6 @@ module.exports = class SitePage extends Page
     'click #status_maint': -> @updateStatus('maint')
     'click #status_broken': -> @updateStatus('broken')
     'click #status_missing': -> @updateStatus('missing')
-
-  create: ->
-    @setLocation = @options.setLocation
 
   activate: ->
     @query()
@@ -68,29 +64,16 @@ module.exports = class SitePage extends Page
       @$("#bottom_navbar").hide()
     
     # Add location view
-    locationView = new LocationView(
-      loc: @site.location
-      readonly: not @auth.update("sites", @site)
-      T: T)
-    if @setLocation
-      locationView.setLocation()
-      @setLocation = false
+    if @site.location
+      locationView = new RelativeLocationView(loc: @site.location, showMap: true)
 
-    @listenTo locationView, 'locationset', (loc) ->
-      if loc
-        @site.location = loc
-        @site.geo = GeoJSON.locToPoint(loc)
-      else  
-        delete @site.geo
-      @db.sites.upsert @site, => 
-        @render()
-      , @error
-
-    @listenTo locationView, 'map', (loc) =>
-      @pager.openPage(require("./SiteMapPage"), {initialGeo: GeoJSON.locToPoint(loc)})
-      
-    @addSubview(locationView)
-    @$("#location").append(locationView.el)
+      @listenTo locationView, 'map', (loc) =>
+        @pager.openPage(require("./SiteMapPage"), {initialGeo: GeoJSON.locToPoint(loc)})
+        
+      @addSubview(locationView)
+      @$("#location").append(locationView.el)
+    else
+      @$("#location").html(T("No Location Set"))
 
     # Add tests
     if @site.type[0] == "Water point"
