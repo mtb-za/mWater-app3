@@ -8,9 +8,11 @@
   .text {
     padding: 2px;
   }
-  h3 {
-      margin-bottom: 0px;
+  .site-name {
+      font-size: 18pt;
+      font-weight: bold
   }
+
   .margined {
       margin-left: 5px;
   }
@@ -50,23 +52,24 @@
     <div><button id="select_site" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-ok"></span> {{T "Select Site"}}</button></div>
   {{/if}}
 
-  <h3>{{site.name}}</h3>
-
-  <button id="edit_site_button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> {{T "Edit Site"}}</button>
-
+  <button id="edit_site_button" class="btn btn-default pull-right">
+    <span class="glyphicon glyphicon-edit"></span>
+    {{T "Edit"}}
+  </button>
+  <div class="site-name">{{site.name}}</div>
   <div>
     {{site.desc}}
   </div>
 
   <div>
-      <b>{{T "Type:"}}</b> {{siteTypeName}}</span>
+      {{T "Type:"}} <b>{{siteTypeName}}</b></span>
   </div>
 
   <div>
-      <b>{{T "Code:"}}</b> {{site.code}}
+      {{T "Code:"}} <b>{{site.code}}</b>
   </div>
 
-  {{#if site.custom}}
+  <!--{{#if site.custom}}
     <br/><br/>
     <div class="well well-small">
       {{#eachProperty site.custom}}
@@ -76,9 +79,9 @@
         {{/eachProperty}}
       {{/eachProperty}}
     </div>
-  {{/if}}
+  {{/if}}-->
 
-  <br/>
+  <h4>{{T "Location"}}</h4>
   <div id="location"></div>
 
   <br/>
