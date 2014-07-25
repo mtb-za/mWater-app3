@@ -54,6 +54,7 @@ class Page extends Backbone.View
   removeSubviews: ->
     for subview in @_subviews
       subview.remove()
+    @_subviews = []
 
   getButtonBar: ->
     return @buttonBar
