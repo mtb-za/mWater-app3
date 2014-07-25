@@ -15,15 +15,8 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
   # Gets html for popup
   getPopupHtmlElement: (site) ->
     # Create popup
-    thumbnail = "" 
-    if site.photos
-      cover = _.findWhere(site.photos, { cover: true })
-      if cover
-        thumbnail = "<img class='thumb' src='#{this.ctx.apiUrl}images/" + cover.id + "?h=100' >"
-
     html = _.template('''
-      <div>
-        ''' + thumbnail + '''
+      <div><div id="image"></div>
         <div class='data'>
           ''' + T("Type") + ''': <b><%=site.type.join(' - ')%></b><br>
           ''' + T("Code") + ''': <b><%=site.code%></b><br>
@@ -50,7 +43,16 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
         }
     }
 
-    layer.bindPopup(@getPopupHtmlElement(site))
+    popupContent = @getPopupHtmlElement(site)
+    layer.bindPopup(popupContent)
+
+    layer.on 'click', =>
+      # Set image of popup. Defer to prevent pointless loading
+      if site.photos
+        cover = _.findWhere(site.photos, { cover: true })
+        if cover and $(popupContent).find("#image").html() == ""
+          thumbnail = "<img class='thumb' src='#{this.ctx.apiUrl}images/" + cover.id + "?h=100' >"
+          $(popupContent).find("#image").html(thumbnail)
 
     # Override layer remove to be alerted of remove
     superOnRemove = layer.onRemove.bind(layer)
