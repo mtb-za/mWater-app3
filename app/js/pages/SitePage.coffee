@@ -48,7 +48,7 @@ module.exports = class SitePage extends Page
     @setupButtonBar [ ]
 
     # Set site type
-    siteTypeName =  _.map(@site.type, T).join(": ")
+    siteTypeName =  _.map(@site.type, T).join(" - ")
 
     # Re-render template
     @removeSubviews()
