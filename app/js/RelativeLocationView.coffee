@@ -52,12 +52,13 @@ module.exports = class RelativeLocationView extends Backbone.View
       return
 
     # Set location string
-    if @currentPos
+    strength = utils.calculateGPSStrength(@currentPos)
+    if strength != "none"
       relativeLocation = utils.getRelativeLocation(@currentPos.coords, @loc)
       text = utils.formatRelativeLocation(relativeLocation, T)
-      @$("#location_relative").text(text)
     else
-      @$("#location_relative").text("")
+      text = ""
+      @$("#location_relative").text(text)
 
     if @currentPosError
       @$("#gps_strength").text(T("GPS not available"))
