@@ -25,12 +25,15 @@ class SiteMapPage extends Page
       # defer to Allow menu to close first
       _.defer => @pager.openPage(require("./NewTestPage"))
 
-  create: ->
+  activate: ->
+    @configureButtonBars()
+
     @setTitle T("Site Map")
 
-    # Calculate height
     @$el.html require('./SiteMapPage.hbs')()
 
+    @resizeMap()
+    
     # If initialGeo specified, use it
     if @options.initialGeo and @options.initialGeo.type == "Point"
       @createMap(L.GeoJSON.coordsToLatLng(@options.initialGeo.coordinates), 15)
@@ -62,6 +65,19 @@ class SiteMapPage extends Page
         else
           @createMap()
     , 500
+
+
+  deactivate: ->
+    if @cacheProgressControl 
+      @cacheProgressControl.cancel()
+      
+    $(window).off('resize', @resizeMap)
+    if @locationDisplay
+      @locationDisplay.stop()
+
+    # Destroy map
+    if @map
+      @map.remove()
 
   # Since most uses use the map only, we need to cache local sites to the database.
   # This is done by simply querying them
@@ -253,32 +269,6 @@ class SiteMapPage extends Page
       { icon: "buttonbar-gear.png", menu: menu }
       { text: T("List"), click: => @pager.closePage(require("./SiteListPage"))}  
     ]
-
-  activate: ->
-    @configureButtonBars()
-
-    @resizeMap()
-    
-    # Update markers
-    if @sitesLayer and @needsRefresh
-      @sitesLayer.reset()
-      @sitesLayer.update()
-      needsRefresh = false
-
-  deactivate: ->
-    @needsRefresh = true
-
-  destroy: ->
-    if @cacheProgressControl 
-      @cacheProgressControl.cancel()
-      
-    $(window).off('resize', @resizeMap)
-    if @locationDisplay
-      @locationDisplay.stop()
-
-    # Destroy map
-    if @map
-      @map.remove()
 
   resizeMap: =>
     # TODO why does this prevent crashes?
