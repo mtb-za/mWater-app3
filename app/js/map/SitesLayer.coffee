@@ -25,6 +25,9 @@ module.exports = class SitesLayer extends L.LayerGroup
     @zoomToSeeMoreMsg.onAdd = (map) =>
       return @createZoomInToSeeMore()
 
+    # Do first query
+    @update()
+
   onRemove: (map) =>
     super(map)
     map.off 'moveend', @update

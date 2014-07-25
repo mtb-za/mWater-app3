@@ -135,27 +135,6 @@ class SiteMapPage extends Page
     # osmGeocoder = new L.Control.OSMGeocoder()
     # @map.addControl(osmGeocoder)
 
-    # Setup marker display when map is loaded
-    @map.whenReady =>
-      siteLayerCreator = new SiteLayerCreators.SimpleSitesLayerCreator @ctx, (_id) =>
-        @pager.openPage(SitePage, {_id: _id})
-      @sitesLayer = new SitesLayer(siteLayerCreator, @db.sites, scope).addTo(@map)
-      # TODO remove legend
-      # # Add legend
-      # @legend = L.control({position: 'bottomright'});
-      # @legend.onAdd = (map) ->
-      #   return siteLayerCreator.createLegend()
-      # @legend.addTo(@map)
-
-      # Add My Location control
-      @myLocation = L.control({position: 'topright'})
-      @myLocation.onAdd = (map) ->
-        html = '''
-        <img id="goto_my_location" class="image-control" src="img/goto-my-location.png">
-        '''
-        return $(html).get(0)
-      @myLocation.addTo(@map)
-
     # Setup context menu
     contextMenu = new ContextMenu(@map, @ctx)
     
@@ -164,6 +143,26 @@ class SiteMapPage extends Page
       @map.setView(center, zoom)
     else
       @map.fitWorld()
+
+    # Add layers
+    siteLayerCreator = new SiteLayerCreators.SimpleSitesLayerCreator @ctx, (_id) =>
+      @pager.openPage(SitePage, {_id: _id})
+    @sitesLayer = new SitesLayer(siteLayerCreator, @db.sites, scope).addTo(@map)
+    # TODO remove legend
+    # # Add legend
+    # @legend = L.control({position: 'bottomright'});
+    # @legend.onAdd = (map) ->
+    #   return siteLayerCreator.createLegend()
+    # @legend.addTo(@map)
+
+    # Add My Location control
+    @myLocation = L.control({position: 'topright'})
+    @myLocation.onAdd = (map) ->
+      html = '''
+      <img id="goto_my_location" class="image-control" src="img/goto-my-location.png">
+      '''
+      return $(html).get(0)
+    @myLocation.addTo(@map)
 
     # Save view
     @map.on 'moveend', @saveView
