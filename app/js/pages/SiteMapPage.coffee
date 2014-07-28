@@ -15,9 +15,7 @@ GeoJSON = require '../GeoJSON'
 class SiteMapPage extends Page
   events:
     "click #goto_my_location": "gotoMyLocation"
-    "click #new_site": -> 
-      # defer to Allow menu to close first
-      _.defer => @pager.openPage(require("./NewSitePage"))
+    "click #new_site": "addSite"
     "click #new_survey": ->
       # defer to Allow menu to close first
       _.defer => @pager.openPage(require("./NewSurveyPage"))
@@ -30,6 +28,12 @@ class SiteMapPage extends Page
 
     # Calculate height
     @$el.html require('./SiteMapPage.hbs')()
+
+    # Wrap onSelect to close page
+    if @options.onSelect
+      @onSelect = (site) =>
+        @pager.closePage()
+        @options.onSelect(site)
 
     # If initialGeo specified, use it
     if @options.initialGeo and @options.initialGeo.type == "Point"
@@ -138,7 +142,8 @@ class SiteMapPage extends Page
     # Setup marker display when map is loaded
     @map.whenReady =>
       siteLayerCreator = new SiteLayerCreators.SimpleSitesLayerCreator @ctx, (_id) =>
-        @pager.openPage(SitePage, {_id: _id})
+        @pager.openPage(SitePage, { _id: _id, onSelect: @onSelect})
+
       @sitesLayer = new SitesLayer(siteLayerCreator, @db.sites, scope).addTo(@map)
       # TODO remove legend
       # # Add legend
@@ -157,7 +162,7 @@ class SiteMapPage extends Page
       @myLocation.addTo(@map)
 
     # Setup context menu
-    contextMenu = new ContextMenu(@map, @ctx)
+    contextMenu = new ContextMenu(@map, @ctx, @onSelect)
     
     # Setup initial zoom
     if center
@@ -252,7 +257,7 @@ class SiteMapPage extends Page
 
     @setupButtonBar [
       { icon: "buttonbar-gear.png", menu: menu }
-      { text: T("List"), click: => @pager.closePage(require("./SiteListPage"))}  
+      { text: T("List"), click: => @pager.closePage(require("./SiteListPage"), {onSelect: @options.onSelect})}  
     ]
 
   activate: ->
@@ -280,6 +285,12 @@ class SiteMapPage extends Page
     # Destroy map
     if @map
       @map.remove()
+
+  addSite: ->
+    # defer to Allow menu to close first
+    _.defer => 
+      @pager.openPage(require("./NewSitePage"), {onSelect: @onSelect})
+
 
   resizeMap: =>
     # TODO why does this prevent crashes?

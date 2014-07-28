@@ -21,6 +21,12 @@ module.exports = class SiteListPage extends Page
   create: ->
     @setTitle T('Nearby Sites')
 
+    # Wrap onSelect to close page
+    if @options.onSelect
+      @onSelect = (site) =>
+        @pager.closePage()
+        @options.onSelect(site)
+
     # Create cache of thumbnail urls by image id
     @thumbnailUrls = {}
 
@@ -39,7 +45,7 @@ module.exports = class SiteListPage extends Page
 
     @setupButtonBar [
       { icon: "buttonbar-search.png", click: => @search() }
-      { text: T("Map"), click: => @pager.closePage(require("./SiteMapPage"))}  
+      { text: T("Map"), click: => @pager.closePage(require("./SiteMapPage"), {onSelect: @options.onSelect})}  
     ]
 
     # Query database for unlocated sites
@@ -81,13 +87,7 @@ module.exports = class SiteListPage extends Page
   addSite: ->
     # defer to Allow menu to close first
     _.defer =>
-      # Wrap onSelect
-      onSelect = undefined
-      if @options.onSelect
-        onSelect = (site) =>
-          @pager.closePage()
-          @options.onSelect(site)
-      @pager.openPage(require("./NewSitePage"), {onSelect: onSelect})
+      @pager.openPage(require("./NewSitePage"), {onSelect: @onSelect})
     
   locationFound: (pos) =>
     if @destroyed
@@ -148,13 +148,7 @@ module.exports = class SiteListPage extends Page
     @pager.flash T("Unable to determine location"), "danger"
 
   siteClicked: (ev) ->
-    # Wrap onSelect
-    onSelect = undefined
-    if @options.onSelect
-      onSelect = (site) =>
-        @pager.closePage()
-        @options.onSelect(site)
-    @pager.openPage(SitePage, { _id: ev.currentTarget.id, onSelect: onSelect})
+    @pager.openPage(SitePage, { _id: ev.currentTarget.id, onSelect: @onSelect})
 
   search: ->
     # Prompt for search

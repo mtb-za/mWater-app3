@@ -3,7 +3,7 @@ normalizeLng = require('./utils').normalizeLng
 
 # Menu that displays when a right-click or long-press is detected
 module.exports = class ContextMenu 
-  constructor: (map, ctx) ->
+  constructor: (map, ctx, onSelect) ->
     @map = map
 
     # Listen for event
@@ -33,4 +33,4 @@ module.exports = class ContextMenu
 
       contents.find('button').on 'click', ->
         map.closePopup(popup)
-        ctx.pager.openPage(NewSitePage, { geo: geo, location: location })
+        ctx.pager.openPage(NewSitePage, { geo: geo, location: location, onSelect: onSelect })
