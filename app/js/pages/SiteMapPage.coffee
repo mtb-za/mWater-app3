@@ -15,9 +15,7 @@ GeoJSON = require '../GeoJSON'
 class SiteMapPage extends Page
   events:
     "click #goto_my_location": "gotoMyLocation"
-    "click #new_site": -> 
-      # defer to Allow menu to close first
-      _.defer => @pager.openPage(require("./NewSitePage"))
+    "click #new_site": "addSite"
     "click #new_survey": ->
       # defer to Allow menu to close first
       _.defer => @pager.openPage(require("./NewSurveyPage"))
@@ -33,7 +31,13 @@ class SiteMapPage extends Page
     @$el.html require('./SiteMapPage.hbs')()
 
     @resizeMap()
-    
+
+    # Wrap onSelect to close page
+    if @options.onSelect
+      @onSelect = (site) =>
+        @pager.closePage()
+        @options.onSelect(site)
+
     # If initialGeo specified, use it
     if @options.initialGeo and @options.initialGeo.type == "Point"
       @createMap(L.GeoJSON.coordsToLatLng(@options.initialGeo.coordinates), 15)
@@ -66,7 +70,6 @@ class SiteMapPage extends Page
           @createMap()
     , 500
 
-
   deactivate: ->
     if @cacheProgressControl 
       @cacheProgressControl.cancel()
@@ -78,6 +81,7 @@ class SiteMapPage extends Page
     # Destroy map
     if @map
       @map.remove()
+      @map = null
 
   # Since most uses use the map only, we need to cache local sites to the database.
   # This is done by simply querying them
@@ -111,7 +115,9 @@ class SiteMapPage extends Page
     $(window).on('resize', @resizeMap)
 
     onReady = () =>
-      @osmLayer.addTo(@map)
+      # If not already destroyed
+      if @map
+        @osmLayer.addTo(@map)
 
     onError = (errorType, errorData) =>
       if errorType == "COULD_NOT_CREATE_DB"
@@ -152,7 +158,7 @@ class SiteMapPage extends Page
     # @map.addControl(osmGeocoder)
 
     # Setup context menu
-    contextMenu = new ContextMenu(@map, @ctx)
+    contextMenu = new ContextMenu(@map, @ctx, @onSelect)
     
     # Setup initial zoom
     if center
@@ -162,7 +168,7 @@ class SiteMapPage extends Page
 
     # Add layers
     siteLayerCreator = new SiteLayerCreators.SimpleSitesLayerCreator @ctx, (_id) =>
-      @pager.openPage(SitePage, {_id: _id})
+      @pager.openPage(SitePage, { _id: _id, onSelect: @onSelect })
     @sitesLayer = new SitesLayer(siteLayerCreator, @db.sites, scope).addTo(@map)
     # TODO remove legend
     # # Add legend
@@ -267,8 +273,13 @@ class SiteMapPage extends Page
 
     @setupButtonBar [
       { icon: "buttonbar-gear.png", menu: menu }
-      { text: T("List"), click: => @pager.closePage(require("./SiteListPage"))}  
+      { text: T("List"), click: => @pager.closePage(require("./SiteListPage"), {onSelect: @options.onSelect})}  
     ]
+
+  addSite: ->
+    # defer to Allow menu to close first
+    _.defer => 
+      @pager.openPage(require("./NewSitePage"), {onSelect: @onSelect})
 
   resizeMap: =>
     # TODO why does this prevent crashes?

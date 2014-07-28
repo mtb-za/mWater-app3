@@ -16,6 +16,10 @@ class SurveyPage extends Page
     @render()
 
   displayFormView: ->
+    # Close if no response (can happen on deleted response on server)
+    if not @response
+      return
+      
     # Remove existing survey control
     if @formView?
       @formView.remove()
