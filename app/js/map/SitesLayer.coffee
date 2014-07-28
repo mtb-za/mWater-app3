@@ -52,9 +52,9 @@ module.exports = class SitesLayer extends L.LayerGroup
     @layers = {}    
 
   updateFromList: (sites, success, error) =>
-    # Display "zoom to see more" warning when there is 200 sites
+    # Display "zoom to see more" warning when there is @maxSitesReturned sites
     # To make this 100% clean, we would need to deal with the special case when the result was not truncated
-    # and actually contained 200 sites.
+    # and actually contained @maxSitesReturned sites.
     if sites.length == @maxSitesReturned
       if not @zoomToSeeMoreMsgDisplayed
         @zoomToSeeMoreMsgDisplayed = true
@@ -152,6 +152,7 @@ module.exports = class SitesLayer extends L.LayerGroup
 
   createZoomInToSeeMore: ->
     html = '''
+<div class="warning legend">
 <style>
 .warning {
   padding: 6px 8px;
@@ -166,7 +167,6 @@ module.exports = class SitesLayer extends L.LayerGroup
     color: #555;
 }
 </style>
-<div class="warning legend">
 <b>''' + T('Zoom in to see more') + '''</b>
 </div>
 '''
