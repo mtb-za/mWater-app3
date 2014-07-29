@@ -255,8 +255,7 @@ exports.createLoginContext = (login, success) ->
     else
       imageManager = new SimpleImageManager(apiUrl)
 
-    # Get list of groups from database
-    db.groups.find({ members: login.user }, { fields: { groupname: 1 } }).fetch (groups) =>
+    withGroups = (groups) =>
       groups = _.pluck(groups, "groupname")
 
       # Store in login
@@ -311,3 +310,9 @@ exports.createLoginContext = (login, success) ->
         imageAcquirer: imageAcquirer
       }
       success(ctx)
+
+    # Only get groups once (TODO replace this when minimongo supports queries that return single authoritative results)
+    withGroups = _.once(withGroups)
+
+    # Get list of groups from database
+    db.groups.find({ members: login.user }, { fields: { groupname: 1 } }).fetch(withGroups, error)
