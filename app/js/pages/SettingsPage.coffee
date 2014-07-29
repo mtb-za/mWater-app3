@@ -7,7 +7,7 @@ class SettingsPage extends Page
     "click #reset_db" : "resetDb"
     "click #request_site_codes": "requestSiteCodes"
     "click #test_ecplates" : "testECPlates"
-    "click #weinre" : "startWeinre"
+    # "click #weinre" : "startWeinre"
     "change #locale": "setLocale"
     "click #update": "updateApp"
 
@@ -144,26 +144,26 @@ class SettingsPage extends Page
         alert res
       , @error
 
-  startWeinre: ->
-    if confirm(T("Start remote debugger (this will give developers temporary access to the app on your phone)?"))
-      # Disable to prevent double-click
-      @$("#weinre").attr("disabled", true)
+  # startWeinre: ->
+  #   if confirm(T("Start remote debugger (this will give developers temporary access to the app on your phone)?"))
+  #     # Disable to prevent double-click
+  #     @$("#weinre").attr("disabled", true)
 
-      code = (if @login then @login.user else "anon") + Math.floor(Math.random()*1000)
-      console.log "weinre code #{code}"
-      script = document.createElement("script")
-      script.onload = () =>
-        window.debug = {
-          code: code
-          ctx: @ctx
-          require: require
-        }
-        @render()
-        alert(T("Debugger started with code {0}", code))
-      script.onerror = ->
-        error(T("Failed to load weinre"))
-        @render()
-      script.src = "http://weinre.mwater.co/target/target-script-min.js#" + code
-      document.head.appendChild(script)
+  #     code = (if @login then @login.user else "anon") + Math.floor(Math.random()*1000)
+  #     console.log "weinre code #{code}"
+  #     script = document.createElement("script")
+  #     script.onload = () =>
+  #       window.debug = {
+  #         code: code
+  #         ctx: @ctx
+  #         require: require
+  #       }
+  #       @render()
+  #       alert(T("Debugger started with code {0}", code))
+  #     script.onerror = ->
+  #       error(T("Failed to load weinre"))
+  #       @render()
+  #     script.src = "http://weinre.mwater.co/target/target-script-min.js#" + code
+  #     document.head.appendChild(script)
 
 module.exports = SettingsPage

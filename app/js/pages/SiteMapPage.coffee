@@ -23,11 +23,14 @@ class SiteMapPage extends Page
       # defer to Allow menu to close first
       _.defer => @pager.openPage(require("./NewTestPage"))
 
-  create: ->
+  activate: ->
+    @configureButtonBars()
+
     @setTitle T("Site Map")
 
-    # Calculate height
     @$el.html require('./SiteMapPage.hbs')()
+
+    @resizeMap()
 
     # Wrap onSelect to close page
     if @options.onSelect
@@ -67,6 +70,19 @@ class SiteMapPage extends Page
           @createMap()
     , 500
 
+  deactivate: ->
+    if @cacheProgressControl 
+      @cacheProgressControl.cancel()
+      
+    $(window).off('resize', @resizeMap)
+    if @locationDisplay
+      @locationDisplay.stop()
+
+    # Destroy map
+    if @map
+      @map.remove()
+      @map = null
+
   # Since most uses use the map only, we need to cache local sites to the database.
   # This is done by simply querying them
   cacheNearbySites: (pos) ->
@@ -99,7 +115,9 @@ class SiteMapPage extends Page
     $(window).on('resize', @resizeMap)
 
     onReady = () =>
-      @osmLayer.addTo(@map)
+      # If not already destroyed
+      if @map
+        @osmLayer.addTo(@map)
 
     onError = (errorType, errorData) =>
       if errorType == "COULD_NOT_CREATE_DB"
@@ -139,28 +157,6 @@ class SiteMapPage extends Page
     # osmGeocoder = new L.Control.OSMGeocoder()
     # @map.addControl(osmGeocoder)
 
-    # Setup marker display when map is loaded
-    @map.whenReady =>
-      siteLayerCreator = new SiteLayerCreators.SimpleSitesLayerCreator @ctx, (_id) =>
-        @pager.openPage(SitePage, { _id: _id, onSelect: @onSelect})
-
-      @sitesLayer = new SitesLayer(siteLayerCreator, @db.sites, scope).addTo(@map)
-      # TODO remove legend
-      # # Add legend
-      # @legend = L.control({position: 'bottomright'});
-      # @legend.onAdd = (map) ->
-      #   return siteLayerCreator.createLegend()
-      # @legend.addTo(@map)
-
-      # Add My Location control
-      @myLocation = L.control({position: 'topright'})
-      @myLocation.onAdd = (map) ->
-        html = '''
-        <img id="goto_my_location" class="image-control" src="img/goto-my-location.png">
-        '''
-        return $(html).get(0)
-      @myLocation.addTo(@map)
-
     # Setup context menu
     contextMenu = new ContextMenu(@map, @ctx, @onSelect)
     
@@ -169,6 +165,26 @@ class SiteMapPage extends Page
       @map.setView(center, zoom)
     else
       @map.fitWorld()
+
+    # Add layers
+    siteLayerCreator = new SiteLayerCreators.SimpleSitesLayerCreator @ctx, (_id) =>
+      @pager.openPage(SitePage, { _id: _id, onSelect: @onSelect })
+    @sitesLayer = new SitesLayer(siteLayerCreator, @db.sites, scope).addTo(@map)
+    # TODO remove legend
+    # # Add legend
+    # @legend = L.control({position: 'bottomright'});
+    # @legend.onAdd = (map) ->
+    #   return siteLayerCreator.createLegend()
+    # @legend.addTo(@map)
+
+    # Add My Location control
+    @myLocation = L.control({position: 'topright'})
+    @myLocation.onAdd = (map) ->
+      html = '''
+      <img id="goto_my_location" class="image-control" src="img/goto-my-location.png">
+      '''
+      return $(html).get(0)
+    @myLocation.addTo(@map)
 
     # Save view
     @map.on 'moveend', @saveView
@@ -260,37 +276,10 @@ class SiteMapPage extends Page
       { text: T("List"), click: => @pager.closePage(require("./SiteListPage"), {onSelect: @options.onSelect})}  
     ]
 
-  activate: ->
-    @configureButtonBars()
-
-    @resizeMap()
-    
-    # Update markers
-    if @sitesLayer and @needsRefresh
-      @sitesLayer.reset()
-      @sitesLayer.update()
-      needsRefresh = false
-
-  deactivate: ->
-    @needsRefresh = true
-
-  destroy: ->
-    if @cacheProgressControl 
-      @cacheProgressControl.cancel()
-      
-    $(window).off('resize', @resizeMap)
-    if @locationDisplay
-      @locationDisplay.stop()
-
-    # Destroy map
-    if @map
-      @map.remove()
-
   addSite: ->
     # defer to Allow menu to close first
     _.defer => 
       @pager.openPage(require("./NewSitePage"), {onSelect: @onSelect})
-
 
   resizeMap: =>
     # TODO why does this prevent crashes?

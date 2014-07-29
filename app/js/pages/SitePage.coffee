@@ -37,6 +37,10 @@ module.exports = class SitePage extends Page
 
     , @error
 
+  deactivate: ->
+    # Remove subviews to speed up application
+    @removeSubviews()
+    
   render: ->
     @setTitle T("Site {0}", @site.code)
 
