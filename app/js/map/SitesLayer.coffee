@@ -93,7 +93,7 @@ module.exports = class SitesLayer extends L.LayerGroup
 
     if @map?
       for id, layer of @layers
-        layer.fitIntoBounds(@map.getBounds())
+        layer.fitLngIntoBounds(@map.getBounds())
 
     success() if success?
 

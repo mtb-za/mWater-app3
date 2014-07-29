@@ -59,27 +59,29 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
       layer.removed = true
       superOnRemove(map)
 
-    # TODO this is really cryptic
-    layer.fitIntoBounds = (bounds) ->
-      # TODO why do we get layers and then get the first one?
-      layers = layer.getLayers()
-      marker = layers[0]
-      if marker?
-        #console.log("marker?")
-        latLng = marker.getLatLng()
-        lng = latLng.lng
-        if bounds
-          west = bounds.getWest()
-          east = bounds.getEast()
-          while(lng < west)
-            lng += 360
-          while(lng > east)
-            lng -= 360
+    # the GeoJson layer is a layerGroup, containing one layer for each GeoJson data
+    # this function will modify the lng of the layers of the GeoJson layerGroup to fit them inside the bounds
+    # Note: right now, each GeoJson has only one layer
+    layer.fitLngIntoBounds = (bounds) ->
+      if bounds
+        west = bounds.getWest()
+        east = bounds.getEast()
 
-        latLng2 = L.latLng(latLng.lat, lng);
-        marker.setLatLng(latLng2)
-      #else
-      #  console.log("no marker?")
+        layer.eachLayer((subLayer) =>
+          latLng = subLayer.getLatLng()
+          lng = latLng.lng
+          #if lng is outside the bounds lng
+          if lng < west or lng > east
+            #try to fit lng between west and east
+            while(lng < west)
+              lng += 360
+            while(lng > east)
+              lng -= 360
+
+            # create a new LatLng and set the updated lng
+            latLng2 = L.latLng(latLng.lat, lng);
+            subLayer.setLatLng(latLng2)
+        )
 
     # Return initial layer
     success(site: site, layer: layer)
