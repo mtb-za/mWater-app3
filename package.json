@@ -16,6 +16,7 @@
   "author": "Clayton Grassick",
   "license": "GPLv3",
   "devDependencies": {
+    "browserify": "^4.1.5",
     "chai": "~1.9.0",
     "coffee-script": "^1.7.1",
     "coffeeify": "^0.6.0",
