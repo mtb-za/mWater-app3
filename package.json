@@ -16,14 +16,13 @@
   "author": "Clayton Grassick",
   "license": "GPLv3",
   "devDependencies": {
-    "browserify": "^4.1.5",
+    "browserify": "^5.9.1",
     "chai": "~1.9.0",
     "coffee-script": "^1.7.1",
     "coffeeify": "^0.6.0",
     "express": "~3.4.7",
     "glob": "~3.2.1",
     "grunt": "~0.4.1",
-    "grunt-browserify": "^2.1.4",
     "grunt-contrib-compress": "git+https://github.com/netpro2k/grunt-contrib-compress.git",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-copy": "~0.4.1",
@@ -46,10 +45,10 @@
     "gulp-util": "^2.2.14",
     "hbsfy": "^1.3.2",
     "request-json": "~0.4.4",
+    "rework-npm": "~0.4.1",
     "testem": "~0.5.15",
     "through": "~2.3.4",
     "uglify-js": "~2.4.13",
-    "rework-npm": "~0.4.1",
     "vinyl-source-stream": "^0.1.1"
   },
   "dependencies": {

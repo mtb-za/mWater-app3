@@ -48,14 +48,25 @@ gulp.task 'prepareTests', ['libsjs'], ->
     .pipe(source('browserified.js'))
     .pipe(gulp.dest('./test'))
 
-gulp.task 'browserify', ->
+gulp.task 'browserify', ['browserify_index', 'browserify_preload']
+
+gulp.task 'browserify_index', ->
   return shim(browserify([], { extensions: ['.js', '.coffee'] }))
     .require('./app/js/run.coffee', {expose: 'run'})
     .require('./app/js/forms/index.coffee', {expose: 'forms'})
     .transform(require('./versionXform'))
     .bundle()
     .on('error', gutil.log)
+    .on('error', -> throw "Failed")
     .pipe(source('app.js'))
+    .pipe(gulp.dest('./dist/js/'))
+
+gulp.task 'browserify_preload', ->
+  return browserify(['./app/js/preload.coffee'], { extensions: ['.js', '.coffee'] })
+    .bundle()
+    .on('error', gutil.log)
+    .on('error', -> throw "Failed")
+    .pipe(source('preload.js'))
     .pipe(gulp.dest('./dist/js/'))
 
 # gulp.task 'clean', ->
