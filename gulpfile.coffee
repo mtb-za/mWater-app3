@@ -48,12 +48,15 @@ gulp.task 'prepareTests', ['libsjs'], ->
     .pipe(source('browserified.js'))
     .pipe(gulp.dest('./test'))
 
-# gulp.task 'browserify', ->
-#   return shim(browserify('./index.coffee', { extensions: ['.coffee'], basedir: './src/' }))
-#     .bundle()
-#     .on('error', gutil.log)
-#     .pipe(source('index.js'))
-#     .pipe(gulp.dest('./dist/js/'))
+gulp.task 'browserify', ->
+  return shim(browserify([], { extensions: ['.js', '.coffee'] }))
+    .require('./app/js/run.coffee', {expose: 'run'})
+    .require('./app/js/forms/index.coffee', {expose: 'forms'})
+    .transform(require('./versionXform'))
+    .bundle()
+    .on('error', gutil.log)
+    .pipe(source('app.js'))
+    .pipe(gulp.dest('./dist/js/'))
 
 # gulp.task 'clean', ->
 #   return gulp.src('dist/**/*', {read: false})

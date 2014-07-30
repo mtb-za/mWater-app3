@@ -11,23 +11,23 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     browserify: {
-      dist: {
-        files: {
-          'dist/js/app.js': []
-        },
-        options: {
-          transform: [require('./versionXform')],
-          browserifyOptions: { extensions: [ '.coffee', '.js' ] },
-          alias: [
-            './app/js/run.coffee:run',
-            './app/js/forms/index.coffee:forms',
-            './app/js/jquery-shim:jquery',
-            './app/js/lodash-shim:lodash',
-            './app/js/lodash-shim:underscore',
-            './app/js/backbone-shim:backbone'
-            ]
-        }
-      },
+      // dist: {
+      //   files: {
+      //     'dist/js/app.js': []
+      //   },
+      //   options: {
+      //     transform: [require('./versionXform')],
+      //     browserifyOptions: { extensions: [ '.coffee', '.js' ] },
+      //     alias: [
+      //       './app/js/run.coffee:run',
+      //       './app/js/forms/index.coffee:forms',
+      //       './app/js/jquery-shim:jquery',
+      //       './app/js/lodash-shim:lodash',
+      //       './app/js/lodash-shim:underscore',
+      //       './app/js/backbone-shim:backbone'
+      //       ]
+      //   }
+      // },
       preload: {
         files: {
           'dist/js/preload.js': ['./app/js/preload.coffee']
@@ -200,6 +200,13 @@ module.exports = function(grunt) {
           failOnError: true
         }
       },
+      browserify: {
+        command: 'gulp browserify',
+        options: {
+          stdout: true,
+          failOnError: true
+        }
+      },
       deploy_demo: {
         command: 's3cmd sync --acl-public --guess-mime-type ' +
           '--add-header "Cache-Control: no-cache, must-revalidate" ' +
@@ -347,7 +354,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages', 'copy:leafletimages']);
   // TODO localization grunt.registerTask('default', ['localization', 'browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
-  grunt.registerTask('default', ['browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
+  grunt.registerTask('default', ['browserify', 'shell:browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
 
   grunt.registerTask('deploy_beta', ['default', 'shell:deploy_beta']);
   grunt.registerTask('deploy_demo', ['default', 'shell:deploy_demo']);
