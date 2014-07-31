@@ -134,43 +134,20 @@ createDb = (login, success) ->
       if err
         return error(err)
 
-      performSeed = =>
-        # Seed local db with startup documents
-        if window.seeds
-          async.eachSeries _.keys(window.seeds), (col, callback) =>
-            async.eachSeries window.seeds[col], (doc, callback2) =>
-              localDb[col].seed doc, =>
-                callback2()
-              , callback2
-            , callback
-          , (err) =>
-            if err
-              return error(err)
-            success(db)
-        else
+      # Seed local db with startup documents
+      if window.seeds
+        async.eachSeries _.keys(window.seeds), (col, callback) =>
+          async.eachSeries window.seeds[col], (doc, callback2) =>
+            localDb[col].seed doc, =>
+              callback2()
+            , callback2
+          , callback
+        , (err) =>
+          if err
+            return error(err)
           success(db)
-
-      # TODO remove Sept 2014
-      migrateAndroid44 = =>
-        if navigator.userAgent.match(/Android 4\.4/) and window.cordova and localDb instanceof minimongo.WebSQLDb
-          console.log "Migrating Android 4.4 IndexedDb"
-          idbDb = new minimongo.IndexedDb { namespace: namespace }, (idbDb) =>
-            for col in collectionNames
-              idbDb.addCollection(col)
-            minimongo.utils.migrateLocalDb idbDb, localDb, performSeed, error
-          , error
-        else
-          performSeed()
-
-      # Migrate from LocalStorageDb if database is not LocalStorageDb (TODO remove after Oct 2014)
-      if namespace and (localDb instanceof minimongo.IndexedDb or localDb instanceof minimongo.WebSQLDb)
-        console.log "Migrating database"
-        oldDb = new minimongo.LocalStorageDb(namespace: namespace)
-        for col in collectionNames
-          oldDb.addCollection(col)
-        minimongo.utils.migrateLocalDb oldDb, localDb, migrateAndroid44, error
       else
-        migrateAndroid44()
+        success(db)
   , error
 
 # Anonymous context for not logged in
