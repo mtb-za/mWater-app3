@@ -44,12 +44,15 @@ module.exports = class SitePage extends Page
   render: ->
     @setTitle T("Site {0}", @site.code)
 
+    # Add delete site
     if @auth.remove("sites", @site)
-      @setupContextMenu [ { glyph: 'remove', text: T("Delete Site"), click: => @deleteSite() } ]
-    else 
-      @setupContextMenu [ ]
+      menu = [
+        { text: T("Delete Site"), id: "delete_site", click: => @deleteSite() }
+      ]
 
-    @setupButtonBar [ ]
+      @setupButtonBar [ { icon: "buttonbar-gear.png", menu: menu } ]
+    else
+      @setupButtonBar [ ]
 
     # Set site type
     siteTypeName =  _.map(@site.type, T).join(" - ")
