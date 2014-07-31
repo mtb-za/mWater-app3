@@ -61,7 +61,7 @@
     "lodash": "~2.4.1",
     "minimist": "0.0.8",
     "minimongo": "^2.5.0",
-    "mwater-forms": "^0.5.19",
+    "mwater-forms": "^0.5.23",
     "offline-leaflet-map": "^0.1.0",
     "parse-appcache-manifest": "~0.2.0",
     "read": "~1.0.4",
