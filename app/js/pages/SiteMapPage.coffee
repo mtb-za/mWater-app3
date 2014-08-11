@@ -225,6 +225,9 @@ class SiteMapPage extends Page
     return
 
   saveView: => 
+    if @deactivated or not @map
+      return
+      
     window.localStorage['SiteMapPage.lastView'] = JSON.stringify({
       center: @map.getCenter() 
       zoom: @map.getZoom()
