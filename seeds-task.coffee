@@ -9,18 +9,12 @@ module.exports = ->
 
   jsonClient = new JsonClient "http://api.mwater.co/v3/"
 
-  jsonClient.get "source_types", (err, res, body) ->
+  # Only get tests
+  jsonClient.get 'forms?selector={"type": "WaterTest"}', (err, res, body) ->
     if res.statusCode != 200
       throw new Error("Server error")
 
-    seeds.source_types = body
-
-    jsonClient.get "forms", (err, res, body) ->
-        if res.statusCode != 200
-          throw new Error("Server error")
-
-        seeds.forms = body
-        
-        fs.writeFileSync('dist/js/seeds.js', 'seeds=' + JSON.stringify(seeds) + ';')
-        done()
-  
+    seeds.forms = body
+    
+    fs.writeFileSync('dist/js/seeds.js', 'seeds=' + JSON.stringify(seeds) + ';')
+    done()
