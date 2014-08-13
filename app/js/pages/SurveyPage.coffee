@@ -1,6 +1,6 @@
 Page = require "../Page"
 mwaterforms = require 'mwater-forms'
-ResponseModel = require '../common/ResponseModel'
+ResponseModel = require('mwater-common').ResponseModel
 ImagePage = require './ImagePage'
 SiteListPage = require './SiteListPage'
 SiteMapPage = require './SiteMapPage'
@@ -27,7 +27,7 @@ class SurveyPage extends Page
     data = {
       response: @response
       name: mwaterforms.formUtils.localizeString(@form.design.name, @formLocale)
-      canRedraft: @responseModel.canDraft()
+      canRedraft: @responseModel.canRedraft()
       locales: @form.design.locales
     }
 
@@ -94,7 +94,7 @@ class SurveyPage extends Page
     # Add form view
     @$("#contents").append(@formView.el)
 
-    if not @responseModel.canDraft() or @response.status in ['draft', 'rejected']
+    if not @responseModel.canRedraft() or @response.status in ['draft', 'rejected']
       @$("#edit_button").hide()
 
   render: ->

@@ -1,5 +1,5 @@
 forms = require 'mwater-forms'
-siteTypes = require '../common/siteTypes'
+siteTypes = require('mwater-common').siteTypes
 
 # Creates type, name, desc, location questions for a site
 # Model should will/should contain: 
