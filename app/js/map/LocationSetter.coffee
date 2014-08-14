@@ -6,7 +6,7 @@ module.exports = class LocationSetter
     content = $(html)
     content.find("button").on 'click', =>
       if callback?
-        callback({latitude: map.getCenter().lat(), longitude: map.getCenter().lng()})
+        callback({latitude: map.getCenter().lat, longitude: map.getCenter().lng})
 
     icon =  L.icon(iconUrl: "img/redMarker.png", shadowUrl: "img/leaflet/marker-shadow.png", iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41])
 

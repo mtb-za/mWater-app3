@@ -9,7 +9,7 @@ BaseLayers = require '../map/BaseLayers'
 offlineMap = require 'offline-leaflet-map'
 CacheProgressControl = require '../map/CacheProgressControl'
 GeoJSON = require '../GeoJSON'
-LocationSetter = require('./LocationSetter')
+LocationSetter = require('../map/LocationSetter')
 
 # Map of sites. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
@@ -118,9 +118,6 @@ class SiteMapPage extends Page
     # Recalculate on resize
     $(window).on('resize', @resizeMap)
 
-    if @options.setLocation
-      new LocationSetter(@map, @options.setLocation)
-
     onReady = () =>
       # If not already deactivated
       if @map and not @deactivated
@@ -172,6 +169,12 @@ class SiteMapPage extends Page
       @map.setView(center, zoom)
     else
       @map.fitWorld()
+
+    if @options.setLocation
+      new LocationSetter(@map, (newLoc) =>
+        @pager.closePage()
+        @options.setLocation(newLoc)
+      )
 
     # Add layers
     siteLayerCreator = new SiteLayerCreators.SimpleSitesLayerCreator @ctx, (_id) =>
