@@ -1,8 +1,9 @@
 
-
+# Creates a pin with a popup that allows setting of a location. 
 module.exports = class LocationSetter
+  # Callback with { latitude: ... , longitude: ... }
   constructor: (map, callback) ->
-    html = '''<div><button class="btn btn-primary btn-lg">''' + T("Set Location") + '''</button></div>'''
+    html = '''<div><button class="btn btn-primary btn-lg">''' + T("Set Location Here") + '''</button></div>'''
     content = $(html)
     content.find("button").on 'click', =>
       if callback?
