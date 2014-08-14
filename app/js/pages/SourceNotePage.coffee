@@ -9,8 +9,13 @@ forms = require '../forms'
 module.exports = class SourceNotePage extends Page
   activate: ->
     # Find water source
-    @db.sources.findOne {code: @options.source}, (source) =>
-      @setTitle T("Status for Site {0}", source.code)
+    @db.sites.findOne {code: @options.source}, (site) =>
+      if not site
+        alert(T("Site not found"))
+        @pager.closePage()
+        return
+        
+      @setTitle T("Status for Site {0}", site.code)
 
       # Find source note
       if @options._id
