@@ -1,10 +1,11 @@
 Page = require "../Page"
 ECPlates = require '../forms/ECPlates'
 cordovaSetup = require '../cordovaSetup'
+async = require 'async'
 
 class SettingsPage extends Page
   events: 
-    "click #reset_db" : "resetDb"
+    "click #reset" : "reset"
     "click #request_site_codes": "requestSiteCodes"
     "click #test_ecplates" : "testECPlates"
     # "click #weinre" : "startWeinre"
@@ -120,12 +121,40 @@ class SettingsPage extends Page
     @localizer.saveCurrentLocale()
     @render()
 
-  resetDb: ->
+  reset: ->
     if confirm(T("Completely discard local data, logout and lose unsubmitted changes?"))
+      # Clear local storage
       window.localStorage.clear()
-      while @pager.multiplePages()
-        @pager.closePage()
-      @pager.closePage(require("./LoginPage"))
+
+      # Finish up
+      finish = () =>
+        while @pager.multiplePages()
+          @pager.closePage()
+        @pager.closePage(require("./LoginPage"))
+
+      # Clear all collections from database
+      if not @db.localDb
+        return finish()
+
+
+      # Reset local db
+      localDb = @db.localDb
+      cols = _.keys(@db.collections)
+      async.eachSeries cols, (col, callback) =>
+        localDb.removeCollection col, =>
+          localDb.addCollection col, =>
+            callback()
+          , (err) =>
+            callback("Failed to add collection")
+        , (err) =>
+          callback("Failed to remove collection")
+      , (err) =>
+        if (err)
+          alert(T("Error resetting database"))
+        else
+          alert(T("Reset successful"))
+
+        finish()
 
   requestSiteCodes: ->
     @siteCodesManager.replenishCodes @siteCodesManager.getNumberAvailableCodes() + 5, =>

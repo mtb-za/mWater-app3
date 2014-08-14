@@ -69,8 +69,8 @@
       {{T "Code:"}} <b>{{site.code}}</b>
   </div>
 
-  <!--{{#if site.custom}}
-    <br/><br/>
+  {{#if site.custom}}
+    <br/>
     <div class="well well-small">
       {{#eachProperty site.custom}}
         <h4>{{key}}</h4>
@@ -79,7 +79,7 @@
         {{/eachProperty}}
       {{/eachProperty}}
     </div>
-  {{/if}}-->
+  {{/if}}
 
   <h4>{{T "Location"}}</h4>
   <div id="location"></div>

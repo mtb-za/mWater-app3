@@ -28,6 +28,8 @@ class SiteMapPage extends Page
 
     @setTitle T("Site Map")
 
+    @deactivated = false
+
     @$el.html require('./SiteMapPage.hbs')()
 
     @resizeMap()
@@ -43,13 +45,7 @@ class SiteMapPage extends Page
       @createMap(L.GeoJSON.coordsToLatLng(@options.initialGeo.coordinates), 15)
       return
 
-    # If saved view
-    if window.localStorage['SiteMapPage.lastView']
-      lastView = JSON.parse(window.localStorage['SiteMapPage.lastView'])
-      @createMap(lastView.center, lastView.zoom, lastView.scope)
-      return
-
-    # Get current position if quickly available
+    # Get current position
     currentLatLng = null
     locationFinder = new LocationFinder()
     locationFinder.getLocation (pos) =>
@@ -60,9 +56,15 @@ class SiteMapPage extends Page
       # Do nothing on error
       currentLatLng = null
 
+    # If saved view
+    if window.localStorage['SiteMapPage.lastView']
+      lastView = JSON.parse(window.localStorage['SiteMapPage.lastView'])
+      @createMap(lastView.center, lastView.zoom, lastView.scope)
+      return
+
     # Wait very short time for location
     setTimeout =>
-      if not @destroyed
+      if not @deactivated
         # If no location, create map with no location
         if currentLatLng
           @createMap(currentLatLng, 14)
@@ -82,6 +84,7 @@ class SiteMapPage extends Page
     if @map
       @map.remove()
       @map = null
+    @deactivated = true
 
   # Since most uses use the map only, we need to cache local sites to the database.
   # This is done by simply querying them
@@ -115,8 +118,8 @@ class SiteMapPage extends Page
     $(window).on('resize', @resizeMap)
 
     onReady = () =>
-      # If not already destroyed
-      if @map
+      # If not already deactivated
+      if @map and not @deactivated
         @osmLayer.addTo(@map)
 
     onError = (errorType, errorData) =>
@@ -222,6 +225,9 @@ class SiteMapPage extends Page
     return
 
   saveView: => 
+    if @deactivated or not @map
+      return
+      
     window.localStorage['SiteMapPage.lastView'] = JSON.stringify({
       center: @map.getCenter() 
       zoom: @map.getZoom()
@@ -233,7 +239,7 @@ class SiteMapPage extends Page
     locationHasBeenSetAtLeastOnce = false
     locationFinder = new LocationFinder()
     locationFinder.getLocation (pos) =>
-      if not @destroyed
+      if not @deactivated
         latLng = new L.LatLng(pos.coords.latitude, pos.coords.longitude)
         # if the view has been set at least once (by a lower accuracy location)
         if locationHasBeenSetAtLeastOnce
@@ -246,7 +252,7 @@ class SiteMapPage extends Page
         @map.setView(latLng, if zoom > 15 then zoom else 15)
         locationHasBeenSetAtLeastOnce = true
     , =>
-      if not @destroyed
+      if not @deactivated
         @pager.flash(T("Unable to determine location"), "warning")
 
 

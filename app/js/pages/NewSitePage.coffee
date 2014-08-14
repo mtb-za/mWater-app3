@@ -33,11 +33,12 @@ module.exports = class NewSitePage extends Page
       model: @model
       prompt: T("Site privacy")
       choices: [
-        { id: "public", label: T("Public"), hint: "Anyone can see the site, but only you or your group can edit it"}
+        { id: "public", label: T("Public"), hint: "Anyone can see and edit the site"}
+        { id: "visible", label: T("Visible"), hint: "Anyone can see the site, but only you or your group can edit it"}
         { id: "private", label: T("Private"), hint: "Only you or your group can edit site"}
       ]
       required: true
-      hint: T('Private should only be used for sites that are not publicly accessible ')
+      hint: T('Private should only be used for sites that are not publicly accessible')
 
     if @login.groups.length > 0
       choices = [{ id: "(none)", label: T("(No Group)") }]
@@ -82,6 +83,8 @@ module.exports = class NewSitePage extends Page
 
       # Set roles based on privacy
       if @model.get("privacy").value == "public"
+        site.roles = [ { id: "all", role: "admin" } ]
+      if @model.get("privacy").value == "visible"
         site.roles = [ { id: "all", role: "view" } ]
       else
         site.roles = [ ]

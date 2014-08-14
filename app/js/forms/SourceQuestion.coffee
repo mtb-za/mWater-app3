@@ -1,5 +1,5 @@
 Question = require './Question'
-siteCodes = require '../siteCodes'
+siteCodes = require('mwater-common').siteCodes
 
 module.exports = Question.extend
   renderAnswer: (answerEl) ->
