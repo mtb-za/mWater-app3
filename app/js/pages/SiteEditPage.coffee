@@ -7,7 +7,7 @@ GeoJSON = require '../GeoJSON'
 module.exports = class SiteEditPage extends Page
   @canOpen: (ctx) -> ctx.auth.update("sites")
 
-  activate: ->
+  create: ->
     @db.sites.findOne {_id: @options._id}, (site) =>
       # Check auth
       if not @auth.update("sites", site)
@@ -24,7 +24,7 @@ module.exports = class SiteEditPage extends Page
         location: { value: site.location }
       })
 
-      contents = commonUI.createBasicSiteQuestions(@model)
+      contents = commonUI.createBasicSiteQuestions(@model, @ctx)
 
       saveCancelForm = new forms.SaveCancelForm
         T: T
