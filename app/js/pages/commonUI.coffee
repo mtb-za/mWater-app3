@@ -7,10 +7,20 @@ siteTypes = require('mwater-common').siteTypes
 # desc: { value: <desc> }
 # type: { value: <type> }
 # location: { value: <location> }
-exports.createBasicSiteQuestions = (model) ->
+exports.createBasicSiteQuestions = (model, ctx) ->
   # When type changes, clear subtype
   model.on "change:type", =>
     model.unset("subtype")
+
+  # Create context for forms
+  formCtx = {
+    displayMap: (location, setLocation) =>
+      options = {}
+      options.setLocation = setLocation
+      if location?
+        options.initialGeo = { type: 'Point', coordinates: [location.longitude, location.latitude] }
+      ctx.pager.openPage require("./SiteMapPage"), options
+  }
 
   # Create questions
   contents = []
@@ -51,6 +61,7 @@ exports.createBasicSiteQuestions = (model) ->
     prompt: T('Enter optional description')
 
   contents.push new forms.LocationQuestion
+    ctx: formCtx
     T: T
     id: 'location'
     model: model
