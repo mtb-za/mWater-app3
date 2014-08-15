@@ -9,7 +9,7 @@ GeoJSON = require '../GeoJSON'
 module.exports = class NewSitePage extends Page
   @canOpen: (ctx) -> ctx.auth.insert("sites")
 
-  activate: ->
+  create: ->
     @setTitle T("New Site")
 
     # Create model for the site
