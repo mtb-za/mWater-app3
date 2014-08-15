@@ -313,7 +313,7 @@ class SiteMapPage extends Page
       return
     maxNbTiles = 10000
 
-    nbTiles = @osmLayer.calculateNbTiles();
+    nbTiles = @osmLayer.calculateNbTiles()
     # nbTiles of -1 means an error occurred
     if nbTiles == -1
       return
