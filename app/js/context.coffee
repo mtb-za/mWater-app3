@@ -237,6 +237,12 @@ exports.createLoginContext = (login, success) ->
 
       # Store in login
       login.groups = groups
+
+      # Add function to asynchronously update groups TODO add callback when minimongo supports final results
+      login.updateGroups = () ->
+        db.groups.find({ members: login.user }, { fields: { groupname: 1 } }).fetch (groupDocs) ->
+          login.groups = _.pluck(groupDocs, "groupname")
+        , error
     
       auth = new authModule.UserAuth(login.user, login.groups)
       siteCodesManager = new siteCodes.SiteCodesManager(apiUrl + "site_codes?client=#{login.client}")
