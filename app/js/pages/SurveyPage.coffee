@@ -50,10 +50,12 @@ class SurveyPage extends Page
         imageAcquirer: @ctx.imageAcquirer
         selectSite: (success) =>
           @pager.openPage SiteListPage, { onSelect: (source)=> success(source.code) }
-        displayMap: (location) =>
-          @pager.openPage require("./SiteMapPage"), {
-            initialGeo: { type: 'Point', coordinates: [location.longitude, location.latitude] }
-          }
+        displayMap: (location, setLocation) =>
+          options = {}
+          options.setLocation = setLocation
+          if location?
+            options.initialGeo = { type: 'Point', coordinates: [location.longitude, location.latitude] }
+          @pager.openPage require("./SiteMapPage"), options
         stickyStorage: {
           get: (key) =>
             str = window.localStorage["stickyStorage:" + @form._id + ":" +@login.user + ":" + key]

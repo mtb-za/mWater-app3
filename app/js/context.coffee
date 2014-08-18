@@ -20,6 +20,7 @@ imageAcquirer: source of images (either camera or file selection). Has single fu
   that calls success with id of image. If not present, not available.
 apiUrl: URL of API e.g. https://api.mwater.co/v3/
 localizer: Localizer class, already registered as global T
+updateGroupsList: function to asynchronously update login groups
 
 stop(): must be called when context is no longer needed, or before setup of a new user
 
@@ -237,7 +238,7 @@ exports.createLoginContext = (login, success) ->
 
       # Store in login
       login.groups = groups
-    
+
       auth = new authModule.UserAuth(login.user, login.groups)
       siteCodesManager = new siteCodes.SiteCodesManager(apiUrl + "site_codes?client=#{login.client}")
       dataSync = new syncModule.DataSync(db, siteCodesManager)
@@ -275,6 +276,12 @@ exports.createLoginContext = (login, success) ->
             ImageUploader.acquire(apiUrl, login.client, success, error) 
         }
 
+      # Add function to asynchronously update groups list TODO add callback when minimongo supports final results
+      updateGroupsList = () ->
+        db.groups.find({ members: login.user }, { fields: { groupname: 1 } }).fetch (groupDocs) ->
+          login.groups = _.pluck(groupDocs, "groupname")
+        , error
+
       ctx = _.extend baseContext, {
         db: db 
         imageManager: imageManager
@@ -285,6 +292,7 @@ exports.createLoginContext = (login, success) ->
         imageSync: imageSync
         stop: stop
         imageAcquirer: imageAcquirer
+        updateGroupsList: updateGroupsList
       }
       success(ctx)
 

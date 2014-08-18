@@ -9,7 +9,7 @@ GeoJSON = require '../GeoJSON'
 module.exports = class NewSitePage extends Page
   @canOpen: (ctx) -> ctx.auth.insert("sites")
 
-  activate: ->
+  create: ->
     @setTitle T("New Site")
 
     # Create model for the site
@@ -26,7 +26,7 @@ module.exports = class NewSitePage extends Page
     if _.any(@login.groups, (g) -> g.match(/wateraid/i))
       @model.set("privacy", { value: "private" })
 
-    contents = commonUI.createBasicSiteQuestions(@model)
+    contents = commonUI.createBasicSiteQuestions(@model, @ctx)
 
     contents.push new forms.RadioQuestion
       id: 'privacy'

@@ -46,7 +46,7 @@ class Page extends Backbone.View
 
   setTitle: (title) ->
     @title = title
-    @trigger 'change:title'
+    @trigger 'change'
 
   addSubview: (view) ->
     @_subviews.push(view)

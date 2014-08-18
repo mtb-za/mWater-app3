@@ -38,6 +38,10 @@ module.exports = class SiteListPage extends Page
     @nearSites = []
     @unlocatedSites = []
 
+    # Update groups
+    if @updateGroupsList
+      @updateGroupsList()
+
     # Find location
     @locationFinder = new LocationFinder()
     @locationFinder.getLocation(@locationFound, @locationError)

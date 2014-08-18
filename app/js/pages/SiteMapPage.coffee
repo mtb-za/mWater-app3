@@ -9,6 +9,7 @@ BaseLayers = require '../map/BaseLayers'
 offlineMap = require 'offline-leaflet-map'
 CacheProgressControl = require '../map/CacheProgressControl'
 GeoJSON = require '../GeoJSON'
+LocationSetter = require('../map/LocationSetter')
 
 # Map of sites. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
@@ -33,6 +34,10 @@ class SiteMapPage extends Page
     @$el.html require('./SiteMapPage.hbs')()
 
     @resizeMap()
+
+    # Update groups
+    if @updateGroupsList
+      @updateGroupsList()
 
     # Wrap onSelect to close page
     if @options.onSelect
@@ -168,6 +173,12 @@ class SiteMapPage extends Page
       @map.setView(center, zoom)
     else
       @map.fitWorld()
+
+    if @options.setLocation
+      new LocationSetter(@map, (newLoc) =>
+        @pager.closePage()
+        @options.setLocation(newLoc)
+      )
 
     # Add layers
     siteLayerCreator = new SiteLayerCreators.SimpleSitesLayerCreator @ctx, (_id) =>
@@ -306,7 +317,7 @@ class SiteMapPage extends Page
       return
     maxNbTiles = 10000
 
-    nbTiles = @osmLayer.calculateNbTiles();
+    nbTiles = @osmLayer.calculateNbTiles()
     # nbTiles of -1 means an error occurred
     if nbTiles == -1
       return

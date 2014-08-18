@@ -6,6 +6,7 @@ context = require './context'
 login = require './login'
 ProblemReporter = require './ProblemReporter'
 ezlocalize = require 'ez-localize'
+bowser = require 'bowser'
 
 LoginPage = require './pages/LoginPage'
 SiteMapPage = require './pages/SiteMapPage'
@@ -37,6 +38,32 @@ exports.start = (options = {}) ->
   localizer = new ezlocalize.Localizer(localizationData, "en")
   localizer.makeGlobal(handlebars)
   localizer.restoreCurrentLocale()
+
+  # Check browser version
+  browser = bowser.browser
+  unsupportedBrowser = false
+  if browser.firefox
+    if browser.version < 13
+      unsupportedBrowser = true
+  else if browser.chrome
+    if browser.version < 20
+      unsupportedBrowser = true
+  else if browser.msie 
+    if browser.version < 10
+      unsupportedBrowser = true
+  else if browser.ios
+    # TODO Check iOS specific
+  else if browser.android
+    # TODO Check Android specific
+  else
+    unsupportedBrowser = true
+
+  console.log(JSON.stringify(browser))
+
+  if unsupportedBrowser
+    if not confirm("Your browser is not supported. Please use Android, iOS, Chrome, Firefox 24+ or Internet Explorer 10+. Continue anyway?")
+      window.location.href = "http://mwater.co"
+      return
 
   # Create pager
   pager = new Pager()

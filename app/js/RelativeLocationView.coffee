@@ -68,7 +68,11 @@ module.exports = class RelativeLocationView extends Backbone.View
       @$("#gps_strength").attr("class", strength.class)
       @$("#gps_strength").text strength.text
 
-    @$("#location_absolute").text(T("Lat/lng: ") + "#{this.loc.latitude.toFixed(6)}, #{this.loc.longitude.toFixed(6)}")
+    absText = T("Lat/lng: ") + "#{this.loc.latitude.toFixed(6)}, #{this.loc.longitude.toFixed(6)}"
+    if @loc.accuracy?
+      absText += " \u00B1#{this.loc.accuracy.toFixed(0)} m"
+    @$("#location_absolute").text(absText)
+    
 
     # Hide map if hidden
     @$("#location_map").toggle(@showMap)

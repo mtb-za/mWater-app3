@@ -10,8 +10,8 @@ class Pager extends Backbone.View
     if ctx
       @setContext(ctx)
 
-    # Create empty stack
-    @stack=[]
+    # Create empty stack. Each item on stack is { page: <page>, scollPos: <scrollTop of window> }
+    @stack= []
 
     # Create button bar and context menu that change with page loads
     @buttonBar = new Backbone.View()
@@ -19,10 +19,10 @@ class Pager extends Backbone.View
     @listenTo this, 'change', =>
       # Swap items out for new page
       @buttonBar.$el.children().detach()
-      @buttonBar.$el.append(_.last(@stack).getButtonBar().el)
+      @buttonBar.$el.append(_.last(@stack).page.getButtonBar().el)
  
       @contextMenu.$el.children().detach()
-      @contextMenu.$el.append(_.last(@stack).getContextMenu().el)
+      @contextMenu.$el.append(_.last(@stack).page.getContextMenu().el)
 
     # Listen to backbutton
     document.addEventListener "backbutton", =>
@@ -46,13 +46,14 @@ class Pager extends Backbone.View
     # Create page
     page = new pageClass(@ctx, options)
     
-    # Deactivate current page
+    # Deactivate current page, saving scroll position
     if @stack.length > 0
-      _.last(@stack).deactivate()
-      _.last(@stack).$el.detach()
+      _.last(@stack).scrollPos = $(window).scrollTop()
+      _.last(@stack).page.deactivate()
+      _.last(@stack).page.$el.detach()
 
     # Activate new page
-    @stack.push(page)
+    @stack.push({ page: page })
     @$el.append(page.el)
 
     # Scroll to top
@@ -76,7 +77,7 @@ class Pager extends Backbone.View
       return
 
     # Destroy current page
-    page = _.last(@stack)
+    page = _.last(@stack).page
 
     console.log "Closing page #{page.constructor.name}"
 
@@ -87,17 +88,17 @@ class Pager extends Backbone.View
 
     @stack.pop()
 
-    # Scroll to top
-    window.scrollTo(0, 0)
-
     # Open replaceWith
     if replaceWith
       @openPage replaceWith, options
     else
-      page = _.last(@stack)
+      page = _.last(@stack).page
 
       @$el.append(page.el)
       page.activate()
+
+      # Restore scroll position
+      $(window).scrollTop(_.last(@stack).scrollPos)
       
     # Indicate page change
     @trigger 'change'
@@ -111,12 +112,12 @@ class Pager extends Backbone.View
   # Gets page next down on the stack
   getParentPage: ->
     if @stack.length > 1
-      return @stack[@stack.length - 2]
+      return @stack[@stack.length - 2].page
     return null
 
   # Get title of active page
   getTitle: ->
-    _.last(@stack).getTitle()
+    _.last(@stack).page.getTitle()
 
   # Get buttonbar of active page
   getButtonBar: -> 
