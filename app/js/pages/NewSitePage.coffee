@@ -9,11 +9,17 @@ GeoJSON = require '../GeoJSON'
 module.exports = class NewSitePage extends Page
   @canOpen: (ctx) -> ctx.auth.insert("sites")
 
-  create: ->
+  events:
+    "click #create_site": "createSite"
+    "click #cancel": "cancel"
+
+  activate: ->
     @setTitle T("New Site")
 
+    @$el.html require('./NewSitePage.hbs')()
+
     # Create model for the site
-    @model = new Backbone.Model({ 
+    @siteModel = new Backbone.Model({ 
       location: { value: @options.location }
       privacy: {}
       name: {}
@@ -24,13 +30,13 @@ module.exports = class NewSitePage extends Page
     
     # Default WaterAid to private
     if _.any(@login.groups, (g) -> g.match(/wateraid/i))
-      @model.set("privacy", { value: "private" })
+      @siteModel.set("privacy", { value: "private" })
 
-    contents = commonUI.createBasicSiteQuestions(@model, @ctx)
+    siteQuestions = commonUI.createBasicSiteQuestions(@siteModel, @ctx)
 
-    contents.push new forms.RadioQuestion
+    siteQuestions.push new forms.RadioQuestion
       id: 'privacy'
-      model: @model
+      model: @siteModel
       prompt: T("Site privacy")
       choices: [
         { id: "public", label: T("Public"), hint: "Anyone can see and edit the site"}
@@ -43,68 +49,93 @@ module.exports = class NewSitePage extends Page
     if @login.groups.length > 0
       choices = [{ id: "(none)", label: T("(No Group)") }]
       choices = choices.concat(_.map(@login.groups, (g) => { id: g, label: g }))
-      contents.push new forms.DropdownQuestion
+      siteQuestions.push new forms.DropdownQuestion
         id: 'group'
-        model: @model
+        model: @siteModel
         prompt: T("Create site for group")
         required: true
         choices: choices
 
-    saveCancelForm = new forms.SaveCancelForm
-      T: T
-      contents: contents
+    @siteQuestionsGroup = new forms.QuestionGroup(contents: siteQuestions)
 
-    @$el.empty().append(saveCancelForm.el)
+    @$("#site_questions").append(@siteQuestionsGroup.el)
 
-    @listenTo saveCancelForm, 'save', =>
-      site = {
-        photos: []
-        tags: []
-      }
-      site.name = @model.get("name").value
-      site.desc = @model.get("desc").value
-      site.type = []
-      site.type[0] = @model.get("type").value
-      if @model.get("subtype") and @model.get("subtype").value
-        site.type[1] = @model.get("subtype").value
-      site.location = @model.get("location").value
-      if site.location
-        site.geo = GeoJSON.locToPoint(site.location)
+    # Create site attributes model from site
+    updateSiteAttrQuestions = =>
+      if @siteAttrQuestionsGroup
+        @siteAttrQuestionsGroup.remove()
 
-      # Set group
-      group = @model.get("group").value
-      if group == "(none)"
-        group = null
+      @siteAttrModel = new Backbone.Model()
+      siteAttrQuestions = commonUI.createSiteAttributeQuestions(site.type, @siteAttrModel)
+      @siteAttrQuestionsGroup = new forms.QuestionGroup(contents: siteAttrQuestions)
+      @$("#site_attr_questions").append(@siteAttrQuestionsGroup.el)
 
-      # Set who created for
-      site.created = { by: @login.user }
-      if group
-        site.created.for = group
+    updateSiteAttrQuestions()
 
-      # Set roles based on privacy
-      if @model.get("privacy").value == "public"
-        site.roles = [ { id: "all", role: "admin" } ]
-      if @model.get("privacy").value == "visible"
-        site.roles = [ { id: "all", role: "view" } ]
-      else
-        site.roles = [ ]
+    # When type changes, reset attrs
+    @siteModel.on "change:type change:subtype", () =>
+      # Reset attributes
+      updateSiteAttrQuestions()
 
-      if group
-        site.roles.push { id: "group:#{group}", role: "admin" }
-      else
-        site.roles.push { id: "user:#{this.login.user}", role: "admin" }
+  createSite: ->
+    # First validate
+    if not @siteQuestionsGroup.validate() or not @siteAttrQuestionsGroup.validate()
+      alert(T("Please correct values"))
+      return
 
-      success = (code) =>
-        site.code = code
+    site = {
+      photos: []
+      tags: []
+    }
 
-        @db.sites.upsert site, (site) => 
-          @pager.closePage(SitePage, { _id: site._id, onSelect: @options.onSelect })
-        , @error
+    site.name = @siteModel.get("name").value
+    site.desc = @siteModel.get("desc").value
 
-      error = =>
-        alert(T("Unable to generate site id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range."))
+    site.type = []
+    site.type[0] = @siteModel.get("type").value
+    if @siteModel.get("subtype") and @siteModel.get("subtype").value
+      site.type[1] = @siteModel.get("subtype").value
 
-      @siteCodesManager.requestCode(success, error)
+    site.location = @siteModel.get("location").value
+    if site.location
+      site.geo = GeoJSON.locToPoint(site.location)
 
-    @listenTo saveCancelForm, 'cancel', =>
-      @pager.closePage()
+    site.attrs = @siteAttrModel.toJSON()
+
+    # Set group
+    group = @siteModel.get("group").value
+    if group == "(none)"
+      group = null
+
+    # Set who created for
+    site.created = { by: @login.user }
+    if group
+      site.created.for = group
+
+    # Set roles based on privacy
+    if @siteModel.get("privacy").value == "public"
+      site.roles = [ { id: "all", role: "admin" } ]
+    if @siteModel.get("privacy").value == "visible"
+      site.roles = [ { id: "all", role: "view" } ]
+    else
+      site.roles = [ ]
+
+    if group
+      site.roles.push { id: "group:#{group}", role: "admin" }
+    else
+      site.roles.push { id: "user:#{this.login.user}", role: "admin" }
+
+    success = (code) =>
+      site.code = code
+
+      @db.sites.upsert site, (site) => 
+        @pager.closePage(SitePage, { _id: site._id, onSelect: @options.onSelect })
+      , @error
+
+    error = =>
+      alert(T("Unable to generate site id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range."))
+
+    @siteCodesManager.requestCode(success, error)
+
+  cancel: ->
+    @pager.closePage()

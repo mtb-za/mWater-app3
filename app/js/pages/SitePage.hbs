@@ -69,6 +69,17 @@
       {{T "Code:"}} <b>{{site.code}}</b>
   </div>
 
+  {{#if attrs}}
+    <br/>
+    <div class="well well-small">
+      {{#each attrs}}
+      <div>
+        <span class="text-muted">{{key}}</span>: {{value}}
+      </div>
+      {{/each}}
+    </div>
+  {{/if}}
+
   {{#if site.custom}}
     <br/>
     <div class="well well-small">

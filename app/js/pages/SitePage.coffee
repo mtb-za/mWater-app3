@@ -57,9 +57,29 @@ module.exports = class SitePage extends Page
     # Set site type
     siteTypeName =  _.map(@site.type, T).join(" - ")
 
+    # Get attributes
+    attrs = []
+    if @site.attrs
+      for attr, answer of @site.attrs
+        if answer
+          if answer.value and _.isArray(answer.value)
+            attrs.push { key: T(attr), value: _.map(answer.value, T).join(", ") }
+          else if answer.value
+            attrs.push { key: T(attr), value: T(answer.value) }
+          else if answer.alternate == "dontknow"
+            attrs.push { key: T(attr), value: T("Don't Know") }
+
     # Re-render template
     @removeSubviews()
-    @$el.html require('./SitePage.hbs')(site: @site, siteTypeName: siteTypeName, select: @options.onSelect?, isWaterPoint: @site.type[0] == "Water point")
+    data = {
+      site: @site
+      siteTypeName: siteTypeName
+      attrs: attrs
+      select: @options.onSelect?
+      isWaterPoint: @site.type[0] == "Water point"
+    }
+
+    @$el.html require('./SitePage.hbs')(data)
 
     # Hide add/edit if not authorized
     @$("#edit_site_button").toggle(@auth.update("sites", @site))
