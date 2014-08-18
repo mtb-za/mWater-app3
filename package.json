@@ -54,6 +54,7 @@
   "dependencies": {
     "async": "^0.8.0",
     "backbone-faux-server": "~0.10.1",
+    "bowser": "^0.7.1",
     "csv": "~0.3.6",
     "ez-localize": "^0.3.6",
     "fastclick": "~0.6.11",
