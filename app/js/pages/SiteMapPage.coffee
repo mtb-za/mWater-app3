@@ -126,11 +126,11 @@ class SiteMapPage extends Page
       # If not already deactivated
       if @map and not @deactivated
         @osmLayer.addTo(@map)
+        @configureButtonBars()
 
     onError = (errorType, errorData) =>
       if errorType == "COULD_NOT_CREATE_DB"
         console.log("Could not created DB.")
-        @noDb = true
       else
         if @cacheProgressControl?
           if not @cacheProgressControl.cancelling
@@ -145,12 +145,11 @@ class SiteMapPage extends Page
         else if errorType == "SYSTEM_BUSY"
           alert(T("System is busy"))
         else
-          errorMsg = errorType + ":" + errorData
-          throw Error(errorMsg)
+          console.log("#{errorType}:#{errorData}")
+          @pager.flash(errorType, "danger")
 
     # Setup base layers
     @osmLayer = BaseLayers.createOSMLayer(onReady, onError)
-    @noDb = not @osmLayer.useDB()
 
     # satelliteLayer = BaseLayers.createSatelliteLayer() # TODO re-add
 
@@ -279,7 +278,7 @@ class SiteMapPage extends Page
       click: => @updateSiteScope scope
       checked: (JSON.stringify(currentScope) == JSON.stringify(scope.value))      
     )
-    if not @noDb
+    if @osmLayer? and @osmLayer.useDB()
       menu.push { separator: true }
       menu.push {
         text: T("Make Available Offline")
