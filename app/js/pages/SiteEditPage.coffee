@@ -36,6 +36,15 @@ module.exports = class SiteEditPage extends Page
           @siteAttrQuestionsGroup.remove()
 
         @siteAttrModel = new Backbone.Model(site.attrs)
+
+        @siteAttrModel.on "change", =>
+          if @siteAttrQuestionsGroup.validate()
+            site.attrs = @siteAttrModel.toJSON()
+            @db.sites.upsert site, => 
+              # Do nothing
+              return 
+            , @error 
+   
         siteAttrQuestions = commonUI.createSiteAttributeQuestions(site.type, @siteAttrModel)
         @siteAttrQuestionsGroup = new forms.QuestionGroup(contents: siteAttrQuestions)
         @$el.append(@siteAttrQuestionsGroup.el)
@@ -60,14 +69,6 @@ module.exports = class SiteEditPage extends Page
             site.geo = GeoJSON.locToPoint(site.location)
 
           @db.sites.upsert site, =>
-            # Do nothing
-            return 
-          , @error 
- 
-       @siteAttrModel.on "change", =>
-        if @siteAttrQuestionsGroup.validate()
-          site.attrs = @siteAttrModel.toJSON()
-          @db.sites.upsert site, => 
             # Do nothing
             return 
           , @error 

@@ -13,7 +13,7 @@ module.exports = class NewSitePage extends Page
     "click #create_site": "createSite"
     "click #cancel": "cancel"
 
-  activate: ->
+  create: ->
     @setTitle T("New Site")
 
     @$el.html require('./NewSitePage.hbs')()
@@ -66,7 +66,7 @@ module.exports = class NewSitePage extends Page
         @siteAttrQuestionsGroup.remove()
 
       @siteAttrModel = new Backbone.Model()
-      siteAttrQuestions = commonUI.createSiteAttributeQuestions(site.type, @siteAttrModel)
+      siteAttrQuestions = commonUI.createSiteAttributeQuestions(@getSiteType(), @siteAttrModel)
       @siteAttrQuestionsGroup = new forms.QuestionGroup(contents: siteAttrQuestions)
       @$("#site_attr_questions").append(@siteAttrQuestionsGroup.el)
 
@@ -76,6 +76,13 @@ module.exports = class NewSitePage extends Page
     @siteModel.on "change:type change:subtype", () =>
       # Reset attributes
       updateSiteAttrQuestions()
+
+  getSiteType: =>
+    type = []
+    type[0] = @siteModel.get("type").value
+    if @siteModel.get("subtype") and @siteModel.get("subtype").value
+      type[1] = @siteModel.get("subtype").value
+    return type
 
   createSite: ->
     # First validate
@@ -91,7 +98,7 @@ module.exports = class NewSitePage extends Page
     site.name = @siteModel.get("name").value
     site.desc = @siteModel.get("desc").value
 
-    site.type = []
+    site.type = getSiteType()
     site.type[0] = @siteModel.get("type").value
     if @siteModel.get("subtype") and @siteModel.get("subtype").value
       site.type[1] = @siteModel.get("subtype").value
