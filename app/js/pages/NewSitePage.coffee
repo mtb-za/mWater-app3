@@ -98,7 +98,7 @@ module.exports = class NewSitePage extends Page
     site.name = @siteModel.get("name").value
     site.desc = @siteModel.get("desc").value
 
-    site.type = getSiteType()
+    site.type = @getSiteType()
     site.type[0] = @siteModel.get("type").value
     if @siteModel.get("subtype") and @siteModel.get("subtype").value
       site.type[1] = @siteModel.get("subtype").value
