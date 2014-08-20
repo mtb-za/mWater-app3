@@ -36,7 +36,7 @@ class SiteMapPage extends Page
     @resizeMap()
 
     # Update groups
-    if @login.updateGroups
+    if @login and @login.updateGroups
       @login.updateGroups()
 
     # Wrap onSelect to close page

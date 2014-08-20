@@ -39,7 +39,7 @@ module.exports = class SiteListPage extends Page
     @unlocatedSites = []
 
     # Update groups
-    if @login.updateGroups
+    if @login and @login.updateGroups
       @login.updateGroups()
 
     # Find location
