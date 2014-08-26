@@ -1,6 +1,11 @@
 Page = require "../Page"
 
-# Displays an image. Options: uid: uid of image
+# Displays an image. 
+# Options: 
+# id: uid of image
+# cover: true if cover image
+# onSetCover: call when set image as cover
+# onRemove: call when image is deleted
 module.exports = class ImagePage extends Page
   create: ->
     @$el.html require('./ImagePage.hbs')()
@@ -14,14 +19,28 @@ module.exports = class ImagePage extends Page
 
   activate: ->
     @setTitle T("Image")
+    @updateButtonbar()
+
+  updateButtonbar: ->
+    items = []
+    # If setCover allowed, add to button bar
+    if @options.onSetCover
+      items.push { text: T("Set As Cover"), click: => @setCover() }
 
     # If remove allowed, set in button bar
     if @options.onRemove
-      @setupButtonBar [
-        { icon: "delete.png", click: => @removePhoto() }
-      ]
-    else
-      @setupButtonBar []
+      items.push { icon: "delete.png", click: => @removePhoto() }
+
+    @setupButtonBar items 
+
+  setCover: ->
+    # Set cover
+    @options.onSetCover()
+
+    # Only allow once
+    @options.onSetCover = null
+
+    @updateButtonbar()
 
   removePhoto: ->
     if confirm(T("Remove image?"))

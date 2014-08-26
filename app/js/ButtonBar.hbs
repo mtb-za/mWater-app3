@@ -19,29 +19,36 @@
   padding-left: 5px; 
   font-size: 125%;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 </style>
 {{#each items}}
 <div style="float:right; position:relative;">
   {{#if menu}}
-  <div data-toggle="dropdown" class="buttonbar-item" style="background: url(img/{{icon}}) black no-repeat 0;">
-    {{#if text}}{{text}}{{else}}&nbsp;{{/if}}
-  </div>
-  <ul class="dropdown-menu" role="menu" style="right: 0; left: auto;">
-      {{#each menu}}
-        {{#if separator}}
-        <li role="presentation" class="divider"></li>
-        {{else}}
-        <li><a id="{{id}}" class="menuitem {{#if checked }}checked{{/if}}"><span class="glyphicon glyphicon-ok"></span> {{text}}</a></li>
-        {{/if}}
-      {{/each}}
-  </ul>  
-  </div>
+    {{#if text}}
+      <div data-toggle="dropdown" class="buttonbar-item" style="background: url(img/{{icon}}) black no-repeat 0; width: auto">
+        {{text}}
+      </div>
+    {{else}}
+      <div data-toggle="dropdown" class="buttonbar-item" style="background: url(img/{{icon}}) black no-repeat 0;">
+        &nbsp;
+      </div>
+    {{/if}}
+    <ul class="dropdown-menu" role="menu" style="right: 0; left: auto;">
+        {{#each menu}}
+          {{#if separator}}
+          <li role="presentation" class="divider"></li>
+          {{else}}
+          <li><a id="{{id}}" class="menuitem {{#if checked }}checked{{/if}}"><span class="glyphicon glyphicon-ok"></span> {{text}}</a></li>
+          {{/if}}
+        {{/each}}
+    </ul>  
+    </div>
   {{else}}
-  <div id="{{id}}" class="buttonbar-item menuitem" {{#if icon}}style="background: url(img/{{icon}}) black no-repeat 0;"{{/if}}>
-    {{#if text}}{{text}}{{else}}&nbsp;{{/if}}
-  </div>
+    <div id="{{id}}" class="buttonbar-item menuitem" {{#if icon}}style="background: url(img/{{icon}}) black no-repeat 0;"{{else}}style="width:auto"{{/if}}>
+      {{#if text}}{{text}}{{else}}&nbsp;{{/if}}
+    </div>
   {{/if}}
 </div>
 {{/each}}
