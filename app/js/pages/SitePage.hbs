@@ -8,9 +8,14 @@
   .text {
     padding: 2px;
   }
+  
   .site-name {
       font-size: 18pt;
       font-weight: bold
+  }
+
+  .site-desc {
+      font-size: 14pt;
   }
 
   .margined {
@@ -57,17 +62,23 @@
     {{T "Edit"}}
   </button>
   <div class="site-name">{{site.name}}</div>
+  <div class="site-desc">{{site.desc}}</div>
+
   <div>
-    {{site.desc}}
+      <span class="text-muted">{{T "Type:"}}</span> <b>{{siteTypeName}}</b></span>
   </div>
 
   <div>
-      {{T "Type:"}} <b>{{siteTypeName}}</b></span>
+      <span class="text-muted">{{T "Code:"}}</span> <b>{{site.code}}</b>
   </div>
 
-  <div>
-      {{T "Code:"}} <b>{{site.code}}</b>
-  </div>
+  {{#if attrs}}
+    {{#each attrs}}
+    <div>
+      <span class="text-muted">{{key}}</span>: {{value}}
+    </div>
+    {{/each}}
+  {{/if}}
 
   {{#if site.custom}}
     <br/>

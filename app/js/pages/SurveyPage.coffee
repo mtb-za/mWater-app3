@@ -45,11 +45,16 @@ class SurveyPage extends Page
       # Create context for forms            
       ctx = {
         displayImage: (options) =>
-          @pager.openPage(ImagePage, { id: options.id, onRemove: options.remove })
+          @pager.openPage(ImagePage, { id: options.id, onRemove: options.remove, onSetCover: options.setCover })
         imageManager: @ctx.imageManager
         imageAcquirer: @ctx.imageAcquirer
-        selectSite: (success) =>
-          @pager.openPage SiteListPage, { onSelect: (source)=> success(source.code) }
+        selectSite: (siteTypes, success) =>
+          @pager.openPage SiteListPage, { filterSiteTypes: siteTypes, onSelect: (source)=> success(source.code) }
+        getSite: (siteCode, success, error) =>
+          @db.sites.findOne { code: siteCode }, (site) =>
+            if site
+              success(site)
+          , error
         displayMap: (location, setLocation) =>
           options = {}
           options.setLocation = setLocation

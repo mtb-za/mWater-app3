@@ -63,7 +63,7 @@
     "minimist": "0.0.8",
     "minimongo": "^2.6.0",
     "mwater-common": "^1.1.0",
-    "mwater-forms": "^0.6.0",
+    "mwater-forms": "^2.0.0",
     "offline-leaflet-map": "^0.1.0",
     "parse-appcache-manifest": "~0.2.0",
     "read": "~1.0.4",

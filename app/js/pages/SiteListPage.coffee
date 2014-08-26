@@ -5,7 +5,9 @@ LocationFinder = require '../LocationFinder'
 GeoJSON = require '../GeoJSON'
 
 # Lists nearby and unlocated sites
-# Options: onSelect - function to call with site doc when selected
+# Options: 
+# onSelect - function to call with site doc when selected
+# filterSiteTypes: list of site types to include. null for all
 module.exports = class SiteListPage extends Page
   events: 
     'click tr.tappable' : 'siteClicked'
@@ -33,14 +35,19 @@ module.exports = class SiteListPage extends Page
     # Create queue of thumbnails
     @thumbnailQueue = async.queue(@processThumbnail, 1)
 
+    # Create filter of site types
+    @siteTypesFilter = {}
+    if @options.filterSiteTypes
+      @siteTypesFilter.type = { $in: @options.filterSiteTypes }
+
   activate: ->
     @$el.html require('./SiteListPage.hbs')()
     @nearSites = []
     @unlocatedSites = []
 
     # Update groups
-    if @login and @login.updateGroups
-      @login.updateGroups()
+    if @updateGroupsList
+      @updateGroupsList()
 
     # Find location
     @locationFinder = new LocationFinder()
@@ -49,12 +56,14 @@ module.exports = class SiteListPage extends Page
 
     @setupButtonBar [
       { icon: "buttonbar-search.png", click: => @search() }
-      { text: T("Map"), click: => @pager.closePage(require("./SiteMapPage"), {onSelect: @options.onSelect})}  
+      { text: T("Map"), click: => @pager.closePage(require("./SiteMapPage"), {onSelect: @options.onSelect, filterSiteTypes: @options.filterSiteTypes})}  
     ]
 
     # Query database for unlocated sites
     if @login
-      @db.sites.find(geo: { $exists: false }, user: @login.user).fetch (sites) =>
+      # Filter by my unlocated sites and siteTypes 
+      selector = _.extend({ geo: { $exists: false }, "created.by": @login.user }, @siteTypesFilter)
+      @db.sites.find(selector).fetch (sites) =>
         @unlocatedSites = sites
         @renderList()
       , @error
@@ -91,7 +100,7 @@ module.exports = class SiteListPage extends Page
   addSite: ->
     # defer to Allow menu to close first
     _.defer =>
-      @pager.openPage(require("./NewSitePage"), {onSelect: @onSelect})
+      @pager.openPage(require("./NewSitePage"), { onSelect: @onSelect, filterSiteTypes: @options.filterSiteTypes })
     
   locationFound: (pos) =>
     if @destroyed
@@ -105,7 +114,9 @@ module.exports = class SiteListPage extends Page
       $near: 
         $geometry: GeoJSON.posToPoint(pos)
 
-    # Query database for near sites
+    # Query database for near sites matching site type filter
+    selector = _.extend(selector, @siteTypesFilter)
+
     @db.sites.find(selector, { limit: 100 }).fetch (sites) =>
       @nearSites = sites
       @renderList()
@@ -172,6 +183,9 @@ module.exports = class SiteListPage extends Page
         selector = { code: @searchText }
       else
         selector = { $or: [ { name: { $regex : @searchText,  $options: 'i' } }, { desc: { $regex : @searchText,  $options: 'i' } } ] }
+
+      # Filter by siteTypes 
+      selector = _.extend(selector, @siteTypesFilter)
         
       @db.sites.find(selector, {limit: 100}).fetch (sites) =>
         siteScorer = (s) =>

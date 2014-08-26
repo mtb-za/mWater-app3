@@ -7,7 +7,14 @@ GeoJSON = require '../GeoJSON'
 module.exports = class SiteEditPage extends Page
   @canOpen: (ctx) -> ctx.auth.update("sites")
 
+  events:
+    "click #show_attrs": -> 
+      @$("#site_attr_questions").show()
+      @$("#show_attrs").hide()
+
   create: ->
+    @$el.html require('./SiteEditPage.hbs')()
+
     @db.sites.findOne {_id: @options._id}, (site) =>
       # Check auth
       if not @auth.update("sites", site)
@@ -15,8 +22,8 @@ module.exports = class SiteEditPage extends Page
 
       @setTitle T("Edit Site {0}", site.code)
 
-      # Create model from site
-      @model = new Backbone.Model({
+      # Create site model from site
+      @siteModel = new Backbone.Model({
         name: { value: site.name }
         desc: { value: site.desc }
         type: { value: site.type[0] }
@@ -24,30 +31,58 @@ module.exports = class SiteEditPage extends Page
         location: { value: site.location }
       })
 
-      contents = commonUI.createBasicSiteQuestions(@model, @ctx)
+      siteQuestions = commonUI.createBasicSiteQuestions(@siteModel, @ctx)
+      @siteQuestionsGroup = new forms.QuestionGroup(contents: siteQuestions)
 
-      saveCancelForm = new forms.SaveCancelForm
-        T: T
-        contents: contents
+      @$("#site_questions").append(@siteQuestionsGroup.el)
 
-      @$el.empty().append(saveCancelForm.el)
+      # Create site attributes model from site
+      updateSiteAttrQuestions = =>
+        if @siteAttrQuestionsGroup
+          @siteAttrQuestionsGroup.remove()
 
-      @listenTo saveCancelForm, 'save', =>
-        site.name = @model.get("name").value
-        site.desc = @model.get("desc").value
-        site.type = []
-        site.type[0] = @model.get("type").value
-        if @model.get("subtype") and @model.get("subtype").value
-          site.type[1] = @model.get("subtype").value
-        site.location = @model.get("location").value
-        if site.location
-          site.geo = GeoJSON.locToPoint(site.location)
+        @siteAttrModel = new Backbone.Model(site.attrs)
 
-        @db.sites.upsert site, => 
-          @pager.closePage()
-        , @error 
+        @siteAttrModel.on "change", =>
+          if @siteAttrQuestionsGroup.validate()
+            site.attrs = @siteAttrModel.toJSON()
+            @db.sites.upsert site, => 
+              # Do nothing
+              return 
+            , @error 
+   
+        siteAttrQuestions = commonUI.createSiteAttributeQuestions(site.type, @siteAttrModel)
+        @siteAttrQuestionsGroup = new forms.QuestionGroup(contents: siteAttrQuestions)
 
-      @listenTo saveCancelForm, 'cancel', =>
-        @pager.closePage()
-    , @error
+        @$("#site_attr_questions").append(@siteAttrQuestionsGroup.el)
+
+        # Reset visibility
+        @$("#site_attr_questions").hide()
+
+        # Only show display buttons if currently hidden and there are some to show
+        @$("#show_attrs").toggle(siteAttrQuestions.length > 0 and not @$("#site_attr_questions").is(":visible"))
+
+      updateSiteAttrQuestions()
+
+      @siteModel.on "change:type change:subtype", () =>
+        # Reset attributes
+        site.attrs = {}
+        updateSiteAttrQuestions()
+
+      @siteModel.on "change", =>
+        if @siteQuestionsGroup.validate()
+          site.name = @siteModel.get("name").value
+          site.desc = @siteModel.get("desc").value
+          site.type = []
+          site.type[0] = @siteModel.get("type").value
+          if @siteModel.get("subtype") and @siteModel.get("subtype").value
+            site.type[1] = @siteModel.get("subtype").value
+          site.location = @siteModel.get("location").value
+          if site.location
+            site.geo = GeoJSON.locToPoint(site.location)
+
+          @db.sites.upsert site, =>
+            # Do nothing
+            return 
+          , @error 
  

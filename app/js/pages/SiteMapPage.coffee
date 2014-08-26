@@ -13,6 +13,8 @@ LocationSetter = require('../map/LocationSetter')
 
 # Map of sites. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
+# onSelect - function to call with site doc when selected
+# filterSiteTypes: list of site types to include. null for all
 class SiteMapPage extends Page
   events:
     "click #goto_my_location": "gotoMyLocation"
@@ -25,7 +27,14 @@ class SiteMapPage extends Page
       _.defer => @pager.openPage(require("./NewTestPage"))
 
   activate: ->
-    @configureButtonBars()
+    # Check if offline allowed
+    if not window.cordova
+      @noDb = true
+
+    # Create filter of site types
+    @siteTypesFilter = {}
+    if @options.filterSiteTypes
+      @siteTypesFilter.type = { $in: @options.filterSiteTypes }
 
     @setTitle T("Site Map")
 
@@ -36,8 +45,8 @@ class SiteMapPage extends Page
     @resizeMap()
 
     # Update groups
-    if @login and @login.updateGroups
-      @login.updateGroups()
+    if @updateGroupsList
+      @updateGroupsList()
 
     # Wrap onSelect to close page
     if @options.onSelect
@@ -64,7 +73,8 @@ class SiteMapPage extends Page
     # If saved view
     if window.localStorage['SiteMapPage.lastView']
       lastView = JSON.parse(window.localStorage['SiteMapPage.lastView'])
-      @createMap(lastView.center, lastView.zoom, lastView.scope)
+      @scope = lastView.scope
+      @createMap(lastView.center, lastView.zoom)
       return
 
     # Wait very short time for location
@@ -103,9 +113,13 @@ class SiteMapPage extends Page
       return
     , @error
 
-  createMap: (center, zoom, scope) ->
+  # Create a map with center and zoom
+  createMap: (center, zoom) ->
     # Fix leaflet image path
     L.Icon.Default.imagePath = "img/leaflet"
+
+    # Setup button bars (now that we know the scope)
+    @configureButtonBars()
 
     options = {}
     # See issue https://github.com/mWater/app-v3/issues/103
@@ -152,19 +166,6 @@ class SiteMapPage extends Page
     @osmLayer = BaseLayers.createOSMLayer(onReady, onError)
     @noDb = not @osmLayer.useDB()
 
-    # satelliteLayer = BaseLayers.createSatelliteLayer() # TODO re-add
-
-    # baseLayers = 
-    #   "OpenStreetMap": osmLayer
-    #   "Satellite": satelliteLayer
-
-    # # Create layer control 
-    # L.control.layers(baseLayers).addTo(@map)
-
-    # # Create geocoder TODO READD
-    # osmGeocoder = new L.Control.OSMGeocoder()
-    # @map.addControl(osmGeocoder)
-
     # Setup context menu
     contextMenu = new ContextMenu(@map, @ctx, @onSelect)
     
@@ -183,7 +184,11 @@ class SiteMapPage extends Page
     # Add layers
     siteLayerCreator = new SiteLayerCreators.SimpleSitesLayerCreator @ctx, (_id) =>
       @pager.openPage(SitePage, { _id: _id, onSelect: @onSelect })
-    @sitesLayer = new SitesLayer(siteLayerCreator, @db.sites, scope).addTo(@map)
+
+    # Calculate site filter
+    filter = @calculateSiteFilter()
+    @sitesLayer = new SitesLayer(siteLayerCreator, @db.sites, filter).addTo(@map)
+
     # TODO remove legend
     # # Add legend
     # @legend = L.control({position: 'bottomright'});
@@ -206,26 +211,12 @@ class SiteMapPage extends Page
     # Setup location display
     @locationDisplay = new LocationDisplay(@map)
 
-  # Options for the dropdown menu
-  getSiteScopeOptions: =>
-    options = [{ display: T("All Sites"), type: "all", value: {} }]
-    # Only show groups choice if user has groups
-    if @login?
-      if @login.groups.length > 0
-        options.push { 
-          display: T("Only My Groups")
-          type: "groups"
-          value: { "created.for": { $in: @login.groups } }
-        }
-
-      if @login.user?
-        options.push { display: T("Only Mine"), type: "user", value: { "created.by": @login.user } }
-    return options
-
   # Filter the sites by all, groups, or user
   updateSiteScope: (scope) => 
+    @scope = scope
+
     # Update Map
-    @sitesLayer.setScope scope.value
+    @sitesLayer.setFilter(@calculateSiteFilter())
     @sitesLayer.update()
 
     # Update UI
@@ -233,7 +224,14 @@ class SiteMapPage extends Page
 
     # Persist the view
     @saveView()
-    return
+
+  # Calculate filter to use for sites
+  calculateSiteFilter: ->
+    option = _.findWhere(@getSiteScopeOptions(), { type: @scope })
+    if option
+      return _.extend(option.value, @siteTypesFilter) 
+    else
+      return @siteTypesFilter
 
   saveView: => 
     if @deactivated or not @map
@@ -242,7 +240,7 @@ class SiteMapPage extends Page
     window.localStorage['SiteMapPage.lastView'] = JSON.stringify({
       center: @map.getCenter() 
       zoom: @map.getZoom()
-      scope: @sitesLayer.scope
+      scope: @scope
     })
 
   gotoMyLocation: ->
@@ -267,18 +265,22 @@ class SiteMapPage extends Page
         @pager.flash(T("Unable to determine location"), "warning")
 
 
+  # Configure gear menu 
   configureButtonBars: ->
-    # Configure gear menu
-    # Get the current scope to be used to set the active dropdown item
-    currentScope = if @sitesLayer and @sitesLayer.scope then @sitesLayer.scope else {}
+    # Get options for site menu
+    options = @getSiteScopeOptions()
+
+    # If current option is invalid, set to first one
+    if not (@scope in _.pluck(options, "type"))
+      @scope = options[0].type
 
     # Create a dropdown menu using the Site Scope Options
-    menu = @getSiteScopeOptions().map((scope) =>
+    menu = _.map options, (scope) =>
       text: scope.display
       id: "site_scope_" + scope.type
-      click: => @updateSiteScope scope
-      checked: (JSON.stringify(currentScope) == JSON.stringify(scope.value))      
-    )
+      click: => @updateSiteScope(scope.type)
+      checked: @scope == scope.type
+
     if not @noDb
       menu.push { separator: true }
       menu.push {
@@ -290,13 +292,29 @@ class SiteMapPage extends Page
 
     @setupButtonBar [
       { icon: "buttonbar-gear.png", menu: menu }
-      { text: T("List"), click: => @pager.closePage(require("./SiteListPage"), {onSelect: @options.onSelect})}  
+      { text: T("List"), click: => @pager.closePage(require("./SiteListPage"), {onSelect: @options.onSelect, filterSiteTypes: @options.filterSiteTypes})}  
     ]
+
+  # Options for the dropdown menu
+  getSiteScopeOptions: =>
+    options = [{ display: T("All Sites"), type: "all", value: {} }]
+    # Only show groups choice if user has groups
+    if @login?
+      if @login.groups.length > 0
+        options.push { 
+          display: T("Only My Groups")
+          type: "groups"
+          value: { "created.for": { $in: @login.groups } }
+        }
+
+      if @login.user?
+        options.push { display: T("Only Mine"), type: "user", value: { "created.by": @login.user } }
+    return options
 
   addSite: ->
     # defer to Allow menu to close first
     _.defer => 
-      @pager.openPage(require("./NewSitePage"), {onSelect: @onSelect})
+      @pager.openPage(require("./NewSitePage"), {onSelect: @onSelect, filterSiteTypes: @options.filterSiteTypes})
 
   resizeMap: =>
     # TODO why does this prevent crashes?
@@ -342,6 +360,12 @@ class SiteMapPage extends Page
 
       # Save the tiles
       @cacheProgressControl.saveTiles(zoomLimit)
+
+      # Cache sites as well 
+      @sitesLayer.cacheSites (sites) ->
+        # Do nothing with returned sites
+        console.log "#{sites.length} sites cached"
+      , @error
     else
       alert(T("You are trying to save too large of a region of the map. Please zoom in further."))
 

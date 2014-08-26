@@ -6,12 +6,12 @@ normalizeLng = require('./utils').normalizeLng
 # SitesLayer takes care of basic filtering and gives the individual layer (site)
 # creation to site layer
 module.exports = class SitesLayer extends L.LayerGroup
-  constructor: (siteLayerCreator, sitesDb, scope) ->
+  constructor: (siteLayerCreator, sitesDb, filter) ->
     super()
     @maxSitesReturned = 300
     @siteLayerCreator = siteLayerCreator
     @sitesDb = sitesDb
-    @scope = scope || {}
+    @filter = filter || {}
 
     # Layers, by _id
     @layers = {}
@@ -32,20 +32,21 @@ module.exports = class SitesLayer extends L.LayerGroup
     super(map)
     map.off 'moveend', @update
 
-  setScope: (scope) => 
-    @scope = scope
+  setFilter: (filter) => 
+    @filter = filter
 
-  # Builds a selector based on bounds and scope (all, groups, user)
+  # Builds a selector based on bounds and filter
   # then queries the database
   update: =>
     selector = {}
     # Pad to ensure scrolling shows nearby ones
     bounds = @map.getBounds().pad(0.1)
-    # add bounds to the selector
+
+    # Add bounds to the selector
     @boundsQuery bounds, selector
 
-    # add scope to the selector
-    _.extend(selector, @scope)
+    # Add filter to the selector
+    _.extend(selector, @filter)
 
     # TODO pass error?
     @getSites selector, @updateFromList
@@ -102,7 +103,6 @@ module.exports = class SitesLayer extends L.LayerGroup
 
   # Query the db
   getSites: (selector, success, error) =>
-    _this = this
     queryOptions =
       sort: ["_id"]
       limit: @maxSitesReturned
@@ -114,6 +114,14 @@ module.exports = class SitesLayer extends L.LayerGroup
         type: 1
         created: 1
         photos: 1
+
+    @sitesDb.find(selector, queryOptions).fetch success, error
+
+  # Query the db, effectively caching sites returned
+  cacheSites: (success, error) =>
+    queryOptions =
+      sort: ["_id"]
+      limit: @maxSitesReturned
 
     @sitesDb.find(selector, queryOptions).fetch success, error
 
