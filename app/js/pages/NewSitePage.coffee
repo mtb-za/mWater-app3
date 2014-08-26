@@ -12,6 +12,9 @@ module.exports = class NewSitePage extends Page
   events:
     "click #create_site": "createSite"
     "click #cancel": "cancel"
+    "click #show_attrs": -> 
+      @$("#site_attr_questions").show()
+      @$("#show_attrs").hide()
 
   create: ->
     @setTitle T("New Site")
@@ -69,6 +72,12 @@ module.exports = class NewSitePage extends Page
       siteAttrQuestions = commonUI.createSiteAttributeQuestions(@getSiteType(), @siteAttrModel)
       @siteAttrQuestionsGroup = new forms.QuestionGroup(contents: siteAttrQuestions)
       @$("#site_attr_questions").append(@siteAttrQuestionsGroup.el)
+
+      # Reset visibility
+      @$("#site_attr_questions").hide()
+
+      # Only show display buttons if currently hidden and there are some to show
+      @$("#show_attrs").toggle(siteAttrQuestions.length > 0 and not @$("#site_attr_questions").is(":visible"))
 
     updateSiteAttrQuestions()
 

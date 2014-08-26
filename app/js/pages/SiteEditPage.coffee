@@ -7,7 +7,14 @@ GeoJSON = require '../GeoJSON'
 module.exports = class SiteEditPage extends Page
   @canOpen: (ctx) -> ctx.auth.update("sites")
 
-  activate: ->
+  events:
+    "click #show_attrs": -> 
+      @$("#site_attr_questions").show()
+      @$("#show_attrs").hide()
+
+  create: ->
+    @$el.html require('./SiteEditPage.hbs')()
+
     @db.sites.findOne {_id: @options._id}, (site) =>
       # Check auth
       if not @auth.update("sites", site)
@@ -24,11 +31,10 @@ module.exports = class SiteEditPage extends Page
         location: { value: site.location }
       })
 
-      siteQuestions = commonUI.createBasicSiteQuestions(@siteModel)
+      siteQuestions = commonUI.createBasicSiteQuestions(@siteModel, @ctx)
       @siteQuestionsGroup = new forms.QuestionGroup(contents: siteQuestions)
 
-      @$el.empty()
-      @$el.append(@siteQuestionsGroup.el)
+      @$("#site_questions").append(@siteQuestionsGroup.el)
 
       # Create site attributes model from site
       updateSiteAttrQuestions = =>
@@ -47,7 +53,14 @@ module.exports = class SiteEditPage extends Page
    
         siteAttrQuestions = commonUI.createSiteAttributeQuestions(site.type, @siteAttrModel)
         @siteAttrQuestionsGroup = new forms.QuestionGroup(contents: siteAttrQuestions)
-        @$el.append(@siteAttrQuestionsGroup.el)
+
+        @$("#site_attr_questions").append(@siteAttrQuestionsGroup.el)
+
+        # Reset visibility
+        @$("#site_attr_questions").hide()
+
+        # Only show display buttons if currently hidden and there are some to show
+        @$("#show_attrs").toggle(siteAttrQuestions.length > 0 and not @$("#site_attr_questions").is(":visible"))
 
       updateSiteAttrQuestions()
 
