@@ -6,12 +6,12 @@ normalizeLng = require('./utils').normalizeLng
 # SitesLayer takes care of basic filtering and gives the individual layer (site)
 # creation to site layer
 module.exports = class SitesLayer extends L.LayerGroup
-  constructor: (siteLayerCreator, sitesDb, scope) ->
+  constructor: (siteLayerCreator, sitesDb, filter) ->
     super()
     @maxSitesReturned = 300
     @siteLayerCreator = siteLayerCreator
     @sitesDb = sitesDb
-    @scope = scope || {}
+    @filter = filter || {}
 
     # Layers, by _id
     @layers = {}
@@ -32,10 +32,10 @@ module.exports = class SitesLayer extends L.LayerGroup
     super(map)
     map.off 'moveend', @update
 
-  setScope: (scope) => 
-    @scope = scope
+  setFilter: (filter) => 
+    @filter = filter
 
-  # Builds a selector based on bounds and scope (all, groups, user)
+  # Builds a selector based on bounds and filter
   # then queries the database
   update: =>
     selector = {}
@@ -45,8 +45,8 @@ module.exports = class SitesLayer extends L.LayerGroup
     # Add bounds to the selector
     @boundsQuery bounds, selector
 
-    # Add scope to the selector
-    _.extend(selector, @scope)
+    # Add filter to the selector
+    _.extend(selector, @filter)
 
     # TODO pass error?
     @getSites selector, @updateFromList

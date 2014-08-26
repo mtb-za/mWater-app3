@@ -50,6 +50,11 @@ class SurveyPage extends Page
         imageAcquirer: @ctx.imageAcquirer
         selectSite: (siteTypes, success) =>
           @pager.openPage SiteListPage, { filterSiteTypes: siteTypes, onSelect: (source)=> success(source.code) }
+        getSite: (siteCode, success, error) =>
+          @db.sites.findOne { code: siteCode }, (site) =>
+            if site
+              success(site)
+          , error
         displayMap: (location, setLocation) =>
           options = {}
           options.setLocation = setLocation
