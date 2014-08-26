@@ -103,7 +103,6 @@ module.exports = class SitesLayer extends L.LayerGroup
 
   # Query the db
   getSites: (selector, success, error) =>
-    _this = this
     queryOptions =
       sort: ["_id"]
       limit: @maxSitesReturned
@@ -115,6 +114,14 @@ module.exports = class SitesLayer extends L.LayerGroup
         type: 1
         created: 1
         photos: 1
+
+    @sitesDb.find(selector, queryOptions).fetch success, error
+
+  # Query the db, effectively caching sites returned
+  cacheSites: (success, error) =>
+    queryOptions =
+      sort: ["_id"]
+      limit: @maxSitesReturned
 
     @sitesDb.find(selector, queryOptions).fetch success, error
 

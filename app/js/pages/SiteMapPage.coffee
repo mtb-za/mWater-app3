@@ -30,7 +30,7 @@ class SiteMapPage extends Page
     # Check if offline allowed
     if not window.cordova
       @noDb = true
-      
+
     # Create filter of site types
     @siteTypesFilter = {}
     if @options.filterSiteTypes
@@ -360,6 +360,12 @@ class SiteMapPage extends Page
 
       # Save the tiles
       @cacheProgressControl.saveTiles(zoomLimit)
+
+      # Cache sites as well 
+      @sitesLayer.cacheSites (sites) ->
+        # Do nothing with returned sites
+        console.log "#{sites.length} sites cached"
+      , @error
     else
       alert(T("You are trying to save too large of a region of the map. Please zoom in further."))
 
