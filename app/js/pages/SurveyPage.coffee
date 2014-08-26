@@ -48,8 +48,8 @@ class SurveyPage extends Page
           @pager.openPage(ImagePage, { id: options.id, onRemove: options.remove })
         imageManager: @ctx.imageManager
         imageAcquirer: @ctx.imageAcquirer
-        selectSite: (success) =>
-          @pager.openPage SiteListPage, { onSelect: (source)=> success(source.code) }
+        selectSite: (siteTypes, success) =>
+          @pager.openPage SiteListPage, { filterSiteTypes: siteTypes, onSelect: (source)=> success(source.code) }
         displayMap: (location, setLocation) =>
           options = {}
           options.setLocation = setLocation

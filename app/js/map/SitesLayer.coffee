@@ -41,10 +41,11 @@ module.exports = class SitesLayer extends L.LayerGroup
     selector = {}
     # Pad to ensure scrolling shows nearby ones
     bounds = @map.getBounds().pad(0.1)
-    # add bounds to the selector
+
+    # Add bounds to the selector
     @boundsQuery bounds, selector
 
-    # add scope to the selector
+    # Add scope to the selector
     _.extend(selector, @scope)
 
     # TODO pass error?

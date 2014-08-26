@@ -5,7 +5,10 @@ commonUI = require './commonUI'
 GeoJSON = require '../GeoJSON'
 
 # Allows creating of a site
-# Options are geo to initialize the geo of the site
+# Options include
+# geo: to initialize the geo of the site
+# onSelect - function to call with site doc when selected
+# filterSiteTypes: list of site types to include. null for all
 module.exports = class NewSitePage extends Page
   @canOpen: (ctx) -> ctx.auth.insert("sites")
 
@@ -35,7 +38,7 @@ module.exports = class NewSitePage extends Page
     if _.any(@login.groups, (g) -> g.match(/wateraid/i))
       @siteModel.set("privacy", { value: "private" })
 
-    siteQuestions = commonUI.createBasicSiteQuestions(@siteModel, @ctx)
+    siteQuestions = commonUI.createBasicSiteQuestions(@siteModel, @ctx, @options.filterSiteTypes)
 
     siteQuestions.push new forms.RadioQuestion
       id: 'privacy'

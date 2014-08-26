@@ -7,7 +7,9 @@ siteTypes = require('mwater-common').siteTypes
 # desc: { value: <desc> }
 # type: { value: <type> }
 # location: { value: <location> }
-exports.createBasicSiteQuestions = (model, ctx) ->
+#
+# filterSiteTypes: list of site types to restrict to. Null for all
+exports.createBasicSiteQuestions = (model, ctx, filterSiteTypes) ->
   # When type changes, clear subtype
   model.on "change:type", =>
     model.unset("subtype")
@@ -25,12 +27,20 @@ exports.createBasicSiteQuestions = (model, ctx) ->
   # Create questions
   contents = []
 
+  choices = []
+  for siteType in siteTypes
+    # Filter site types
+    if filterSiteTypes and siteType.name not in filterSiteTypes
+      continue
+
+    choices.push { id: siteType.name, label: T(siteType.name)}
+
   contents.push new forms.DropdownQuestion
     T: T
     id: 'type'
     model: model
     prompt: T('Select site type')
-    choices: _.map(siteTypes, (st) => { id: st.name, label: T(st.name)})
+    choices: choices
     required: true
 
   # Create subtype questions

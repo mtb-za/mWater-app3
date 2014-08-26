@@ -13,6 +13,8 @@ LocationSetter = require('../map/LocationSetter')
 
 # Map of sites. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
+# onSelect - function to call with site doc when selected
+# filterSiteTypes: list of site types to include. null for all
 class SiteMapPage extends Page
   events:
     "click #goto_my_location": "gotoMyLocation"
@@ -25,6 +27,11 @@ class SiteMapPage extends Page
       _.defer => @pager.openPage(require("./NewTestPage"))
 
   activate: ->
+    # Create filter of site types
+    @siteTypesFilter = {}
+    if @options.filterSiteTypes
+      @siteTypesFilter.type = { $in: @options.filterSiteTypes }
+
     @configureButtonBars()
 
     @setTitle T("Site Map")
@@ -224,8 +231,9 @@ class SiteMapPage extends Page
 
   # Filter the sites by all, groups, or user
   updateSiteScope: (scope) => 
-    # Update Map
-    @sitesLayer.setScope scope.value
+    # Update Map, scoping also by filtered site types
+    # TODO this could all use a refactor
+    @sitesLayer.setScope _.extend(scope.value, @siteTypesFilter)
     @sitesLayer.update()
 
     # Update UI
@@ -290,13 +298,13 @@ class SiteMapPage extends Page
 
     @setupButtonBar [
       { icon: "buttonbar-gear.png", menu: menu }
-      { text: T("List"), click: => @pager.closePage(require("./SiteListPage"), {onSelect: @options.onSelect})}  
+      { text: T("List"), click: => @pager.closePage(require("./SiteListPage"), {onSelect: @options.onSelect, filterSiteTypes: @options.filterSiteTypes})}  
     ]
 
   addSite: ->
     # defer to Allow menu to close first
     _.defer => 
-      @pager.openPage(require("./NewSitePage"), {onSelect: @onSelect})
+      @pager.openPage(require("./NewSitePage"), {onSelect: @onSelect, filterSiteTypes: @options.filterSiteTypes})
 
   resizeMap: =>
     # TODO why does this prevent crashes?
