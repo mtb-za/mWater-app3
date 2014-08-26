@@ -8,7 +8,7 @@ module.exports = ->
 
   options = { 
     extensions: ['.js', '.coffee']
-    externalModules: ["mwater-forms"]
+    externalModules: ["mwater-forms", "mwater-common"]
     transformKey: [ 'browserify', 'transform' ]
   }
 

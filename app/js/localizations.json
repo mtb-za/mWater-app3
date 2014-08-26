@@ -14,13 +14,15 @@
       "en": "<b>{0} images to upload</b>",
       "es": "<b>{0} imágenes para cargar</b>",
       "sw": "<b>{0} picha za kupakia </b>",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Add Water Source",
       "es": "Agregar Fuente de Agua",
       "sw": "Ongeza Chanzo cha Maji",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Start Water Test",
@@ -56,13 +58,15 @@
       "en": "Map Water Sources",
       "es": "Trazar un Mapa de los Fuentes de Agua",
       "sw": "Ramani ya Vyanzo vya Maji",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "List Water Sources",
       "es": "Hacer un Lista de los Fuentes de Agua",
       "sw": "Orodha ya Vyanzo vya Maji",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Language:",
@@ -80,7 +84,8 @@
       "en": "Reset Local Storage",
       "es": "Reinicializar el Almacenaje de Local",
       "sw": "Anza upya hifadhi ya ndani",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "This will completely reset any cached data and cause you to lose any pending changes that you have not uploaded",
@@ -272,31 +277,36 @@
       "en": "Create Water Source",
       "es": "Crear Fuente de Agua",
       "sw": "Unda Chanzo cha Maji",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Pending...",
       "es": "Pendiente...",
       "sw": "Inasubiri...",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "No Data",
       "es": "No Hay Datos",
       "sw": "Hakuna data",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "High",
       "es": "Alto",
       "sw": "Refu",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Water source",
       "es": "Fuente de Agua",
       "sw": "Chanzo cha Maji",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Name",
@@ -308,7 +318,8 @@
       "en": "E.Coli / 100mL",
       "es": "E.Coli / 100mL",
       "sw": "E.Coli / 100mL",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Open",
@@ -320,7 +331,8 @@
       "en": "Admin",
       "es": "Administración",
       "sw": "Msimamizi",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Select Survey",
@@ -368,13 +380,15 @@
       "en": "New Source",
       "es": "Fuente Nueva",
       "sw": "Chanzo kipya",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Enter Source Type",
       "es": "Introducir Tipo de Fuente",
       "sw": "Chagua Aina ya Chanzo",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Zoom in to see more",
@@ -398,31 +412,36 @@
       "en": "Privacy",
       "es": "Privacidad",
       "sw": "Usiri",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Water source is private",
       "es": "Fuente de agua es privada",
       "sw": "Chanzo cha Maji ni binafsi",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "This should only be used for sources that are not publically accessible",
       "es": "Esto sólo debe usarse para fuentes que no son públicamente accesibles",
       "sw": "Hii itumike kwa vyanzo ambavyo havitumiki na jamii pekee",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Set to current location?",
       "es": "Establecer la ubicación actual?",
       "sw": "Weka mahali ulipo sasa?",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Unable to generate source id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range.",
       "es": "Es incapaz de generar código fuente Por favor asegúrese de que tiene una conexión o utilizar las configuraciones para obtener más información antes de salir del rango de conexión",
       "sw": "Haiwezekani kuzalisha namba ya pekee (id) ya chanzo. Tafadhali hakikisha umeunganishwa na mtandao au fungua Mipangilio ili kupata vyanzo zaidi kabla ya kutoka nje ya eneo lenye mawasiliano",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Form not found",
@@ -506,19 +525,22 @@
       "en": "Start remote debugger (this will give developers temporary access to the app on your phone)?",
       "es": "Iniciar el depurador remoto (esto le dará los desarrolladores acceso temporal a la aplicación en su teléfono)?",
       "sw": "Anzisha kichambuzi cha mbali (waruhusu wabunifu wa programu wajaribu kutatua tatizo la simu yako kupitia Intaneti)?",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Debugger started with code {0}",
       "es": "Depurador comenzado con código {0}",
       "sw": "Kichambuzi kimeanzishwa na kanuni {0}",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Failed to load weinre",
       "es": "Error al cargar weinre",
       "sw": "Imeshindikana kupakia weinre",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Username required",
@@ -548,13 +570,15 @@
       "en": "Edit Source {0}",
       "es": "Editar Fuente {0}",
       "sw": "Hariri Chanzo {0}",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Nearby Sources",
       "es": "Fuentes Cercanas",
       "sw": "Vyanzo vilivyo Jirani",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Unable to determine location",
@@ -566,25 +590,29 @@
       "en": "Enter search text or ID of water source",
       "es": "Introduzca el texto de búsqueda o el código de fuente de agua",
       "sw": "Andika maandishi ya kutafuta au ID ya chanzo cha maji",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Source Map",
       "es": "Mapa de los Fuentes",
       "sw": "Ramani ya Vyanzo",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "All Sources",
       "es": "Todas las Fuentes",
       "sw": "Vyanzo Vyote",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Only My Organization",
       "es": "Sólo mi organización",
       "sw": "Shirika Langu Tu",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Only Mine",
@@ -609,7 +637,8 @@
       "en": "Status of Water Source",
       "es": "Estado de la Fuente de Agua",
       "sw": "Hali ya Chanzo cha Maji",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Functional",
@@ -645,31 +674,36 @@
       "en": "Source not found",
       "es": "Fuente no encontrada",
       "sw": "Chanzo hakipatikani",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Delete Source",
       "es": "Eliminar fuente",
       "sw": "Futa Chanzo",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Add Note",
       "es": "Agregar Nota",
       "sw": "Ongeza Noti",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Permanently delete source?",
       "es": "Eliminar permanentemente la fuente?",
       "sw": "Futa chanzo kwa kudumu?",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Source deleted",
       "es": "Fuente eliminada",
       "sw": "Chanzo kimefutwa",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Survey",
@@ -801,13 +835,15 @@
       "en": "List of Sources",
       "es": "Lista de las Fuentes",
       "sw": "Orodha ya Vyanzo",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Map of Sources",
       "es": "Mapa de las Fuentes",
       "sw": "Ramani ya Vyanzo",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Start New Water Test",
@@ -891,37 +927,43 @@
       "en": "Change user's password",
       "es": "Cambiar la Contraseña de Usario",
       "sw": "Badilisha neno la siri la mtumiaji",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Change Password",
       "es": "Cambiar la Contraseña",
       "sw": "Badilisha Neno la Siri",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Set user's organization",
       "es": "Establecer la Organización del Usuario",
       "sw": "Weka shirika la mtumiaji",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Move user's existing data to new organization",
       "es": "Mover los datos existentes del usuario a la nueva organización",
       "sw": "Hamisha data za mtumiaji zilizopo kwenda shirika jipya",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Change Organization",
       "es": "Cambiar Organización",
       "sw": "Badili shirika",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Crash!",
       "es": "Choque!",
       "sw": "Mvurugiko!",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Incomplete Surveys",
@@ -1023,7 +1065,8 @@
       "en": "Note: Your username is visible on water sources you create",
       "es": "Nota: Su nombre de usuario es visible en las fuentes de agua que se crea",
       "sw": "Noti: Jina lako la utumiaji linaonekana katika vyanzo vya maji unavyounda",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Email address",
@@ -1059,7 +1102,8 @@
       "en": "ID:",
       "es": "ID:",
       "sw": "ID:",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Type:",
@@ -1071,7 +1115,8 @@
       "en": "Edit Source",
       "es": "Editar fuente",
       "sw": "Hariri Chanzo",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Location",
@@ -1149,13 +1194,15 @@
       "en": "Offline Source Creation",
       "es": "Creación de Fuente sin Conexión",
       "sw": "Uundaji wa Vyanzo bila Intaneti",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Number of sources that can be created offline:",
       "es": "Número de fuentes que se pueden crear sin conexión",
       "sw": "Idadi ya vyanzo inayoweza kuundwa bila kuunganishwa na Intaneti",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Request more",
@@ -1167,7 +1214,8 @@
       "en": "Select Source",
       "es": "Seleccionar fuente",
       "sw": "Chagua Chanzo",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Private",
@@ -1191,7 +1239,8 @@
       "en": "Source",
       "es": "Fuente",
       "sw": "Chanzo",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Edit Test",
@@ -1233,7 +1282,8 @@
       "en": "See the map for a global view if no sources are found.",
       "es": "Vea el mapa para obtener una vista global si no encuentra fuentes",
       "sw": "Angalia ramani kwa muonekano wa ulimwengu kama hakuna vyanzo vinanvyoonekana",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Incomplete",
@@ -1275,7 +1325,8 @@
       "en": "Source {0}",
       "es": "Fuente {0}",
       "sw": "Chanzo {0}",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "_base": "en",
@@ -1375,7 +1426,8 @@
       "_base": "en",
       "en": "m",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
@@ -1406,7 +1458,8 @@
       "_base": "en",
       "en": "<b>{0} records to upload</b>",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
@@ -1704,7 +1757,8 @@
     {
       "_base": "en",
       "en": "Status for Source {0}",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
@@ -1896,6 +1950,451 @@
     {
       "_base": "en",
       "en": "Calculating...",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Your app is out of date. Please update mWater App on Google Play",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Site Map",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "System is busy",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "List",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "All Sites",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Only My Groups",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Map of Sites",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "List of Sites",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Site",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Type",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Code",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Set Location Here",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Error resetting database",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Reset successful",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Nearby Sites",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Enter search text or ID of site",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Create Site",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Site not found",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Site {0}",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Delete Site",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Don't Know",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "No Location Set",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Permanently delete site?",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Site deleted",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "New Site",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Site privacy",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Public",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Visible",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Private should only be used for sites that are not publicly accessible",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "(No Group)",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Create site for group",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Please correct values",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Unable to generate site id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range.",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Offline Site Creation",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Number of sites that can be created offline:",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Reset Storage",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "See the map for a global view if no sites are found.",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Note",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Select Site",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Code:",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Note: Your username is visible on sites you create",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Create",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Status for Site {0}",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Status of Site",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Lat/lng: ",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "View on Map",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Edit Site {0}",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Select site type",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Select optional site subtype",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Enter site location",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Other (please specify)",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Pump/lifting device",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Powered by",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Drilling method",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Supply",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Treatment works",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Pit emptying",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Treatment",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Set As Cover",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "meters",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Current Location",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Use Map",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Water point",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Protected dug well",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Unprotected dug well",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Borehole or tubewell",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Protected spring",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Unprotected spring",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Rainwater",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Surface water",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Piped into dwelling",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Piped into yard/plot",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Piped into public tap or basin",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Bottled water",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Tanker truck",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Cart with small tank/drum",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Sanitation facility",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Flush/pour flush toilet",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Ventilated improved pit latrine",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Pit latrine with slab",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Composting toilet",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Pit latrine without slab",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Hanging latrine",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Bucket",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "No facilities or bush or field",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Household",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Community",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "School",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Health facility",
       "sw": ""
     }
   ]
