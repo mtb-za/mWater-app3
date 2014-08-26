@@ -119,6 +119,14 @@ module.exports = class SitesLayer extends L.LayerGroup
 
   # Query the db, effectively caching sites returned
   cacheSites: (success, error) =>
+    selector = {}
+
+    # Add bounds to the selector
+    @boundsQuery @map.getBounds(), selector
+
+    # Add filter to the selector
+    _.extend(selector, @filter)
+
     queryOptions =
       sort: ["_id"]
       limit: @maxSitesReturned
