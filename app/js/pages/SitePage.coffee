@@ -129,16 +129,16 @@ module.exports = class SitePage extends Page
         @$("#status").html require('./SitePage_status.hbs')(status:status, date: date, canUpdate: @auth.insert("source_notes"))
       , @error
 
-      # Add surveys
-      @db.responses.find({"data.source": @site.code}).fetch (surveys) =>
-        @$("#surveys").html require('./SitePage_surveys.hbs')(surveys:surveys)
+      # # Add surveys
+      # @db.responses.find({"data.source": @site.code}).fetch (surveys) =>
+      #   @$("#surveys").html require('./SitePage_surveys.hbs')(surveys:surveys)
 
-        # Fill in names
-        for survey in surveys
-          @db.forms.findOne { code:survey.type }, { mode: "local" }, (form) =>
-            @$("#survey_name_"+survey._id).text(if form then form.name else "???")
-          , @error
-      , @error
+      #   # Fill in names
+      #   for survey in surveys
+      #     @db.forms.findOne { code:survey.type }, { mode: "local" }, (form) =>
+      #       @$("#survey_name_"+survey._id).text(if form then form.name else "???")
+      #     , @error
+      # , @error
 
     # Add photos
     photosView = new forms.ImagesQuestion
