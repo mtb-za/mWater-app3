@@ -27,10 +27,6 @@ class SiteMapPage extends Page
       _.defer => @pager.openPage(require("./NewTestPage"))
 
   activate: ->
-    # Check if offline allowed
-    if not window.cordova
-      @noDb = true
-
     # Create filter of site types
     @siteTypesFilter = {}
     if @options.filterSiteTypes
@@ -140,11 +136,11 @@ class SiteMapPage extends Page
       # If not already deactivated
       if @map and not @deactivated
         @osmLayer.addTo(@map)
+        @configureButtonBars()
 
     onError = (errorType, errorData) =>
       if errorType == "COULD_NOT_CREATE_DB"
         console.log("Could not created DB.")
-        @noDb = true
       else
         if @cacheProgressControl?
           if not @cacheProgressControl.cancelling
@@ -159,12 +155,11 @@ class SiteMapPage extends Page
         else if errorType == "SYSTEM_BUSY"
           alert(T("System is busy"))
         else
-          errorMsg = errorType + ":" + errorData
-          throw Error(errorMsg)
+          console.log("#{errorType}:#{errorData}")
+          @pager.flash(errorType, "danger")
 
     # Setup base layers
     @osmLayer = BaseLayers.createOSMLayer(onReady, onError)
-    @noDb = not @osmLayer.useDB()
 
     # Setup context menu
     contextMenu = new ContextMenu(@map, @ctx, @onSelect)
@@ -281,7 +276,7 @@ class SiteMapPage extends Page
       click: => @updateSiteScope(scope.type)
       checked: @scope == scope.type
 
-    if not @noDb
+    if @osmLayer? and @osmLayer.useDB()
       menu.push { separator: true }
       menu.push {
         text: T("Make Available Offline")
