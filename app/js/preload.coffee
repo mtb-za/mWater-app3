@@ -5,7 +5,7 @@ if navigator.userAgent.toLowerCase().indexOf('android 4.1.1') != -1
   window.L_DISABLE_3D = true
 
 if navigator.userAgent.toLowerCase().indexOf('android 4.0.4') != -1
-  window.L_DISABLE_3D = true
+  window.L_DISABLE_3D = false
 
 # Check local storage
 getLocalStorageSupported = ->
