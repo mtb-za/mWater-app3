@@ -65,6 +65,20 @@ exports.start = (options = {}) ->
       window.location.href = "http://mwater.co"
       return
 
+  # Check local storage
+  getLocalStorageSupported = ->
+    if not window.localStorage
+      return false
+    try
+      window.localStorage.setItem("test", "test")
+      window.localStorage.removeItem("test")
+      return true
+    catch e
+      return false
+
+  if not getLocalStorageSupported()
+    alert("Your browser does not support local storage. Please turn off private browsing and reload the page.")
+
   # Create pager
   pager = new Pager()
 
