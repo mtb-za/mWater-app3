@@ -91,6 +91,19 @@ class SurveyPage extends Page
       @listenTo @formView, 'complete', @completed
       @listenTo @formView, 'close', @close
       @listenTo @formView, 'discard', @removeResponse
+
+      if @options.mode? and @options.mode == "new survey"
+        @db.responses.find({ form: @form._id, _id: { $ne: @response._id }, type: { $exists: false }, status: 'draft', user: @login.user }, {sort:[['startedOn','desc']], limit: 10}).fetch (responses) =>
+          if responses.length > 0
+            # if there is only one draft, we get the _id so we can load that page
+            if responses.length == 1
+              @other_survey_id = responses[0]._id
+
+            @$("#alarm_div").show(1000)
+            setTimeout =>
+              @$("#alarm_div").hide(1000)
+            , 10 * 1000
+
     else
       @formView = new Backbone.View() # TODO?
       if @response.status == "final"
@@ -143,6 +156,18 @@ class SurveyPage extends Page
   events:
     "click #edit_button" : "edit"
     "change #locale" : "changeLocale"
+    "click #other_survey_btn" : "otherSurvey"
+
+  otherSurvey: ->
+    @otherSurvey = true
+    @db.responses.remove @response._id, =>
+      if @other_survey_id?
+        #@pager.openPage(require("./SurveyPage"), { _id: @other_survey_id})
+        @pager.closePage(SurveyPage, {_id: @other_survey_id})
+      else
+        @pager.closePage()
+    , @error
+
 
   changeLocale: ->
     # Save to be safe
@@ -157,7 +182,7 @@ class SurveyPage extends Page
 
   destroy: ->
     # Let know that saved if closed incompleted
-    if @response and @response.status == "draft"
+    if @response and @response.status == "draft" and not @otherSurvey?
       @pager.flash T("Survey saved as draft.")
 
     # Remove survey control
