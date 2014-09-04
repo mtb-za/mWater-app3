@@ -98,6 +98,11 @@ class SurveyPage extends Page
             # if there is only one draft, we get the _id so we can load that page
             if responses.length == 1
               @other_survey_id = responses[0]._id
+              @$("#alarm_div").prepend("A draft already exists for this survey.")
+              @$("#other_survey_btn").prepend("Open")
+            else
+              @$("#alarm_div").prepend("Many drafts already exists for this survey.")
+              @$("#other_survey_btn").prepend("Go Back")
 
             @$("#alarm_div").show(1000)
             setTimeout =>
