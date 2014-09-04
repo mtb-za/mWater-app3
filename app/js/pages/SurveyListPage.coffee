@@ -1,6 +1,5 @@
 # Continue an existing survey
 Page = require "../Page"
-NewSurveyPage = require './NewSurveyPage'
 mwaterforms = require 'mwater-forms'
 
 module.exports = class SurveyListPage extends Page
@@ -74,5 +73,7 @@ module.exports = class SurveyListPage extends Page
     , @error
 
   addSurvey: ->
+    # Circularity bug fix
+    NewSurveyPage = require './NewSurveyPage'
     @pager.openPage(NewSurveyPage)
 
