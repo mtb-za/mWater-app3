@@ -43,7 +43,7 @@ module.exports = class NewSurveyPage extends Page
     responseModel.draft()
 
     @db.responses.upsert response, (response) =>
-      @pager.closePage(SurveyPage, {_id: response._id, mode: "new survey"})
+      @pager.closePage(SurveyPage, {_id: response._id, mode: "new"})
     , @error
 
 

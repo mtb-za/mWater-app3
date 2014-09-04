@@ -5,6 +5,7 @@ ImagePage = require './ImagePage'
 SiteListPage = require './SiteListPage'
 SiteMapPage = require './SiteMapPage'
 GeoJSON = require '../GeoJSON'
+SurveyListPage = require './SurveyListPage'
 
 class SurveyPage extends Page
   @canOpen: (ctx) -> ctx.auth.update("responses")
@@ -92,26 +93,27 @@ class SurveyPage extends Page
       @listenTo @formView, 'close', @close
       @listenTo @formView, 'discard', @removeResponse
 
-      # the mode parameter tells us that a new response has just been created for that page
-      if @options.mode? and @options.mode == "new survey"
-        # when it's the case, we want to search for other drafts of that form
-        @db.responses.find({ form: @form._id, _id: { $ne: @response._id }, type: { $exists: false }, status: 'draft', user: @login.user }, {sort:[['startedOn','desc']], limit: 10}).fetch (responses) =>
-          # if we do find other draft(s), we will prompt the user with an alert
+      # The mode parameter tells us that a new response has just been created for that page
+      if @options.mode == "new"
+        # When it's the case, we want to search for other drafts of that form
+        @db.responses.find({ form: @form._id, _id: { $ne: @response._id }, status: 'draft', user: @login.user }, {sort:[['startedOn','desc']], limit: 10}).fetch (responses) =>
+          # If we do find other draft(s), we will prompt the user with an alert
           if responses.length > 0
-            # if there is only one draft, we get the _id so we can load that response
+            # If there is only one draft, we get the _id so we can load that response
             if responses.length == 1
-              @other_survey_id = responses[0]._id
-              @$("#alarm_div").prepend("A draft already exists for this survey.")
-              @$("#other_survey_btn").prepend("Open")
-            # if there are many drafts, we want to bring the user back to the survey list so he can select one.
+              @otherSurveyId = responses[0]._id
+              @$("#alarm_div").prepend("A draft already exists for this survey")
+              @$("#go_to_existing_draft_btn").prepend("Use Existing Draft")
+            # If there are many drafts, we want to bring the user back to the survey list so he can select one.
             else
-              @$("#alarm_div").prepend("Many drafts already exists for this survey.")
-              @$("#other_survey_btn").prepend("Go Back")
+              @$("#alarm_div").prepend("Several drafts already exists for this survey")
+              @$("#go_to_existing_draft_btn").prepend("Go to Drafts")
 
-            # animating the alarm
-            @$("#alarm_div").show(1000)
+            # Animating the alarm
+            alarmDiv = @$("#alarm_div")
+            alarmDiv.show()
             setTimeout =>
-              @$("#alarm_div").hide(1000)
+              alarmDiv.slideUp(400, => alarmDiv.remove())
             , 10 * 1000
 
     else
@@ -166,19 +168,18 @@ class SurveyPage extends Page
   events:
     "click #edit_button" : "edit"
     "change #locale" : "changeLocale"
-    "click #other_survey_btn" : "otherSurvey"
+    "click #go_to_existing_draft_btn" : "goingToExistingDraft"
 
-  otherSurvey: ->
+  goingToExistingDraft: ->
     # The user has clicked on the alarm telling him that other drafts exist for that form
-    @otherSurvey = true
+    @useExistingDraft = true
     @db.responses.remove @response._id, =>
-      # load the draft
-      if @other_survey_id?
-        #@pager.openPage(require("./SurveyPage"), { _id: @other_survey_id})
-        @pager.closePage(SurveyPage, {_id: @other_survey_id})
-      # go back to the list of drafts
+      if @otherSurveyId?
+        # Load the draft
+        @pager.closePage(SurveyPage, {_id: @otherSurveyId})
       else
-        @pager.closePage()
+        # Go back to the list of drafts
+        @returnToSurveyList()
     , @error
 
 
@@ -195,7 +196,7 @@ class SurveyPage extends Page
 
   destroy: ->
     # Let know that saved if closed incompleted
-    if @response and @response.status == "draft" and not @otherSurvey?
+    if @response and @response.status == "draft" and not @useExistingDraft?
       @pager.flash T("Survey saved as draft.")
 
     # Remove survey control
