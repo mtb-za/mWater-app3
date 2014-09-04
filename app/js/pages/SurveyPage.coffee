@@ -168,9 +168,9 @@ class SurveyPage extends Page
   events:
     "click #edit_button" : "edit"
     "change #locale" : "changeLocale"
-    "click #go_to_existing_draft_btn" : "goingToExistingDraft"
+    "click #go_to_existing_draft_btn" : "gotoExistingDraft"
 
-  goingToExistingDraft: ->
+  gotoExistingDraft: ->
     # The user has clicked on the alarm telling him that other drafts exist for that form
     @useExistingDraft = true
     @db.responses.remove @response._id, =>
