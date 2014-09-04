@@ -102,12 +102,12 @@ class SurveyPage extends Page
             # If there is only one draft, we get the _id so we can load that response
             if responses.length == 1
               @otherSurveyId = responses[0]._id
-              @$("#alarm_div").prepend("A draft already exists for this survey")
-              @$("#go_to_existing_draft_btn").prepend("Use Existing Draft")
+              @$("#alarm_div").prepend(T("A draft already exists for this survey"))
+              @$("#go_to_existing_draft_btn").prepend(T("Use Existing Draft"))
             # If there are many drafts, we want to bring the user back to the survey list so he can select one.
             else
-              @$("#alarm_div").prepend("Several drafts already exists for this survey")
-              @$("#go_to_existing_draft_btn").prepend("Go to Drafts")
+              @$("#alarm_div").prepend(T("Several drafts already exists for this survey"))
+              @$("#go_to_existing_draft_btn").prepend(T("Go to Drafts"))
 
             # Animating the alarm
             alarmDiv = @$("#alarm_div")
@@ -119,9 +119,9 @@ class SurveyPage extends Page
     else
       @formView = new Backbone.View() # TODO?
       if @response.status == "final"
-        @formView.$el.html("<em>Response has been finalized and cannot be edited</em>") # TODO
+        @formView.$el.html("<em>" + T("Response has been finalized and cannot be edited") + "</em>") # TODO
       else
-        @formView.$el.html("<em>Response is pending approval</em>") # TODO
+        @formView.$el.html("<em>" + T("Response is pending approval") + "</em>") # TODO
 
     # Add form view
     @$("#contents").append(@formView.el)
