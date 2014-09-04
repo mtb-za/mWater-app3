@@ -92,18 +92,23 @@ class SurveyPage extends Page
       @listenTo @formView, 'close', @close
       @listenTo @formView, 'discard', @removeResponse
 
+      # the mode parameter tells us that a new response has just been created for that page
       if @options.mode? and @options.mode == "new survey"
+        # when it's the case, we want to search for other drafts of that form
         @db.responses.find({ form: @form._id, _id: { $ne: @response._id }, type: { $exists: false }, status: 'draft', user: @login.user }, {sort:[['startedOn','desc']], limit: 10}).fetch (responses) =>
+          # if we do find other draft(s), we will prompt the user with an alert
           if responses.length > 0
-            # if there is only one draft, we get the _id so we can load that page
+            # if there is only one draft, we get the _id so we can load that response
             if responses.length == 1
               @other_survey_id = responses[0]._id
               @$("#alarm_div").prepend("A draft already exists for this survey.")
               @$("#other_survey_btn").prepend("Open")
+            # if there are many drafts, we want to bring the user back to the survey list so he can select one.
             else
               @$("#alarm_div").prepend("Many drafts already exists for this survey.")
               @$("#other_survey_btn").prepend("Go Back")
 
+            # animating the alarm
             @$("#alarm_div").show(1000)
             setTimeout =>
               @$("#alarm_div").hide(1000)
@@ -164,11 +169,14 @@ class SurveyPage extends Page
     "click #other_survey_btn" : "otherSurvey"
 
   otherSurvey: ->
+    # The user has clicked on the alarm telling him that other drafts exist for that form
     @otherSurvey = true
     @db.responses.remove @response._id, =>
+      # load the draft
       if @other_survey_id?
         #@pager.openPage(require("./SurveyPage"), { _id: @other_survey_id})
         @pager.closePage(SurveyPage, {_id: @other_survey_id})
+      # go back to the list of drafts
       else
         @pager.closePage()
     , @error
