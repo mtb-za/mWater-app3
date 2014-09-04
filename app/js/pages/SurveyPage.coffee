@@ -196,7 +196,7 @@ class SurveyPage extends Page
 
   destroy: ->
     # Let know that saved if closed incompleted
-    if @response and @response.status == "draft" and not @useExistingDraft?
+    if @response and @response.status == "draft" and not @useExistingDraft
       @pager.flash T("Survey saved as draft.")
 
     # Remove survey control
