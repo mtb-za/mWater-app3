@@ -12,8 +12,9 @@
     margin-top: 4px;
 }
 </style>
-<div id="alarm_div" class="alert alert-warning" role="alert" hidden="true">
+<div id="alarm_div" class="alert alert-warning alert-dismissible" role="alert" hidden="true">
     <button id="go_to_existing_draft_btn" type="button" class="btn btn-default"></button>
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 </div>
 <select id="locale" class="form-control input-sm pull-right" style="width:auto">
 	{{#each locales}}
