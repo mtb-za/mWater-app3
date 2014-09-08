@@ -1,7 +1,8 @@
 Page = require("../Page")
 RelativeLocationView = require '../RelativeLocationView'
-forms = require '../forms'
+forms = require 'mwater-forms'
 GeoJSON = require '../GeoJSON'
+ImagePage = require './ImagePage'
 
 # Displays a site
 # onSelect - call when site is selected via button that appears
@@ -20,6 +21,7 @@ module.exports = class SitePage extends Page
     'click #status_maint': -> @updateStatus('maint')
     'click #status_broken': -> @updateStatus('broken')
     'click #status_missing': -> @updateStatus('missing')
+    'click #cover_photo': 'openCoverPhoto'
 
   activate: ->
     @query()
@@ -77,6 +79,7 @@ module.exports = class SitePage extends Page
       attrs: attrs
       select: @options.onSelect?
       isWaterPoint: @site.type[0] == "Water point"
+      coverPhoto: _.findWhere(@site.photos, { cover: true })
     }
 
     @$el.html require('./SitePage.hbs')(data)
@@ -85,6 +88,12 @@ module.exports = class SitePage extends Page
     @$("#edit_site_button").toggle(@auth.update("sites", @site))
     @$("#add_test_button").toggle(@auth.insert("tests"))
     @$("#add_note_button").toggle(@auth.insert("source_notes"))
+
+    # Add cover photo
+    if data.coverPhoto
+      @imageManager.getImageThumbnailUrl data.coverPhoto.id, (imageUrl) =>
+        @coverPhoto = data.coverPhoto
+        @$("#cover_photo_container").html('<img id="cover_photo" src="' + imageUrl + '" class="img-thumbnail" style="width: 160px;">')
 
     # Set visibility of add buttons
     if @site.type[0] != "Water point" or not @auth.insert("source_notes") or not @auth.insert("tests") 
@@ -141,15 +150,26 @@ module.exports = class SitePage extends Page
       # , @error
 
     # Add photos
+    formsCtx  = {
+      displayImage: (options) =>
+        @pager.openPage(ImagePage, { id: options.id, onRemove: options.remove, onSetCover: options.setCover })
+      imageManager: @ctx.imageManager
+      imageAcquirer: @ctx.imageAcquirer
+    }
+
+    photosModel = new Backbone.Model()
+    photosModel.set("photos", { value: @site.photos })
+
     photosView = new forms.ImagesQuestion
       id: 'photos'
-      model: new Backbone.Model(@site)
-      ctx: @ctx
+      model: photosModel
+      ctx: formsCtx
+      T: T
       readonly: not @auth.update("sites", @site)
       
-    photosView.model.on 'change', =>
+    photosModel.on 'change', =>
       # Get photos
-      photos = photosView.model.get("photos")
+      photos = photosModel.get("photos").value
 
       # Set cover photo if not set
       if photos.length > 0 and not _.findWhere(photos, { cover: true })
@@ -161,6 +181,11 @@ module.exports = class SitePage extends Page
         @query()
       , @error
     @$('#photos').append(photosView.el)
+
+  openCoverPhoto: ->
+    coverPhoto = _.findWhere(@site.photos, { cover: true })
+    if coverPhoto
+      @pager.openPage(ImagePage, { id: coverPhoto.id })
 
   editSite: ->
     @pager.openPage(require("./SiteEditPage"), { _id: @site._id})

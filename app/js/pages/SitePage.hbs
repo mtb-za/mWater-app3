@@ -61,10 +61,11 @@
     <div><button id="select_site" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-ok"></span> {{T "Select Site"}}</button></div>
   {{/if}}
 
-  <button id="edit_site_button" class="btn btn-default pull-right">
-    <span class="glyphicon glyphicon-edit"></span>
-    {{T "Edit"}}
-  </button>
+  {{#if coverPhoto}}
+  <div id="cover_photo_container" class="pull-right">
+  </div>
+  {{/if}}
+
   <div class="site-name">{{site.name}}</div>
   <div class="site-desc">{{site.desc}}</div>
 
@@ -83,6 +84,11 @@
     </div>
     {{/each}}
   {{/if}}
+
+  <button id="edit_site_button" class="btn btn-sm btn-default">
+    <span class="glyphicon glyphicon-edit"></span>
+    {{T "Edit"}}
+  </button>
 
   {{#if site.custom}}
     <br/>
