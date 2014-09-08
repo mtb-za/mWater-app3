@@ -1,3 +1,5 @@
+siteCodes = require("mwater-common").siteCodes
+
 exports.SiteCodesManager = class SiteCodesManager 
   # URL to obtain more codes from
   constructor: (url) ->
@@ -81,7 +83,7 @@ exports.DemoSiteCodesManager = class DemoSiteCodesManager
     return @numAvail
 
   requestCode: (success, error, cutoff) ->
-    success(exports.seqToCode(Math.round(Math.random()*1000000)))
+    success(siteCodes.seqToCode(Math.round(Math.random()*1000000)))
 
   replenishCodes: (minNumber, success, error, cutoff) ->
     @numAvail = minNumber

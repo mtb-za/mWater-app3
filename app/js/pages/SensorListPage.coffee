@@ -51,7 +51,7 @@ module.exports = class SensorListPage extends Page
 
   onDeviceDiscovered: (device) =>
     # Ignore non-GPS loggers
-    if not device.name.match(/^RNBT/)
+    if not device.name or not device.name.match(/^RNBT/)
       console.log "Ignoring #{device.name}"
       return
 
