@@ -180,7 +180,7 @@ module.exports = class SitePage extends Page
     @$('#photos').append(photosView.el)
 
   openCoverPhoto: ->
-    @pager.openPage(ImagePage, { id: options.id, onRemove: options.remove, onSetCover: options.setCover }
+    @pager.openPage(ImagePage, { id: options.id, onRemove: options.remove, onSetCover: options.setCover })
 
   editSite: ->
     @pager.openPage(require("./SiteEditPage"), { _id: @site._id})
