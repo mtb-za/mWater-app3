@@ -157,16 +157,19 @@ module.exports = class SitePage extends Page
       imageAcquirer: @ctx.imageAcquirer
     }
 
+    photosModel = new Backbone.Model()
+    photosModel.set("photos", { value: @site.photos })
+
     photosView = new forms.ImagesQuestion
       id: 'photos'
-      model: new Backbone.Model(@site)
+      model: photosModel
       ctx: formsCtx
       T: T
       readonly: not @auth.update("sites", @site)
       
-    photosView.model.on 'change', =>
+    photosModel.on 'change', =>
       # Get photos
-      photos = photosView.model.get("photos").value
+      photos = photosModel.get("photos").value
 
       # Set cover photo if not set
       if photos.length > 0 and not _.findWhere(photos, { cover: true })
@@ -180,7 +183,9 @@ module.exports = class SitePage extends Page
     @$('#photos').append(photosView.el)
 
   openCoverPhoto: ->
-    @pager.openPage(ImagePage, { id: options.id, onRemove: options.remove, onSetCover: options.setCover })
+    coverPhoto = _.findWhere(@site.photos, { cover: true })
+    if coverPhoto
+      @pager.openPage(ImagePage, { id: coverPhoto.id })
 
   editSite: ->
     @pager.openPage(require("./SiteEditPage"), { _id: @site._id})
