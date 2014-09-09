@@ -1,0 +1,17 @@
+<table class="table" id="group_table">
+  {{#each groups}}
+  <tr>
+    <td>
+      <b>{{groupname}}</b>
+      {{#if desc}}<br>{{desc}}{{/if}}
+    </td>
+    <td style="width:1%; white-space:nowrap;">
+      <button class="btn btn-link leave-group" type="button" data-id="{{groupname}}"><span class="glyphicon glyphicon-log-out"></span> {{T "Leave"}}</button>
+    </td>
+  </tr>
+  {{else}}
+  <div class="alert alert-info">
+    {{T "You are not a member of any groups"}}
+  </div>
+  {{/each}}
+</table>
