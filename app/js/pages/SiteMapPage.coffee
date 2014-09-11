@@ -4,7 +4,6 @@ SitesLayer = require '../map/SitesLayer'
 SiteLayerCreators = require '../map/SiteLayerCreators'
 LocationDisplay = require '../map/LocationDisplay'
 LocationFinder = require '../LocationFinder'
-ContextMenu = require '../map/ContextMenu'
 BaseLayers = require '../map/BaseLayers'
 offlineMap = require 'offline-leaflet-map'
 CacheProgressControl = require '../map/CacheProgressControl'
@@ -161,9 +160,6 @@ class SiteMapPage extends Page
     # Setup base layers
     @osmLayer = BaseLayers.createOSMLayer(onReady, onError)
 
-    # Setup context menu
-    contextMenu = new ContextMenu(@map, @ctx, @onSelect)
-    
     # Setup initial zoom
     if center
       @map.setView(center, zoom)
