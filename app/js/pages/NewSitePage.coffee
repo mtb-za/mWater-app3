@@ -118,6 +118,8 @@ module.exports = class NewSitePage extends Page
     site.location = @siteModel.get("location").value
     if site.location
       site.geo = GeoJSON.locToPoint(site.location)
+    else
+      delete site.location
 
     site.attrs = @siteAttrModel.toJSON()
 

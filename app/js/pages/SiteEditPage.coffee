@@ -80,6 +80,9 @@ module.exports = class SiteEditPage extends Page
           site.location = @siteModel.get("location").value
           if site.location
             site.geo = GeoJSON.locToPoint(site.location)
+          else
+            delete site.geo
+            delete site.location
 
           @db.sites.upsert site, =>
             # Do nothing
