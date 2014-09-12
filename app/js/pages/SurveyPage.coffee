@@ -102,12 +102,12 @@ class SurveyPage extends Page
             # If there is only one draft, we get the _id so we can load that response
             if responses.length == 1
               @otherSurveyId = responses[0]._id
-              @$("#alarm_div").prepend(T("A draft already exists for this survey"))
-              @$("#go_to_existing_draft_btn").prepend(T("Use Existing Draft"))
+              @$("#alarm_text").text(T("A draft already exists for this survey"))
+              @$("#go_to_existing_draft_btn").text(T("Use Existing Draft"))
             # If there are many drafts, we want to bring the user back to the survey list so he can select one.
             else
-              @$("#alarm_div").prepend(T("Several drafts already exists for this survey"))
-              @$("#go_to_existing_draft_btn").prepend(T("Go to Drafts"))
+              @$("#alarm_text").text(T("Several drafts already exists for this survey"))
+              @$("#go_to_existing_draft_btn").text(T("Go to Drafts"))
 
             # Animating the alarm
             alarmDiv = @$("#alarm_div")
