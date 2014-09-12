@@ -18,6 +18,8 @@ consoleCapture = require './consoleCapture'
 
 handlebars = require("hbsfy/runtime")
 
+fastclick = require("fastclick")
+
 startError = (err) ->
   alert("Failed to start app: " + JSON.stringify(err))
 
@@ -78,6 +80,9 @@ exports.start = (options = {}) ->
 
   if not getLocalStorageSupported()
     alert("Your browser does not support local storage. Please turn off private browsing and reload the page.")
+
+  # Make clicks fast in mobile
+  $ => fastclick(document.body)
 
   # Create pager
   pager = new Pager()
@@ -145,7 +150,6 @@ exports.start = (options = {}) ->
       context.createLoginContext(login.getLogin(), withCtx)
     else  
       context.createAnonymousContext(withCtx)
-
 
   if options.cordova
     # Start cordova 

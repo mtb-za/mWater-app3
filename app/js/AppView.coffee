@@ -8,7 +8,7 @@ class AppView extends Backbone.View
     # Listen to page change events
     @listenTo @pager, 'change', @pageChanged
 
-    # Add mobile behavior
+    # Add mobile behavior (TODO remove this someday when legacy forms are gone)
     require('./mobile-behavior').setup(@$el)
     
     @render()
