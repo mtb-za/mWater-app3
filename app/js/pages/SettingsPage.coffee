@@ -32,7 +32,7 @@ class SettingsPage extends Page
 
   render: ->
     # Determine if base app out of date
-    if @baseVersion and @baseVersion.match(/^3\.[0-3]/)
+    if @baseVersion and @baseVersion.match(/^3\.[0-9]\./)
       outdated = true
 
     # Determine data sync status
