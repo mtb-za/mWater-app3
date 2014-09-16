@@ -21,12 +21,14 @@ module.exports = class PageMenu extends Backbone.View
     "click #survey_list" : "gotoSurveyList"
     "click #report_problem" : 'gotoProblemReport'
     "click #sensor_list" : 'gotoSensorList'
+    "click #groups" : 'gotoGroupList'
 
   render: ->
     @$el.html require('./PageMenu.hbs')()
     @$("#new_test").toggle(require("./pages/NewTestPage").canOpen(@options.ctx))
     @$("#survey_list").toggle(require("./pages/SurveyListPage").canOpen(@options.ctx))
     @$("#test_list").toggle(require("./pages/TestListPage").canOpen(@options.ctx))
+    @$("#groups").toggle(require("./pages/GroupListPage").canOpen(@options.ctx))
 
     @$("#login").toggle(not @options.ctx.login?)
     @$("#logout").toggle(@options.ctx.login?)
@@ -77,3 +79,6 @@ module.exports = class PageMenu extends Backbone.View
 
   gotoSensorList: ->
     @pager.openPage(require("./pages/SensorListPage"))
+
+  gotoGroupList: ->
+    @pager.openPage(require("./pages/GroupListPage"))
