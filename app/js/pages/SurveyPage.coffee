@@ -28,7 +28,7 @@ class SurveyPage extends Page
     data = {
       response: @response
       name: mwaterforms.formUtils.localizeString(@form.design.name, @formLocale)
-      canRedraft: @responseModel.canRedraft()
+      canRedraft: @responseModel.canRedraft() and @response.status != 'final'  # Do not allow redrafting of final even if possible
       locales: @form.design.locales
     }
 
