@@ -272,6 +272,10 @@ class SiteMapPage extends Page
       click: => @updateSiteScope(scope.type)
       checked: @scope == scope.type
 
+    menu.push { separator: true }
+
+    menu.push {text: "Test", id: "TestID", click: => console.log "yo", checked: true}
+
     if @osmLayer? and @osmLayer.useDB()
       menu.push { separator: true }
       menu.push {
@@ -279,7 +283,7 @@ class SiteMapPage extends Page
         click: => @cacheTiles()
       }
 
-    @$("#gear_menu").html(require("./SiteMapPage_gearmenu.hbs")(menu: menu))
+    @$("#gear_menu").html(require("./SiteMapPage_gearmenu.hbs")({menu: menu}))
 
     @setupButtonBar [
       { icon: "buttonbar-gear.png", menu: menu }
