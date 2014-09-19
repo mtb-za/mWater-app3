@@ -128,18 +128,16 @@ class SiteMapPage extends Page
     L.control.scale(imperial:false).addTo(@map)
     @resizeMap()
 
-    # create the geocoding control and add it to the map
+    # Create the geocoding control and add it to the map
     searchControl = new L.esri.Controls.Geosearch().addTo(@map)
 
-    # create an empty layer group to store the results and add it to the map
-    results = new L.LayerGroup().addTo(@map)
-
-    # listen for the results event and add every result to the map
-    searchControl.on("results", (data) =>
-      results.clearLayers();
-      for result in data.results
-        results.addLayer(L.marker(result.latlng))
-    )
+    # We could show the results of the GeoSearch on the map
+    #results = new L.LayerGroup().addTo(@map)
+    #searchControl.on("results", (data) =>
+    #  results.clearLayers();
+    #  for result in data.results
+    #    results.addLayer(L.marker(result.latlng))
+    #)
 
     # Recalculate on resize
     $(window).on('resize', @resizeMap)
