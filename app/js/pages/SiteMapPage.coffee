@@ -318,7 +318,7 @@ class SiteMapPage extends Page
         click: => @cacheTiles()
       }
 
-    @$("#gear_menu").html(require("./SiteMapPage_gearmenu.hbs")({menu: menu}))
+    @$("#gear_menu").html(require("./SiteMapPage_gearmenu.hbs")(menu: menu))
 
     @setupButtonBar [
       { icon: "buttonbar-gear.png", menu: menu }
