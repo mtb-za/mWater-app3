@@ -9,6 +9,7 @@ offlineMap = require 'offline-leaflet-map'
 CacheProgressControl = require '../map/CacheProgressControl'
 GeoJSON = require '../GeoJSON'
 LocationSetter = require('../map/LocationSetter')
+siteTypes = require('mwater-common').siteTypes
 
 # Map of sites. Options include:
 # initialGeo: Geometry to zoom to. Point only supported.
@@ -216,6 +217,24 @@ class SiteMapPage extends Page
     # Persist the view
     @saveView()
 
+  # Filter the sites by type
+  updateSiteType: (siteType) =>
+    @siteType = siteType
+    if siteType != null
+      @siteTypesFilter.type = { $in: [siteType.name] }
+    else
+      @siteTypesFilter = {}
+
+    # Update Map
+    @sitesLayer.setFilter(@calculateSiteFilter())
+    @sitesLayer.update()
+
+    # Update UI
+    @configureButtonBars()
+
+    # Persist the view
+    @saveView()
+
   # Calculate filter to use for sites
   calculateSiteFilter: ->
     option = _.findWhere(@getSiteScopeOptions(), { type: @scope })
@@ -272,9 +291,25 @@ class SiteMapPage extends Page
       click: => @updateSiteScope(scope.type)
       checked: @scope == scope.type
 
-    menu.push { separator: true }
-
-    menu.push {text: "Test", id: "TestID", click: => console.log "yo", checked: true}
+    # Add Site Types options to dropdown menu if the page is not already filtered by site types (using options)
+    if not @options.filterSiteTypes
+      # initialize @siteType
+      if not @siteType
+        @siteType = null
+      menu.push { separator: true }
+      # Add all types option
+      menu.push {
+        text: T("All Types")
+        id: "all"
+        click: => @updateSiteType(null)
+        checked: @siteType == null
+      }
+      # Add all primary site types
+      Array::push.apply menu, _.map siteTypes, (siteType) =>
+        text: T(siteType.name)
+        id: siteType.name
+        click: => @updateSiteType(siteType)
+        checked: @siteType == siteType
 
     if @osmLayer? and @osmLayer.useDB()
       menu.push { separator: true }
