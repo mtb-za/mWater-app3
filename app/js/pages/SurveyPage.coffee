@@ -182,7 +182,6 @@ class SurveyPage extends Page
         @returnToSurveyList()
     , @error
 
-
   changeLocale: ->
     # Save to be safe
     @save()
@@ -195,9 +194,14 @@ class SurveyPage extends Page
     # and needs to keep its state
 
   destroy: ->
-    # Let know that saved if closed incompleted
+    # If survey incomplete and not closing to use existing draft
     if @response and @response.status == "draft" and not @useExistingDraft
-      @pager.flash T("Survey saved as draft.")
+      # If no data entered and not saved for later, delete silently
+      if _.keys(@response.data).length == 0 and not @saved
+        @db.responses.remove(@response._id)
+      else
+        # Let know that saved if closed incompleted
+        @pager.flash T("Survey saved as draft.")
 
     # Remove survey control
     if @formView?
@@ -211,6 +215,8 @@ class SurveyPage extends Page
     , @error
 
   save: =>
+    # Set flag indicating that has been saved at least once
+    @saved = true
     if @formView.save
       # Save to db
       @response.data = @formView.save()
