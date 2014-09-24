@@ -2035,7 +2035,8 @@
     {
       "_base": "en",
       "en": "Create Site",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
@@ -2395,6 +2396,71 @@
     {
       "_base": "en",
       "en": "Health facility",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Your browser is refusing to store data for offline use. Please check that not in private browsing mode and reload page.",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "My Groups",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "All Types",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Leave the group '{0}'? Only a group admin can re-add you.",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Leave",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "You are not a member of any groups",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "A draft already exists for this survey",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Use Existing Draft",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Several drafts already exists for this survey",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Go to Drafts",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Response has been finalized and cannot be edited",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Response is pending approval",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Submit",
       "sw": ""
     }
   ]
