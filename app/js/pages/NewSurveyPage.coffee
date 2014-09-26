@@ -4,6 +4,8 @@ forms = require '../forms'
 mwaterforms = require 'mwater-forms'
 ResponseModel = require('mwater-common').ResponseModel
 
+# Creates a new survey from a list
+# Pass in site option (code of site) to specify a site to prefill in survey
 module.exports = class NewSurveyPage extends Page
   @canOpen: (ctx) -> ctx.auth.insert("responses")
 
@@ -21,6 +23,10 @@ module.exports = class NewSurveyPage extends Page
       state: { $ne: "deleted" } 
     }
     @db.forms.find(filter).fetch (forms) =>
+      # If site-specific, filter by having a site question
+      if @options.site
+        forms = @filterToSiteForms(forms)
+
       @forms = forms
       data = _.map forms, (form) =>
         return  {
@@ -42,8 +48,25 @@ module.exports = class NewSurveyPage extends Page
     responseModel = new ResponseModel(response, form, @login.user, @login.groups) 
     responseModel.draft()
 
+    # Fill in first site question
+    if @options.site
+      # Get first site question
+      siteQuestion = @findFirstSiteQuestion(form)
+      if siteQuestion
+        response.data[siteQuestion._id] = { value: { code: @options.site }}
+
     @db.responses.upsert response, (response) =>
       @pager.closePage(SurveyPage, {_id: response._id, mode: "new"})
     , @error
 
+  # Restricts the list to forms with a site question
+  filterToSiteForms: (forms) =>
+    return _.filter forms, (form) => @findFirstSiteQuestion(form)?
+
+  # Finds the first site question in the form
+  findFirstSiteQuestion: (form) =>
+    for question in mwaterforms.formUtils.priorQuestions(form.design)
+      if question._type == "SiteQuestion"
+        return question
+    return null
 

@@ -13,6 +13,7 @@ module.exports = class SitePage extends Page
     'click #add_note_button' : 'addNote'
     'click #add_test' : 'addTest'
     'click #add_note' : 'addNote'
+    'click #add_survey': 'addSurvey'
     'click .test' : 'openTest'
     'click .note' : 'openNote'
     'click .survey' : 'openSurvey'
@@ -211,6 +212,9 @@ module.exports = class SitePage extends Page
 
   openNote: (ev) ->
     @pager.openPage(require("./SourceNotePage"), { source: @site.code, _id: ev.currentTarget.id})
+
+  addSurvey: ->
+    @pager.openPage(require("./NewSurveyPage"), { site: @site.code })
 
   selectSite: ->
     if @options.onSelect?
