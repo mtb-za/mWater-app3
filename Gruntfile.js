@@ -42,6 +42,7 @@ module.exports = function(grunt) {
       libscss: {
         src: ['vendor/bootstrap/css/bootstrap.min.css',
               'vendor/*.css',
+              'vendor/esri/esri-leaflet-geocoder.css',
               'vendor/leaflet/leaflet.css'],
         dest: 'dist/css/libs.css'
       },
@@ -64,7 +65,9 @@ module.exports = function(grunt) {
             'bower_components/swag/lib/swag.js',
             'bower_components/overthrow-dist/overthrow.js',
             'vendor/mobiscroll.custom-2.5.4.min.js',
-            'vendor/leaflet/leaflet-src.js'],
+            'vendor/leaflet/leaflet-src.js',
+            'vendor/esri/esri-leaflet-core.js',
+            'vendor/esri/esri-leaflet-geocoder.js'],
         dest: 'dist/js/libs.js'
       }
     },
@@ -138,6 +141,12 @@ module.exports = function(grunt) {
         cwd: 'vendor/leaflet/images/',
         src: 'layers*',
         dest: 'dist/css/images/'
+      },
+      esricssimages: {
+        expand: true,
+        cwd: 'vendor/esri/img/',
+        src: '*',
+        dest: 'dist/css/img/'
       },
       cordova_www: {
         expand: true,
@@ -352,7 +361,7 @@ module.exports = function(grunt) {
   grunt.registerTask('cordova_release', ['copy:cordova_config', 'copy:cordova_www', 'copy:cordova_override_release']);
   grunt.registerTask('run_cordova_debug', ['default', 'cordova_debug', 'shell:cordova_run']);
 
-  grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages', 'copy:leafletimages']);
+  grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages', 'copy:esricssimages', 'copy:leafletimages']);
   // TODO localization grunt.registerTask('default', ['localization', 'browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
   grunt.registerTask('default', ['shell:browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
 

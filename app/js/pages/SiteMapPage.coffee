@@ -129,6 +129,17 @@ class SiteMapPage extends Page
     L.control.scale(imperial:false).addTo(@map)
     @resizeMap()
 
+    # Create the geocoding control and add it to the map
+    searchControl = new L.esri.Controls.Geosearch({position: 'topright'}).addTo(@map)
+
+    # We could show the results of the GeoSearch on the map
+    #results = new L.LayerGroup().addTo(@map)
+    #searchControl.on("results", (data) =>
+    #  results.clearLayers();
+    #  for result in data.results
+    #    results.addLayer(L.marker(result.latlng))
+    #)
+
     # Recalculate on resize
     $(window).on('resize', @resizeMap)
 
@@ -189,7 +200,7 @@ class SiteMapPage extends Page
     # @legend.addTo(@map)
 
     # Add My Location control
-    @myLocation = L.control({position: 'topright'})
+    @myLocation = L.control({position: 'bottomright'})
     @myLocation.onAdd = (map) ->
       html = '''
       <img id="goto_my_location" class="image-control" src="img/goto-my-location.png">

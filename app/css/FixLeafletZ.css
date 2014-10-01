@@ -2,4 +2,5 @@
 {
     -webkit-transform: translate3d(0,0,0);
     -webkit-transform: translateZ(0px);
+    height: 100%;
 }
