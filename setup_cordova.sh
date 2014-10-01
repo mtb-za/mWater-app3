@@ -17,10 +17,17 @@ cordova plugin add https://github.com/mWater/cordova-plugin-acra.git
 # Bluetooth plugin
 cordova plugin add https://github.com/tanelih/phonegap-bluetooth-plugin
 
-rm platforms/android/res/drawable-hdpi/icon.png
-rm platforms/android/res/drawable-ldpi/icon.png
-rm platforms/android/res/drawable-mdpi/icon.png
-rm platforms/android/res/drawable-xhdpi/icon.png
+# Clean out default icons
+rm platforms/android/res/drawable-port-ldpi/screen.png
+rm platforms/android/res/drawable-land-mdpi/screen.png
+rm platforms/android/res/drawable-land-ldpi/screen.png
+rm platforms/android/res/drawable-land-xhdpi/screen.png
+rm platforms/android/res/drawable-land-hdpi/screen.png
+rm platforms/android/res/drawable-port-mdpi/screen.png
+rm platforms/android/res/drawable-port-xhdpi/screen.png
+rm platforms/android/res/drawable-port-hdpi/screen.png
+
+# Clean out default content
 rm -r platforms/android/assets/www/*
 rm -r www/*
 
