@@ -1,6 +1,13 @@
+/*
+
+Removed as it causes issue https://github.com/mWater/app-v3/issues/425
+
+Was added to make map work in Intel Yolo
+
 .leaflet-control-container
 {
     -webkit-transform: translate3d(0,0,0);
     -webkit-transform: translateZ(0px);
     height: 100%;
 }
+*/
