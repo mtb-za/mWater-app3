@@ -42,7 +42,9 @@ module.exports = function(grunt) {
       libscss: {
         src: ['vendor/bootstrap/css/bootstrap.min.css',
               'vendor/*.css',
-              'vendor/leaflet/leaflet.css'],
+              'vendor/leaflet/leaflet.css',
+              'bower_components/leaflet.markercluster/dist/MarkerCluster.css',
+              'bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css'],
         dest: 'dist/css/libs.css'
       },
       libsjs: {
@@ -58,13 +60,14 @@ module.exports = function(grunt) {
         //     'vendor/leaflet/leaflet-src.js'],
         src: ['bower_components/jquery/dist/jquery.js', 
             'bower_components/lodash/dist/lodash.js', 
-            'bower_components/backbone/backbone.js', 
+            'bower_components/backbone/backbone.js',
             'vendor/bootstrap/js/bootstrap.js',  // Custom bootstrap with larger fonts
             'bower_components/handlebars/handlebars.runtime.js',
             'bower_components/swag/lib/swag.js',
             'bower_components/overthrow-dist/overthrow.js',
             'vendor/mobiscroll.custom-2.5.4.min.js',
-            'vendor/leaflet/leaflet-src.js'],
+            'vendor/leaflet/leaflet-src.js',
+            'bower_components/leaflet.markercluster/dist/leaflet.markercluster-src.js'],
         dest: 'dist/js/libs.js'
       }
     },

@@ -83,6 +83,20 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
       #else
       #  console.log("no marker?")
 
+    layer.marker = layer.getLayers()[0]
+    layer.getLatLng = () ->
+      if layer.marker
+        layer._latlng = layer.marker._latlng
+        return layer.marker.getLatLng()
+      else
+        console.log 'oups!!!'
+
+    layer.setLatLng = (latLng) ->
+      if layer.marker
+        return layer.marker.setLatLng(latLng)
+      else
+        console.log 'oups!!!'
+
     # Return initial layer
     success(site: site, layer: layer)
 

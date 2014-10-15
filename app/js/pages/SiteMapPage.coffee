@@ -124,6 +124,7 @@ class SiteMapPage extends Page
       options.fadeAnimation = false
 
     options.minZoom = 2
+    options.maxZoom = 18
 
     @map = L.map(this.$("#map")[0], options)
     L.control.scale(imperial:false).addTo(@map)

@@ -8,7 +8,7 @@ normalizeLng = require('./utils').normalizeLng
 module.exports = class SitesLayer extends L.LayerGroup
   constructor: (siteLayerCreator, sitesDb, filter) ->
     super()
-    @maxSitesReturned = 300
+    @maxSitesReturned = 10000
     @siteLayerCreator = siteLayerCreator
     @sitesDb = sitesDb
     @filter = filter || {}
@@ -19,6 +19,8 @@ module.exports = class SitesLayer extends L.LayerGroup
   onAdd: (map) =>
     super(map)
     @map = map
+    @clusterer = new L.MarkerClusterGroup();
+    @map.addLayer(@clusterer);
     map.on 'moveend', @update
     @zoomToSeeMoreMsgDisplayed = false
     @zoomToSeeMoreMsg = L.control({position: 'topleft'});
@@ -67,9 +69,15 @@ module.exports = class SitesLayer extends L.LayerGroup
       @zoomToSeeMoreMsgDisplayed = false
       @map.removeControl(@zoomToSeeMoreMsg)
 
+    newLayers = []
+
+    console.log 'starting'
+    console.log Date()
+
     for site in sites
       # If layer exists, ignore
       if site._id of @layers
+        newLayers.push @layers[site._id]
         continue
 
       # Call creator
@@ -78,21 +86,35 @@ module.exports = class SitesLayer extends L.LayerGroup
         if result.site._id of @layers
           @removeLayer(@layers[result.site._id])
           delete @layers[result.site._id]
+          console.log "Should never be hit"
 
         # Add layer
         @layers[result.site._id] = result.layer
-        @addLayer(result.layer)
+        #@addLayer(result.layer)
+        newLayers.push result.layer
+
       , error
+
+    console.log 'clearing layers'
+    console.log Date()
+    @clusterer.clearLayers()
+    console.log 'adding layers'
+    console.log Date()
+    @clusterer.addLayers(newLayers)
+    console.log 'done'
+    console.log Date()
 
     # Remove layers not present
     siteMap = _.object(_.pluck(sites, '_id'), sites)
     toRemove = []
-    for id, layer of @layers
-      if not (id of siteMap)
-        toRemove.push(id)
+    # Mbriau stop removing for testing a bug
+    #for id, layer of @layers
+    #  if not (id of siteMap)
+    #    toRemove.push(id)
 
     for id in toRemove
-      @removeLayer(@layers[id])
+      #@removeLayer(@layers[id])
+      @clusterer.removeLayer(@layers[id]);
       delete @layers[id]
 
     if @map?
