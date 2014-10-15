@@ -88,8 +88,12 @@ module.exports = class SitesLayer extends L.LayerGroup
     siteMap = _.object(_.pluck(sites, '_id'), sites)
     toRemove = []
     for id, layer of @layers
+      # A marker should not be removed if it has been queried or if it's currently displaying its popup
       if not (id of siteMap)
-        toRemove.push(id)
+        marker = layer.getLayers()[0]
+        isPopUpOpen = marker and marker._popup and marker._popup._isOpen
+        if not isPopUpOpen
+          toRemove.push(id)
 
     for id in toRemove
       @removeLayer(@layers[id])
