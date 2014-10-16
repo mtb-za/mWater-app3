@@ -61,14 +61,11 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
       layer.removed = true
       superOnRemove(map)
 
-    # TODO this is really cryptic
+    layer.marker = layer.getLayers()[0]
+
     layer.fitIntoBounds = (bounds) ->
-      # TODO why do we get layers and then get the first one?
-      layers = layer.getLayers()
-      marker = layers[0]
-      if marker?
-        #console.log("marker?")
-        latLng = marker.getLatLng()
+      if layer.marker?
+        latLng = layer.marker.getLatLng()
         lng = latLng.lng
         if bounds
           west = bounds.getWest()
@@ -79,23 +76,16 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
             lng -= 360
 
         latLng2 = L.latLng(latLng.lat, lng);
-        marker.setLatLng(latLng2)
+        layer.marker.setLatLng(latLng2)
       #else
       #  console.log("no marker?")
 
-    layer.marker = layer.getLayers()[0]
     layer.getLatLng = () ->
-      if layer.marker
-        layer._latlng = layer.marker._latlng
-        return layer.marker.getLatLng()
-      else
-        console.log 'oups!!!'
+      layer._latlng = layer.marker._latlng
+      return layer.marker.getLatLng()
 
     layer.setLatLng = (latLng) ->
-      if layer.marker
-        return layer.marker.setLatLng(latLng)
-      else
-        console.log 'oups!!!'
+      return layer.marker.setLatLng(latLng)
 
     # Return initial layer
     success(site: site, layer: layer)

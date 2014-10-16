@@ -8,7 +8,7 @@ normalizeLng = require('./utils').normalizeLng
 module.exports = class SitesLayer extends L.LayerGroup
   constructor: (siteLayerCreator, sitesDb, filter) ->
     super()
-    @maxSitesReturned = 10000
+    @maxSitesReturned = 300
     @siteLayerCreator = siteLayerCreator
     @sitesDb = sitesDb
     @filter = filter || {}
@@ -82,16 +82,17 @@ module.exports = class SitesLayer extends L.LayerGroup
 
       # Call creator
       @siteLayerCreator.createLayer site, (result) =>
-        # Remove layer if exists
-        if result.site._id of @layers
-          @removeLayer(@layers[result.site._id])
-          delete @layers[result.site._id]
-          console.log "Should never be hit"
+        if result.layer.marker
+          # Remove layer if exists
+          if result.site._id of @layers
+            @removeLayer(@layers[result.site._id])
+            delete @layers[result.site._id]
+            console.log "Should never be hit"
 
-        # Add layer
-        @layers[result.site._id] = result.layer
-        #@addLayer(result.layer)
-        newLayers.push result.layer
+          # Add layer
+          @layers[result.site._id] = result.layer
+          #@addLayer(result.layer)
+          newLayers.push result.layer
 
       , error
 
