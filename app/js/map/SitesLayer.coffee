@@ -71,9 +71,6 @@ module.exports = class SitesLayer extends L.LayerGroup
 
     newLayers = []
 
-    console.log 'starting'
-    console.log Date()
-
     for site in sites
       # If layer exists, ignore
       if site._id of @layers
@@ -87,31 +84,23 @@ module.exports = class SitesLayer extends L.LayerGroup
           if result.site._id of @layers
             @removeLayer(@layers[result.site._id])
             delete @layers[result.site._id]
-            console.log "Should never be hit"
 
           # Add layer
           @layers[result.site._id] = result.layer
-          #@addLayer(result.layer)
+          @clusterer.addLayer(result.layer)
           newLayers.push result.layer
 
       , error
 
-    console.log 'clearing layers'
-    console.log Date()
-    @clusterer.clearLayers()
-    console.log 'adding layers'
-    console.log Date()
-    @clusterer.addLayers(newLayers)
-    console.log 'done'
-    console.log Date()
+    #@clusterer.clearLayers()
+    #@clusterer.addLayers(newLayers)
 
     # Remove layers not present
     siteMap = _.object(_.pluck(sites, '_id'), sites)
     toRemove = []
-    # Mbriau stop removing for testing a bug
-    #for id, layer of @layers
-    #  if not (id of siteMap)
-    #    toRemove.push(id)
+    for id, layer of @layers
+      if not (id of siteMap)
+        toRemove.push(id)
 
     for id in toRemove
       #@removeLayer(@layers[id])
