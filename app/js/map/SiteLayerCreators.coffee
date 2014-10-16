@@ -77,8 +77,6 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
 
         latLng2 = L.latLng(latLng.lat, lng);
         layer.marker.setLatLng(latLng2)
-      #else
-      #  console.log("no marker?")
 
     layer.getLatLng = () ->
       layer._latlng = layer.marker._latlng
