@@ -70,6 +70,9 @@ module.exports = class SitesLayer extends L.LayerGroup
       @zoomToSeeMoreMsgDisplayed = false
       @map.removeControl(@zoomToSeeMoreMsg)
 
+    layersToAdd = []
+    layersToRemove = []
+
     for site in sites
       # If layer exists, ignore
       layer = @layers[site._id]
@@ -79,17 +82,15 @@ module.exports = class SitesLayer extends L.LayerGroup
       else
         # Call creator
         @siteLayerCreator.createLayer site, (result) =>
+          # can only handle the sites with a location/marker
           if result.layer.marker
             @layers[result.site._id] = result
             if @map?
               result.layer.fitIntoBounds(@map.getBounds())
-            @clusterer.addLayer(result.layer)
+            layersToAdd.push result.layer
         , error
 
-    clusterLayers = []
-
     if @popUpLayer != null and not @popUpLayer.layer.marker._popup._isOpen
-      console.log 'unset pop up layer ' + layer.site._id
       @removeLayer(layer.layer)
       @popUpLayer = null
 
@@ -97,33 +98,13 @@ module.exports = class SitesLayer extends L.LayerGroup
     for id, layer of @layers
       if @popUpLayer == null and layer.layer.marker._popup._isOpen
         @popUpLayer = layer
-        console.log 'set pop up layer ' + layer.site._id
       else if not (id of siteMap)
-        @clusterer.removeLayer(layer.layer)
+        layersToRemove.push layer.layer
         delete @layers[id]
-      #else
-      #  clusterLayers.push layer.layer
 
-    #@clusterer.clearLayers()
-    #@clusterer.addLayers(clusterLayers)
-    ###
-    else
-      # Remove layers not present
-      siteMap = _.object(_.pluck(sites, '_id'), sites)
-      toRemove = []
-      for id, layer of @layers
-        if not (id of siteMap)
-          marker = layer.marker
-          isPopUpOpen = marker and marker._popup and marker._popup._isOpen
-          # A marker should not be removed if it's popup is opened
-          if not isPopUpOpen
-            toRemove.push(id)
+    @clusterer.removeLayers(layersToRemove)
+    @clusterer.addLayers(layersToAdd)
 
-      for id in toRemove
-        @clusterer.removeLayer(@layers[id]);
-        delete @layers[id]
-        console.log 'removed ' + id
-    ###
     success() if success?
 
   # Query the db

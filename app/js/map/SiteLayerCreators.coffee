@@ -85,6 +85,9 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
     layer.setLatLng = (latLng) ->
       return layer.marker.setLatLng(latLng)
 
+    layer.setOpacity = (v) ->
+      layer.marker.setOpacity(v)
+
     # Return initial layer
     success(site: site, layer: layer)
 
