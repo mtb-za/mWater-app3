@@ -8,7 +8,7 @@ normalizeLng = require('./utils').normalizeLng
 module.exports = class SitesLayer extends L.LayerGroup
   constructor: (siteLayerCreator, sitesDb, filter) ->
     super()
-    @maxSitesReturned = 300
+    @maxSitesReturned = 1000
     @siteLayerCreator = siteLayerCreator
     @sitesDb = sitesDb
     @filter = filter || {}
@@ -20,6 +20,7 @@ module.exports = class SitesLayer extends L.LayerGroup
     super(map)
     @map = map
     @clusterer = new L.MarkerClusterGroup();
+    @popUpLayer = null
     @map.addLayer(@clusterer);
     map.on 'moveend', @update
     @zoomToSeeMoreMsgDisplayed = false
@@ -61,7 +62,7 @@ module.exports = class SitesLayer extends L.LayerGroup
     # Display "zoom to see more" warning when there is @maxSitesReturned sites
     # To make this 100% clean, we would need to deal with the special case when the result was not truncated
     # and actually contained @maxSitesReturned sites.
-    if sites.length == @maxSitesReturned
+    if sites.length >= @maxSitesReturned
       if not @zoomToSeeMoreMsgDisplayed
         @zoomToSeeMoreMsgDisplayed = true
         @map.addControl(@zoomToSeeMoreMsg)
@@ -69,48 +70,60 @@ module.exports = class SitesLayer extends L.LayerGroup
       @zoomToSeeMoreMsgDisplayed = false
       @map.removeControl(@zoomToSeeMoreMsg)
 
-    newLayers = []
-
     for site in sites
       # If layer exists, ignore
-      if site._id of @layers
-        newLayers.push @layers[site._id]
-        continue
+      layer = @layers[site._id]
+      if layer?
+        if @map?
+          layer.layer.fitIntoBounds(@map.getBounds())
+      else
+        # Call creator
+        @siteLayerCreator.createLayer site, (result) =>
+          if result.layer.marker
+            @layers[result.site._id] = result
+            if @map?
+              result.layer.fitIntoBounds(@map.getBounds())
+            @clusterer.addLayer(result.layer)
+        , error
 
-      # Call creator
-      @siteLayerCreator.createLayer site, (result) =>
-        if result.layer.marker
-          # Remove layer if exists
-          if result.site._id of @layers
-            @removeLayer(@layers[result.site._id])
-            delete @layers[result.site._id]
+    clusterLayers = []
 
-          # Add layer
-          @layers[result.site._id] = result.layer
-          @clusterer.addLayer(result.layer)
-          newLayers.push result.layer
+    if @popUpLayer != null and not @popUpLayer.layer.marker._popup._isOpen
+      console.log 'unset pop up layer ' + layer.site._id
+      @removeLayer(layer.layer)
+      @popUpLayer = null
 
-      , error
+    siteMap = _.object(_.pluck(sites, '_id'), sites)
+    for id, layer of @layers
+      if @popUpLayer == null and layer.layer.marker._popup._isOpen
+        @popUpLayer = layer
+        console.log 'set pop up layer ' + layer.site._id
+      else if not (id of siteMap)
+        @clusterer.removeLayer(layer.layer)
+        delete @layers[id]
+      #else
+      #  clusterLayers.push layer.layer
 
     #@clusterer.clearLayers()
-    #@clusterer.addLayers(newLayers)
-
-    # Remove layers not present
-    siteMap = _.object(_.pluck(sites, '_id'), sites)
-    toRemove = []
-    for id, layer of @layers
-      if not (id of siteMap)
-        toRemove.push(id)
-
-    for id in toRemove
-      #@removeLayer(@layers[id])
-      @clusterer.removeLayer(@layers[id]);
-      delete @layers[id]
-
-    if @map?
+    #@clusterer.addLayers(clusterLayers)
+    ###
+    else
+      # Remove layers not present
+      siteMap = _.object(_.pluck(sites, '_id'), sites)
+      toRemove = []
       for id, layer of @layers
-        layer.fitIntoBounds(@map.getBounds())
+        if not (id of siteMap)
+          marker = layer.marker
+          isPopUpOpen = marker and marker._popup and marker._popup._isOpen
+          # A marker should not be removed if it's popup is opened
+          if not isPopUpOpen
+            toRemove.push(id)
 
+      for id in toRemove
+        @clusterer.removeLayer(@layers[id]);
+        delete @layers[id]
+        console.log 'removed ' + id
+    ###
     success() if success?
 
   # Query the db
