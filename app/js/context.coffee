@@ -44,7 +44,19 @@ ProblemReporter = require './ProblemReporter'
 
 collectionNames = ['sites', 'forms', 'groups', 'responses', 'tests', 'source_notes', 'sensors', 'sensor_data']
 
-apiUrl = 'https://api.mwater.co/v3/'
+# Gets a query parameter from the query string of the current page
+getQueryParameterByName = (name) ->
+  match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search)
+  return match && decodeURIComponent(match[1].replace(/\+/g, ' '))
+
+# Set up API, routing differently if training server ("training") in domain
+if getQueryParameterByName("apiUrl")
+  apiUrl = getQueryParameterByName("apiUrl") 
+else if window.location.host.match(/training/)
+  apiUrl = 'https://api.mwater.co/v3training/'
+  alert("Note: App is running in training mode. Changes do not affect main server.")
+else
+  apiUrl = 'https://api.mwater.co/v3/'
 
 # TODO this is not a pretty way to set these. But it is somewhat decoupled.
 temporaryFs = null
