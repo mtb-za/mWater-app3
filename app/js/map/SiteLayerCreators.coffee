@@ -43,29 +43,33 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
         }
     }
 
-    popupContent = @getPopupHtmlElement(site)
-    layer.bindPopup(popupContent)
+    marker = layer.getLayers()[0]
 
-    layer.on 'click', =>
-      # Set image of popup. Defer to prevent pointless loading
-      if site.photos
-        cover = _.findWhere(site.photos, { cover: true })
-        if cover and $(popupContent).find("#image").html() == ""
-          thumbnail = "<img class='thumb' src='#{this.ctx.apiUrl}images/" + cover.id + "?h=100' >"
-          $(popupContent).find("#image").html(thumbnail)
+    if marker?
+      popupContent = @getPopupHtmlElement(site)
+      marker.bindPopup(popupContent)
 
-    # Override layer remove to be alerted of remove
-    superOnRemove = layer.onRemove.bind(layer)
-    layer.onRemove = (map) ->
-      # Set flag that layer was removed
-      layer.removed = true
-      superOnRemove(map)
+      marker.on 'click', =>
+        # Set image of popup. Defer to prevent pointless loading
+        if site.photos
+          cover = _.findWhere(site.photos, { cover: true })
+          if cover and $(popupContent).find("#image").html() == ""
+            thumbnail = "<img class='thumb' src='#{this.ctx.apiUrl}images/" + cover.id + "?h=100' >"
+            $(popupContent).find("#image").html(thumbnail)
 
-    layer.marker = layer.getLayers()[0]
 
-    layer.fitIntoBounds = (bounds) ->
-      if layer.marker?
-        latLng = layer.marker.getLatLng()
+
+      # Override layer remove to be alerted of remove
+      superOnRemove = marker.onRemove.bind(marker)
+      marker.onRemove = (map) ->
+        # Set flag that layer was removed
+        marker.removed = true
+        superOnRemove(map)
+
+
+
+      marker.fitIntoBounds = (bounds) ->
+        latLng = marker.getLatLng()
         lng = latLng.lng
         if bounds
           west = bounds.getWest()
@@ -76,18 +80,9 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
             lng -= 360
 
         latLng2 = L.latLng(latLng.lat, lng);
-        layer.marker.setLatLng(latLng2)
+        marker.setLatLng(latLng2)
 
-    layer.getLatLng = () ->
-      layer._latlng = layer.marker._latlng
-      return layer.marker.getLatLng()
-
-    layer.setLatLng = (latLng) ->
-      return layer.marker.setLatLng(latLng)
-
-    layer.setOpacity = (v) ->
-      layer.marker.setOpacity(v)
 
     # Return initial layer
-    success(site: site, layer: layer)
+    success(site: site, layer: marker)
 
