@@ -8,20 +8,25 @@ normalizeLng = require('./utils').normalizeLng
 module.exports = class SitesLayer extends L.LayerGroup
   constructor: (siteLayerCreator, sitesDb, filter) ->
     super()
-    @maxSitesReturned = 10000
+    @maxSitesReturned = 1000
     @siteLayerCreator = siteLayerCreator
     @sitesDb = sitesDb
     @filter = filter || {}
 
     # Layers, by _id
-    @layers = {}
+    @cachedMarkers = {}
+    @cachedMarkersSize = 0
 
   onAdd: (map) =>
     super(map)
     @map = map
-    @clusterer = new L.MarkerClusterGroup();
+    # trying not to remove the markers outside visible bounds, so you see them right away after a zoom out
+    # removeOutsideVisibleBounds: false, it crashes
+    @clusterer = new L.MarkerClusterGroup({disableClusteringAtZoom: 15});
     @map.addLayer(@clusterer);
+
     map.on 'moveend', @update
+
     @zoomToSeeMoreMsgDisplayed = false
     @zoomToSeeMoreMsg = L.control({position: 'topleft'});
     @zoomToSeeMoreMsg.onAdd = (map) =>
@@ -36,6 +41,11 @@ module.exports = class SitesLayer extends L.LayerGroup
 
   setFilter: (filter) => 
     @filter = filter
+
+  reset: =>
+    @clearLayers()
+    @cachedMarkers = {}
+    @cachedMarkersSize = 0
 
   # Builds a selector based on bounds and filter
   # then queries the database
@@ -53,15 +63,65 @@ module.exports = class SitesLayer extends L.LayerGroup
     # TODO pass error?
     @getSites selector, @updateFromList
 
-  reset: =>
-    @clearLayers()
-    @layers = {}    
-
+  # Goes through the sites returned by the DB query and update the displayed markers
   updateFromList: (sites, success, error) =>
-    # Display "zoom to see more" warning when there is @maxSitesReturned sites
-    # To make this 100% clean, we would need to deal with the special case when the result was not truncated
-    # and actually contained @maxSitesReturned sites.
-    if sites.length >= @maxSitesReturned
+    # no point in doing any of this if there is no map
+    if not @map?
+      return
+
+    @displayTooManySitesWarning(sites.length)
+
+    markersToAdd = @createMarkers(sites, error)
+
+    # add the markers to the @clusterer
+    # faster to clearLayers and add all in one call after that (removeLayers is slow and unreliable)
+    @clusterer.clearLayers()
+    @clusterer.addLayers(markersToAdd)
+
+    @deleteUnusedCachedMarkers(sites)
+
+    success() if success?
+
+  # Use the SiteLayerCreator to create the markers
+  # Use the cached markers when available
+  createMarkers: (sites, error) =>
+    markersToAdd = []
+    for site in sites
+      result = @cachedMarkers[site._id]
+      marker = null
+      # If marker exists
+      if result?
+        marker = result.layer
+      else
+        # Call creator
+        @siteLayerCreator.createLayer site, (result) =>
+          # can only handle the sites with a location/marker
+          if result.layer
+            @cachedMarkers[result.site._id] = result
+            @cachedMarkersSize++
+            marker = result.layer
+        , error
+
+      if marker
+        marker.fitIntoBounds(@map.getBounds())
+        markersToAdd.push marker
+    return markersToAdd
+
+  # delete the unused layers if exceeding the limit
+  deleteUnusedCachedMarkers: (sites) =>
+    siteMap = _.object(_.pluck(sites, '_id'), sites)
+    for id, result of @cachedMarkers
+      if @cachedMarkersSize <= @maxSitesReturned
+        break
+      if not (id of siteMap)
+        delete @cachedMarkers[id]
+        @cachedMarkersSize--
+
+  # Display "zoom to see more" warning when there is @maxSitesReturned sites
+  # To make this 100% clean, we would need to deal with the special case when the result was not truncated
+  # and actually contained @maxSitesReturned sites.
+  displayTooManySitesWarning: (nbOfSites) =>
+    if nbOfSites >= @maxSitesReturned
       if not @zoomToSeeMoreMsgDisplayed
         @zoomToSeeMoreMsgDisplayed = true
         @map.addControl(@zoomToSeeMoreMsg)
@@ -69,41 +129,6 @@ module.exports = class SitesLayer extends L.LayerGroup
       @zoomToSeeMoreMsgDisplayed = false
       @map.removeControl(@zoomToSeeMoreMsg)
 
-    layersToAdd = []
-
-    for site in sites
-      # If layer exists, ignore
-      result = @layers[site._id]
-      if result?
-        if @map?
-          result.layer.fitIntoBounds(@map.getBounds())
-        layersToAdd.push result.layer
-      else
-        # Call creator
-        @siteLayerCreator.createLayer site, (result) =>
-          # can only handle the sites with a location/marker
-          if result.layer
-            @layers[result.site._id] = result
-            if @map?
-              result.layer.fitIntoBounds(@map.getBounds())
-            layersToAdd.push result.layer
-        , error
-
-    siteMap = _.object(_.pluck(sites, '_id'), sites)
-
-    nbToDelete = layersToAdd.length - @maxSitesReturned
-
-    for id, result of @layers
-      if nbToDelete <= 0
-        break
-      if not (id of siteMap)
-        delete @layers[id]
-        nbToDelete--
-
-    @clusterer.clearLayers()
-    @clusterer.addLayers(layersToAdd)
-
-    success() if success?
 
   # Query the db
   getSites: (selector, success, error) =>

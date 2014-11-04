@@ -34,6 +34,7 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
     return content.get(0)
 
   createLayer: (site, success, error) =>
+    # Use L.geoJson to create the marker
     layer = L.geoJson site.geo, {
       style: (feature) =>
         return { 
@@ -42,54 +43,60 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
           fillOpacity: 1.0
         }
     }
-
+    # We are going to its marker, but not the actual L.geoJson layer
     marker = layer.getLayers()[0]
 
     if marker?
       marker.on 'click', =>
-        popupContent = @getPopupHtmlElement(site)
-
-        # Set image of popup. Defer to prevent pointless loading
-        if site.photos
-          cover = _.findWhere(site.photos, { cover: true })
-          if cover and $(popupContent).find("#image").html() == ""
-            thumbnail = "<img class='thumb' src='#{this.ctx.apiUrl}images/" + cover.id + "?h=100' >"
-            $(popupContent).find("#image").html(thumbnail)
-
-        popup = L.popup()
-        popup.setContent(popupContent)
-
-        # This is a "clean" hack to set the popup offset, if this is not done, the popup is covering the marker
-        marker.bindPopup(popup)
-        marker.unbindPopup()
-
-        popup.setLatLng(marker.getLatLng())
-
         if marker._map
-          marker._map.openPopup(popup)
+          marker._map.openPopup(createPopup(site, marker, this.ctx.apiUrl))
 
-      # Override layer remove to be alerted of remove
-      superOnRemove = marker.onRemove.bind(marker)
-      marker.onRemove = (map) ->
-        # Set flag that layer was removed
-        marker.removed = true
-        superOnRemove(map)
+      marker.fitIntoBounds = fitIntoBounds
 
-      marker.fitIntoBounds = (bounds) ->
-        latLng = marker.getLatLng()
-        lng = latLng.lng
-        if bounds
-          west = bounds.getWest()
-          east = bounds.getEast()
-          while(lng < west)
-            lng += 360
-          while(lng > east)
-            lng -= 360
-
-        latLng2 = L.latLng(latLng.lat, lng);
-        marker.setLatLng(latLng2)
-
+      # Override layer remove to be alerted of remove (not sure if it's still used...
+      #superOnRemove = marker.onRemove.bind(marker)
+      #marker.onRemove = (map) ->
+      #  # Set flag that layer was removed
+      #  marker.removed = true
+      #  superOnRemove(map)
 
     # Return initial layer
     success(site: site, layer: marker)
 
+
+# Sets the lng value in the -360 to 360 range
+fitIntoBounds = (bounds) ->
+  latLng = this.getLatLng()
+  lng = latLng.lng
+  if bounds
+    west = bounds.getWest()
+    east = bounds.getEast()
+    while(lng < west)
+      lng += 360
+    while(lng > east)
+      lng -= 360
+
+  latLng2 = L.latLng(latLng.lat, lng);
+  this.setLatLng(latLng2)
+
+# Create popup with content
+createPopup = (site, marker, apiUrl) ->
+  # Create popup with content
+  popup = L.popup()
+  popupContent = @getPopupHtmlElement(site)
+  popup.setContent(popupContent)
+
+  # Set image of popup
+  if site.photos
+    cover = _.findWhere(site.photos, { cover: true })
+    if cover and $(popupContent).find("#image").html() == ""
+      thumbnail = "<img class='thumb' src='#{apiUrl}images/" + cover.id + "?h=100' >"
+      $(popupContent).find("#image").html(thumbnail)
+
+  # This is a "clean" hack to set the popup pixel offset. If this is not done, the popup is covering the marker.
+  marker.bindPopup(popup)
+  marker.unbindPopup()
+
+  popup.setLatLng(marker.getLatLng())
+
+  return popup
