@@ -8,7 +8,7 @@ normalizeLng = require('./utils').normalizeLng
 module.exports = class SitesLayer extends L.LayerGroup
   constructor: (siteLayerCreator, sitesDb, filter) ->
     super()
-    @maxSitesReturned = 300
+    @maxSitesReturned = 10000
     @siteLayerCreator = siteLayerCreator
     @sitesDb = sitesDb
     @filter = filter || {}
@@ -20,7 +20,6 @@ module.exports = class SitesLayer extends L.LayerGroup
     super(map)
     @map = map
     @clusterer = new L.MarkerClusterGroup();
-    @popUpLayer = null
     @map.addLayer(@clusterer);
     map.on 'moveend', @update
     @zoomToSeeMoreMsgDisplayed = false
@@ -71,7 +70,10 @@ module.exports = class SitesLayer extends L.LayerGroup
       @map.removeControl(@zoomToSeeMoreMsg)
 
     layersToAdd = []
-    layersToRemove = []
+    #layersToRemove = []
+
+    nbAlreadyThere = 0
+    nbCreated = 0
 
     for site in sites
       # If layer exists, ignore
@@ -79,34 +81,39 @@ module.exports = class SitesLayer extends L.LayerGroup
       if result?
         if @map?
           result.layer.fitIntoBounds(@map.getBounds())
+        layersToAdd.push result.layer
+        nbAlreadyThere++
       else
         # Call creator
         @siteLayerCreator.createLayer site, (result) =>
           # can only handle the sites with a location/marker
           if result.layer
+            nbCreated++
             @layers[result.site._id] = result
             if @map?
               result.layer.fitIntoBounds(@map.getBounds())
             layersToAdd.push result.layer
         , error
 
-    if @popUpLayer != null and not @popUpLayer.layer._popup._isOpen
-      console.log 'closed pop up ' + @popUpLayer.site._id
-      @popUpLayer = null
+    console.log 'numbers'
+    console.log nbAlreadyThere
+    console.log nbCreated
+    console.log layersToAdd.length
 
     siteMap = _.object(_.pluck(sites, '_id'), sites)
-    for id, result of @layers
-      if @popUpLayer == null and result.layer._popup._isOpen
-        @popUpLayer = result
-        console.log 'open pop up ' + result.site._id
-      else if @popUpLayer != null and @popUpLayer.site._id == id
-        console.log 'skipped opened popup ' + result.site._id
-      else if not (id of siteMap)
-        layersToRemove.push result.layer
-        delete @layers[id]
-        console.log 'deleted marker ' + id
 
-    @clusterer.removeLayers(layersToRemove)
+    nbToDelete = layersToAdd.length - @maxSitesReturned
+
+    for id, result of @layers
+      if nbToDelete <= 0
+        break
+      if not (id of siteMap)
+        #layersToRemove.push result.layer
+        delete @layers[id]
+        nbToDelete--
+
+    #@clusterer.removeLayers(layersToRemove)
+    @clusterer.clearLayers()
     @clusterer.addLayers(layersToAdd)
 
     success() if success?

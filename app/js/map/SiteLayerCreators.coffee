@@ -46,10 +46,9 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
     marker = layer.getLayers()[0]
 
     if marker?
-      popupContent = @getPopupHtmlElement(site)
-      marker.bindPopup(popupContent)
-
       marker.on 'click', =>
+        popupContent = @getPopupHtmlElement(site)
+
         # Set image of popup. Defer to prevent pointless loading
         if site.photos
           cover = _.findWhere(site.photos, { cover: true })
@@ -57,7 +56,17 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
             thumbnail = "<img class='thumb' src='#{this.ctx.apiUrl}images/" + cover.id + "?h=100' >"
             $(popupContent).find("#image").html(thumbnail)
 
+        popup = L.popup()
+        popup.setContent(popupContent)
 
+        # This is a "clean" hack to set the popup offset, if this is not done, the popup is covering the marker
+        marker.bindPopup(popup)
+        marker.unbindPopup()
+
+        popup.setLatLng(marker.getLatLng())
+
+        if marker._map
+          marker._map.openPopup(popup)
 
       # Override layer remove to be alerted of remove
       superOnRemove = marker.onRemove.bind(marker)
@@ -65,8 +74,6 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
         # Set flag that layer was removed
         marker.removed = true
         superOnRemove(map)
-
-
 
       marker.fitIntoBounds = (bounds) ->
         latLng = marker.getLatLng()
