@@ -70,10 +70,6 @@ module.exports = class SitesLayer extends L.LayerGroup
       @map.removeControl(@zoomToSeeMoreMsg)
 
     layersToAdd = []
-    #layersToRemove = []
-
-    nbAlreadyThere = 0
-    nbCreated = 0
 
     for site in sites
       # If layer exists, ignore
@@ -82,23 +78,16 @@ module.exports = class SitesLayer extends L.LayerGroup
         if @map?
           result.layer.fitIntoBounds(@map.getBounds())
         layersToAdd.push result.layer
-        nbAlreadyThere++
       else
         # Call creator
         @siteLayerCreator.createLayer site, (result) =>
           # can only handle the sites with a location/marker
           if result.layer
-            nbCreated++
             @layers[result.site._id] = result
             if @map?
               result.layer.fitIntoBounds(@map.getBounds())
             layersToAdd.push result.layer
         , error
-
-    console.log 'numbers'
-    console.log nbAlreadyThere
-    console.log nbCreated
-    console.log layersToAdd.length
 
     siteMap = _.object(_.pluck(sites, '_id'), sites)
 
@@ -108,11 +97,9 @@ module.exports = class SitesLayer extends L.LayerGroup
       if nbToDelete <= 0
         break
       if not (id of siteMap)
-        #layersToRemove.push result.layer
         delete @layers[id]
         nbToDelete--
 
-    #@clusterer.removeLayers(layersToRemove)
     @clusterer.clearLayers()
     @clusterer.addLayers(layersToAdd)
 
