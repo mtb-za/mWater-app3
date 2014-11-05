@@ -36,10 +36,12 @@
 
 <div id="bottom_navbar" class="text-center">
   <div class="btn-group dropup">
+    {{#if showAdd}}
     <button type="button" class="btn btn-lg btn-link dropdown-toggle" data-toggle="dropdown">
       <span class="glyphicon glyphicon-plus"></span>
       {{T "Add"}}
     </button>
+    {{/if}}
     <ul class="dropdown-menu text-left" role="menu">
       <li><a id="new_site">{{T "Site"}}</a></li>
       <li><a id="new_survey">{{T "Survey"}}</a></li>

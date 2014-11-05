@@ -36,7 +36,7 @@ class SiteMapPage extends Page
 
     @deactivated = false
 
-    @$el.html require('./SiteMapPage.hbs')()
+    @$el.html require('./SiteMapPage.hbs')(showAdd: not @options.setLocation)
 
     @resizeMap()
 
