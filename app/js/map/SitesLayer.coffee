@@ -1,36 +1,54 @@
 GeoJSON = require '../GeoJSON'
 normalizeLng = require('./utils').normalizeLng
+ZoomToSeeMoreControl = require './ZoomToSeeMoreControl'
 
-# All sites layers should extend SiteLayerCreator and then use a standard
-# SitesLayer with the site layer creator passed in
-# SitesLayer takes care of basic filtering and gives the individual layer (site)
-# creation to site layer
+# SitesLayer takes care of the querying/filtering of sites and use the siteLayerCreator to create the individual markers
 module.exports = class SitesLayer extends L.LayerGroup
   constructor: (siteLayerCreator, sitesDb, filter) ->
     super()
-    @maxSitesReturned = 1000
     @siteLayerCreator = siteLayerCreator
     @sitesDb = sitesDb
     @filter = filter || {}
 
-    # Layers, by _id
+    @maxSitesReturned = 1000
+
     @cachedMarkers = {}
     @cachedMarkersSize = 0
 
   onAdd: (map) =>
     super(map)
     @map = map
-    # trying not to remove the markers outside visible bounds, so you see them right away after a zoom out
-    # removeOutsideVisibleBounds: false, it crashes
-    @clusterer = new L.MarkerClusterGroup({disableClusteringAtZoom: 15});
+
+    # WIP note
+    # I've been trying to NOT remove the markers outside visible bounds, so you could see them right away after a zoom out
+    # but using removeOutsideVisibleBounds: false crashes
+
+    # Creating the marker clusterer
+    @clusterer = new L.MarkerClusterGroup({
+      disableClusteringAtZoom: 15,
+      # custom creation of cluster icon to show a + next to the number when markers could be missing
+      iconCreateFunction: (cluster) =>
+        childCount = cluster.getChildCount();
+
+        # different look based on the number of markers
+        c = ' marker-cluster-'
+        if (childCount < 10)
+          c += 'small'
+        else if (childCount < 100)
+          c += 'medium'
+        else
+          c += 'large'
+
+        text = '' + childCount
+        if @zoomToSeeMoreMsg.active
+          text += '+'
+        return new L.DivIcon({ html: '<div><span>' + text + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) })
+    })
     @map.addLayer(@clusterer);
 
     map.on 'moveend', @update
 
-    @zoomToSeeMoreMsgDisplayed = false
-    @zoomToSeeMoreMsg = L.control({position: 'topleft'});
-    @zoomToSeeMoreMsg.onAdd = (map) =>
-      return @createZoomInToSeeMore()
+    @zoomToSeeMoreMsg = new ZoomToSeeMoreControl(@maxSitesReturned)
 
     # Do first query
     @update()
@@ -69,7 +87,7 @@ module.exports = class SitesLayer extends L.LayerGroup
     if not @map?
       return
 
-    @displayTooManySitesWarning(sites.length)
+    @zoomToSeeMoreMsg.testTooManySitesWarning(sites.length, @map)
 
     markersToAdd = @createMarkers(sites, error)
 
@@ -116,19 +134,6 @@ module.exports = class SitesLayer extends L.LayerGroup
       if not (id of siteMap)
         delete @cachedMarkers[id]
         @cachedMarkersSize--
-
-  # Display "zoom to see more" warning when there is @maxSitesReturned sites
-  # To make this 100% clean, we would need to deal with the special case when the result was not truncated
-  # and actually contained @maxSitesReturned sites.
-  displayTooManySitesWarning: (nbOfSites) =>
-    if nbOfSites >= @maxSitesReturned
-      if not @zoomToSeeMoreMsgDisplayed
-        @zoomToSeeMoreMsgDisplayed = true
-        @map.addControl(@zoomToSeeMoreMsg)
-    else if @zoomToSeeMoreMsgDisplayed
-      @zoomToSeeMoreMsgDisplayed = false
-      @map.removeControl(@zoomToSeeMoreMsg)
-
 
   # Query the db
   getSites: (selector, success, error) =>
@@ -197,25 +202,3 @@ module.exports = class SitesLayer extends L.LayerGroup
       selector.geo = $geoIntersects:
         $geometry: boundsGeoJSON
     return
-
-  createZoomInToSeeMore: ->
-    html = '''
-<div class="warning legend">
-<style>
-.warning {
-  padding: 6px 8px;
-  font: 14px/16px Arial, Helvetica, sans-serif;
-  background: yellow;
-  background: rgba(255,255,0,0.8);
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
-  border-radius: 5px;
-}
-.legend {
-    line-height: 18px;
-    color: #555;
-}
-</style>
-<b>''' + T('Zoom in to see more') + '''</b>
-</div>
-'''
-    return $(html).get(0)
