@@ -3,7 +3,12 @@
 class LocationFinder
   constructor: ->
     _.extend @, Backbone.Events
+    document.addEventListener 'pause', @onPause
 
+  onPause: =>
+    console.log "paused"
+    @stopWatch()
+    
   cacheLocation = (pos) ->
     window.localStorage['LocationFinder.lastPosition'] = JSON.stringify(pos)
 
