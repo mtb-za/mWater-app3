@@ -56,7 +56,7 @@ module.exports = class SurveyListPage extends Page
       return
 
     # Get database
-    @db.forms.findOne { _id: resp.form }, { mode: "local" }, (form) =>
+    @db.forms.findOne { _id: resp.form }, { shortcut: true }, (form) =>
       if form
         name = mwaterforms.formUtils.localizeString(form.design.name, @localizer.locale)
       else

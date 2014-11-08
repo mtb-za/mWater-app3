@@ -119,7 +119,7 @@ module.exports = class SitePage extends Page
 
         # Fill in names
         for test in tests
-          @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
+          @db.forms.findOne { code:test.type }, { shortcut: true }, (form) =>
             @$("#test_name_"+test._id).text(if form then form.name else "???")
           , @error
       , @error
@@ -145,7 +145,7 @@ module.exports = class SitePage extends Page
 
       #   # Fill in names
       #   for survey in surveys
-      #     @db.forms.findOne { code:survey.type }, { mode: "local" }, (form) =>
+      #     @db.forms.findOne { code:survey.type }, { shortcut: true }, (form) =>
       #       @$("#survey_name_"+survey._id).text(if form then form.name else "???")
       #     , @error
       # , @error
