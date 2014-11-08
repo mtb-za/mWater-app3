@@ -25,7 +25,7 @@ module.exports = class TestListPage extends Page
       _.defer => # Defer to allow html to render
         for test in tests
           do (test) =>
-            @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
+            @db.forms.findOne { code:test.type }, { shortcut: true }, (form) =>
               @$("#name_"+test._id).text(if form then form.name else "???")
             , @error
     , @error
@@ -37,7 +37,7 @@ module.exports = class TestListPage extends Page
       _.defer => # Defer to allow html to render
         for test in tests
           do (test) =>
-            @db.forms.findOne { code:test.type }, { mode: "local" }, (form) =>
+            @db.forms.findOne { code:test.type }, { shortcut: true }, (form) =>
               @$("#name_"+test._id).text(if form then form.name else "???")
             , @error
     , @error
