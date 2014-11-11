@@ -67,7 +67,7 @@ module.exports = function(grunt) {
             'bower_components/overthrow-dist/overthrow.js',
             'vendor/mobiscroll.custom-2.5.4.min.js',
             'vendor/leaflet/leaflet-src.js',
-            'bower_components/leaflet.markercluster/dist/leaflet.markercluster-src.js'],
+            'bower_components/leaflet.markercluster/dist/leaflet.markercluster.js'],
         dest: 'dist/js/libs.js'
       }
     },
