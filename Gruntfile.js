@@ -44,7 +44,8 @@ module.exports = function(grunt) {
               'vendor/*.css',
               'vendor/leaflet/leaflet.css',
               'bower_components/leaflet.markercluster/dist/MarkerCluster.css',
-              'bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css'],
+              'bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css'
+              'vendor/esri/esri-leaflet-geocoder.css'],
         dest: 'dist/css/libs.css'
       },
       libsjs: {
@@ -67,6 +68,8 @@ module.exports = function(grunt) {
             'bower_components/overthrow-dist/overthrow.js',
             'vendor/mobiscroll.custom-2.5.4.min.js',
             'vendor/leaflet/leaflet-src.js',
+            'vendor/esri/esri-leaflet-core.js',
+            'vendor/esri/esri-leaflet-geocoder.js',
             'bower_components/leaflet.markercluster/dist/leaflet.markercluster.js'],
         dest: 'dist/js/libs.js'
       }
@@ -142,6 +145,12 @@ module.exports = function(grunt) {
         src: 'layers*',
         dest: 'dist/css/images/'
       },
+      esricssimages: {
+        expand: true,
+        cwd: 'vendor/esri/img/',
+        src: '*',
+        dest: 'dist/css/img/'
+      },
       cordova_www: {
         expand: true,
         cwd: 'dist/',
@@ -187,7 +196,7 @@ module.exports = function(grunt) {
           '*.html',
           'js/*.js',
           'css/*.css',
-          'css/images/*.*',
+          'css/**/*.*',
           'img/**/*.*',
           'fonts/*'
         ],
@@ -266,18 +275,35 @@ module.exports = function(grunt) {
           '--add-header "Expires: 0" ' + 
           '--add-header "Content-Encoding: gzip" '+
           '* s3://app.mwater.co',
-          's3cmd put --acl-public --guess-mime-type ' +
-          '--add-header "Cache-Control: no-cache, no-store, must-revalidate" ' +
+
+          's3cmd sync --acl-public --guess-mime-type ' +
+          '--add-header "Cache-Control: no-cache, must-revalidate" ' +
           '--add-header "Pragma: no-cache" ' +
           '--add-header "Expires: 0" ' + 
           '--add-header "Content-Encoding: gzip" '+
-          'manifest.appcache s3://app.mwater.org',
+          '* s3://trainingapp.mwater.co',
+
           's3cmd sync --acl-public --guess-mime-type ' +
           '--add-header "Cache-Control: no-cache, must-revalidate" ' +
           '--add-header "Pragma: no-cache" ' +
           '--add-header "Expires: 0" ' + 
           '--add-header "Content-Encoding: gzip" '+
           '* s3://app.mwater.org',
+
+          's3cmd put --acl-public --guess-mime-type ' +
+          '--add-header "Cache-Control: no-cache, no-store, must-revalidate" ' +
+          '--add-header "Pragma: no-cache" ' +
+          '--add-header "Expires: 0" ' + 
+          '--add-header "Content-Encoding: gzip" '+
+          'manifest.appcache s3://app.mwater.co',
+
+          's3cmd put --acl-public --guess-mime-type ' +
+          '--add-header "Cache-Control: no-cache, no-store, must-revalidate" ' +
+          '--add-header "Pragma: no-cache" ' +
+          '--add-header "Expires: 0" ' + 
+          '--add-header "Content-Encoding: gzip" '+
+          'manifest.appcache s3://trainingapp.mwater.co',
+
           's3cmd put --acl-public --guess-mime-type ' +
           '--add-header "Cache-Control: no-cache, no-store, must-revalidate" ' +
           '--add-header "Pragma: no-cache" ' +
@@ -355,7 +381,7 @@ module.exports = function(grunt) {
   grunt.registerTask('cordova_release', ['copy:cordova_config', 'copy:cordova_www', 'copy:cordova_override_release']);
   grunt.registerTask('run_cordova_debug', ['default', 'cordova_debug', 'shell:cordova_run']);
 
-  grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages', 'copy:leafletimages']);
+  grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages', 'copy:esricssimages', 'copy:leafletimages']);
   // TODO localization grunt.registerTask('default', ['localization', 'browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
   grunt.registerTask('default', ['shell:browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
 

@@ -101,8 +101,10 @@ gulp.task 'libsjs', ->
     'bower_components/swag/lib/swag.js'
     'bower_components/overthrow-dist/overthrow.js'
     'vendor/mobiscroll.custom-2.5.4.min.js'
-    'vendor/jquery.scrollintoview.min.js'
-    'vendor/leaflet/leaflet-src.js'
+    'vendor/jquery.scrollintoview.min.js',
+    'vendor/leaflet/leaflet-src.js',
+    'vendor/esri-leaflet-core.js'
+    'vendor/esri-leaflet-geocoder.js'
     ])
     .pipe(concat('libs.js'))
     .pipe(gulp.dest('dist/js/'))

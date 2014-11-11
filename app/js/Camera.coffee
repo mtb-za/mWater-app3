@@ -6,7 +6,7 @@ exports.takePicture = (success, error) ->
   # Start get picture
   console.log "About to take picture"
   navigator.camera.getPicture success, error,
-    quality: 50
+    quality: 80
     destinationType: Camera.DestinationType.FILE_URI
 
 
