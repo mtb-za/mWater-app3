@@ -44,7 +44,7 @@ module.exports = function(grunt) {
               'vendor/*.css',
               'vendor/leaflet/leaflet.css',
               'bower_components/leaflet.markercluster/dist/MarkerCluster.css',
-              'bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css'
+              'bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css',
               'vendor/esri/esri-leaflet-geocoder.css'],
         dest: 'dist/css/libs.css'
       },
