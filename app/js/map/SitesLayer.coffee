@@ -15,15 +15,13 @@ module.exports = class SitesLayer extends L.LayerGroup
     @cachedMarkers = {}
     @cachedMarkersSize = 0
 
-  onAdd: (map) =>
-    super(map)
-    @map = map
+    @zoomToSeeMoreMsg = new ZoomToSeeMoreControl(@maxSitesReturned)
 
+    # Creating the marker clusterer
     # WIP note
     # I've been trying to NOT remove the markers outside visible bounds, so you could see them right away after a zoom out
     # but using removeOutsideVisibleBounds: false crashes
 
-    # Creating the marker clusterer
     @clusterer = new L.MarkerClusterGroup({
       disableClusteringAtZoom: 15,
       # custom creation of cluster icon to show a + next to the number when markers could be missing
@@ -44,11 +42,14 @@ module.exports = class SitesLayer extends L.LayerGroup
           text += '+'
         return new L.DivIcon({ html: '<div><span>' + text + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) })
     })
+
+  onAdd: (map) =>
+    super(map)
+    @map = map
+
     @map.addLayer(@clusterer);
 
     map.on 'moveend', @update
-
-    @zoomToSeeMoreMsg = new ZoomToSeeMoreControl(@maxSitesReturned)
 
     # Do first query
     @update()
@@ -61,7 +62,7 @@ module.exports = class SitesLayer extends L.LayerGroup
     @filter = filter
 
   reset: =>
-    @clearLayers()
+    @clusterer.clearLayers()
     @cachedMarkers = {}
     @cachedMarkersSize = 0
 
@@ -84,10 +85,8 @@ module.exports = class SitesLayer extends L.LayerGroup
   # Goes through the sites returned by the DB query and update the displayed markers
   updateFromList: (sites, success, error) =>
     # no point in doing any of this if there is no map
-    if not @map?
-      return
-
-    @zoomToSeeMoreMsg.testTooManySitesWarning(sites.length, @map)
+    if @map?
+      @zoomToSeeMoreMsg.testTooManySitesWarning(sites.length, @map)
 
     markersToAdd = @createMarkers(sites, error)
 
@@ -121,7 +120,8 @@ module.exports = class SitesLayer extends L.LayerGroup
         , error
 
       if marker
-        marker.fitIntoBounds(@map.getBounds())
+        if @map?
+          marker.fitIntoBounds(@map.getBounds())
         markersToAdd.push marker
     return markersToAdd
 

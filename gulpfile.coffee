@@ -103,7 +103,8 @@ gulp.task 'libsjs', ->
     'vendor/mobiscroll.custom-2.5.4.min.js'
     'vendor/jquery.scrollintoview.min.js',
     'vendor/leaflet/leaflet-src.js',
-    'vendor/esri-leaflet-core.js'
+    'bower_components/leaflet.markercluster/dist/leaflet.markercluster-src.js',
+    'vendor/esri-leaflet-core.js',
     'vendor/esri-leaflet-geocoder.js'
     ])
     .pipe(concat('libs.js'))
