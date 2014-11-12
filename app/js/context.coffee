@@ -256,7 +256,7 @@ exports.createLoginContext = (login, success) ->
       imageSync = new syncModule.ImageSync(imageManager)
 
       # Start synchronizing
-      dataSync.start(30*1000)  # Every 30 seconds
+      dataSync.start(15*1000)  # Every 15 seconds
       imageSync.start(30*1000)  # Every 30 seconds
 
       # Perform sync immediately
