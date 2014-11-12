@@ -307,8 +307,5 @@ exports.createLoginContext = (login, success) ->
       }
       success(ctx)
 
-    # Only get groups once (TODO replace this when minimongo supports queries that return single authoritative results)
-    withGroups = _.once(withGroups)
-
     # Get list of groups from database
-    db.groups.find({ members: login.user }, { fields: { groupname: 1 } }).fetch(withGroups, error)
+    db.groups.find({ members: login.user }, { fields: { groupname: 1 }, interim: false }).fetch(withGroups, error)

@@ -140,7 +140,8 @@ module.exports = class SitesLayer extends L.LayerGroup
     queryOptions =
       sort: ["_id"]
       limit: @maxSitesReturned
-      mode: "remote"
+      cacheFind: false
+      interim: false
       fields:
         name: 1
         code: 1

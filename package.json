@@ -1,6 +1,6 @@
 {
   "name": "mWater-App",
-  "version": "3.12.9",
+  "version": "3.13.1",
   "description": "Client of mWater App",
   "main": "index.js",
   "scripts": {
@@ -61,7 +61,7 @@
     "handlebars": "~1.3.0",
     "lodash": "~2.4.1",
     "minimist": "0.0.8",
-    "minimongo": "^2.6.0",
+    "minimongo": "^3.0.0",
     "mwater-common": "^1.1.0",
     "mwater-forms": "^3.0.0",
     "offline-leaflet-map": "^0.1.0",
