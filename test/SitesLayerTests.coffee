@@ -3,7 +3,7 @@ assert = chai.assert
 SitesLayer = require '../app/js/map/SitesLayer'
 
 # TODO Rename marker to layer
-describe.only "SitesLayer", ->
+describe "SitesLayer", ->
   describe "updateFromList", ->
     it 'adds created layers', ->
       layers = 
@@ -125,52 +125,28 @@ describe.only "SitesLayer", ->
         } } 
       }
 
-  describe "scopeQuery", ->
-    selector = {}
-    sl = new SitesLayer()
-
-    beforeEach ->
-      selector = {}
-
-    it "should add a user filter if a user is set", ->
-      scope = { user: "test" }
-      sl.scopeQuery(scope, selector)
-      assert.deepEqual(selector, scope)
-
-    it "should add a org filter if an org is set", ->
-      scope = {org: "test" }
-      sl.scopeQuery(scope, selector)
-      assert.deepEqual(selector, scope)
-
-    it "should not set anyting if there is no user or org", ->
-      scope = {}
-      sl.scopeQuery(scope, selector)
-      assert.deepEqual(selector, scope)
-
   describe "update", ->
     it "queries bounds and scope", ->
+      @sel = null
       sitesDb = 
         find: (sel, opt) =>
           @sel = sel
           @opt = opt
           return { fetch: -> }
 
-      sl = new SitesLayer(null, sitesDb)
+      sl = new SitesLayer(null, sitesDb, {user: "test"})
 
       southWest = new L.LatLng(10, 110)
       northEast = new L.LatLng(20, 120)
       bounds = new L.LatLngBounds(southWest, northEast)
-      sl.map = {};
+      sl.map = {}
       sl.map.getBounds = -> 
         bounds
 
-      sl.updateFromList = ->
-
-      sl.scope = { user: "test" }
       sl.update()
 
       assert.property(@sel, "user")
-      assert.equal(@sel.user, sl.scope.user)
+      assert.equal(@sel.user, sl.filter.user)
       assert.property(@sel, "geo")
       
 
