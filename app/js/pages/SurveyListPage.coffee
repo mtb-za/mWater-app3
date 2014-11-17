@@ -34,7 +34,7 @@ module.exports = class SurveyListPage extends Page
     query = { 
       type: { $exists: false }
       status: { $in: ['pending', 'final'] }
-      submittedOn: { $gt:recent.toISOString() }
+      submittedOn: { $gt:recent.toISOString().substr(0,10) } # Only use date, not exact time for easier caching
       user: @login.user }
     @db.responses.find(query, {sort:[['submittedOn','desc']], limit: 100}).fetch (responses) =>
       @$("#recent_table").html require('./SurveyListPage_items.hbs')(responses:responses)
@@ -67,10 +67,9 @@ module.exports = class SurveyListPage extends Page
 
   openResponse: (ev) ->
     responseId = ev.currentTarget.id
-    @db.responses.findOne { _id: responseId }, (response) =>
-      # Solve circularity bug by requiring here
-      @pager.openPage(require("./SurveyPage"), { _id: responseId})
-    , @error
+
+    # Solve circularity bug by requiring here
+    @pager.openPage(require("./SurveyPage"), { _id: responseId})
 
   addSurvey: ->
     # Circularity bug fix
