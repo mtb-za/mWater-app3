@@ -49,7 +49,7 @@ exports.SimpleSitesLayerCreator = class SimpleSitesLayerCreator extends SiteLaye
     if marker?
       marker.on 'click', =>
         if marker._map
-          marker._map.openPopup(createPopup(site, marker, this.ctx.apiUrl))
+          marker._map.openPopup(createPopup(site, marker, this.ctx.apiUrl, @getPopupHtmlElement(site)))
 
       marker.fitIntoBounds = fitIntoBounds
 
@@ -80,10 +80,9 @@ fitIntoBounds = (bounds) ->
   this.setLatLng(latLng2)
 
 # Create popup with content
-createPopup = (site, marker, apiUrl) ->
+createPopup = (site, marker, apiUrl, popupContent) ->
   # Create popup with content
   popup = L.popup()
-  popupContent = @getPopupHtmlElement(site)
   popup.setContent(popupContent)
 
   # Set image of popup
