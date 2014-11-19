@@ -27,6 +27,7 @@ class SiteMapPage extends Page
       _.defer => @pager.openPage(require("./NewTestPage"))
 
   activate: ->
+    @errorFlag = false
     # Create filter of site types
     @siteTypesFilter = {}
     if @options.filterSiteTypes
@@ -157,20 +158,27 @@ class SiteMapPage extends Page
           if not @cacheProgressControl.cancelling
             @cacheProgressControl.cancel();
             
-        if errorType == "NETWORK_ERROR"
-          errorMsg = errorType + ":" + errorData
-          console.log(errorMsg)
-          @pager.flash(T("Network error. Unable to save image."), "danger")
-        else if errorType == "ZOOM_LEVEL_TOO_LOW"
+        if errorType == "ZOOM_LEVEL_TOO_LOW"
           alert(T("You are trying to save too large of a region of the map. Please zoom in further."))
         else if errorType == "SYSTEM_BUSY"
           alert(T("System is busy"))
         else
-          console.log("#{errorType}:#{errorData}")
-          @pager.flash(errorType, "danger")
+          if not @errorFlag
+            @errorFlag = true
+            if errorType == "NETWORK_ERROR"
+              errorMsg = errorType + ":" + errorData
+              console.log(errorMsg)
+              @pager.flash(T("Network error. Unable to save image."), "danger")
+            else if errorType == "GET_STATUS_ERROR"
+                alert(T("Unable to download map."), "danger")
+            else
+              console.log("#{errorType}:#{errorData}")
+              @pager.flash(errorType, "danger")
 
     # Setup base layers
     @osmLayer = BaseLayers.createOSMLayer(onReady, onError)
+    @listenTo @osmLayer, 'tilecachingprogressstart', (e) =>
+      @errorFlag = false
 
     # Setup initial zoom
     if center
