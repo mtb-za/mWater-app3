@@ -120,28 +120,28 @@ createLocalDb = (namespace, success, error) ->
     success(localDb)
 
 
-# Slow JSON http client
-slowHttpClient = (method, url, params, data, success, error) ->
-  # Append 
-  fullUrl = url + "?" + $.param(params)
+# # Slow JSON http client for testing
+# slowHttpClient = (method, url, params, data, success, error) ->
+#   # Append 
+#   fullUrl = url + "?" + $.param(params)
 
-  if method == "GET"
-    req = $.getJSON(fullUrl)
-  else if method == "DELETE"
-    req = $.ajax(fullUrl, { type : 'DELETE'})
-  else if method == "POST" or method == "PATCH"
-    req = $.ajax(fullUrl, {
-      data : JSON.stringify(data),
-      contentType : 'application/json',
-      type : method})
+#   if method == "GET"
+#     req = $.getJSON(fullUrl)
+#   else if method == "DELETE"
+#     req = $.ajax(fullUrl, { type : 'DELETE'})
+#   else if method == "POST" or method == "PATCH"
+#     req = $.ajax(fullUrl, {
+#       data : JSON.stringify(data),
+#       contentType : 'application/json',
+#       type : method})
 
-  req.done (response, textStatus, jqXHR) =>
-    setTimeout ->
-      success(response or null)
-    , 10000
-  req.fail (jqXHR, textStatus, errorThrown) =>
-    if error
-      error(jqXHR)
+#   req.done (response, textStatus, jqXHR) =>
+#     setTimeout ->
+#       success(response or null)
+#     , 10000
+#   req.fail (jqXHR, textStatus, errorThrown) =>
+#     if error
+#       error(jqXHR)
 
 # Setup database
 createDb = (login, success) ->
@@ -152,7 +152,7 @@ createDb = (login, success) ->
     namespace = null
 
   createLocalDb namespace, (localDb) =>
-    remoteDb = new minimongo.RemoteDb(apiUrl, (if login then login.client else undefined), slowHttpClient)
+    remoteDb = new minimongo.RemoteDb(apiUrl, (if login then login.client else undefined))
     db = new minimongo.HybridDb(localDb, remoteDb)
 
     # Add collections
