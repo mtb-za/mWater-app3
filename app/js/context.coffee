@@ -119,6 +119,30 @@ createLocalDb = (namespace, success, error) ->
     localDb = new minimongo.MemoryDb() 
     success(localDb)
 
+
+# Slow JSON http client
+slowHttpClient = (method, url, params, data, success, error) ->
+  # Append 
+  fullUrl = url + "?" + $.param(params)
+
+  if method == "GET"
+    req = $.getJSON(fullUrl)
+  else if method == "DELETE"
+    req = $.ajax(fullUrl, { type : 'DELETE'})
+  else if method == "POST" or method == "PATCH"
+    req = $.ajax(fullUrl, {
+      data : JSON.stringify(data),
+      contentType : 'application/json',
+      type : method})
+
+  req.done (response, textStatus, jqXHR) =>
+    setTimeout ->
+      success(response or null)
+    , 10000
+  req.fail (jqXHR, textStatus, errorThrown) =>
+    if error
+      error(jqXHR)
+
 # Setup database
 createDb = (login, success) ->
   if login
@@ -128,7 +152,7 @@ createDb = (login, success) ->
     namespace = null
 
   createLocalDb namespace, (localDb) =>
-    remoteDb = new minimongo.RemoteDb(apiUrl, if login then login.client else undefined)
+    remoteDb = new minimongo.RemoteDb(apiUrl, (if login then login.client else undefined), slowHttpClient)
     db = new minimongo.HybridDb(localDb, remoteDb)
 
     # Add collections
@@ -287,12 +311,6 @@ exports.createLoginContext = (login, success) ->
             ImageUploader.acquire(apiUrl, login.client, success, error) 
         }
 
-      # Add function to asynchronously update groups list TODO add callback when minimongo supports final results
-      updateGroupsList = () ->
-        db.groups.find({ members: login.user }, { fields: { groupname: 1 } }).fetch (groupDocs) ->
-          login.groups = _.pluck(groupDocs, "groupname")
-        , error
-
       ctx = _.extend baseContext, {
         db: db 
         imageManager: imageManager
@@ -303,9 +321,22 @@ exports.createLoginContext = (login, success) ->
         imageSync: imageSync
         stop: stop
         imageAcquirer: imageAcquirer
-        updateGroupsList: updateGroupsList
       }
+
+      # Add function to asynchronously update groups list 
+      ctx.updateGroupsList = () ->
+        db.groups.find({ members: login.user }, { fields: { groupname: 1 } }).fetch (groupDocs) ->
+          login.groups = _.pluck(groupDocs, "groupname")
+          ctx.auth = new authModule.UserAuth(login.user, login.groups)
+        , error
+
+      # Update groups in case server is delayed returning results
+      ctx.updateGroupsList()
+
       success(ctx)
 
+    # Only get groups once initially
+    withGroups = _.once(withGroups)
+
     # Get list of groups from database
-    db.groups.find({ members: login.user }, { fields: { groupname: 1 }, interim: false }).fetch(withGroups, error)
+    db.groups.find({ members: login.user }, { fields: { groupname: 1 } }).fetch(withGroups, error)

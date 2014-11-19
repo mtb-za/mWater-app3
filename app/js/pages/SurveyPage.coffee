@@ -96,7 +96,7 @@ class SurveyPage extends Page
       # The mode parameter tells us that a new response has just been created for that page
       if @options.mode == "new"
         # When it's the case, we want to search for other drafts of that form
-        @db.responses.find({ form: @form._id, _id: { $ne: @response._id }, status: 'draft', user: @login.user }, {sort:[['startedOn','desc']], limit: 10, interim: false}).fetch (responses) =>
+        @db.responses.find({ form: @form._id, _id: { $ne: @response._id }, status: 'draft', user: @login.user }, {sort:[['startedOn','desc']], limit: 10}).fetch (responses) =>
           # If we do find other draft(s), we will prompt the user with an alert
           if responses.length > 0
             # If there is only one draft, we get the _id so we can load that response
@@ -136,8 +136,8 @@ class SurveyPage extends Page
     @$el.html('<div class="alert alert-info" role="alert"></div>')
     @$(".alert").text(T("Loading survey..."))
 
-    # Get response, first checking with server for latest version if it can
-    @db.responses.findOne {_id: @options._id}, { interim: false }, (response) =>
+    # Get response
+    @db.responses.findOne {_id: @options._id}, { }, (response) =>
       # Ignore if page has been destroyed
       return if @destroyed
 
@@ -147,8 +147,8 @@ class SurveyPage extends Page
 
       @response = response
 
-      # Get form, first checking with server for latest version if it can
-      @db.forms.findOne { _id: response.form }, { interim: false }, (form) =>
+      # Get form
+      @db.forms.findOne { _id: response.form }, {}, (form) =>
         if not form
           alert T("Survey form not found")
           @pager.closePage()
