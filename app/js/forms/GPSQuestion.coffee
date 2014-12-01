@@ -1,5 +1,5 @@
 Question = require './Question'
-LocationView = require ("../LocationView")
+LocationView = require("mwater-forms").LocationView
 
 module.exports = class GPSQuestion extends Question
   renderAnswer: (answerEl) ->

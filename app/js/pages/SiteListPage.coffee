@@ -1,7 +1,7 @@
 async = require 'async'
 Page = require("../Page")
 SitePage = require("./SitePage")
-LocationFinder = require '../LocationFinder'
+LocationFinder = require("mwater-forms").LocationFinder
 GeoJSON = require '../GeoJSON'
 
 # Lists nearby and unlocated sites

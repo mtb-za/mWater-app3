@@ -1,4 +1,4 @@
-LocationFinder = require '../LocationFinder'
+LocationFinder = require("mwater-forms").LocationFinder
 
 
 # Displays current location as a blue dot
