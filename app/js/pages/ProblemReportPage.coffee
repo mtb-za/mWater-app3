@@ -45,7 +45,7 @@ module.exports = class ProblemReportPage extends Page
       report.log = consoleCapture.getHistory().join("\r\n")
       
       # Post to api
-      url = @apiUrl + 'problem_reports' + (if (@login? and @login.client?) then "?client=" + @client else "")
+      url = @apiUrl + 'problem_reports' + (if (@login? and @login.client?) then "?client=" + @login.client else "")
       req = $.ajax(url, {
         data : JSON.stringify(report),
         contentType : 'application/json',
