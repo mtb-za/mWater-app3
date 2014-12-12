@@ -31,6 +31,7 @@ TODO should any items be null of context?
 
 async = require 'async'
 minimongo = require 'minimongo'
+loginUtils = require './login'
 
 SimpleImageManager = require './images/SimpleImageManager'
 CachedImageManager = require './images/CachedImageManager'
@@ -325,12 +326,16 @@ exports.createLoginContext = (login, success) ->
 
       # Add function to asynchronously update groups list 
       ctx.updateGroupsList = () ->
-        db.groups.find({ members: login.user }, { fields: { groupname: 1 } }).fetch (groupDocs) ->
-          login.groups = _.pluck(groupDocs, "groupname")
-          ctx.auth = new authModule.UserAuth(login.user, login.groups)
-        , error
+        # Getting client returns groups in response
+        $.getJSON(apiUrl + "clients/" + login.client).done (response) =>
+          # Update login groups and save
+          login.groups = response.groups
+          loginUtils.setLogin(login)
 
-      # Update groups in case server is delayed returning results
+          # Update auth
+          ctx.auth = new authModule.UserAuth(login.user, login.groups)
+
+      # Always update immediately
       ctx.updateGroupsList()
 
       success(ctx)
