@@ -5,8 +5,7 @@
 		{{T "Sync:"}} 
 		<span class="text-{{dataSyncClass}}">{{dataSyncText}}</span>
 		{{#if lastSyncDate}}<b>{{timeago lastSyncDate}}</b>{{/if}}
-		<span id="upserts_pending"></span>
-		<span id="images_pending"></span>
+		{{#if imagesRemaining}}{{T "{0} images to upload" imagesRemaining}}{{/if}}
 		{{T "Version:"}} <b>{{version}} {{#if baseVersion}}({{baseVersion}}){{/if}}</b>
 	</small>
 </div>

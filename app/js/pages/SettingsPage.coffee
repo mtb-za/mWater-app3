@@ -65,7 +65,7 @@ class SettingsPage extends Page
       version: @version
       baseVersion: @baseVersion
       lastSyncDate: @dataSync.lastSuccessDate if @dataSync?
-      imagesRemaining: @imageSync.lastSuccessMessage if @imageSync?
+      imagesRemaining: @imageSync.lastSuccessMessage if @imageSync? and @imageSync.lastSuccessMessage > 0
       dataSyncText: dataSyncText
       dataSyncClass: dataSyncClass
       outdated: outdated
