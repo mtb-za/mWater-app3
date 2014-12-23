@@ -115,6 +115,9 @@ class SettingsPage extends Page
       @$("#weinre").attr("disabled", true)
 
   logout: ->
+    if not confirm(T("Logout of app? You will need an internet connection to log back in."))
+      return
+      
     login.setLogin(null)
     
     # Update context, first stopping old one
