@@ -2,6 +2,8 @@ Page = require "../Page"
 ECPlates = require '../forms/ECPlates'
 cordovaSetup = require '../cordovaSetup'
 async = require 'async'
+login = require '../login'
+context = require '../context'
 
 class SettingsPage extends Page
   events: 
@@ -11,6 +13,7 @@ class SettingsPage extends Page
     # "click #weinre" : "startWeinre"
     "change #locale": "setLocale"
     "click #update": "updateApp"
+    "click #logout": "logout"
 
   activate: ->
     @setTitle T("Settings")
@@ -110,6 +113,17 @@ class SettingsPage extends Page
     if window.debug
       @$("#weinre_details").html(T("Debugging with code <b>{0}</b>", window.debug.code))
       @$("#weinre").attr("disabled", true)
+
+  logout: ->
+    login.setLogin(null)
+    
+    # Update context, first stopping old one
+    @ctx.stop()
+    context.createAnonymousContext (ctx) =>
+      _.extend @ctx, ctx
+      while @pager.multiplePages()
+        @pager.closePage()
+      @pager.closePage(require("./LoginPage"))
 
   updateApp: ->
     if cordovaSetup.appUpdater
