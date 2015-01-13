@@ -75,4 +75,4 @@ module.exports = class SignupPage extends Page
     # Disable button temporarily
     $("#login_button").attr("disabled", "disabled")
 
-    utils.login(username, password, @ctx, success, error)
+    utils.login(username, password, null, @ctx, success, error)

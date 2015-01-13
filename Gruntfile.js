@@ -43,6 +43,7 @@ module.exports = function(grunt) {
         src: ['vendor/bootstrap/css/bootstrap.min.css',
               'vendor/*.css',
               'vendor/esri/esri-leaflet-geocoder.css',
+              "bower_components/css-social-buttons/css/zocial.css",
               'vendor/leaflet/leaflet.css'],
         dest: 'dist/css/libs.css'
       },
@@ -147,6 +148,12 @@ module.exports = function(grunt) {
         cwd: 'vendor/esri/img/',
         src: '*',
         dest: 'dist/css/img/'
+      },
+      zocialfonts: {
+        expand: true,
+        cwd: 'bower_components/css-social-buttons/css/',
+        src: "zocial-regular*.*",
+        dest: 'dist/css/'
       },
       cordova_www: {
         expand: true,
@@ -378,7 +385,7 @@ module.exports = function(grunt) {
   grunt.registerTask('cordova_release', ['copy:cordova_config', 'copy:cordova_www', 'copy:cordova_override_release']);
   grunt.registerTask('run_cordova_debug', ['default', 'cordova_debug', 'shell:cordova_run']);
 
-  grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages', 'copy:esricssimages', 'copy:leafletimages']);
+  grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages', 'copy:esricssimages', 'copy:leafletimages', 'copy:zocialfonts']);
   // TODO localization grunt.registerTask('default', ['localization', 'browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
   grunt.registerTask('default', ['shell:browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
 

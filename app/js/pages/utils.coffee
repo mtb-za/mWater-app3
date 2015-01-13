@@ -3,7 +3,7 @@
 login = require '../login'
 context = require '../context'
 
-exports.login = (username, password, ctx, success, error) ->
+exports.login = (username, password, loginToken, ctx, success, error) ->
   console.log "Logging in as: #{username}"
 
   url = ctx.apiUrl + 'clients'
@@ -11,6 +11,7 @@ exports.login = (username, password, ctx, success, error) ->
     data : JSON.stringify({
       username: username
       password: password
+      loginToken: loginToken
       version: @version
     }),
     contentType : 'application/json',
