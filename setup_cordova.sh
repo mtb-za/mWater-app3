@@ -14,6 +14,9 @@ cordova plugin add https://github.com/mWater/cordova-plugin-wezka-nativecamera.g
 cordova plugin add https://github.com/mWater/OpenCVActivityPlugin.git
 cordova plugin add https://github.com/mWater/cordova-plugin-acra.git
 
+# Webintent plugin
+cordova plugin add https://github.com/Initsogar/cordova-webintent.git
+
 # Bluetooth plugin
 cordova plugin add https://github.com/tanelih/phonegap-bluetooth-plugin
 
