@@ -3,6 +3,7 @@ Page = require("../Page")
 SitePage = require("./SitePage")
 LocationFinder = require("mwater-forms").LocationFinder
 GeoJSON = require '../GeoJSON'
+siteTypes = require('mwater-common').siteTypes
 
 # Lists nearby and unlocated sites
 # Options: 
@@ -54,21 +55,100 @@ module.exports = class SiteListPage extends Page
     @locationFinder.getLocation(@locationFound, @locationError)
     @$("#location_msg").show()
 
+    @configureButtonBars()
+    @performSearch()
+
+  # Configure gear menu 
+  configureButtonBars: ->
+    # Get options for site menu
+    options = @getSiteScopeOptions()
+
+    # If current option is invalid, set to first one
+    if not (@scope in _.pluck(options, "type"))
+      @scope = options[0].type
+
+    # Create a dropdown menu using the Site Scope Options
+    menu = _.map options, (scope) =>
+      text: scope.display
+      id: "site_scope_" + scope.type
+      click: => @updateSiteScope(scope.type)
+      checked: @scope == scope.type
+
+    # Add Site Types options to dropdown menu if the page is not already filtered by site types (using options)
+    if not @options.filterSiteTypes
+      # initialize @siteType
+      if not @siteType
+        @siteType = null
+      menu.push { separator: true }
+
+      # Add all types option
+      menu.push {
+        text: T("All Types")
+        id: "all"
+        click: => @updateSiteType(null)
+        checked: @siteType == null
+      }
+
+      # Add all primary site types
+      Array::push.apply menu, _.map siteTypes, (siteType) =>
+        text: T(siteType.name)
+        id: siteType.name
+        click: => @updateSiteType(siteType)
+        checked: @siteType == siteType
+
     @setupButtonBar [
+      { icon: "buttonbar-gear.png", menu: menu }
       { icon: "buttonbar-search.png", click: => @search() }
-      { text: T("Map"), click: => @pager.closePage(require("./SiteMapPage"), {onSelect: @options.onSelect, filterSiteTypes: @options.filterSiteTypes})}  
+      { text: T("Map"), click: => @pager.closePage(require("./SiteMapPage"), {onSelect: @options.onSelect, filterSiteTypes: @options.filterSiteTypes})} 
     ]
 
-    # Query database for unlocated sites
-    if @login
-      # Filter by my unlocated sites and siteTypes 
-      selector = _.extend({ geo: { $exists: false }, "created.by": @login.user }, @siteTypesFilter)
-      @db.sites.find(selector).fetch (sites) =>
-        @unlocatedSites = sites
-        @renderList()
-      , @error
+  # Options for the dropdown menu
+  getSiteScopeOptions: =>
+    options = [{ display: T("All Sites"), type: "all", value: {} }]
+    # Only show groups choice if user has groups
+    if @login?
+      if @login.groups.length > 0
+        options.push { 
+          display: T("Only My Groups")
+          type: "groups"
+          value: { "created.for": { $in: @login.groups } }
+        }
 
+      if @login.user?
+        options.push { display: T("Only Mine"), type: "user", value: { "created.by": @login.user } }
+    return options
+
+  # Filter the sites by type
+  updateSiteType: (siteType) =>
+    @siteType = siteType
+    if siteType != null
+      @siteTypesFilter.type = { $in: [siteType.name] }
+    else
+      @siteTypesFilter = {}
+
+    # Update search
     @performSearch()
+
+    # Update UI
+    @configureButtonBars()
+
+  # Filter the sites by all, groups, or user
+  updateSiteScope: (scope) => 
+    @scope = scope
+
+    # Update search
+    @performSearch()
+
+    # Update UI
+    @configureButtonBars()
+
+  # Calculate filter to use for sites
+  calculateSiteFilter: ->
+    option = _.findWhere(@getSiteScopeOptions(), { type: @scope })
+    if option
+      return _.extend(option.value, @siteTypesFilter) 
+    else
+      return @siteTypesFilter
 
   deactivate: ->
     # Kill all items in thumbnail queuu
@@ -110,17 +190,7 @@ module.exports = class SiteListPage extends Page
 
     # Save position
     @pos = pos
-    selector = geo: 
-      $near: 
-        $geometry: GeoJSON.posToPoint(pos)
-
-    # Query database for near sites matching site type filter
-    selector = _.extend(selector, @siteTypesFilter)
-
-    @db.sites.find(selector, { limit: 100 }).fetch (sites) =>
-      @nearSites = sites
-      @renderList()
-    , @error
+    @performSearch()
 
   renderList: ->
     # Append located and unlocated sites
@@ -184,8 +254,8 @@ module.exports = class SiteListPage extends Page
       else
         selector = { $or: [ { name: { $regex : @searchText,  $options: 'i' } }, { desc: { $regex : @searchText,  $options: 'i' } } ] }
 
-      # Filter by siteTypes 
-      selector = _.extend(selector, @siteTypesFilter)
+      # Filter by site filters
+      selector = _.extend(selector, @calculateSiteFilter())
         
       @db.sites.find(selector, {limit: 100}).fetch (sites) =>
         siteScorer = (s) =>
@@ -214,7 +284,28 @@ module.exports = class SiteListPage extends Page
         @renderList()
       , @error
     else
-      @renderList()
+      # Redo search if position is available
+      if @pos
+        selector = geo: 
+          $near: 
+            $geometry: GeoJSON.posToPoint(@pos)
+
+        # Query database for near sites matching site filters
+        selector = _.extend(selector, @calculateSiteFilter())
+
+        @db.sites.find(selector, { limit: 100 }).fetch (sites) =>
+          @nearSites = sites
+          @renderList()
+        , @error
+
+      # Query database for unlocated sites
+      if @login
+        # Filter by my unlocated sites and siteTypes 
+        selector = _.extend({ geo: { $exists: false }, "created.by": @login.user }, @siteTypesFilter)
+        @db.sites.find(selector).fetch (sites) =>
+          @unlocatedSites = sites
+          @renderList()
+        , @error
 
   cancelSearch: ->
     @searchText = ""
