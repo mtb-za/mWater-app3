@@ -18,11 +18,35 @@ module.exports = class LoginPage extends Page
       # Get provider
       provider = $(ev.currentTarget).data('provider')
 
-      # Perform a social login with specified provider ("google", "facebook", etc.) 
-      # Redirect to self with login token in hash
-      loginTokenUrl = window.location.href.split("#")[0] + "#login_token/LOGIN_TOKEN";
-      socialLoginUrl = @apiUrl + "auth/#{provider}?destUrl=" + encodeURIComponent(loginTokenUrl)
-      window.location.href = socialLoginUrl
+      # If in Phonegap/Cordova, we can't redirect back to the file:/// url that runs the app
+      # as the browser blocks local redirects. Instead, we need to run an InAppBrowser
+      # that goes to the API's signin page and then catch the redirect via an event handler
+      if window.cordova
+        # Fake URL to catch on redirect
+        loginTokenUrl = "http://xyzzy.com/#login_token/LOGIN_TOKEN" 
+        socialLoginUrl = @apiUrl + "auth/#{provider}?destUrl=" + encodeURIComponent(loginTokenUrl)
+
+        inAppBrowser = window.open(socialLoginUrl, "_blank", "location=no")
+        inAppBrowser.addEventListener 'loadstart', (event) => 
+          # Check for fictional redirect
+          if event.url.match(/http:\/\/xyzzy\.com/)
+            console.log event.url
+            # Get login token
+            loginToken = event.url.match(/#login_token\/(.+)/)[1]
+
+            # Cover up login screen to prevent confusion
+            @$("#cover").show()
+
+            # Close browser
+            inAppBrowser.close()
+
+            @loginWithToken(loginToken)
+      else
+        # Perform a social login with specified provider ("google", "facebook", etc.) 
+        # Redirect to self with login token in hash
+        loginTokenUrl = window.location.href.split("#")[0] + "#login_token/LOGIN_TOKEN";
+        socialLoginUrl = @apiUrl + "auth/#{provider}?destUrl=" + encodeURIComponent(loginTokenUrl)
+        window.location.href = socialLoginUrl
     .fail ()=>
       alert(T("Unable to sign in. Please check that you are connected to Internet"))
 
@@ -36,16 +60,22 @@ module.exports = class LoginPage extends Page
 
       # Reset hash
       window.location.hash = ""
-
-      success = =>
-        @pager.closeAllPages(SiteMapPage)
-        @pager.flash T("Login as {0} successful", @ctx.login.user), "success"
-
-      error = => # Do nothing
-      utils.login(null, null, loginToken, @ctx, success, error)
+      @loginWithToken(loginToken)
       return
 
     @render()
+
+  # Perform login with the specified login token
+  loginWithToken: (loginToken) ->
+    success = =>
+      @$("#cover").hide()
+      @pager.closeAllPages(SiteMapPage)
+      @pager.flash T("Login as {0} successful", @ctx.login.user), "success"
+
+    error = => 
+      @$("#cover").hide()
+
+    utils.login(null, null, loginToken, @ctx, success, error)
 
   render: ->
     @$el.html require('./LoginPage.hbs')(locales: @localizer.getLocales())

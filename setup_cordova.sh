@@ -13,6 +13,7 @@ cordova plugin add org.apache.cordova.network-information
 cordova plugin add https://github.com/mWater/cordova-plugin-wezka-nativecamera.git
 cordova plugin add https://github.com/mWater/OpenCVActivityPlugin.git
 cordova plugin add https://github.com/mWater/cordova-plugin-acra.git
+cordova plugin add org.apache.cordova.inappbrowser
 
 # Webintent plugin
 cordova plugin add https://github.com/Initsogar/cordova-webintent.git
