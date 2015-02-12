@@ -40,4 +40,13 @@ echo "key.alias=mwater" >> ./platforms/android/ant.properties
 echo 'TODO: Add android:name="co.mwater.acraplugin.MyApplication" to application element of AndroidManifest.xml'
 echo 'TODO: Add <uses-feature android:name="android.hardware.camera" android:required="false" /> to AndroidManifest.xml'
 echo 'TODO: Add <uses-feature android:name="android.hardware.bluetooth" android:required="false" /> to AndroidManifest.xml'
+echo 'TODO: Add:'
+echo '<intent-filter>'
+echo '	<action android:name="android.intent.action.VIEW" />'
+echo '	<category android:name="android.intent.category.DEFAULT" />'
+echo '	<category android:name="android.intent.category.BROWSABLE" />'
+echo '	<data android:host="app.mwater.co" android:scheme="http" />'
+echo '  <data android:host="app.mwater.co" android:scheme="https" />'
+echo '</intent-filter>'
+echo ' to the <activity> tag of AndroidManifest.xml'
 cd ..
