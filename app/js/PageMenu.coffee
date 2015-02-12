@@ -35,14 +35,10 @@ module.exports = class PageMenu extends Backbone.View
     @$("#sensor_list").toggle(@options.ctx.login?)
 
   gotoPage: (page) ->
-    while @pager.multiplePages()
-      @pager.closePage()
-    @pager.closePage(page)
+    @pager.closeAllPages(page)
 
   # gotoHome: ->
-  #   while @pager.multiplePages()
-  #     @pager.closePage()
-  #   @pager.closePage(require("./pages/MainPage"))
+  #   @pager.closeAllPages(require("./pages/MainPage"))
 
   logout: ->
     login.setLogin(null)
