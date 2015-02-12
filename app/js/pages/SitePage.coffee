@@ -97,8 +97,11 @@ module.exports = class SitePage extends Page
         @$("#cover_photo_container").html('<img id="cover_photo" src="' + imageUrl + '" class="img-thumbnail" style="width: 160px;">')
 
     # Set visibility of add buttons
-    if @site.type[0] != "Water point" or not @auth.insert("source_notes") or not @auth.insert("tests") 
-      @$("#bottom_navbar").hide()
+    if @site.type[0] != "Water point" or not @auth.insert("source_notes")
+      @$("#add_note").hide()
+
+    if @site.type[0] != "Water point" or not @auth.insert("tests")
+      @$("#add_test").hide()
     
     # Add location view
     if @site.location

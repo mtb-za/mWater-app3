@@ -329,8 +329,6 @@ class SiteMapPage extends Page
         click: => @cacheTiles()
       }
 
-    @$("#gear_menu").html(require("./SiteMapPage_gearmenu.hbs")(menu: menu))
-
     @setupButtonBar [
       { icon: "buttonbar-gear.png", menu: menu }
       { text: T("List"), click: => @pager.closePage(require("./SiteListPage"), {onSelect: @options.onSelect, filterSiteTypes: @options.filterSiteTypes})}  

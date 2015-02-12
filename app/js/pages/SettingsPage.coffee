@@ -186,7 +186,7 @@ class SettingsPage extends Page
         if args.error
           res = T("Error") + ": " + args.error
         else
-          res = T("E.Coli") + ": " + args.ecoli + "\n" + T("TC") + ": " + args.tc + "\n" + T("Algorithm") + ": " + args.algorithm
+          res = T("E.Coli") + ": " + args.ecoli + "\n" + T("Total Coliform") + ": " + args.tc + "\n" + T("Algorithm") + ": " + args.algorithm
         alert res
       , @error
 

@@ -45,9 +45,9 @@ module.exports = class NewSitePage extends Page
       model: @siteModel
       prompt: T("Site privacy")
       choices: [
-        { id: "public", label: T("Public"), hint: "Anyone can see and edit the site"}
-        { id: "visible", label: T("Visible"), hint: "Anyone can see the site, but only you or your group can edit it"}
-        { id: "private", label: T("Private"), hint: "Only you or your group can edit site"}
+        { id: "public", label: T("Public"), hint: T("Anyone can see and edit the site")}
+        { id: "visible", label: T("Visible"), hint: T("Anyone can see the site, but only you or your group can see and edit it")}
+        { id: "private", label: T("Private"), hint: T("Only you or your group can see or edit site")}
       ]
       required: true
       hint: T('Private should only be used for sites that are not publicly accessible')
