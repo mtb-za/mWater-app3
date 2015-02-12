@@ -83,6 +83,10 @@ module.exports = class LoginPage extends Page
     # Select current locale
     @$("#locale").val(@localizer.locale)
 
+    # Hide social logins if InAppBrowser is not available
+    if @ctx.baseVersion and (@ctx.baseVersion.match(/^3\.[0-9]\./) or @ctx.baseVersion.match(/^3\.1[0-3]\./))
+      @$("#social_logins").hide()
+
   setLocale: ->
     @localizer.locale = @$("#locale").val()
     @localizer.saveCurrentLocale()
