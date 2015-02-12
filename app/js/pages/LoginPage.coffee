@@ -13,14 +13,18 @@ module.exports = class LoginPage extends Page
     "click .social-login": 'socialLogin'
 
   socialLogin: (ev) ->
-    # Get provider
-    provider = $(ev.currentTarget).data('provider')
+    # First check connectivity
+    $.get(@apiUrl + "ping").done () =>
+      # Get provider
+      provider = $(ev.currentTarget).data('provider')
 
-    # Perform a social login with specified provider ("google", "facebook", etc.) 
-    # Redirect to self with login token in hash
-    loginTokenUrl = window.location.href.split("#")[0] + "#login_token/LOGIN_TOKEN";
-    socialLoginUrl = @apiUrl + "auth/#{provider}?destUrl=" + encodeURIComponent(loginTokenUrl)
-    window.location.href = socialLoginUrl
+      # Perform a social login with specified provider ("google", "facebook", etc.) 
+      # Redirect to self with login token in hash
+      loginTokenUrl = window.location.href.split("#")[0] + "#login_token/LOGIN_TOKEN";
+      socialLoginUrl = @apiUrl + "auth/#{provider}?destUrl=" + encodeURIComponent(loginTokenUrl)
+      window.location.href = socialLoginUrl
+    .fail ()=>
+      alert(T("Unable to sign in. Please check that you are connected to Internet"))
 
   activate: ->
     @setTitle ""
@@ -35,7 +39,7 @@ module.exports = class LoginPage extends Page
 
       success = =>
         @pager.closeAllPages(SiteMapPage)
-        @pager.flash T("Login as {0} successful", @login.user), "success"
+        @pager.flash T("Login as {0} successful", @ctx.login.user), "success"
 
       error = => # Do nothing
       utils.login(null, null, loginToken, @ctx, success, error)
