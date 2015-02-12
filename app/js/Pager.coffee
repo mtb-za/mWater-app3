@@ -105,9 +105,19 @@ class Pager extends Backbone.View
 
   # Close all pages and replace with
   closeAllPages: (replaceWith, options) ->
-    while @multiplePages()
-      @closePage()
-    @closePage(replaceWith, options)
+    # Deactivate current page, then destroy all other non-activated ones
+    page = _.last(@stack).page
+    console.log "Closing page #{page.constructor.name}"
+    page.deactivate()
+
+    while @stack.length > 0
+      page = _.last(@stack).page
+      page.destroyed = true
+      page.destroy()
+      page.remove()
+      @stack.pop()
+
+    @openPage(replaceWith, options)
 
   # Gets page next down on the stack
   getParentPage: ->

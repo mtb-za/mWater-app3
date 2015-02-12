@@ -124,9 +124,7 @@ class SettingsPage extends Page
     @ctx.stop()
     context.createAnonymousContext (ctx) =>
       _.extend @ctx, ctx
-      while @pager.multiplePages()
-        @pager.closePage()
-      @pager.closePage(require("./LoginPage"))
+      @pager.closeAllPages(require("./LoginPage"))
 
   updateApp: ->
     if cordovaSetup.appUpdater
@@ -145,9 +143,7 @@ class SettingsPage extends Page
 
       # Finish up
       finish = () =>
-        while @pager.multiplePages()
-          @pager.closePage()
-        @pager.closePage(require("./LoginPage"))
+        @pager.closeAllPages(require("./LoginPage"))
 
       # Clear all collections from database
       if not @db.localDb
