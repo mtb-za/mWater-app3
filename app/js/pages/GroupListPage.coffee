@@ -39,3 +39,4 @@ module.exports = class GroupListPage extends Page
       if @updateGroupsList
         @updateGroupsList()
       @render()
+    , @error
