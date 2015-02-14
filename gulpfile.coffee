@@ -188,7 +188,7 @@ shim = (instance) ->
   shims = {
     jquery: './app/js/jquery-shim'
     lodash: './app/js/lodash-shim'
-    underscore: './app/js/lodash-shim'
+    underscore: './app/js/underscore-shim'
     backbone: './app/js/backbone-shim' 
   }
 
