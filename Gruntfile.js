@@ -125,23 +125,11 @@ module.exports = function(grunt) {
         src: '*',
         dest: 'dist/fonts/'
       },
-      libimages: {
-        expand: true,
-        cwd: 'vendor/img/',
-        src: '*',
-        dest: 'dist/img/'
-      },
       leafletimages: { 
         expand: true,
         cwd: 'vendor/leaflet/images/',
         src: '*',
         dest: 'dist/img/leaflet/'
-      },
-      leafletcssimages: {
-        expand: true,
-        cwd: 'vendor/leaflet/images/',
-        src: 'layers*',
-        dest: 'dist/css/images/'
       },
       esricssimages: {
         expand: true,
@@ -385,7 +373,7 @@ module.exports = function(grunt) {
   grunt.registerTask('cordova_release', ['copy:cordova_config', 'copy:cordova_www', 'copy:cordova_override_release']);
   grunt.registerTask('run_cordova_debug', ['default', 'cordova_debug', 'shell:cordova_run']);
 
-  grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libimages', 'copy:libbootstrapfonts', 'copy:leafletcssimages', 'copy:esricssimages', 'copy:leafletimages', 'copy:zocialfonts']);
+  grunt.registerTask('copy-app', ['copy:apphtml', 'replace:html_js_timestamps', 'copy:appimages', 'copy:libbootstrapfonts', 'copy:esricssimages', 'copy:leafletimages', 'copy:zocialfonts']);
   // TODO localization grunt.registerTask('default', ['localization', 'browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
   grunt.registerTask('default', ['shell:browserify', 'seeds', 'rework', 'concat', 'uglify', 'copy-app', 'manifest', 'compress']);
 
