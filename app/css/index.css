@@ -1,7 +1,7 @@
 @import "mwater-forms";
-@import "./app/css/AppView.css";
-@import "./app/css/Forms.css";
-@import "./app/css/Pager.css";
-@import "./app/css/SlideMenu.css";
-@import "./app/css/mobile.css";
-@import "./app/css/FixLeafletZ.css";
+@import "./AppView.css";
+@import "./Forms.css";
+@import "./Pager.css";
+@import "./SlideMenu.css";
+@import "./mobile.css";
+@import "./FixLeafletZ.css";
