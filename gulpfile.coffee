@@ -21,7 +21,7 @@ merge = require 'merge-stream'
 
 gulp.task 'default', ['build']
 
-# Run after build to create the manifest
+# Builds the web app
 gulp.task 'build', ['browserify', 'appcss', 'libscss', 'libsjs', 'copy', 'seeds'], ->
   return gulp.src(['dist/**'])
     .pipe(manifest({
@@ -37,11 +37,32 @@ gulp.task 'build', ['browserify', 'appcss', 'libscss', 'libsjs', 'copy', 'seeds'
 gulp.task 'watch', ->
   return gulp.watch ['app/**'], ['default']
 
+# Gets files copied into cordova/ before 'cordova prepare' for release mode
+gulp.task 'copy_cordova_release', ['cordova_copy_www', 'cordova_copy_config']
+
+# Gets files copied into cordova/ before 'cordova prepare' for debug mode
+# Only difference is that updating is disabled
+gulp.task 'copy_cordova_debug', ['cordova_copy_www', 'cordova_copy_config'], ->
+  return gulp.src(['app/cordova/debug/**'])
+    .pipe(gulp.dest('cordova/www/'))
+
+gulp.task 'cordova_copy_www', ['build'], ->
+  return gulp.src([
+    "dist/**"])
+    .pipe(gulp.dest('cordova/www/'))
+
+gulp.task 'cordova_copy_config', ->
+  return gulp.src(["app/cordova/config.xml"])
+    .pipe(gulp.dest('cordova/'))
+
 gulp.task 'deploy', ['deploy_app_mwater_co', 'deploy_app_mwater_org']
 
 gulp.task 'deploy_app_mwater_co', -> deployS3('app.mwater.co')
 gulp.task 'deploy_app_mwater_org', -> deployS3('app.mwater.org')
 gulp.task 'deploy_beta_mwater_co', -> deployS3('beta.mwater.co')
+gulp.task 'deploy_demo_mwater_co', -> deployS3('demo.mwater.co')
+gulp.task 'deploy_map_mwater_co', -> deployS3('map.mwater.co')
+gulp.task 'deploy_map_mwater_org', -> deployS3('map.mwater.org')
 
 deployS3 = (bucket) ->
   # Read credentials
