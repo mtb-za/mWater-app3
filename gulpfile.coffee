@@ -16,18 +16,11 @@ rename = require 'gulp-rename'
 JsonClient = require('request-json').JsonClient
 replace = require 'gulp-replace'
 merge = require 'merge-stream'
-exec = require('child_process').exec
+
+# Include cordova tasks
+require './gulpfile_cordova'
 
 gulp.task 'default', ['build']
-
-# Setup cordova
-
-# Debug cordova
-gulp.task 'debug_cordova', ['copy_cordova_debug'], (cb) ->
-  child = exec "cordova -d run", { cwd: "./cordova" }, (error, stdout, stderr) -> cb(error)
-  child.stdout.on 'data', (data) -> process.stdout.write(data)
-  child.stderr.on 'data', (data) -> process.stderr.write(data)
-  return
 
 # Builds the web app
 gulp.task 'build', ['browserify', 'appcss', 'libscss', 'libsjs', 'copy', 'seeds'], ->
@@ -44,24 +37,6 @@ gulp.task 'build', ['browserify', 'appcss', 'libscss', 'libsjs', 'copy', 'seeds'
 
 gulp.task 'watch', ->
   return gulp.watch ['app/**'], ['default']
-
-# Gets files copied into cordova/ before 'cordova prepare' for release mode
-gulp.task 'copy_cordova_release', ['cordova_copy_www', 'cordova_copy_config']
-
-# Gets files copied into cordova/ before 'cordova prepare' for debug mode
-# Only difference is that updating is disabled
-gulp.task 'copy_cordova_debug', ['cordova_copy_www', 'cordova_copy_config'], ->
-  return gulp.src(['app/cordova/debug/**'])
-    .pipe(gulp.dest('cordova/www/'))
-
-gulp.task 'cordova_copy_www', ['build'], ->
-  return gulp.src([
-    "dist/**"])
-    .pipe(gulp.dest('cordova/www/'))
-
-gulp.task 'cordova_copy_config', ->
-  return gulp.src(["app/cordova/config.xml"])
-    .pipe(gulp.dest('cordova/'))
 
 gulp.task 'deploy', ['deploy_app_mwater_co', 'deploy_app_mwater_org']
 
