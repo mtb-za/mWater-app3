@@ -8,11 +8,21 @@
         mWater Team
     </author>
     <content src="index_cordova.html?cordova=" />
-    <icon src="icon.png"/>
+    <icon src="www/img/icon.png"/>
     <access origin="*" />
     <preference name="fullscreen" value="false" />
     <preference name="webviewbounce" value="false" />
     <preference name="loadingDialog" value="mWater, Loading..."/>
     <preference name="disallowOverscroll" value="true"/>
     <preference name="KeepRunning" value="false" />
+    <platform name="android">
+        <splash src="www/img/icon.png" density="land-hdpi"/>
+        <splash src="www/img/icon.png" density="land-ldpi"/>
+        <splash src="www/img/icon.png" density="land-mdpi"/>
+        <splash src="www/img/icon.png" density="land-xhdpi"/>
+        <splash src="www/img/icon.png" density="port-hdpi"/>
+        <splash src="www/img/icon.png" density="port-ldpi"/>
+        <splash src="www/img/icon.png" density="port-mdpi"/>
+        <splash src="www/img/icon.png" density="port-xhdpi"/>
+    </platform>        
 </widget>
