@@ -5,8 +5,6 @@ source = require 'vinyl-source-stream'
 rework = require 'gulp-rework'
 reworkNpm = require 'rework-npm'
 concat = require 'gulp-concat'
-size = require 'gulp-size'
-gzip = require 'gulp-gzip'
 uglify = require 'gulp-uglify'
 makeBuffer = require 'gulp-buffer'
 awspublish = require 'gulp-awspublish'
@@ -18,8 +16,18 @@ rename = require 'gulp-rename'
 JsonClient = require('request-json').JsonClient
 replace = require 'gulp-replace'
 merge = require 'merge-stream'
+exec = require('child_process').exec
 
 gulp.task 'default', ['build']
+
+# Setup cordova
+
+# Debug cordova
+gulp.task 'debug_cordova', ['copy_cordova_debug'], (cb) ->
+  child = exec "cordova -d run", { cwd: "./cordova" }, (error, stdout, stderr) -> cb(error)
+  child.stdout.on 'data', (data) -> process.stdout.write(data)
+  child.stderr.on 'data', (data) -> process.stderr.write(data)
+  return
 
 # Builds the web app
 gulp.task 'build', ['browserify', 'appcss', 'libscss', 'libsjs', 'copy', 'seeds'], ->
