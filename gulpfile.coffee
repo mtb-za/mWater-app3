@@ -17,13 +17,7 @@ JsonClient = require('request-json').JsonClient
 replace = require 'gulp-replace'
 merge = require 'merge-stream'
 
-# Include cordova tasks
-require './gulpfile_cordova'
-
-gulp.task 'default', ['build']
-
-# Builds the web app
-gulp.task 'build', ['browserify', 'appcss', 'libscss', 'libsjs', 'copy', 'seeds'], ->
+gulp.task 'manifest', ->
   return gulp.src(['dist/**'])
     .pipe(manifest({
       hash: true
@@ -38,7 +32,6 @@ gulp.task 'build', ['browserify', 'appcss', 'libscss', 'libsjs', 'copy', 'seeds'
 gulp.task 'watch', ->
   return gulp.watch ['app/**'], ['default']
 
-gulp.task 'deploy', ['deploy_app_mwater_co', 'deploy_app_mwater_org']
 
 gulp.task 'deploy_app_mwater_co', -> deployS3('app.mwater.co')
 gulp.task 'deploy_app_mwater_org', -> deployS3('app.mwater.org')
@@ -46,6 +39,8 @@ gulp.task 'deploy_beta_mwater_co', -> deployS3('beta.mwater.co')
 gulp.task 'deploy_demo_mwater_co', -> deployS3('demo.mwater.co')
 gulp.task 'deploy_map_mwater_co', -> deployS3('map.mwater.co')
 gulp.task 'deploy_map_mwater_org', -> deployS3('map.mwater.org')
+
+gulp.task 'deploy', gulp.series('deploy_app_mwater_co', 'deploy_app_mwater_org')
 
 deployS3 = (bucket) ->
   # Read credentials
@@ -73,16 +68,6 @@ deployS3 = (bucket) ->
 
   return merge(stream1, stream2)
 
-gulp.task 'prepareTests', ['libsjs'], ->
-  files = glob.sync("./test/**/*Tests.coffee")
-  bundler = shim(browserify({ entries: files, extensions: [".js", ".coffee"] }))
-  bundler.require("./app/js/forms/index.coffee", { expose: "forms"})
-
-  return bundler.bundle()
-    .pipe(source('browserified.js'))
-    .pipe(gulp.dest('./test'))
-
-gulp.task 'browserify', ['browserify_index', 'browserify_preload']
 
 gulp.task 'browserify_index', ->
   return shim(browserify([], { extensions: ['.js', '.coffee'] }))
@@ -102,6 +87,8 @@ gulp.task 'browserify_preload', ->
     .on('error', -> throw "Failed")
     .pipe(source('preload.js'))
     .pipe(gulp.dest('./dist/js/'))
+
+gulp.task 'browserify', gulp.parallel('browserify_index', 'browserify_preload')
 
 gulp.task 'clean', (cb) ->
   del(['dist/**', '!dist/js/.gitkeep'], cb)
@@ -142,7 +129,6 @@ gulp.task 'appcss', ->
     .pipe(rename("app.css"))
     .pipe(gulp.dest('./dist/css/'))
 
-gulp.task 'copy', ['copy_html', 'copy_app_images', 'copy_bootstrap_fonts', 'copy_leaflet_images', 'copy_social_fonts', 'copy_esri_images']
 
 gulp.task 'copy_html', ->
   return gulp.src("app/html/*")
@@ -169,6 +155,18 @@ gulp.task 'copy_social_fonts', ->
 gulp.task 'copy_esri_images', ->
   return gulp.src("vendor/esri/img/*")
   .pipe(gulp.dest('dist/css/img/'))
+
+gulp.task 'copy', gulp.parallel('copy_html', 'copy_app_images', 'copy_bootstrap_fonts', 'copy_leaflet_images', 'copy_social_fonts', 'copy_esri_images')
+
+gulp.task 'prepareTests', gulp.series('libsjs', ->
+  files = glob.sync("./test/**/*Tests.coffee")
+  bundler = shim(browserify({ entries: files, extensions: [".js", ".coffee"] }))
+  bundler.require("./app/js/forms/index.coffee", { expose: "forms"})
+
+  return bundler.bundle()
+    .pipe(source('browserified.js'))
+    .pipe(gulp.dest('./test'))
+  )
 
 gulp.task 'seeds', (cb) ->
   # Query database for rows
@@ -201,3 +199,12 @@ shim = (instance) ->
     instance.require(path, {expose: name})
 
   return instance
+
+# Builds the web app
+gulp.task 'build', gulp.series('browserify', 'appcss', 'libscss', 'libsjs', 'copy', 'seeds', 'manifest')
+
+gulp.task 'default', gulp.series('build')
+
+# Include cordova tasks
+require './gulpfile_cordova'
+
