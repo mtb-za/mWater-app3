@@ -35,6 +35,7 @@
     "gulp-util": "^3.0.3",
     "hbsfy": "^2.2.1",
     "merge-stream": "^0.1.7",
+    "minimist": "^1.1.0",
     "request-json": "~0.5.2",
     "rework-npm": "~1.0.0",
     "synchronize": "~0.9.9",

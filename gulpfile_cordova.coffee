@@ -6,24 +6,29 @@ sync = require 'synchronize'
 _ = require 'lodash'
 xml2js = require 'xml2js'
 
-# Package name to use for all platforms
-packageName = 'co.mwater.clientapp'
+# Get arguments
+argv = require('minimist')(process.argv.slice(1))
 
-# App name
-appName = "mWater"
-
-# Hostname of web version
-hostname = "app.mwater.co"
+# Load configuration
+configName = argv.config or "default"
+config = require "./configs/#{configName}/config.json"
 
 plugins = [
   'org.apache.cordova.device'
-  'https://git-wip-us.apache.org/repos/asf/cordova-plugin-file.git'
-  'https://git-wip-us.apache.org/repos/asf/cordova-plugin-file-transfer.git'
+  'org.apache.cordova.file'
+  'org.apache.cordova.file-transfer'
   'org.apache.cordova.device-orientation'
   'org.apache.cordova.network-information'
+
+  # Replacement for camera plugin
   'https://github.com/mWater/cordova-plugin-wezka-nativecamera.git'
+
+  # Open CV activity
   'https://github.com/mWater/OpenCVActivityPlugin.git'
+
+  # Android crash reporting
   'https://github.com/mWater/cordova-plugin-acra.git'
+
   # InAppBrowser needed for social login
   'org.apache.cordova.inappbrowser'
 
@@ -50,6 +55,8 @@ alterXml = (filename, action, cb) ->
     if err 
      return cb(err)
     action(result)
+
+    # Make into string and write to disk
     builder = new xml2js.Builder()
     xmlout = builder.buildObject(result)
     fs.writeFileSync(filename, xmlout)
@@ -61,39 +68,52 @@ gulp.task 'cordova_clean', (cb) -> del('cordova', cb)
 gulp.task 'cordova_copy_www', gulp.series('build', ->
   return gulp.src([
     "dist/**"])
-    .pipe(gulp.dest("cordova/#{packageName}/www/"))
+    .pipe(gulp.dest("cordova/#{config.package}/www/"))
   )
 
 gulp.task 'cordova_copy_config', ->
   return gulp.src(["app/cordova/config.xml"])
-    .pipe(gulp.dest("cordova/#{packageName}/"))
+    .pipe(gulp.dest("cordova/#{config.package}/"))
 
 # Customize config file
 gulp.task 'cordova_customize_config', (cb) ->
-  alterXml("cordova/#{packageName}/config.xml", (config) ->
-    console.log JSON.stringify(config, null, 2)
-    config.widget.name = [appName]
+  alterXml("cordova/#{config.package}/config.xml", (data) ->
+    console.log JSON.stringify(data, null, 2)
+
+    # Set app name
+    data.widget.name = [config.title]
+
+    # Sets the version in the config.xml file to match current version
+    packageJson = require('./package.json')
+    data.widget["$"].version = packageJson.version
   , cb)
 
+# Customize www directory with config-specific files
+gulp.task 'cordova_customize_www', ->
+  gulp.src(["configs/#{configName}/www/**"])
+    .pipe(gulp.dest("cordova/#{config.package}/www/"))
+
 # Gets files copied into cordova/ before 'cordova prepare' for release mode
-gulp.task 'cordova_copy_release', gulp.series('cordova_copy_www', 'cordova_copy_config', 'cordova_customize_config')
+gulp.task 'cordova_copy_release', gulp.series('cordova_copy_www', 'cordova_copy_config', 'cordova_customize_config', 'cordova_customize_www')
 
 # Gets files copied into cordova/ before 'cordova prepare' for debug mode
 # Only difference is that updating is disabled
-gulp.task 'cordova_copy_debug', gulp.series('cordova_copy_www', 'cordova_copy_config', 'cordova_customize_config', ->
+gulp.task 'cordova_copy_debug', gulp.series('cordova_copy_www', 'cordova_copy_config', 'cordova_customize_config', 'cordova_customize_www', ->
   return gulp.src(['app/cordova/debug/**'])
-    .pipe(gulp.dest("cordova/#{packageName}/www/"))
+    .pipe(gulp.dest("cordova/#{config.package}/www/"))
   )
 
 gulp.task 'cordova_install_plugins', 
-  gulp.series(_.map(plugins, (p) -> run("cordova plugin add #{p}", { cwd: "./cordova/#{packageName}" })))
+  gulp.series(_.map(plugins, (p) -> run("cordova plugin add #{p}", { cwd: "./cordova/#{config.package}" })))
 
+# Let ant know where to find keystore
 gulp.task 'cordova_setup_keystore', (cb) ->
-  fs.appendFile("cordova/#{packageName}/platforms/android/ant.properties", 
+  fs.appendFile("cordova/#{config.package}/platforms/android/ant.properties", 
     '''\nkey.store=/home/clayton/.ssh/mwater.keystore\nkey.alias=mwater''', cb)
 
+# Add special options to AndroidManifest.xml
 gulp.task 'cordova_setup_androidmanifest', (cb) ->
-  alterXml("cordova/#{packageName}/platforms/android/AndroidManifest.xml", (data) ->
+  alterXml("cordova/#{config.package}/platforms/android/AndroidManifest.xml", (data) ->
     console.log JSON.stringify(data, null, 2)
 
     # Add ACRA crash reporting
@@ -114,8 +134,8 @@ gulp.task 'cordova_setup_androidmanifest', (cb) ->
         { "$": {"android:name": "android.intent.category.BROWSABLE"}}
       ]
       data: [
-        { "$": { "android:host": hostname, "android:scheme": "http"}}
-        { "$": { "android:host": hostname, "android:scheme": "https"}}
+        { "$": { "android:host": config.hostname, "android:scheme": "http"}}
+        { "$": { "android:host": config.hostname, "android:scheme": "https"}}
       ]
       })
   , cb)
@@ -123,13 +143,16 @@ gulp.task 'cordova_setup_androidmanifest', (cb) ->
 gulp.task 'cordova_setup', gulp.series([
   'cordova_clean'
   (cb) -> fs.mkdir('cordova', cb)
-  run("cordova create cordova/#{packageName} #{packageName} mWater")
+  run("cordova create cordova/#{config.package} #{config.package} mWater")
   'cordova_copy_release'
-  run("cordova platform add android", { cwd: "./cordova/#{packageName}" })
+  run("cordova platform add android", { cwd: "./cordova/#{config.package}" })
   'cordova_install_plugins'
   'cordova_setup_androidmanifest'
   ])
 
 # Debug cordova
-gulp.task 'cordova_debug', gulp.series('cordova_copy_debug', run("cordova -d run", { cwd: "./cordova/#{packageName}" }))
+gulp.task 'cordova_debug', gulp.series([
+  'cordova_copy_debug', 
+  run("cordova -d run", { cwd: "./cordova/#{config.package}" })
+  ])
 
