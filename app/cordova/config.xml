@@ -8,23 +8,23 @@
         mWater Team
     </author>
     <content src="index_cordova.html?cordova=" />
-    <icon src="www/img/icon.png"/>
+    <icon src="icon.png"/>
     <access origin="*" />
     <preference name="fullscreen" value="false" />
     <preference name="webviewbounce" value="false" />
-    <!-- <preference name="loadingDialog" value="mWater, Loading..."/>-->
+    <preference name="loadingDialog" value="Loading..."/>
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <preference name="disallowOverscroll" value="true"/>
     <preference name="KeepRunning" value="false" />
-    <platform name="android">
-        <splash src="www/img/icon.png" density="land-hdpi"/>
-        <splash src="www/img/icon.png" density="land-ldpi"/>
-        <splash src="www/img/icon.png" density="land-mdpi"/>
-        <splash src="www/img/icon.png" density="land-xhdpi"/>
-        <splash src="www/img/icon.png" density="port-hdpi"/>
-        <splash src="www/img/icon.png" density="port-ldpi"/>
-        <splash src="www/img/icon.png" density="port-mdpi"/>
-        <splash src="www/img/icon.png" density="port-xhdpi"/>
-    </platform>        
+    <!--<platform name="android">
+        <splash src="splash.png" density="land-hdpi"/>
+        <splash src="splash.png" density="land-ldpi"/>
+        <splash src="splash.png" density="land-mdpi"/>
+        <splash src="splash.png" density="land-xhdpi"/>
+        <splash src="splash.png" density="port-hdpi"/>
+        <splash src="splash.png" density="port-ldpi"/>
+        <splash src="splash.png" density="port-mdpi"/>
+        <splash src="splash.png" density="port-xhdpi"/>
+    </platform>        -->
 </widget>

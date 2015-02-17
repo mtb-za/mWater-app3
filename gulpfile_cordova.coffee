@@ -93,12 +93,19 @@ gulp.task 'cordova_customize_www', ->
   gulp.src(["configs/#{configName}/www/**"])
     .pipe(gulp.dest("cordova/#{config.package}/www/"))
 
+# Customize logo and splash screen
+gulp.task 'cordova_customize_images', ->
+  gulp.src(['configs/#{configName}/icon.png', 'configs/#{configName}/splash.png'])
+    .pipe(gulp.dest("cordova/#{config.package}/"))
+
+gulp.task 'cordova_customize', gulp.series("cordova_customize_www", "cordova_customize_config", "cordova_customize_images")
+
 # Gets files copied into cordova/ before 'cordova prepare' for release mode
-gulp.task 'cordova_copy_release', gulp.series('cordova_copy_www', 'cordova_copy_config', 'cordova_customize_config', 'cordova_customize_www')
+gulp.task 'cordova_copy_release', gulp.series('cordova_copy_www', 'cordova_copy_config', 'cordova_customize')
 
 # Gets files copied into cordova/ before 'cordova prepare' for debug mode
 # Only difference is that updating is disabled
-gulp.task 'cordova_copy_debug', gulp.series('cordova_copy_www', 'cordova_copy_config', 'cordova_customize_config', 'cordova_customize_www', ->
+gulp.task 'cordova_copy_debug', gulp.series('cordova_copy_www', 'cordova_copy_config', 'cordova_customize', ->
   return gulp.src(['app/cordova/debug/**'])
     .pipe(gulp.dest("cordova/#{config.package}/www/"))
   )
