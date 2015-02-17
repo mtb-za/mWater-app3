@@ -13,8 +13,8 @@
     <preference name="fullscreen" value="false" />
     <preference name="webviewbounce" value="false" />
     <preference name="loadingDialog" value="Loading..."/>
-    <preference name="SplashScreen" value="screen" />
-    <preference name="SplashScreenDelay" value="3000" />
+    <!-- <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenDelay" value="3000" />-->
     <preference name="disallowOverscroll" value="true"/>
     <preference name="KeepRunning" value="false" />
     <!--<platform name="android">

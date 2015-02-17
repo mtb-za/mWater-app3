@@ -36,6 +36,7 @@ gulp.task 'watch', ->
 deployS3 = (bucket) ->
   # Read credentials
   aws = JSON.parse(fs.readFileSync("/home/clayton/.ssh/aws-credentials.json"))
+  console.log "Publishing to bucket #{bucket}"
   aws.bucket = bucket
 
   publisher = awspublish.create(aws)
@@ -204,7 +205,7 @@ gulp.task 'build', gulp.series('browserify', 'appcss', 'libscss', 'libsjs', 'cop
 gulp.task 'bump_version', run('npm version patch')
 
 # Individual deployment tasks
-gulp.task 'deploy_app_mwater_co', -> deployS3('app.mwater.co')
+gulp.task 'deploy_app_mwater_co', -> deployS3('app-mwater-co')
 gulp.task 'deploy_app_mwater_org', -> deployS3('app.mwater.org')
 gulp.task 'deploy_beta_mwater_co', -> deployS3('beta.mwater.co')
 gulp.task 'deploy_demo_mwater_co', -> deployS3('demo.mwater.co')
