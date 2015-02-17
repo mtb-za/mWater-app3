@@ -16,6 +16,7 @@ rename = require 'gulp-rename'
 JsonClient = require('request-json').JsonClient
 replace = require 'gulp-replace'
 merge = require 'merge-stream'
+exec = require('child_process').exec
 
 gulp.task 'manifest', ->
   return gulp.src(['dist/**'])
