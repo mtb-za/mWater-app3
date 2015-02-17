@@ -1,10 +1,12 @@
 gulp = require 'gulp'
 del = require 'del'
 fs = require 'fs'
+rename = require 'gulp-rename'
 exec = require('child_process').exec
 sync = require 'synchronize'
 _ = require 'lodash'
 xml2js = require 'xml2js'
+packageJson = require('./package.json')
 
 # Get arguments
 argv = require('minimist')(process.argv.slice(1))
@@ -86,7 +88,6 @@ gulp.task 'cordova_customize_config', (cb) ->
     data.widget.name = [config.title]
 
     # Sets the version in the config.xml file to match current version
-    packageJson = require('./package.json')
     data.widget["$"].version = packageJson.version
   , cb)
 
@@ -149,7 +150,10 @@ gulp.task 'cordova_setup_androidmanifest', (cb) ->
 
 gulp.task 'cordova_setup', gulp.series([
   'cordova_clean'
-  (cb) -> fs.mkdir('cordova', cb)
+  (cb) -> 
+    if not fs.existsSync("cordova")
+      fs.mkdirSync('cordova')
+    cb()
   run("cordova create cordova/#{configName} #{config.package} mWater")
   'cordova_copy_release'
   run("cordova platform add android", { cwd: "./cordova/#{configName}" })
@@ -166,7 +170,11 @@ gulp.task 'cordova_debug', gulp.series([
 
 # Builds the actual release file. Do not call directly
 gulp.task 'cordova_build_release', gulp.series([
-  run('cordova build android --release', { cwd: "./cordova/#{configName}" })
+  run('cordova build android --release', { cwd: "./cordova/#{configName}" }),
+  -> 
+    gulp.src("cordova/#{configName}/platforms/android/ant-build/CordovaApp-release.apk")
+      .pipe(rename("#{configName}-#{packageJson.version}.apk"))
+      .pipe(gulp.dest("cordova/releases/"))
   ])
 
 # Perform a deploy and release of the cordova version
