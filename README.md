@@ -21,7 +21,7 @@ s3cmd is used to sync to S3 bucket which serves as the website.
 1. Ensure you have grunt-cli, browserify, bower and cordova installed globally.
 1. Run `npm install` in root folder
 1. Run `bower install` in root folder
-1. Run `grunt`
+1. Run `gulp` (version 4+)
 1. Run `node server`
 1. Visit http://localhost:8080/
 

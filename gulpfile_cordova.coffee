@@ -40,9 +40,13 @@ plugins = [
 ]
 
 # Runs a shell script, piping output to stdout. Returns a function that takes a callback
+# TODO still requires an <enter> to exit after piping stdin to child
 run = (cmd, options) ->
   return (cb) ->
-    child = exec cmd, options, (error, stdout, stderr) -> cb(error)
+    child = exec cmd, options, (error, stdout, stderr) -> 
+      process.stdin.unpipe()
+      cb(error)
+    process.stdin.pipe(child.stdin)
     child.stdout.on 'data', (data) -> process.stdout.write(data)
     child.stderr.on 'data', (data) -> process.stderr.write(data)
     return
@@ -63,23 +67,21 @@ alterXml = (filename, action, cb) ->
     cb()
 
 # Remove cordova folder
-gulp.task 'cordova_clean', (cb) -> del('cordova', cb)
+gulp.task 'cordova_clean', (cb) -> del("cordova/#{configName}", cb)
 
 gulp.task 'cordova_copy_www', gulp.series('build', ->
   return gulp.src([
     "dist/**"])
-    .pipe(gulp.dest("cordova/#{config.package}/www/"))
+    .pipe(gulp.dest("cordova/#{configName}/www/"))
   )
 
 gulp.task 'cordova_copy_config', ->
   return gulp.src(["app/cordova/config.xml"])
-    .pipe(gulp.dest("cordova/#{config.package}/"))
+    .pipe(gulp.dest("cordova/#{configName}/"))
 
 # Customize config file
 gulp.task 'cordova_customize_config', (cb) ->
-  alterXml("cordova/#{config.package}/config.xml", (data) ->
-    console.log JSON.stringify(data, null, 2)
-
+  alterXml("cordova/#{configName}/config.xml", (data) ->
     # Set app name
     data.widget.name = [config.title]
 
@@ -91,12 +93,12 @@ gulp.task 'cordova_customize_config', (cb) ->
 # Customize www directory with config-specific files
 gulp.task 'cordova_customize_www', ->
   gulp.src(["configs/#{configName}/www/**"])
-    .pipe(gulp.dest("cordova/#{config.package}/www/"))
+    .pipe(gulp.dest("cordova/#{configName}/www/"))
 
 # Customize logo and splash screen
 gulp.task 'cordova_customize_images', ->
-  gulp.src(['configs/#{configName}/icon.png', 'configs/#{configName}/splash.png'])
-    .pipe(gulp.dest("cordova/#{config.package}/"))
+  gulp.src(["configs/#{configName}/icon.png", "configs/#{configName}/splash.png"])
+    .pipe(gulp.dest("cordova/#{configName}/"))
 
 gulp.task 'cordova_customize', gulp.series("cordova_customize_www", "cordova_customize_config", "cordova_customize_images")
 
@@ -107,22 +109,20 @@ gulp.task 'cordova_copy_release', gulp.series('cordova_copy_www', 'cordova_copy_
 # Only difference is that updating is disabled
 gulp.task 'cordova_copy_debug', gulp.series('cordova_copy_www', 'cordova_copy_config', 'cordova_customize', ->
   return gulp.src(['app/cordova/debug/**'])
-    .pipe(gulp.dest("cordova/#{config.package}/www/"))
+    .pipe(gulp.dest("cordova/#{configName}/www/"))
   )
 
 gulp.task 'cordova_install_plugins', 
-  gulp.series(_.map(plugins, (p) -> run("cordova plugin add #{p}", { cwd: "./cordova/#{config.package}" })))
+  gulp.series(_.map(plugins, (p) -> run("cordova plugin add #{p}", { cwd: "./cordova/#{configName}" })))
 
 # Let ant know where to find keystore
 gulp.task 'cordova_setup_keystore', (cb) ->
-  fs.appendFile("cordova/#{config.package}/platforms/android/ant.properties", 
+  fs.appendFile("cordova/#{configName}/platforms/android/ant.properties", 
     '''\nkey.store=/home/clayton/.ssh/mwater.keystore\nkey.alias=mwater''', cb)
 
 # Add special options to AndroidManifest.xml
 gulp.task 'cordova_setup_androidmanifest', (cb) ->
-  alterXml("cordova/#{config.package}/platforms/android/AndroidManifest.xml", (data) ->
-    console.log JSON.stringify(data, null, 2)
-
+  alterXml("cordova/#{configName}/platforms/android/AndroidManifest.xml", (data) ->
     # Add ACRA crash reporting
     data.manifest.application[0]["$"]["android:name"] = "co.mwater.acraplugin.MyApplication"
 
@@ -150,16 +150,29 @@ gulp.task 'cordova_setup_androidmanifest', (cb) ->
 gulp.task 'cordova_setup', gulp.series([
   'cordova_clean'
   (cb) -> fs.mkdir('cordova', cb)
-  run("cordova create cordova/#{config.package} #{config.package} mWater")
+  run("cordova create cordova/#{configName} #{config.package} mWater")
   'cordova_copy_release'
-  run("cordova platform add android", { cwd: "./cordova/#{config.package}" })
+  run("cordova platform add android", { cwd: "./cordova/#{configName}" })
   'cordova_install_plugins'
   'cordova_setup_androidmanifest'
+  'cordova_setup_keystore'
   ])
 
 # Debug cordova
 gulp.task 'cordova_debug', gulp.series([
   'cordova_copy_debug', 
-  run("cordova -d run", { cwd: "./cordova/#{config.package}" })
+  run("cordova -d run", { cwd: "./cordova/#{configName}" })
   ])
 
+# Builds the actual release file. Do not call directly
+gulp.task 'cordova_build_release', gulp.series([
+  run('cordova build android --release', { cwd: "./cordova/#{configName}" })
+  ])
+
+# Perform a deploy and release of the cordova version
+gulp.task 'cordova_release', gulp.series([
+  'deploy'
+  'cordova_setup'
+  'cordova_copy_release'
+  'cordova_build_release'
+  ])

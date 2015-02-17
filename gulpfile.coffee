@@ -32,16 +32,6 @@ gulp.task 'manifest', ->
 gulp.task 'watch', ->
   return gulp.watch ['app/**'], ['default']
 
-
-gulp.task 'deploy_app_mwater_co', -> deployS3('app.mwater.co')
-gulp.task 'deploy_app_mwater_org', -> deployS3('app.mwater.org')
-gulp.task 'deploy_beta_mwater_co', -> deployS3('beta.mwater.co')
-gulp.task 'deploy_demo_mwater_co', -> deployS3('demo.mwater.co')
-gulp.task 'deploy_map_mwater_co', -> deployS3('map.mwater.co')
-gulp.task 'deploy_map_mwater_org', -> deployS3('map.mwater.org')
-
-gulp.task 'deploy', gulp.series('deploy_app_mwater_co', 'deploy_app_mwater_org')
-
 deployS3 = (bucket) ->
   # Read credentials
   aws = JSON.parse(fs.readFileSync("/home/clayton/.ssh/aws-credentials.json"))
@@ -68,6 +58,28 @@ deployS3 = (bucket) ->
 
   return merge(stream1, stream2)
 
+# Runs a shell script, piping output to stdout. Returns a function that takes a callback
+run = (cmd, options) ->
+  return (cb) ->
+    child = exec cmd, options, (error, stdout, stderr) -> cb(error)
+    child.stdout.on 'data', (data) -> process.stdout.write(data)
+    child.stderr.on 'data', (data) -> process.stderr.write(data)
+    return
+
+# Shim non-browserify friendly libraries to allow them to be 'require'd
+shim = (instance) ->
+  shims = {
+    jquery: './app/js/jquery-shim'
+    lodash: './app/js/lodash-shim'
+    underscore: './app/js/underscore-shim'
+    backbone: './app/js/backbone-shim' 
+  }
+
+  # Add shims
+  for name, path of shims
+    instance.require(path, {expose: name})
+
+  return instance
 
 gulp.task 'browserify_index', ->
   return shim(browserify([], { extensions: ['.js', '.coffee'] }))
@@ -185,23 +197,25 @@ gulp.task 'seeds', (cb) ->
     cb()
   return
 
-# Shim non-browserify friendly libraries to allow them to be 'require'd
-shim = (instance) ->
-  shims = {
-    jquery: './app/js/jquery-shim'
-    lodash: './app/js/lodash-shim'
-    underscore: './app/js/underscore-shim'
-    backbone: './app/js/backbone-shim' 
-  }
-
-  # Add shims
-  for name, path of shims
-    instance.require(path, {expose: name})
-
-  return instance
-
 # Builds the web app
 gulp.task 'build', gulp.series('browserify', 'appcss', 'libscss', 'libsjs', 'copy', 'seeds', 'manifest')
+
+gulp.task 'bump_version', run('npm version patch')
+
+# Individual deployment tasks
+gulp.task 'deploy_app_mwater_co', -> deployS3('app.mwater.co')
+gulp.task 'deploy_app_mwater_org', -> deployS3('app.mwater.org')
+gulp.task 'deploy_beta_mwater_co', -> deployS3('beta.mwater.co')
+gulp.task 'deploy_demo_mwater_co', -> deployS3('demo.mwater.co')
+gulp.task 'deploy_map_mwater_co', -> deployS3('map.mwater.co')
+gulp.task 'deploy_map_mwater_org', -> deployS3('map.mwater.org')
+
+gulp.task 'deploy', gulp.series([
+  'bump_version'
+  'build'
+  'deploy_app_mwater_co'
+  'deploy_app_mwater_org'
+  ])
 
 gulp.task 'default', gulp.series('build')
 
