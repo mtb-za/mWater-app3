@@ -179,8 +179,8 @@ gulp.task 'cordova_build_release', gulp.series([
 
 # Perform a deploy and release of the cordova version
 gulp.task 'cordova_release', gulp.series([
-  'deploy'
   'cordova_setup'
+  'deploy'
   'cordova_copy_release'
   'cordova_build_release'
   ])
