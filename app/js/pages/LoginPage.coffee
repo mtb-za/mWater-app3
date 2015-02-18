@@ -3,6 +3,7 @@ context = require '../context'
 SiteMapPage = require './SiteMapPage'
 utils = require './utils'
 SignupPage = require './SignupPage'
+bowser = require 'bowser'
 
 module.exports = class LoginPage extends Page
   events:
@@ -83,8 +84,10 @@ module.exports = class LoginPage extends Page
     # Select current locale
     @$("#locale").val(@localizer.locale)
 
-    # Hide social logins if InAppBrowser is not available
+    # Hide social logins if InAppBrowser is not available or Android 2.x
     if @ctx.baseVersion and (@ctx.baseVersion.match(/^3\.[0-9]\./) or @ctx.baseVersion.match(/^3\.1[0-3]\./))
+      @$("#social_logins").hide()
+    else if bowser.browser.android and bowser.browser.osversion.match(/^2\./)
       @$("#social_logins").hide()
 
   setLocale: ->
