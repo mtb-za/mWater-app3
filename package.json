@@ -1,6 +1,6 @@
 {
   "name": "mWater-App",
-  "version": "3.15.6",
+  "version": "3.15.7",
   "description": "Client of mWater App",
   "main": "index.js",
   "scripts": {
