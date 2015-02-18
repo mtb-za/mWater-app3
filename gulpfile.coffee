@@ -21,8 +21,6 @@ exec = require('child_process').exec
 gulp.task 'manifest', ->
   return gulp.src(['dist/**'])
     .pipe(manifest({
-      hash: true
-      timestamp: false
       preferOnline: true
       network: ['*']
       filename: 'manifest.appcache'
