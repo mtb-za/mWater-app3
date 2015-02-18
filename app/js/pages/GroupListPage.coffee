@@ -8,7 +8,7 @@ module.exports = class GroupListPage extends Page
     'click .leave-group' : 'leaveClicked'
 
   create: ->
-    @setTitle T('My Groups')
+    @setTitle T('Groups')
 
     @render()
 
