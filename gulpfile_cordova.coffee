@@ -150,18 +150,11 @@ gulp.task 'cordova_setup_androidmanifest', (cb) ->
   , cb)
 
 # Patch https://issues.apache.org/jira/browse/CB-7868 until fixed
-gulp.task 'cordova_patch_cb_7868', ->
-  gulp.src("cordova/#{configName}/platforms/android/platform_www/cordova.js")
-    .pipe(replace('''function clobber(obj, key, value) {
-    exports.replaceHookForTesting(obj, key);
-    obj[key] = value;
-    // Getters can only be overridden by getters.
-    if (obj[key] !== value) {
-        utils.defineGetter(obj, key, function() {
-            return value;
-        });
-    }
-}''', '''function clobber(obj, key, value) {
+gulp.task 'cordova_patch_cb_7868', (cb) ->
+  filename = "cordova/#{configName}/platforms/android/platform_www/cordova.js"
+  js = fs.readFileSync(filename, 'utf-8')
+  js = js.replace(/function clobber(.|[\r\n])+?utils.defineGetter/, 
+    '''function clobber(obj, key, value) {
      exports.replaceHookForTesting(obj, key);
      var needsProperty = false;
      try {
@@ -171,12 +164,9 @@ gulp.task 'cordova_patch_cb_7868', ->
      }
      // Getters can only be overridden by getters.
      if (needsProperty || obj[key] !== value) {
-         utils.defineGetter(obj, key, function() {
-             return value;
-         });
-     }
-}'''))
-    .pipe(gulp.dest("cordova/#{configName}/platforms/android/platform_www/"))
+         utils.defineGetter''')
+  fs.writeFileSync(filename, js)
+  cb()
 
 gulp.task 'cordova_setup', gulp.series([
   'cordova_clean'
