@@ -7,7 +7,6 @@ exec = require('child_process').exec
 sync = require 'synchronize'
 _ = require 'lodash'
 xml2js = require 'xml2js'
-packageJson = require('./package.json')
 
 # Get arguments
 argv = require('minimist')(process.argv.slice(1))
@@ -15,6 +14,10 @@ argv = require('minimist')(process.argv.slice(1))
 # Load configuration
 configName = argv.config or "default"
 config = require "./configs/#{configName}/config.json"
+
+# Get the current version
+getVersion = ->
+  return JSON.parse(fs.readFileSync('package.json', 'utf-8')).version
 
 plugins = [
   'org.apache.cordova.device'
@@ -89,7 +92,7 @@ gulp.task 'cordova_customize_config', (cb) ->
     data.widget.name = [config.title]
 
     # Sets the version in the config.xml file to match current version
-    data.widget["$"].version = packageJson.version
+    data.widget["$"].version = getVersion()
   , cb)
 
 # Customize www directory with config-specific files
@@ -194,7 +197,7 @@ gulp.task 'cordova_build_release', gulp.series([
   run('cordova build android --release', { cwd: "./cordova/#{configName}" }),
   -> 
     gulp.src("cordova/#{configName}/platforms/android/ant-build/CordovaApp-release.apk")
-      .pipe(rename("#{configName}-#{packageJson.version}.apk"))
+      .pipe(rename("#{configName}-#{getVersion()}.apk"))
       .pipe(gulp.dest("cordova/releases/"))
   ])
 
