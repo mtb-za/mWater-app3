@@ -2,6 +2,7 @@ gulp = require 'gulp'
 del = require 'del'
 fs = require 'fs'
 rename = require 'gulp-rename'
+replace = require 'gulp-replace'
 exec = require('child_process').exec
 sync = require 'synchronize'
 _ = require 'lodash'
@@ -148,6 +149,35 @@ gulp.task 'cordova_setup_androidmanifest', (cb) ->
       })
   , cb)
 
+# Patch https://issues.apache.org/jira/browse/CB-7868 until fixed
+gulp.task 'cordova_patch_cb_7868', ->
+  gulp.src("cordova/#{configName}/platforms/android/platform_www/cordova.js")
+    .pipe(replace('''function clobber(obj, key, value) {
+    exports.replaceHookForTesting(obj, key);
+    obj[key] = value;
+    // Getters can only be overridden by getters.
+    if (obj[key] !== value) {
+        utils.defineGetter(obj, key, function() {
+            return value;
+        });
+    }
+}''', '''function clobber(obj, key, value) {
+     exports.replaceHookForTesting(obj, key);
+     var needsProperty = false;
+     try {
+         obj[key] = value;
+     } catch (e) {
+         needsProperty = true;
+     }
+     // Getters can only be overridden by getters.
+     if (needsProperty || obj[key] !== value) {
+         utils.defineGetter(obj, key, function() {
+             return value;
+         });
+     }
+}'''))
+    .pipe(gulp.dest("cordova/#{configName}/platforms/android/platform_www/"))
+
 gulp.task 'cordova_setup', gulp.series([
   'cordova_clean'
   (cb) -> 
@@ -160,6 +190,7 @@ gulp.task 'cordova_setup', gulp.series([
   'cordova_install_plugins'
   'cordova_setup_androidmanifest'
   'cordova_setup_keystore'
+  'cordova_patch_cb_7868'
   ])
 
 # Debug cordova
