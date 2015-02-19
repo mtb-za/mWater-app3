@@ -6,13 +6,11 @@ HTML5 + Javascript with full offline capability. Data is stored in a Javascript 
 
 UI is based on stock Twitter Bootstrap with Backbone.js for views.
 
-App is compiled from coffeescript using grunt + browserify into dist/ folder. Then gzipped into dist.gz/ folder.
+App is compiled from coffeescript using gulp + browserify into dist/ folder
 
 On Phonegap version, it has access to native computer vision technology implemented as a plugin (https://github.com/mWater/OpenCVActivityPlugin)
 
 Browser support: IE10+ and all other modern browsers.
-
-s3cmd is used to sync to S3 bucket which serves as the website.
 
 ### Getting started
 
