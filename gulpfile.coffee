@@ -23,6 +23,7 @@ gulp.task 'manifest', ->
     .pipe(manifest({
       preferOnline: true
       network: ['*']
+      timestamp: true
       filename: 'manifest.appcache'
       exclude: 'manifest.appcache'
      }))
