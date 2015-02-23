@@ -25,6 +25,10 @@ class SurveyPage extends Page
     if @formView?
       @formView.remove()
 
+    # Ensure that locale is one available in form, picking first one otherwise
+    if not _.findWhere(@form.design.locales, { code: @formLocale })
+      @formLocale = @form.design.locales[0].code
+
     data = {
       response: @response
       name: mwaterforms.formUtils.localizeString(@form.design.name, @formLocale)
