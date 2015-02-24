@@ -125,6 +125,8 @@ class TempStorage
   clear: ->
     @values = {}
 
+exports.TempStorage = TempStorage
+
 # Base context
 createBaseContext = ->
   camera = if Camera.hasCamera() then Camera else null

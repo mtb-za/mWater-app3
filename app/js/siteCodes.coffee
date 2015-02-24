@@ -2,7 +2,7 @@ siteCodes = require("mwater-common").siteCodes
 
 exports.SiteCodesManager = class SiteCodesManager 
   # URL to obtain more codes from
-  constructor: (url, storage) ->
+  constructor: (options) ->
     @url = url
     @storage = storage
 
@@ -16,7 +16,7 @@ exports.SiteCodesManager = class SiteCodesManager
   getLocalCodes: ->
     if @storage?
       return []  unless @storage.get("v3.sitecodes")
-      JSON.parse @ctx.get("v3.sitecodes")
+      JSON.parse @storage.get("v3.sitecodes")
     else
       return []
   
