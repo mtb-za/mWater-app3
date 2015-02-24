@@ -86,11 +86,50 @@ error = (err) ->
   if ProblemReporter.default?
     ProblemReporter.default.reportProblem(str)
 
+isLocalStorageSupported = ->
+  if not window.localStorage
+    return false
+  try
+    window.localStorage.setItem("test", "test")
+    window.localStorage.removeItem("test")
+    return true
+  catch e
+    return false
+
+class LocalStorage
+  get: (key) ->
+    return window.localStorage.getItem(key)
+
+  set: (key, value) ->
+    window.localStorage.setItem(key, value)
+
+  isPersistent: ->
+    return true
+
+  clear: ->
+    window.localStorage.clear()
+
+class TempStorage
+  constructor: () ->
+    @values = {}
+
+  get: (key) ->
+    return @values[key]
+
+  set: (key, value) ->
+    @values[key] = value
+
+  isPersistent: ->
+    return false
+
+  clear: ->
+    @values = {}
+
 # Base context
 createBaseContext = ->
   camera = if Camera.hasCamera() then Camera else null
 
-  return { 
+  baseContext = {
     error: error
     apiUrl: apiUrl
     camera: camera
@@ -106,6 +145,13 @@ createBaseContext = ->
     # dataSync: null
     # imageSync: null
   }
+
+  if isLocalStorageSupported
+    baseContext.storage = new TempStorage
+  else
+    baseContext.storage = new TempStorage
+
+  return baseContext
 
 createLocalDb = (namespace, success, error) ->
   if namespace
@@ -275,8 +321,10 @@ exports.createLoginContext = (login, success) ->
       # Store in login
       login.groups = groups
 
+      baseContext = createBaseContext()
+
       auth = new authModule.UserAuth(login.user, login.groups)
-      siteCodesManager = new siteCodes.SiteCodesManager(apiUrl + "site_codes?client=#{login.client}")
+      siteCodesManager = new siteCodes.SiteCodesManager(apiUrl + "site_codes?client=#{login.client}", baseContext.storage)
       dataSync = new syncModule.DataSync(db, siteCodesManager)
       imageSync = new syncModule.ImageSync(imageManager)
 
@@ -291,8 +339,6 @@ exports.createLoginContext = (login, success) ->
       stop = ->
         dataSync.stop()
         imageSync.stop()
-
-      baseContext = createBaseContext()
 
       # Create image acquirer with camera and imageManager if persistentFs and camera
       if baseContext.camera? and persistentFs

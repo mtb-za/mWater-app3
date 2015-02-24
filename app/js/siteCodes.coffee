@@ -2,8 +2,9 @@ siteCodes = require("mwater-common").siteCodes
 
 exports.SiteCodesManager = class SiteCodesManager 
   # URL to obtain more codes from
-  constructor: (url) ->
+  constructor: (url, storage) ->
     @url = url
+    @storage = storage
 
   # Default cutoff is three months in future
   defaultCutoff = ->
@@ -13,12 +14,16 @@ exports.SiteCodesManager = class SiteCodesManager
 
   # Gets list of cached site codes in form { code:<code>, expiry:<expiry in ISO datetime> }
   getLocalCodes: ->
-    return []  unless window.localStorage.getItem("v3.sitecodes")
-    JSON.parse window.localStorage.getItem("v3.sitecodes")
+    if @storage?
+      return []  unless @storage.get("v3.sitecodes")
+      JSON.parse @ctx.get("v3.sitecodes")
+    else
+      return []
   
   # Sets list of cached site codes in form { code:<code>, expiry:<expiry in ISO datetime> }
   setLocalCodes: (codes) ->
-    window.localStorage.setItem "v3.sitecodes", JSON.stringify(codes)
+    if @storage?
+      @storage.set("v3.sitecodes", JSON.stringify(codes))
   
   # Purge expired code
   purgeCodes: (cutoff) ->

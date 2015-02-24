@@ -139,7 +139,7 @@ class SettingsPage extends Page
   reset: ->
     if confirm(T("Completely discard local data, logout and lose unsubmitted changes?"))
       # Clear local storage
-      window.localStorage.clear()
+      @storage.clear()
 
       # Finish up
       finish = () =>
