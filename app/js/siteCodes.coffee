@@ -3,8 +3,8 @@ siteCodes = require("mwater-common").siteCodes
 exports.SiteCodesManager = class SiteCodesManager 
   # URL to obtain more codes from
   constructor: (options) ->
-    @url = url
-    @storage = storage
+    @url = options.url
+    @storage = options.storage
 
   # Default cutoff is three months in future
   defaultCutoff = ->

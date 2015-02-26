@@ -92,7 +92,7 @@ module.exports = class LoginPage extends Page
 
   setLocale: ->
     @localizer.locale = @$("#locale").val()
-    @localizer.saveCurrentLocale()
+    @storage.set('locale', @locale)
     @render()
 
   signupClicked: ->

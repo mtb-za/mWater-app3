@@ -42,6 +42,7 @@ Camera = require './Camera'
 cordovaSetup = require './cordovaSetup'
 ImageUploader = require './images/ImageUploader'
 ProblemReporter = require './ProblemReporter'
+storageUtils = require './storage'
 
 collectionNames = ['sites', 'forms', 'groups', 'responses', 'tests', 'source_notes', 'sensors', 'sensor_data']
 
@@ -62,6 +63,7 @@ else
 # TODO this is not a pretty way to set these. But it is somewhat decoupled.
 temporaryFs = null
 persistentFs = null
+storage = storageUtils.getStorage()
 
 exports.setupFileSystems = (tempFs, persFs) ->
   temporaryFs = tempFs
@@ -86,49 +88,8 @@ error = (err) ->
   if ProblemReporter.default?
     ProblemReporter.default.reportProblem(str)
 
-isLocalStorageSupported = ->
-  if not window.localStorage
-    return false
-  try
-    window.localStorage.setItem("test", "test")
-    window.localStorage.removeItem("test")
-    return true
-  catch e
-    return false
-
-class LocalStorage
-  get: (key) ->
-    return window.localStorage.getItem(key)
-
-  set: (key, value) ->
-    window.localStorage.setItem(key, value)
-
-  isPersistent: ->
-    return true
-
-  clear: ->
-    window.localStorage.clear()
-
-class TempStorage
-  constructor: () ->
-    @values = {}
-
-  get: (key) ->
-    return @values[key]
-
-  set: (key, value) ->
-    @values[key] = value
-
-  isPersistent: ->
-    return false
-
-  clear: ->
-    @values = {}
-
-exports.TempStorage = TempStorage
-
 # Base context
-createBaseContext = ->
+createBaseContext = () ->
   camera = if Camera.hasCamera() then Camera else null
 
   baseContext = {
@@ -138,6 +99,7 @@ createBaseContext = ->
     version: '//VERSION//'
     baseVersion: cordovaSetup.baseVersion()
     localizer: T.localizer
+    storage: storage
     stop: ->
     # db: null
     # imageManager: null
@@ -147,11 +109,6 @@ createBaseContext = ->
     # dataSync: null
     # imageSync: null
   }
-
-  if isLocalStorageSupported
-    baseContext.storage = new TempStorage
-  else
-    baseContext.storage = new TempStorage
 
   return baseContext
 
@@ -235,8 +192,15 @@ createDb = (login, success) ->
         success(db)
   , error
 
+exports.createContext = (withCtx) ->
+  login = loginUtils.getLogin(storage)
+  if login
+    createLoginContext(login, withCtx)
+  else
+    createAnonymousContext(withCtx)
+
 # Anonymous context for not logged in
-exports.createAnonymousContext = (success) ->
+exports.createAnonymousContext = createAnonymousContext = (success) ->
   createDb null, (db) =>
     # Allow nothing
     auth = new authModule.NoneAuth()
@@ -309,7 +273,7 @@ exports.createDemoContext = (success) ->
 
 # login must contain user, client, email members. "user" is username. 
 # login can be obtained by posting to api /clients
-exports.createLoginContext = (login, success) ->
+exports.createLoginContext = createLoginContext = (login, success) ->
   createDb login, (db) =>
     if persistentFs
       fileTransfer = new FileTransfer()
@@ -326,7 +290,7 @@ exports.createLoginContext = (login, success) ->
       baseContext = createBaseContext()
 
       auth = new authModule.UserAuth(login.user, login.groups)
-      siteCodesManager = new siteCodes.SiteCodesManager(apiUrl + "site_codes?client=#{login.client}", baseContext.storage)
+      siteCodesManager = new siteCodes.SiteCodesManager({url: apiUrl + "site_codes?client=#{login.client}", storage: baseContext.storage})
       dataSync = new syncModule.DataSync(db, siteCodesManager)
       imageSync = new syncModule.ImageSync(imageManager)
 
@@ -378,7 +342,7 @@ exports.createLoginContext = (login, success) ->
         $.getJSON(apiUrl + "clients/" + login.client).done (response) =>
           # Update login groups and save
           login.groups = response.groups
-          loginUtils.setLogin(login)
+          loginUtils.setLogin(storage, login)
 
           # Update auth
           ctx.auth = new authModule.UserAuth(login.user, login.groups)

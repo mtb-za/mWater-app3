@@ -1,11 +1,11 @@
 assert = chai.assert
 siteCodes = require '../app/js/siteCodes'
 JsonServer = require './helpers/JsonServer'
-TempStorage = require('../app/js/context').TempStorage
+storageUtils = require '../app/js/storage'
 
 describe "Site Code Manager", ->
   beforeEach ->
-    @mgr = new siteCodes.SiteCodesManager("site_codes", new TempStorage)
+    @mgr = new siteCodes.SiteCodesManager({url: "site_codes", storage: storageUtils.getStorage()})
     @mgr.reset()
 
     @server = new JsonServer()
@@ -69,7 +69,7 @@ describe "Site Code Manager", ->
       { code: 10014, expiry: "2013-01-01T00:00:00Z"} 
     ]
     cutoff = "2012-06-01T00:00:00Z"
-    mgr2 = new siteCodes.SiteCodesManager(null, @mgr.storage)
+    mgr2 = new siteCodes.SiteCodesManager({storage: storageUtils.getStorage()})
     assert.equal mgr2.getNumberAvailableCodes(cutoff), 1
 
 

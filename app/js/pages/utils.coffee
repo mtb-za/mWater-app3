@@ -21,7 +21,7 @@ exports.login = (username, password, loginToken, ctx, success, error) ->
     response = JSON.parse(jqXHR.responseText)
 
     # Login 
-    login.setLogin(response)
+    login.setLogin(ctx.storage, response)
 
     # Update context, first stopping old one
     ctx.stop()

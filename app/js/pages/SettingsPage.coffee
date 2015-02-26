@@ -118,7 +118,7 @@ class SettingsPage extends Page
     if not confirm(T("Logout of app? You will need an internet connection to log back in."))
       return
       
-    login.setLogin(null)
+    login.setLogin(@storage, null)
     
     # Update context, first stopping old one
     @ctx.stop()
@@ -133,7 +133,7 @@ class SettingsPage extends Page
 
   setLocale: ->
     @localizer.locale = @$("#locale").val()
-    @localizer.saveCurrentLocale()
+    @storage.set('locale', @localizer.locale)
     @render()
 
   reset: ->

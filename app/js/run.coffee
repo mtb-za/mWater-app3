@@ -3,7 +3,6 @@ SlideMenu = require("./SlideMenu")
 Pager = require("./Pager")
 PageMenu = require("./PageMenu")
 context = require './context'
-login = require './login'
 ProblemReporter = require './ProblemReporter'
 ezlocalize = require 'ez-localize'
 bowser = require 'bowser'
@@ -19,6 +18,8 @@ consoleCapture = require './consoleCapture'
 handlebars = require("hbsfy/runtime")
 
 fastclick = require("fastclick")
+
+storageUtils = require './storage'
 
 startError = (err) ->
   alert("Failed to start app: " + JSON.stringify(err))
@@ -39,7 +40,8 @@ exports.start = (options = {}) ->
   localizationData = require './localizations.json'
   localizer = new ezlocalize.Localizer(localizationData, "en")
   localizer.makeGlobal(handlebars)
-  localizer.restoreCurrentLocale()
+  storage = storageUtils.getStorage()
+  localizer.setLocale(storage.get('locale') or "en")
 
   # Check browser version
   browser = bowser.browser
@@ -68,20 +70,6 @@ exports.start = (options = {}) ->
     if not confirm("Your browser is not supported. Please use Android, iOS, Chrome, Firefox 24+ or Internet Explorer 10+. Continue anyway?")
       window.location.href = "http://mwater.co"
       return
-
-  # Check local storage
-  getLocalStorageSupported = ->
-    if not window.localStorage
-      return false
-    try
-      window.localStorage.setItem("test", "test")
-      window.localStorage.removeItem("test")
-      return true
-    catch e
-      return false
-
-  if not getLocalStorageSupported()
-    alert("Your browser does not support local storage. Please turn off private browsing and reload the page.")
 
   # Make clicks fast in mobile
   $ => fastclick(document.body)
@@ -148,10 +136,8 @@ exports.start = (options = {}) ->
     # Create context
     if options.demo  
       context.createDemoContext(withCtx)
-    else if login.getLogin()
-      context.createLoginContext(login.getLogin(), withCtx)
-    else  
-      context.createAnonymousContext(withCtx)
+    else
+      context.createContext(withCtx)
 
   if options.cordova
     # Start cordova 

@@ -12,7 +12,7 @@ module.exports = class RelativeLocationView extends Backbone.View
 
     @loc = options.loc
     @showMap = options.showMap
-    @locationFinder = options.locationFinder || new LocationFinder()
+    @locationFinder = options.locationFinder || new LocationFinder(this)
 
     # Listen to location events
     @listenTo(@locationFinder, 'found', @locationFound)
