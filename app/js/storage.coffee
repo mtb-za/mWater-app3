@@ -57,7 +57,7 @@ storage = null
 # Always return the same storage instance
 exports.getStorage = getStorage = ->
   if not storage?
-    if isLocalStorageSupported
+    if isLocalStorageSupported()
       storage = new LocalStorage
     else
       storage = new TempStorage
