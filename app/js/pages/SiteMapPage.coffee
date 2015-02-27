@@ -212,7 +212,7 @@ class SiteMapPage extends Page
     @map.on 'moveend', @saveView
 
     # Setup location display
-    @locationDisplay = new LocationDisplay(@map)
+    @locationDisplay = new LocationDisplay({map: @map, storage: @storage})
 
   # Filter the sites by all, groups, or user
   updateSiteScope: (scope) => 
