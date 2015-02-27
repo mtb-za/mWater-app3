@@ -43,6 +43,9 @@ plugins = [
 
   # Bluetooth support
   'https://github.com/tanelih/phonegap-bluetooth-plugin'
+
+  # Barcode support
+  'https://github.com/wildabeast/BarcodeScanner.git'
 ]
 
 # Runs a shell script, piping output to stdout. Returns a function that takes a callback

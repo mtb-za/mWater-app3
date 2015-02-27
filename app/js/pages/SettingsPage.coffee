@@ -14,6 +14,7 @@ class SettingsPage extends Page
     "change #locale": "setLocale"
     "click #update": "updateApp"
     "click #logout": "logout"
+    "click #test_barcode_scanner": "testBarcodeScanner"
 
   activate: ->
     @setTitle T("Settings")
@@ -186,6 +187,20 @@ class SettingsPage extends Page
         alert res
       , @error
 
+
+  testBarcodeScanner: ->
+    if cordova and cordova.plugins and cordova.plugins.barcodeScanner
+      cordova.plugins.barcodeScanner.scan(
+        (result) ->
+            alert("We got a barcode\n" +
+                  "Result: " + result.text + "\n" +
+                  "Format: " + result.format + "\n" +
+                  "Cancelled: " + result.cancelled)
+      , (error) ->
+        alert("Scanning failed: " + error)
+      )
+    else
+      alert("Not supported")
   # startWeinre: ->
   #   if confirm(T("Start remote debugger (this will give developers temporary access to the app on your phone)?"))
   #     # Disable to prevent double-click
