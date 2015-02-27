@@ -2,6 +2,7 @@ siteCodes = require("mwater-common").siteCodes
 
 exports.SiteCodesManager = class SiteCodesManager 
   # URL to obtain more codes from
+  # storage to cache local codes (using window.localStorage when available)
   constructor: (options) ->
     @url = options.url
     @storage = options.storage

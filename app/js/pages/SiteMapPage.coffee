@@ -57,7 +57,7 @@ class SiteMapPage extends Page
 
     # Get current position
     currentLatLng = null
-    locationFinder = new LocationFinder(this)
+    locationFinder = new LocationFinder({storage: @storage})
     locationFinder.getLocation (pos) =>
       currentLatLng = new L.LatLng(pos.coords.latitude, pos.coords.longitude)
 
@@ -269,7 +269,7 @@ class SiteMapPage extends Page
   gotoMyLocation: ->
     # Goes to current location
     locationHasBeenSetAtLeastOnce = false
-    locationFinder = new LocationFinder(this)
+    locationFinder = new LocationFinder({storage: @storage})
     locationFinder.getLocation (pos) =>
       if not @deactivated
         latLng = new L.LatLng(pos.coords.latitude, pos.coords.longitude)
