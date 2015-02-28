@@ -3,11 +3,12 @@ LocationFinder = require("mwater-forms").LocationFinder
 
 # Displays current location as a blue dot
 module.exports = class LocationDisplay
-  # Setup display
-  constructor: (map) ->
-    @map = map
+  # Setup display with map
+  # storage is used to initialize the LocationFinder with localStorage data when available
+  constructor: (options) ->
+    @map = options.map
 
-    @locationFinder = new LocationFinder()
+    @locationFinder = new LocationFinder({options: options.storage})
     @locationFinder.on('found', @locationFound).on('error', @locationError)
     @locationFinder.startWatch()
 

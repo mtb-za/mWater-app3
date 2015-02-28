@@ -57,7 +57,7 @@ class SiteMapPage extends Page
 
     # Get current position
     currentLatLng = null
-    locationFinder = new LocationFinder()
+    locationFinder = new LocationFinder({storage: @storage})
     locationFinder.getLocation (pos) =>
       currentLatLng = new L.LatLng(pos.coords.latitude, pos.coords.longitude)
 
@@ -67,8 +67,8 @@ class SiteMapPage extends Page
       currentLatLng = null
 
     # If saved view
-    if window.localStorage['SiteMapPage.lastView']
-      lastView = JSON.parse(window.localStorage['SiteMapPage.lastView'])
+    if @storage.get('SiteMapPage.lastView')
+      lastView = JSON.parse(@storage.get('SiteMapPage.lastView'))
       @scope = lastView.scope
       @createMap(lastView.center, lastView.zoom)
       return
@@ -212,7 +212,7 @@ class SiteMapPage extends Page
     @map.on 'moveend', @saveView
 
     # Setup location display
-    @locationDisplay = new LocationDisplay(@map)
+    @locationDisplay = new LocationDisplay({map: @map, storage: @storage})
 
   # Filter the sites by all, groups, or user
   updateSiteScope: (scope) => 
@@ -257,17 +257,19 @@ class SiteMapPage extends Page
   saveView: => 
     if @deactivated or not @map
       return
-      
-    window.localStorage['SiteMapPage.lastView'] = JSON.stringify({
-      center: @map.getCenter() 
+
+    viewData = JSON.stringify({
+      center: @map.getCenter()
       zoom: @map.getZoom()
       scope: @scope
     })
+      
+    @storage.set('SiteMapPage.lastView', viewData)
 
   gotoMyLocation: ->
     # Goes to current location
     locationHasBeenSetAtLeastOnce = false
-    locationFinder = new LocationFinder()
+    locationFinder = new LocationFinder({storage: @storage})
     locationFinder.getLocation (pos) =>
       if not @deactivated
         latLng = new L.LatLng(pos.coords.latitude, pos.coords.longitude)
