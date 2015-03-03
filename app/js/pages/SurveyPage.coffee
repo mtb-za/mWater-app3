@@ -70,7 +70,7 @@ class SurveyPage extends Page
           get: (key) =>
             stickyKey = "stickyStorage:" + @form._id + ":" +@login.user + ":" + key
             str = @storage.get(key)
-            if str? and str.length > 0
+            if str? and str.length > 0 and str != "undefined"
               return JSON.parse(str)
           set: (key, value) =>
             stickyKey = "stickyStorage:" + @form._id + ":" +@login.user + ":" + key
