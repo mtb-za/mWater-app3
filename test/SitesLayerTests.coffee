@@ -7,8 +7,8 @@ describe "SitesLayer", ->
   describe "updateFromList", ->
     it 'adds created layers', ->
       layers = 
-        '1': L.circleMarker()
-        '2': L.circleMarker()
+        '1': L.geoJson()
+        '2': L.geoJson()
 
       layerCreator = 
         createLayer: (site, success, error) ->
@@ -28,10 +28,10 @@ describe "SitesLayer", ->
 
     it "replaces layers when success called twice", ->
       layers = 
-        '1': L.circleMarker()
-        '1a': L.circleMarker()
-        '2': L.circleMarker()
-        '2a': L.circleMarker()
+        '1': L.geoJson()
+        '1a': L.geoJson()
+        '2': L.geoJson()
+        '2a': L.geoJson()
       layerCreator = 
         createLayer: (site, success, error) =>
           success(site: site, layer: layers[site._id])
@@ -53,9 +53,9 @@ describe "SitesLayer", ->
     context 'with existing layers', ->
       beforeEach ->
         @layers = 
-          '1': L.circleMarker()
-          '2': L.circleMarker()
-          '3': L.circleMarker()
+          '1': L.geoJson()
+          '2': L.geoJson()
+          '3': L.geoJson()
 
         @layerCreator = 
           createLayer: (site, success, error) =>
@@ -124,56 +124,3 @@ describe "SitesLayer", ->
           ]
         } } 
       }
-
-  describe "scopeQuery", ->
-    selector = {}
-    sl = new SitesLayer()
-
-    beforeEach ->
-      selector = {}
-
-    it "should add a user filter if a user is set", ->
-      scope = { user: "test" }
-      sl.scopeQuery(scope, selector)
-      assert.deepEqual(selector, scope)
-
-    it "should add a org filter if an org is set", ->
-      scope = {org: "test" }
-      sl.scopeQuery(scope, selector)
-      assert.deepEqual(selector, scope)
-
-    it "should not set anyting if there is no user or org", ->
-      scope = {}
-      sl.scopeQuery(scope, selector)
-      assert.deepEqual(selector, scope)
-
-  describe "update", ->
-    it "queries bounds and scope", ->
-      sitesDb = 
-        find: (sel, opt) =>
-          @sel = sel
-          @opt = opt
-          return { fetch: -> }
-
-      sl = new SitesLayer(null, sitesDb)
-
-      southWest = new L.LatLng(10, 110)
-      northEast = new L.LatLng(20, 120)
-      bounds = new L.LatLngBounds(southWest, northEast)
-      sl.map = {};
-      sl.map.getBounds = -> 
-        bounds
-
-      sl.updateFromList = ->
-
-      sl.scope = { user: "test" }
-      sl.update()
-
-      assert.property(@sel, "user")
-      assert.equal(@sel.user, sl.scope.user)
-      assert.property(@sel, "geo")
-      
-
-
-
-
