@@ -41,7 +41,7 @@ module.exports = class PageMenu extends Backbone.View
   #   @pager.closeAllPages(require("./pages/MainPage"))
 
   logout: ->
-    login.setLogin(null)
+    login.setLogin(@options.ctx.storage, null)
     
     # Update context, first stopping old one
     @options.ctx.stop()

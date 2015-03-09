@@ -68,11 +68,13 @@ class SurveyPage extends Page
           @pager.openPage require("./SiteMapPage"), options
         stickyStorage: {
           get: (key) =>
-            str = window.localStorage["stickyStorage:" + @form._id + ":" +@login.user + ":" + key]
-            if str? and str.length > 0
+            stickyKey = "stickyStorage:" + @form._id + ":" +@login.user + ":" + key
+            str = @storage.get(key)
+            if str? and str.length > 0 and str != "undefined"
               return JSON.parse(str)
           set: (key, value) =>
-            window.localStorage["stickyStorage:" + @form._id + ":" +@login.user + ":" + key] = JSON.stringify(value)
+            stickyKey = "stickyStorage:" + @form._id + ":" +@login.user + ":" + key
+            @storage.set(stickyKey, JSON.stringify(value))
         }
       }
 

@@ -51,7 +51,7 @@ module.exports = class SiteListPage extends Page
       @updateGroupsList()
 
     # Find location
-    @locationFinder = new LocationFinder()
+    @locationFinder = new LocationFinder({storage: @storage})
     @locationFinder.getLocation(@locationFound, @locationError)
     @$("#location_msg").show()
 
