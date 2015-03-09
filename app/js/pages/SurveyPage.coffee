@@ -78,6 +78,13 @@ class SurveyPage extends Page
         }
       }
 
+      # Add barcode scanner if available
+      if cordova and cordova.plugins and cordova.plugins.barcodeScanner
+        ctx.scanBarcode = (options) ->
+          cordova.plugins.barcodeScanner.scan (result) ->
+            if not result.cancelled
+              options.success(result.text)
+
       # Check schema version
       schema = @form.design._schema or 1
       if schema > mwaterforms.schemaVersion
