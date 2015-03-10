@@ -79,9 +79,9 @@ class SurveyPage extends Page
       }
 
       # Add barcode scanner if available
-      if cordova and cordova.plugins and cordova.plugins.barcodeScanner
+      if window.cordova and window.cordova.plugins and window.cordova.plugins.barcodeScanner
         ctx.scanBarcode = (options) ->
-          cordova.plugins.barcodeScanner.scan (result) ->
+          window.cordova.plugins.barcodeScanner.scan (result) ->
             if not result.cancelled
               options.success(result.text)
 
