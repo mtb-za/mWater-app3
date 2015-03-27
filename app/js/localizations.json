@@ -145,13 +145,15 @@
       "en": "No geolocation available",
       "es": "Geolocalización no disponible",
       "sw": "Huduma ya kupatikana kijiografia haipo",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Cannot find location",
       "es": "No se puede encontrar ubicación",
       "sw": "Haiwezekani kupata eneo hili",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Unspecified location",
@@ -175,13 +177,15 @@
       "en": "Invalid latitude",
       "es": "Latitud no válido",
       "sw": "Latitudo batili",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Invalid longitude",
       "es": "Longitud no válido",
       "sw": "Longitudo batili",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Internal Error",
@@ -513,7 +517,8 @@
       "en": "TC",
       "es": "TC",
       "sw": "TC",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Algorithm",
@@ -1301,7 +1306,8 @@
       "en": "Set",
       "es": "Fijar",
       "sw": "Weka",
-      "_base": "en"
+      "_base": "en",
+      "_unused": true
     },
     {
       "en": "Clear",
@@ -1853,17 +1859,20 @@
     {
       "_base": "en",
       "en": "Very Low GPS Accuracy ±{0}m",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
       "en": "Low GPS Accuracy ±{0}m",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
       "en": "Good GPS Accuracy ±{0}m",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
@@ -1880,12 +1889,14 @@
     {
       "_base": "en",
       "en": "Very low GPS Accuracy (±{0}m)...",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
       "en": "Low GPS Accuracy (±{0}m)...",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
@@ -2406,7 +2417,8 @@
     {
       "_base": "en",
       "en": "My Groups",
-      "sw": ""
+      "sw": "",
+      "_unused": true
     },
     {
       "_base": "en",
@@ -2461,6 +2473,111 @@
     {
       "_base": "en",
       "en": "Submit",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Unable to sign in. Please check that you are connected to Internet",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Groups",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Sign in with Google",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Sign in with Facebook",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Sign in with Windows Live",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "-- or --",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Logout of app? You will need an internet connection to log back in.",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Total Coliform",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Anyone can see and edit the site",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Anyone can see the site, but only you or your group can see and edit it",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Only you or your group can see or edit site",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "{0} images to upload",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Test Barcode Scanner",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Very Low GPS Signal ±{0}m",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Low GPS Signal ±{0}m",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Good GPS Signal ±{0}m",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Very weak GPS signal (±{0}m)...",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Weak GPS signal (±{0}m)...",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Loading survey...",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Scan",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Barcode scanning not supported on this platform",
       "sw": ""
     }
   ]

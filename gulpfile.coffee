@@ -17,6 +17,7 @@ JsonClient = require('request-json').JsonClient
 replace = require 'gulp-replace'
 merge = require 'merge-stream'
 exec = require('child_process').exec
+extractor = require 'ez-localize/extractor'
 
 gulp.task 'manifest', ->
   return gulp.src(['dist/**'])
@@ -197,6 +198,16 @@ gulp.task 'seeds', (cb) ->
     fs.writeFileSync('dist/js/seeds.js', 'seeds=' + JSON.stringify(seeds) + ';')
     cb()
   return
+
+gulp.task 'localization', (cb) ->
+  options = { 
+    extensions: ['.js', '.coffee']
+    externalModules: ["mwater-forms", "mwater-common"]
+    transformKey: [ 'browserify', 'transform' ]
+  }
+
+  extractor.updateLocalizationFile "app/js/run.coffee", "app/js/localizations.json", options, -> 
+    cb()
 
 # Builds the web app
 gulp.task 'build', gulp.series('browserify', 'appcss', 'libscss', 'libsjs', 'copy', 'seeds', 'manifest')
