@@ -5,2475 +5,2212 @@
       "name": "English"
     },
     {
+      "code": "fr",
+      "name": "Français"
+    },
+    {
       "code": "sw",
       "name": "Kiswahili"
     }
   ],
   "strings": [
     {
-      "en": "<b>{0} images to upload</b>",
-      "es": "<b>{0} imágenes para cargar</b>",
-      "sw": "<b>{0} picha za kupakia </b>",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Add Water Source",
-      "es": "Agregar Fuente de Agua",
-      "sw": "Ongeza Chanzo cha Maji",
-      "_base": "en",
-      "_unused": true
-    },
-    {
       "en": "Start Water Test",
       "es": "Comenzar Prueba de Agua",
       "sw": "Anzisha Testi ya Maji",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Commencer le test de l'eau"
     },
     {
       "en": "Start Survey",
       "es": "Comenzar Tasación",
       "sw": "Anzisha Fomu ya Utafiti",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Commencer l'enquête"
     },
     {
       "en": "User:",
       "es": "Usario:",
       "sw": "Mtumiaji",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Utilisateur :"
     },
     {
       "en": "Sync:",
       "es": "Sincronizar:",
       "sw": "Landanisha:",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Sync :"
     },
     {
       "en": "Version:",
       "es": "Version:",
       "sw": "Toleo",
-      "_base": "en"
-    },
-    {
-      "en": "Map Water Sources",
-      "es": "Trazar un Mapa de los Fuentes de Agua",
-      "sw": "Ramani ya Vyanzo vya Maji",
       "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "List Water Sources",
-      "es": "Hacer un Lista de los Fuentes de Agua",
-      "sw": "Orodha ya Vyanzo vya Maji",
-      "_base": "en",
-      "_unused": true
+      "fr": "Version :"
     },
     {
       "en": "Language:",
       "es": "Idioma:",
       "sw": "Lugha",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Langue :"
     },
     {
       "en": "Advanced",
       "es": "Avanzado",
       "sw": "Muendelezo",
-      "_base": "en"
-    },
-    {
-      "en": "Reset Local Storage",
-      "es": "Reinicializar el Almacenaje de Local",
-      "sw": "Anza upya hifadhi ya ndani",
       "_base": "en",
-      "_unused": true
+      "fr": "Avancé"
     },
     {
       "en": "This will completely reset any cached data and cause you to lose any pending changes that you have not uploaded",
       "es": "Esto completamente restablecerá los datos almacenados en memoria caché y hacerle perder cualquier cambio pendiente que no haya subido",
       "sw": "Hii itafuta kabisa data zozote zilizotunzwa katika kumbukumbu na kusababisha upoteze mabadiliko yoyote yanayosubiri kuhamishwa",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Cela réinitialisera entièrement n'importe quelles données mises en cache et vous fera perdre n'importe quels changements en attente que vous n'avez pas téléchargés en upload"
     },
     {
       "en": "N",
       "es": "Norte",
       "sw": "Kaskazini",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Nord"
     },
     {
       "en": "NE",
       "es": "Noreste",
       "sw": "Kaskazini Mashariki",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Nord-Est"
     },
     {
       "en": "E",
       "es": "Este",
       "sw": "Mashariki",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Est"
     },
     {
       "en": "SE",
       "es": "Sureste",
       "sw": "Kusini Mashariki",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Sud-Est"
     },
     {
       "en": "S",
       "es": "Sur",
       "sw": "Kusini",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Sud"
     },
     {
       "en": "SW",
       "es": "Suroeste",
       "sw": "Kusini Magharibi",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Sud-Ouest"
     },
     {
       "en": "W",
       "es": "Oeste",
       "sw": "Magharibi",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Ouest"
     },
     {
       "en": "NW",
       "es": "Noroeste",
       "sw": "Kaskazini Magharibi",
-      "_base": "en"
-    },
-    {
-      "en": "No geolocation available",
-      "es": "Geolocalización no disponible",
-      "sw": "Huduma ya kupatikana kijiografia haipo",
       "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Cannot find location",
-      "es": "No se puede encontrar ubicación",
-      "sw": "Haiwezekani kupata eneo hili",
-      "_base": "en",
-      "_unused": true
+      "fr": "Nord-Ouest"
     },
     {
       "en": "Unspecified location",
       "es": "ubicación no especificada",
       "sw": "Mahali pasipojulikana",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Emplacement non spécifié"
     },
     {
       "en": "Setting location...",
       "es": "Configurando ubicación...",
       "sw": "Inaweka mahali...",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Configure l'emplacement"
     },
     {
       "en": "Waiting for GPS...",
       "es": "Esperando el GPS...",
       "sw": "Inasubiria GPS...",
-      "_base": "en"
-    },
-    {
-      "en": "Invalid latitude",
-      "es": "Latitud no válido",
-      "sw": "Latitudo batili",
       "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Invalid longitude",
-      "es": "Longitud no válido",
-      "sw": "Longitudo batili",
-      "_base": "en",
-      "_unused": true
+      "fr": "Attend le GPS..."
     },
     {
       "en": "Internal Error",
       "es": "Error Interno",
       "sw": "Hitilafu ya Ndani",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Erreur Interne"
     },
     {
       "en": "Internal error",
       "es": "Error Interno",
       "sw": "Hitilafu ya ndani",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Erreur interne"
     },
     {
       "en": "Failed to take picture",
       "es": "No se pudo tomar foto",
       "sw": "Imeshindikana kupiga picha",
-      "_base": "en"
+      "_base": "en",
+      "fr": "N'a pas réussi à prendre une photo"
     },
     {
       "en": "A new version is available. Restart app?",
       "es": "Está disponible una nueva versión. Reiniciar la aplicación?",
       "sw": "Toleo jipya linapatikana. Anzisha upya programu?",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Une nouvelle version est disponible Redémarrer l'application ?"
     },
     {
       "en": "Loading mWater...",
       "es": "Cargando mWater...",
       "sw": "mWater inafunguka...",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Charge mWater..."
     },
     {
       "en": "Images not available",
       "es": "Imagenes no disponibles",
       "sw": "Picha hazipatikani",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Images non disponibles"
     },
     {
       "en": "Save",
       "es": "Guardar",
       "sw": "Hifadhi",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Sauvegarder"
     },
     {
       "en": "Cancel",
       "es": "Cancelar",
       "sw": "Sitisha",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Annuler"
     },
     {
       "en": "Discard",
       "es": "Desechar",
       "sw": "Ondoa",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Rejeter"
     },
     {
       "en": "Save for Later",
       "es": "Guardar para luego",
       "sw": "Hifadhi kwa ajili ya baadaye",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Sauvegarder pour plus tard"
     },
     {
       "en": "Complete",
       "es": "Completar",
       "sw": "Kamilisha",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Terminer"
     },
     {
       "en": "Image must be a jpeg file",
       "es": "Imagen tiene que ser un archivo jpeg",
       "sw": "Muundo wa picha lazima uwe ni jpeg",
-      "_base": "en"
+      "_base": "en",
+      "fr": "L'image doit être un fichier jpeg"
     },
     {
       "en": "Upload failed: {0}",
       "es": "No se pudo cargar: {0}",
       "sw": "Imeshindwa kupakia: {0}",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Échec du téléchargement en upload {0}"
     },
     {
       "en": "Error uploading file",
       "es": "Error al cargar el archivo",
       "sw": "Hitilafu katika kupakia faili",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Erreur lors du téléchargement en upload"
     },
     {
       "en": "Upload cancelled",
       "es": "Carga cancelada",
       "sw": "kupakia data kumesitishwa",
-      "_base": "en"
-    },
-    {
-      "en": "Create Water Source",
-      "es": "Crear Fuente de Agua",
-      "sw": "Unda Chanzo cha Maji",
       "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Pending...",
-      "es": "Pendiente...",
-      "sw": "Inasubiri...",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "No Data",
-      "es": "No Hay Datos",
-      "sw": "Hakuna data",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "High",
-      "es": "Alto",
-      "sw": "Refu",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Water source",
-      "es": "Fuente de Agua",
-      "sw": "Chanzo cha Maji",
-      "_base": "en",
-      "_unused": true
+      "fr": "Téléchargement en upload effacé"
     },
     {
       "en": "Name",
       "es": "Nombre",
       "sw": "Jina",
-      "_base": "en"
-    },
-    {
-      "en": "E.Coli / 100mL",
-      "es": "E.Coli / 100mL",
-      "sw": "E.Coli / 100mL",
       "_base": "en",
-      "_unused": true
+      "fr": "Nom"
     },
     {
       "en": "Open",
       "es": "Abierto",
       "sw": "Fungua",
-      "_base": "en"
-    },
-    {
-      "en": "Admin",
-      "es": "Administración",
-      "sw": "Msimamizi",
       "_base": "en",
-      "_unused": true
+      "fr": "Ouvert"
     },
     {
       "en": "Select Survey",
       "es": "Seleccione encuesta",
       "sw": "Chagua Fomu ya Utafiti",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Sélectionner une enquête"
     },
     {
       "en": "Image",
       "es": "Imagen",
       "sw": "Picha",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Image"
     },
     {
       "en": "Remove image?",
       "es": "Quitar Imagen?",
       "sw": "Ondoa picha?",
-      "_base": "en"
-    },
-    {
-      "en": "Import Sources",
-      "es": "Importar Fuentes",
-      "sw": "Ingiza Vyanzo",
-      "_unused": true
-    },
-    {
-      "en": "Error in data",
-      "es": "Error en los datos",
-      "sw": "Hitilafu katika data",
-      "_unused": true
+      "_base": "en",
+      "fr": "Enlever l'image ?"
     },
     {
       "en": "Login as {0} successful",
       "es": "Iniciar sesión como {0} exitoso ",
       "sw": "Umefanikiwa kuingia kama {0}",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Connexion en tant que {0} réussie"
     },
     {
       "en": "Running in Demo mode. No changes will be saved",
       "es": "Ejecutando en modo de demostración. Los cambios no se guardarán",
       "sw": "Inafanya kazi kama modeli ya demo. Mabadiliko yoyote hayatahifadhiwa",
-      "_base": "en"
-    },
-    {
-      "en": "New Source",
-      "es": "Fuente Nueva",
-      "sw": "Chanzo kipya",
       "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Enter Source Type",
-      "es": "Introducir Tipo de Fuente",
-      "sw": "Chagua Aina ya Chanzo",
-      "_base": "en",
-      "_unused": true
+      "fr": "Fonctionne en mode démo Aucun changement ne sera sauvegardé"
     },
     {
       "en": "Zoom in to see more",
       "es": "Zoom para ver más",
       "sw": "Kuza ili kuona zaidi",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Zoom avant pour voir davantage"
     },
     {
       "en": "Enter optional name",
       "es": "Introduzca nombre opcional",
       "sw": "Jaza jina la hiari",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Entrer un nom optionnel"
     },
     {
       "en": "Enter optional description",
       "es": "Introduzca una descripción opcional",
       "sw": "Jaza maelezo ya hiari",
-      "_base": "en"
-    },
-    {
-      "en": "Privacy",
-      "es": "Privacidad",
-      "sw": "Usiri",
       "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Water source is private",
-      "es": "Fuente de agua es privada",
-      "sw": "Chanzo cha Maji ni binafsi",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "This should only be used for sources that are not publically accessible",
-      "es": "Esto sólo debe usarse para fuentes que no son públicamente accesibles",
-      "sw": "Hii itumike kwa vyanzo ambavyo havitumiki na jamii pekee",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Set to current location?",
-      "es": "Establecer la ubicación actual?",
-      "sw": "Weka mahali ulipo sasa?",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Unable to generate source id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range.",
-      "es": "Es incapaz de generar código fuente Por favor asegúrese de que tiene una conexión o utilizar las configuraciones para obtener más información antes de salir del rango de conexión",
-      "sw": "Haiwezekani kuzalisha namba ya pekee (id) ya chanzo. Tafadhali hakikisha umeunganishwa na mtandao au fungua Mipangilio ili kupata vyanzo zaidi kabla ya kutoka nje ya eneo lenye mawasiliano",
-      "_base": "en",
-      "_unused": true
+      "fr": "Entrer une description optionnelle"
     },
     {
       "en": "Form not found",
       "es": "Forma no encontrada",
       "sw": "Fomu haipatikani",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Formulaire impossible à trouver"
     },
     {
       "en": "Select Test",
       "es": "Elegir Prueba",
       "sw": "Chagua Testi",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Sélectionnez un test"
     },
     {
       "en": "Report Problem",
       "es": "Reportar Problema",
       "sw": "Ripoti Tatizo",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Signaler un problème"
     },
     {
       "en": "Enter username",
       "es": "Introduzca el nombre de usuario",
       "sw": "Andika jina la mtumiaji",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Entrer un nom d'utilisateur"
     },
     {
       "en": "Enter email address",
       "es": "Introducir dirección de correo electrónico",
       "sw": "Andika anwani yako ya barua pepe",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Entrer une adresse électronique"
     },
     {
       "en": "Describe the problem",
       "es": "Describir el Problema",
       "sw": "Elezea tatizo",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Décrire le problème"
     },
     {
       "en": "Report sent",
       "es": "Reportaje mandado",
       "sw": "Ripoti imetumwa",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Rapport envoyé"
     },
     {
       "en": "Debugging with code <b>{0}</b>",
       "es": "Depuración de código <b>{0}</b>",
       "sw": "Chambua kwa kutumia kanuni <b>{0}</b>",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Débogage avec le code <b>{0}</b>"
     },
     {
       "en": "Completely discard local data, logout and lose unsubmitted changes?",
       "es": "Totalmente descartar datos locales, logout y perderá los cambios inéditos?",
       "sw": "Ondoa kabisa data za ndani, toka na poteza mabadiliko ambayo hayajawasilishwa?",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Enlever entièrement les données locales, se déconnecter et perdre les changements non soumis ?"
     },
     {
       "en": "Error",
       "es": "Error",
       "sw": "Hitilafu",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Erreur"
     },
     {
       "en": "E.Coli",
       "es": "E.Coli",
       "sw": "E.Coli",
-      "_base": "en"
-    },
-    {
-      "en": "TC",
-      "es": "TC",
-      "sw": "TC",
       "_base": "en",
-      "_unused": true
+      "fr": "E. Coli"
     },
     {
       "en": "Algorithm",
       "es": "Algoritmo",
       "sw": "Algorithm",
-      "_base": "en"
-    },
-    {
-      "en": "Start remote debugger (this will give developers temporary access to the app on your phone)?",
-      "es": "Iniciar el depurador remoto (esto le dará los desarrolladores acceso temporal a la aplicación en su teléfono)?",
-      "sw": "Anzisha kichambuzi cha mbali (waruhusu wabunifu wa programu wajaribu kutatua tatizo la simu yako kupitia Intaneti)?",
       "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Debugger started with code {0}",
-      "es": "Depurador comenzado con código {0}",
-      "sw": "Kichambuzi kimeanzishwa na kanuni {0}",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Failed to load weinre",
-      "es": "Error al cargar weinre",
-      "sw": "Imeshindikana kupakia weinre",
-      "_base": "en",
-      "_unused": true
+      "fr": "Algorithme"
     },
     {
       "en": "Username required",
       "es": "Nombre de usuario requerido",
       "sw": "Weka jina la mtumiaji",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Nom d'utilisateur requis"
     },
     {
       "en": "Password of at least 5 characters required",
       "es": "Contraseña de al menos 5 caracteres requerida",
       "sw": "Weka neno la siri lisilo chini ya herufi 5",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Mot de passe d'au moins 5 caractères requis"
     },
     {
       "en": "Email required",
       "es": "Correo electrónico obligatorio",
       "sw": "Weka barua pepe",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Adresse électronique requise"
     },
     {
       "en": "Unable to signup. Please check that you are connected to Internet",
       "es": "No puede registrarse. Por favor, compruebe que está conectado a Internet",
       "sw": "Imeshindikana kusajili. Tafadhali hakikisha umeunganishwa na Intaneti",
-      "_base": "en"
-    },
-    {
-      "en": "Edit Source {0}",
-      "es": "Editar Fuente {0}",
-      "sw": "Hariri Chanzo {0}",
       "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Nearby Sources",
-      "es": "Fuentes Cercanas",
-      "sw": "Vyanzo vilivyo Jirani",
-      "_base": "en",
-      "_unused": true
+      "fr": "N'est pas en mesure de s'inscrire Veuillez SVP vérifier que vous êtes connecté à internet"
     },
     {
       "en": "Unable to determine location",
       "es": "Incapaz de determinar la ubicación",
       "sw": "Inashindikana kutambua mahali",
-      "_base": "en"
-    },
-    {
-      "en": "Enter search text or ID of water source",
-      "es": "Introduzca el texto de búsqueda o el código de fuente de agua",
-      "sw": "Andika maandishi ya kutafuta au ID ya chanzo cha maji",
       "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Source Map",
-      "es": "Mapa de los Fuentes",
-      "sw": "Ramani ya Vyanzo",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "All Sources",
-      "es": "Todas las Fuentes",
-      "sw": "Vyanzo Vyote",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Only My Organization",
-      "es": "Sólo mi organización",
-      "sw": "Shirika Langu Tu",
-      "_base": "en",
-      "_unused": true
+      "fr": "Ne peut déterminer l'emplacement"
     },
     {
       "en": "Only Mine",
       "es": "Solo el Mio",
       "sw": "Yangu Pekee",
-      "_base": "en"
-    },
-    {
-      "en": "Note for Source {0}",
-      "es": "Nota para la fuente {0}",
-      "sw": "Noti ya Chanzo {0}",
       "_base": "en",
-      "_unused": true
+      "fr": "Seulement le mien"
     },
     {
       "en": "Date of Visit",
       "es": "Feche de Visita",
       "sw": "Siku ya Ziara",
-      "_base": "en"
-    },
-    {
-      "en": "Status of Water Source",
-      "es": "Estado de la Fuente de Agua",
-      "sw": "Hali ya Chanzo cha Maji",
       "_base": "en",
-      "_unused": true
+      "fr": "Date de la visite"
     },
     {
       "en": "Functional",
       "es": "Funcional",
       "sw": "Kinafanya kazi",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Fonctionnel"
     },
     {
       "en": "Needs maintenance",
       "es": "Necesita mantenimiento",
       "sw": "Kinahitaji matengenezo",
-      "_base": "en"
+      "_base": "en",
+      "fr": "A besoin d'entretien"
     },
     {
       "en": "Non-functional",
       "es": "No funcional",
       "sw": "Hakifanyi kazi",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Pas fonctionnel"
     },
     {
       "en": "No longer exists",
       "es": "Ya no existe",
       "sw": "Haipo tena",
-      "_base": "en"
+      "_base": "en",
+      "fr": "N'existe plus"
     },
     {
       "en": "Notes",
       "es": "Notas",
       "sw": "Maelezo",
-      "_base": "en"
-    },
-    {
-      "en": "Source not found",
-      "es": "Fuente no encontrada",
-      "sw": "Chanzo hakipatikani",
       "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Delete Source",
-      "es": "Eliminar fuente",
-      "sw": "Futa Chanzo",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Add Note",
-      "es": "Agregar Nota",
-      "sw": "Ongeza Noti",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Permanently delete source?",
-      "es": "Eliminar permanentemente la fuente?",
-      "sw": "Futa chanzo kwa kudumu?",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Source deleted",
-      "es": "Fuente eliminada",
-      "sw": "Chanzo kimefutwa",
-      "_base": "en",
-      "_unused": true
+      "fr": "Notes"
     },
     {
       "en": "Survey",
       "es": "Encuesta",
       "sw": "Fomu ya Utafiti",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Enquête"
     },
     {
       "en": "Test not found",
       "es": "Prueba no encontrada",
       "sw": "Testi haipatikani",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Test impossible à trouver"
     },
     {
       "en": "Delete Survey",
       "es": "Eliminar Encuesta",
       "sw": "Futa Fomu ya Utafiti",
-      "_base": "en"
-    },
-    {
-      "en": "Survey form {0} not found",
-      "es": "Formulario de encuesta {0} no encontrado",
-      "sw": "Fomu ya Utafiti {0} haipatikani",
-      "_unused": true
+      "_base": "en",
+      "fr": "Effacer l'enquête"
     },
     {
       "en": "Survey saved as draft.",
       "es": "Encuesta guardada como borrador",
       "sw": "Fomu ya Utafiti imehifadhiwa kama rasimu",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Enquête sauvegardée comme projet"
     },
     {
       "en": "Survey completed successfully",
       "es": "Encuesta completada con éxito",
       "sw": "Fomu ya Utafiti imekamilika kwa mafanikio",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Enquête terminée avec succès"
     },
     {
       "en": "Permanently delete survey?",
       "es": "Eliminar encuesta permanentemente?",
       "sw": "Futa Fomu ya Utafiti kwa kudumu?",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Effacer l'enquête de façon permanente ?"
     },
     {
       "en": "Survey deleted",
       "es": "Encuesta eliminada",
       "sw": "Fomu ya Utafiti imefutwa",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Enquête effacée"
     },
     {
       "en": "Recent Tests",
       "es": "Pruebas recientes",
       "sw": "Testi za karibuni",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Tests récents"
     },
     {
       "en": "Water Test",
       "es": "Prueba de Agua",
       "sw": "Testi ya Maji",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Test de l'eau"
     },
     {
       "en": "Delete Test",
       "es": "Eliminar Prueba",
       "sw": "Futa Testi",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Effacer le test"
     },
     {
       "en": "Test form {0} not found",
       "es": "Prueba formulario {0} no encontrada",
       "sw": "Fomu ya testi {0} haipatikani",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Formulaire du test {0} pas trouvé"
     },
     {
       "en": "Test saved as draft.",
       "es": "Prueba guardada como borrador.",
       "sw": "Testi imehifadhiwa kama rasimu.",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Test sauvegardé comme projet"
     },
     {
       "en": "Test completed successfully",
       "es": "Prueba completada con exito",
       "sw": "Testi imekamilika kwa mafanikio",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Test terminé avec succès"
     },
     {
       "en": "Permanently delete test?",
       "es": "Eliminar prueba permanentemente?",
       "sw": "Futa testi kwa kudumu?",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Effacer le test de façon permanente ?"
     },
     {
       "en": "Test deleted",
       "es": "Prueba eliminada",
       "sw": "Testi imefutwa",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Test effacé"
     },
     {
       "en": "Unable to login. Please check that you are connected to Internet",
       "es": "No se pudo iniciar sesión. Por favor, compruebe que está conectado a Internet",
       "sw": "Imeshindikana kuingia. Tafadhali hakikisha umeunganishwa na Intaneti.",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Ne peut se connecter Veuillez SVP vérifier que vous êtes connecté à internet"
     },
     {
       "en": "Latitude",
       "es": "Latitud",
       "sw": "Latitudo",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Latitude"
     },
     {
       "en": "Longitude",
       "es": "Longitud",
       "sw": "Longitudo",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Longitude"
     },
     {
       "en": "Home",
       "es": "Página inicial",
       "sw": "Ukurasa wa nyumbani",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Accueil"
     },
     {
       "en": "Login",
       "es": "Conexión",
       "sw": "Ingia",
-      "_base": "en"
-    },
-    {
-      "en": "List of Sources",
-      "es": "Lista de las Fuentes",
-      "sw": "Orodha ya Vyanzo",
       "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Map of Sources",
-      "es": "Mapa de las Fuentes",
-      "sw": "Ramani ya Vyanzo",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Start New Water Test",
-      "es": "Comenzar Prueba de Agua Nueva",
-      "sw": "Anza Testi mpya ya Maji",
-      "_unused": true
-    },
-    {
-      "en": "Recent Water Tests",
-      "es": "Pruebas de agua recientes",
-      "sw": "Testi za Maji za karibuni",
-      "_unused": true
-    },
-    {
-      "en": "Start New Survey",
-      "es": "Comenzar Encuesta Nueva",
-      "sw": "Anza Utafiti mpya",
-      "_unused": true
-    },
-    {
-      "en": "Recent Surveys",
-      "es": "Encuestas Recientes",
-      "sw": "Tafiti za hivi karibuni",
-      "_unused": true
+      "fr": "Se connecter"
     },
     {
       "en": "Settings",
       "es": "Ajustes",
       "sw": "Mipangilio",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Paramètres"
     },
     {
       "en": "Report a Problem",
       "es": "Reportar un Problema",
       "sw": "Ripoti Tatizo",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Signaler un problème"
     },
     {
       "en": "Logout",
       "es": "Cerrar sesión",
       "sw": "Toka",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Se déconnecter"
     },
     {
       "en": "Back",
       "es": "Atrás",
       "sw": "Rudi",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Précédent"
     },
     {
       "en": "Next",
       "es": "Siguente",
       "sw": "Inayofuata",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Suivant"
     },
     {
       "en": "Finish",
       "es": "Terminar",
       "sw": "Hitimisha",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Terminer"
     },
     {
       "en": "Upload Image",
       "es": "Cargar Imagen",
       "sw": "Pakia Picha",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Télécharger l'image en upload"
     },
     {
       "en": "Close",
       "es": "Cerrar",
       "sw": "Funga",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Fermer"
     },
     {
       "en": "Upload",
       "es": "Subir",
       "sw": "Pakia",
-      "_base": "en"
-    },
-    {
-      "en": "Change user's password",
-      "es": "Cambiar la Contraseña de Usario",
-      "sw": "Badilisha neno la siri la mtumiaji",
       "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Change Password",
-      "es": "Cambiar la Contraseña",
-      "sw": "Badilisha Neno la Siri",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Set user's organization",
-      "es": "Establecer la Organización del Usuario",
-      "sw": "Weka shirika la mtumiaji",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Move user's existing data to new organization",
-      "es": "Mover los datos existentes del usuario a la nueva organización",
-      "sw": "Hamisha data za mtumiaji zilizopo kwenda shirika jipya",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Change Organization",
-      "es": "Cambiar Organización",
-      "sw": "Badili shirika",
-      "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Crash!",
-      "es": "Choque!",
-      "sw": "Mvurugiko!",
-      "_base": "en",
-      "_unused": true
+      "fr": "Télécharger en upload"
     },
     {
       "en": "Incomplete Surveys",
       "es": "Encuestas Incompletadas",
       "sw": "Tafiti ambazo hazijakamilika",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Enquêtes pas terminées"
     },
     {
       "en": "Recent Completed Surveys",
       "es": "Encuestas Completadas Recientes",
       "sw": "Tafiti zilizokamilika karibuni",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Enquêtes récemment terminées"
     },
     {
       "en": "Loading image",
       "es": "Cargando Imagen",
       "sw": "Inafungua picha",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Charge une image"
     },
     {
       "en": "Demo",
       "es": "Demo",
       "sw": "Demo",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Démo"
     },
     {
       "en": "Try out app",
       "es": "Probar app",
       "sw": "Jaribu programu",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Essayer l'application"
     },
     {
       "en": "Login to mWater",
       "es": "Iniciar sesión en mWater",
       "sw": "Ingia mWater",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Se connecter à mWater"
     },
     {
       "en": "Username or Email",
       "es": "Nombre de usuario o correo electrónico",
       "sw": "Jina la mtumiaji au Barua pepe",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Nom d'utilisateur ou adresse électronique"
     },
     {
       "en": "Username",
       "es": "Nombre de Usario",
       "sw": "Jina la mtumiaji",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Nom d'utilisateur"
     },
     {
       "en": "Password",
       "es": "Contraseña",
       "sw": "Neno la siri",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Mot de passe"
     },
     {
       "en": "or",
       "es": "o",
       "sw": "au",
-      "_base": "en"
+      "_base": "en",
+      "fr": "ou"
     },
     {
       "en": "Signup",
       "es": "Registrarse",
       "sw": "Jisajili",
-      "_base": "en"
-    },
-    {
-      "en": "Select type of survey to start",
-      "es": "Seleccione el tipo de encuesta para comenzar",
-      "sw": "Chagua aina ya utafiti wa kuanza",
-      "_unused": true
+      "_base": "en",
+      "fr": "S'inscrire"
     },
     {
       "en": "Select type of test to start",
       "es": "Seleccione el tipo de prueba para comenzar",
       "sw": "Chagua aina ya testi ya kuanza",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Sélectionner le type de test à commencer"
     },
     {
       "en": "Test EC Compact Dry Plate Counter",
       "es": "Probar Contador Compacto Placa Seca CE",
       "sw": "Jaribu kaunta ya EC Compact Dry Plate",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Test du EC Compact Dry Plate Counter"
     },
     {
       "en": "Start Remote Debugger",
       "es": "Iniciar el depurador remoto",
       "sw": "Anzisha kichambuzi cha mbali",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Démarrer le débogueur distant"
     },
     {
       "en": "Signup with mWater",
       "es": "Registrarse con mWater",
       "sw": "Jisajili na mWater",
-      "_base": "en"
-    },
-    {
-      "en": "Note: Your username is visible on water sources you create",
-      "es": "Nota: Su nombre de usuario es visible en las fuentes de agua que se crea",
-      "sw": "Noti: Jina lako la utumiaji linaonekana katika vyanzo vya maji unavyounda",
       "_base": "en",
-      "_unused": true
+      "fr": "S'inscrire auprès de mWater"
     },
     {
       "en": "Email address",
       "es": "Dirección de correo electrónico",
       "sw": "Anwani ya barua pepe",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Adresse électronique"
     },
     {
       "en": "Email",
       "es": "Correo electrónico",
       "sw": "Barua pepe",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Courriel"
     },
     {
       "en": "Note: Your email address will never be shared",
       "es": "Nota: Tu dirección de correo electrónico nunca será compartida",
       "sw": "Noti: Anwani yako ya barua pepe kamwe haitawekwa wazi kwa wengine",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Note : Votre adresse électronique ne sera jamais partagée"
     },
     {
       "en": "Waiting for GPS location...",
       "es": "En espera de ubicación GPS...",
       "sw": "Subiri kupata mahali kwa GPS...",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Attend la position GPS..."
     },
     {
       "en": "Search results for:",
       "es": "Los resultados de la búsqueda",
       "sw": "Matokeo ya utafutaji wa:",
-      "_base": "en"
-    },
-    {
-      "en": "ID:",
-      "es": "ID:",
-      "sw": "ID:",
       "_base": "en",
-      "_unused": true
+      "fr": "Cherche les résultats pour :"
     },
     {
       "en": "Type:",
       "es": "Tipo",
       "sw": "Aina",
-      "_base": "en"
-    },
-    {
-      "en": "Edit Source",
-      "es": "Editar fuente",
-      "sw": "Hariri Chanzo",
       "_base": "en",
-      "_unused": true
+      "fr": "Type :"
     },
     {
       "en": "Location",
       "es": "Ubicación",
       "sw": "Mahali",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Emplacement"
     },
     {
       "en": "Add",
       "es": "Agregar",
       "sw": "Ongeza",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Ajouter"
     },
     {
       "en": "Water Tests",
       "es": "Pruebas de Agua",
       "sw": "Testi za Maji",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Tests de l'eau"
     },
     {
       "en": "Surveys",
       "es": "Encuestas",
       "sw": "Fomu za Utafiti",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Enquêtes"
     },
     {
       "en": "Photos",
       "es": "Fotos",
       "sw": "Picha",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Photos"
     },
     {
       "en": "Incomplete Tests",
       "es": "Pruebas Incompletadas",
       "sw": "Testi ambazo hazijakamilika",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Tests pas achevés"
     },
     {
       "en": "Test",
       "es": "Prueba",
       "sw": "Testi",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Test"
     },
     {
       "en": "of",
       "es": "de",
       "sw": "ya",
-      "_base": "en"
+      "_base": "en",
+      "fr": "de"
     },
     {
       "en": "No images present",
       "es": "Sin imágenes",
       "sw": "Hakuna picha",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Pas d'images présentes"
     },
     {
       "en": "Taking photos not supported on this platform",
       "es": "Esta plataforma no suporta la toma de fotografias",
       "sw": "Upigaji picha haukubaliwi katika mfumo huu wa uendeshaji",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Prendre des photos n'est pas supporté par cette plateforme"
     },
     {
       "en": "started",
       "es": "empezado",
       "sw": "Imeanzwa",
-      "_base": "en"
-    },
-    {
-      "en": "Completed",
-      "es": "Completado",
-      "sw": "Imekamilika",
-      "_unused": true
-    },
-    {
-      "en": "Offline Source Creation",
-      "es": "Creación de Fuente sin Conexión",
-      "sw": "Uundaji wa Vyanzo bila Intaneti",
       "_base": "en",
-      "_unused": true
-    },
-    {
-      "en": "Number of sources that can be created offline:",
-      "es": "Número de fuentes que se pueden crear sin conexión",
-      "sw": "Idadi ya vyanzo inayoweza kuundwa bila kuunganishwa na Intaneti",
-      "_base": "en",
-      "_unused": true
+      "fr": "commencé"
     },
     {
       "en": "Request more",
       "es": "Pedir más",
       "sw": "Omba zaidi",
-      "_base": "en"
-    },
-    {
-      "en": "Select Source",
-      "es": "Seleccionar fuente",
-      "sw": "Chagua Chanzo",
       "_base": "en",
-      "_unused": true
+      "fr": "Demander davantage"
     },
     {
       "en": "Private",
       "es": "Privado",
       "sw": "Binafsi",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Privé"
     },
     {
       "en": "Needs repair",
       "es": "Necesidades reparadas",
       "sw": "Ukarabati unahitajika",
-      "_base": "en"
+      "_base": "en",
+      "fr": "À besoin de réparation"
     },
     {
       "en": "Edit Survey",
       "es": "Editar Encuesta",
       "sw": "Hariri Fomu ya Utafiti",
-      "_base": "en"
-    },
-    {
-      "en": "Source",
-      "es": "Fuente",
-      "sw": "Chanzo",
       "_base": "en",
-      "_unused": true
+      "fr": "Éditer l'enquête"
     },
     {
       "en": "Edit Test",
       "es": "Editar Prueba",
       "sw": "Hariri Testi",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Éditer le test"
     },
     {
       "en": "Select units",
       "es": "Seleccionar unidades",
       "sw": "Chagua kipimo",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Sélectionner les unités"
     },
     {
       "en": "Draft",
       "es": "Borrador",
       "sw": "Rasimu",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Projet"
     },
     {
       "en": "None",
       "es": "Ninguna",
       "sw": "Hakuna",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Aucun"
     },
     {
       "en": "Not logged in",
       "es": "No iniciado",
       "sw": "Hujaingia",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Pas connecté"
     },
     {
       "en": "Unlocated",
       "es": "Sin localizar",
       "sw": "Haina mahali",
-      "_base": "en"
-    },
-    {
-      "en": "See the map for a global view if no sources are found.",
-      "es": "Vea el mapa para obtener una vista global si no encuentra fuentes",
-      "sw": "Angalia ramani kwa muonekano wa ulimwengu kama hakuna vyanzo vinanvyoonekana",
       "_base": "en",
-      "_unused": true
+      "fr": "Non localisé"
     },
     {
       "en": "Incomplete",
       "es": "Incompleto",
       "sw": "Haijakamilika",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Incomplet"
     },
     {
       "en": "unnamed",
       "es": "sin nombre",
       "sw": "haina jina",
-      "_base": "en"
-    },
-    {
-      "en": "Set",
-      "es": "Fijar",
-      "sw": "Weka",
       "_base": "en",
-      "_unused": true
+      "fr": "anonyme"
     },
     {
       "en": "Clear",
       "es": "Borrar",
       "sw": "Ondoa",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Effacer"
     },
     {
       "en": "Map",
       "es": "Mapa",
       "sw": "Ramani",
-      "_base": "en"
+      "_base": "en",
+      "fr": "Carte"
     },
     {
       "en": "Edit",
       "es": "Editar",
       "sw": "Hariri",
-      "_base": "en"
-    },
-    {
-      "en": "Source {0}",
-      "es": "Fuente {0}",
-      "sw": "Chanzo {0}",
       "_base": "en",
-      "_unused": true
-    },
-    {
-      "_base": "en",
-      "en": "Username must be composed of letters, numbers, spaces, period and dash and must be at least 7 characters long. It must start with a letter.",
-      "es": "",
-      "sw": "",
-      "_unused": true
+      "fr": "Éditer"
     },
     {
       "_base": "en",
       "en": "Pending",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "En attente"
     },
     {
       "_base": "en",
       "en": "Final",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "Définitif"
     },
     {
       "_base": "en",
       "en": "Rejected",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "Rejeté"
     },
     {
       "_base": "en",
       "en": "Select survey to start",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "Sélectionner l'enquête à commencer"
     },
     {
       "_base": "en",
       "en": "Survey form not found",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "Le formulaire de l'enquête n'a pas été trouvé"
     },
     {
       "_base": "en",
       "en": "Select",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "Sélectionner"
     },
     {
       "_base": "en",
       "en": "Images not available on this platform",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "Les images ne sont pas disponibles sur cette plateforme"
     },
     {
       "_base": "en",
       "en": "GPS not available",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "Le GPS n'est pas disponible"
     },
     {
       "_base": "en",
       "en": "Location Set Successfully",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "Emplacement configuré avec succès"
     },
     {
       "_base": "en",
       "en": "Use Anyway",
       "es": "",
-      "sw": ""
-    },
-    {
-      "_base": "en",
-      "en": "Low GPS Accuracy",
-      "es": "",
       "sw": "",
-      "_unused": true
-    },
-    {
-      "_base": "en",
-      "en": "Very Low GPS Accuracy. Waiting for better signal...",
-      "es": "",
-      "sw": "",
-      "_unused": true
-    },
-    {
-      "_base": "en",
-      "en": "Setting Location...",
-      "es": "",
-      "sw": "",
-      "_unused": true
+      "fr": "Utiliser quand même"
     },
     {
       "_base": "en",
       "en": "km",
       "es": "",
-      "sw": ""
-    },
-    {
-      "_base": "en",
-      "en": "m",
-      "es": "",
       "sw": "",
-      "_unused": true
-    },
-    {
-      "_base": "en",
-      "en": "N/A",
-      "es": "",
-      "sw": "",
-      "_unused": true
+      "fr": "km"
     },
     {
       "_base": "en",
       "en": "Don't know",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "Ne sais pas"
     },
     {
       "_base": "en",
       "en": "Comments",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "Commentaires"
     },
     {
       "_base": "en",
       "en": "Image not available",
       "es": "",
-      "sw": ""
-    },
-    {
-      "_base": "en",
-      "en": "<b>{0} records to upload</b>",
-      "es": "",
       "sw": "",
-      "_unused": true
+      "fr": "Images non disponibles"
     },
     {
       "_base": "en",
       "en": "Sensors",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "Capteurs"
     },
     {
       "_base": "en",
       "en": "Only available on Android app",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "Seulement disponible sur l'application Android"
     },
     {
       "_base": "en",
       "en": "Unable to connect to Bluetooth",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "Impossible de se connecter à Bluetooth"
     },
     {
       "_base": "en",
       "en": "Sensor",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "Capteur"
     },
     {
       "_base": "en",
       "en": "Survey not found",
       "es": "",
-      "sw": ""
-    },
-    {
-      "_base": "en",
-      "en": "No surveys available. Please contact info@mwater.co to learn how to set one up",
-      "es": "",
       "sw": "",
-      "_unused": true
+      "fr": "L'enquête n'a pas été trouvée"
     },
     {
       "_base": "en",
       "en": "Your app is out of date. Please update in Google Play store.",
       "es": "",
-      "sw": ""
+      "sw": "",
+      "fr": "Votre application est dépassée Veuillez SVP mettre à jour dans le Google Play Store"
     },
     {
       "_base": "en",
       "en": "Searching for sensors...",
-      "sw": ""
+      "sw": "",
+      "fr": "Recherche des capteurs..."
     },
     {
       "_base": "en",
       "en": "Upgrade Firmware",
-      "sw": ""
+      "sw": "",
+      "fr": "Mettre à jour le firmware"
     },
     {
       "_base": "en",
       "en": "Delete All Records",
-      "sw": ""
+      "sw": "",
+      "fr": "Effacer toutes les enregistrements"
     },
     {
       "_base": "en",
       "en": "Update error",
-      "sw": ""
+      "sw": "",
+      "fr": "Mise à jour de l'erreur"
     },
     {
       "_base": "en",
       "en": "Error connecting",
-      "sw": ""
+      "sw": "",
+      "fr": "Erreur lors de la connexion"
     },
     {
       "_base": "en",
       "en": "Finalizing connection...",
-      "sw": ""
+      "sw": "",
+      "fr": "Termine la connexion..."
     },
     {
       "_base": "en",
       "en": "Connected",
-      "sw": ""
+      "sw": "",
+      "fr": "Connecté"
     },
     {
       "_base": "en",
       "en": "Connecting...",
-      "sw": ""
+      "sw": "",
+      "fr": "Se connecte"
     },
     {
       "_base": "en",
       "en": "Pairing with sensor...",
-      "sw": ""
+      "sw": "",
+      "fr": "Couplage avec le senseur..."
     },
     {
       "_base": "en",
       "en": "Successfully downloaded {0} records",
-      "sw": ""
+      "sw": "",
+      "fr": "Enregistrements téléchargés en download avec {0} succès"
     },
     {
       "_base": "en",
       "en": "No new records were available to download",
-      "sw": ""
+      "sw": "",
+      "fr": "Aucun nouvel enregistrement n'était disponible pour le téléchargement en download"
     },
     {
       "_base": "en",
       "en": "Unable to enable logging",
-      "sw": ""
+      "sw": "",
+      "fr": "Impossible d'activer l'enregistrement"
     },
     {
       "_base": "en",
       "en": "Unable to disable logging",
-      "sw": ""
+      "sw": "",
+      "fr": "Impossible de désactiver l'enregistrement"
     },
     {
       "_base": "en",
       "en": "Not connected",
-      "sw": ""
+      "sw": "",
+      "fr": "Pas connecté"
     },
     {
       "_base": "en",
       "en": "You will need an Ant+ connection and PC and a binary ready. This cannot be undone. Proceed?",
-      "sw": ""
+      "sw": "",
+      "fr": "Vous aurez besoin d'une connexion Ant+, d'un PC et d'un binaire à votre disposition Ceci ne peut être annulé Procéder ?"
     },
     {
       "_base": "en",
       "en": "Are you really sure you want to do this?",
-      "sw": ""
+      "sw": "",
+      "fr": "Êtes-vous vraiment sûr de vouloir faire ceci ?"
     },
     {
       "_base": "en",
       "en": "Now upload new firmware, following instructions carefully",
-      "sw": ""
+      "sw": "",
+      "fr": "Téléchargez à présent en upload le nouveau firmware, en suivant attentivement les instructions"
     },
     {
       "_base": "en",
       "en": "Unable to upgrade firmware",
-      "sw": ""
+      "sw": "",
+      "fr": "Impossible de mettre à jour le firmware"
     },
     {
       "_base": "en",
       "en": "This will delete all records on the device. This cannot be undone. Proceed?",
-      "sw": ""
+      "sw": "",
+      "fr": "Cela effacera tous les enregistrements sur le dispositif Ceci ne peut être annulé Procéder ?"
     },
     {
       "_base": "en",
       "en": "All records deleted",
-      "sw": ""
+      "sw": "",
+      "fr": "Tous les enregistrements sont effacées"
     },
     {
       "_base": "en",
       "en": "Unable to delete all records",
-      "sw": ""
+      "sw": "",
+      "fr": "Impossible d'effacer tous les enregistrements"
     },
     {
       "_base": "en",
       "en": "Status",
-      "sw": ""
+      "sw": "",
+      "fr": "Statut"
     },
     {
       "_base": "en",
       "en": "Connection Status",
-      "sw": ""
+      "sw": "",
+      "fr": "Statut de la connexion"
     },
     {
       "_base": "en",
       "en": "Reconnect",
-      "sw": ""
+      "sw": "",
+      "fr": "Se reconnecter"
     },
     {
       "_base": "en",
       "en": "Device ID",
-      "sw": ""
+      "sw": "",
+      "fr": "Identifiant du dispositif"
     },
     {
       "_base": "en",
       "en": "Logging Enabled",
-      "sw": ""
+      "sw": "",
+      "fr": "Enregistrement activé"
     },
     {
       "_base": "en",
       "en": "Disable Logging",
-      "sw": ""
+      "sw": "",
+      "fr": "Désactiver l'enregistrement"
     },
     {
       "_base": "en",
       "en": "Logging Disabled",
-      "sw": ""
+      "sw": "",
+      "fr": "Enregistrement désactivé"
     },
     {
       "_base": "en",
       "en": "Enable Logging",
-      "sw": ""
+      "sw": "",
+      "fr": "Activer l'enregistrement"
     },
     {
       "_base": "en",
       "en": "Battery",
-      "sw": ""
+      "sw": "",
+      "fr": "Batterie"
     },
     {
       "_base": "en",
       "en": "Memory",
-      "sw": ""
+      "sw": "",
+      "fr": "Mémoire"
     },
     {
       "_base": "en",
       "en": "Data",
-      "sw": ""
+      "sw": "",
+      "fr": "Données"
     },
     {
       "_base": "en",
       "en": "Download Data",
-      "sw": ""
+      "sw": "",
+      "fr": "Télécharger des données en download"
     },
     {
       "_base": "en",
       "en": "Downloading data",
-      "sw": ""
+      "sw": "",
+      "fr": "Téléchargement de données en download"
     },
     {
       "_base": "en",
       "en": "Device Information",
-      "sw": ""
+      "sw": "",
+      "fr": "Informations sur le dispositif"
     },
     {
       "_base": "en",
       "en": "ID (Bluetooth Address)",
-      "sw": ""
+      "sw": "",
+      "fr": "Identifiant (adresse Bluetooth)"
     },
     {
       "_base": "en",
       "en": "Battery voltage",
-      "sw": ""
+      "sw": "",
+      "fr": "Tension de la batterie"
     },
     {
       "_base": "en",
-      "en": "Interal Device UID",
-      "sw": ""
+      "en": "Internal Device UID",
+      "sw": "",
+      "fr": "Dispositif interne UID"
     },
     {
       "_base": "en",
       "en": "Ant+ Channel",
-      "sw": ""
+      "sw": "",
+      "fr": "Ant+ Channel"
     },
     {
       "_base": "en",
       "en": "Firmware version",
-      "sw": ""
+      "sw": "",
+      "fr": "Version firmware"
     },
     {
       "_base": "en",
       "en": "Sample Rate",
-      "sw": ""
+      "sw": "",
+      "fr": "Taux d'échantillonnage"
     },
     {
       "_base": "en",
       "en": "Records",
-      "sw": ""
+      "sw": "",
+      "fr": "Enregistrements"
     },
     {
       "_base": "en",
       "en": "Update Device Status",
-      "sw": ""
+      "sw": "",
+      "fr": "Mettre à jour le statut du dispositif"
     },
     {
       "_base": "en",
       "en": "Please update mWater App to use this form",
-      "sw": ""
+      "sw": "",
+      "fr": "Veuillez SVP mettre à jour l'application mWater pour utiliser ce formulaire"
     },
     {
       "_base": "en",
       "en": "This form is out of date and cannot be opened",
-      "sw": ""
+      "sw": "",
+      "fr": "Ce formulaire est dépassé et ne peut pas être ouvert"
     },
     {
       "_base": "en",
       "en": "Loading mWater App...",
-      "sw": ""
+      "sw": "",
+      "fr": "Charge l'application mWater..."
     },
     {
       "_base": "en",
       "en": "as of",
-      "sw": ""
+      "sw": "",
+      "fr": "à compter du"
     },
     {
       "_base": "en",
       "en": "Loading...",
-      "sw": ""
+      "sw": "",
+      "fr": "Charge..."
     },
     {
       "_base": "en",
       "en": "Unknown",
-      "sw": ""
+      "sw": "",
+      "fr": "Inconnu"
     },
     {
       "_base": "en",
       "en": "Status Updates",
-      "sw": ""
-    },
-    {
-      "_base": "en",
-      "en": "Status for Source {0}",
       "sw": "",
-      "_unused": true
-    },
-    {
-      "_base": "en",
-      "en": "Ok",
-      "sw": "",
-      "_unused": true
+      "fr": "Mises à jour du statut"
     },
     {
       "_base": "en",
       "en": "No connection",
-      "sw": ""
+      "sw": "",
+      "fr": "Pas de connexion"
     },
     {
       "_base": "en",
       "en": "Server error",
-      "sw": ""
+      "sw": "",
+      "fr": "Erreur du serveur"
     },
     {
       "_base": "en",
       "en": "Upload error",
-      "sw": ""
-    },
-    {
-      "_base": "en",
-      "en": "Working...",
       "sw": "",
-      "_unused": true
-    },
-    {
-      "_base": "en",
-      "en": "Trying...",
-      "sw": "",
-      "_unused": true
+      "fr": "Erreur lors du téléchargement en upload"
     },
     {
       "_base": "en",
       "en": "Updates",
-      "sw": ""
+      "sw": "",
+      "fr": "Mises à jour"
     },
     {
       "_base": "en",
       "en": "Check for updates",
-      "sw": ""
+      "sw": "",
+      "fr": "Vérification des mises à jour"
     },
     {
       "_base": "en",
       "en": "Updating...",
-      "sw": ""
+      "sw": "",
+      "fr": "Met à jour"
     },
     {
       "_base": "en",
       "en": "No Connection",
-      "sw": ""
+      "sw": "",
+      "fr": "Pas de connexion"
     },
     {
       "_base": "en",
       "en": "Up to date",
-      "sw": ""
+      "sw": "",
+      "fr": "À jour"
     },
     {
       "_base": "en",
       "en": "Error updating",
-      "sw": ""
+      "sw": "",
+      "fr": "Mise à jour d'une erreur"
     },
     {
       "_base": "en",
       "en": "In progress...",
-      "sw": ""
+      "sw": "",
+      "fr": "En progrès"
     },
     {
       "_base": "en",
       "en": "If no surveys appear, please contact info@mwater.co to learn how to set one up",
-      "sw": ""
-    },
-    {
-      "_base": "en",
-      "en": "Very Low GPS Accuracy",
       "sw": "",
-      "_unused": true
-    },
-    {
-      "_base": "en",
-      "en": "Very low GPS Accuracy",
-      "sw": "",
-      "_unused": true
+      "fr": "Si aucune enquête n'apparaît, veuillez SVP prendre contact avec info@mwater.co pour apprendre comment en configurer une"
     },
     {
       "_base": "en",
       "en": "Cannot set location",
-      "sw": ""
-    },
-    {
-      "_base": "en",
-      "en": "Very Low GPS Accuracy ±{0}m",
       "sw": "",
-      "_unused": true
-    },
-    {
-      "_base": "en",
-      "en": "Low GPS Accuracy ±{0}m",
-      "sw": "",
-      "_unused": true
-    },
-    {
-      "_base": "en",
-      "en": "Good GPS Accuracy ±{0}m",
-      "sw": "",
-      "_unused": true
-    },
-    {
-      "_base": "en",
-      "en": "Very low GPS Accuracy...",
-      "sw": "",
-      "_unused": true
-    },
-    {
-      "_base": "en",
-      "en": "Low GPS Accuracy...",
-      "sw": "",
-      "_unused": true
-    },
-    {
-      "_base": "en",
-      "en": "Very low GPS Accuracy (±{0}m)...",
-      "sw": "",
-      "_unused": true
-    },
-    {
-      "_base": "en",
-      "en": "Low GPS Accuracy (±{0}m)...",
-      "sw": "",
-      "_unused": true
+      "fr": "Ne peut configurer l'emplacement"
     },
     {
       "_base": "en",
       "en": "Use location with very low accuracy (±{0}m)?",
-      "sw": ""
+      "sw": "",
+      "fr": "Utiliser l'emplacement avec une très faible précision (±{0}m) ?"
     },
     {
       "_base": "en",
       "en": "Username must be composed of letters, numbers, spaces, period and dash and must be at least 4 characters long. It must start with a letter.",
-      "sw": ""
+      "sw": "",
+      "fr": "Le nom d'utilisateur doit être composé de lettres, nombres, espaces, point et tiret, et doit contenir au moins 4 caractères Il doit commencer par une lettre"
     },
     {
       "_base": "en",
       "en": "Not Applicable",
-      "sw": ""
+      "sw": "",
+      "fr": "Pas applicable"
     },
     {
       "_base": "en",
       "en": "Network error. Unable to save image.",
-      "sw": ""
+      "sw": "",
+      "fr": "Erreur de réseau  Impossible de sauvegarder une image"
     },
     {
       "_base": "en",
       "en": "You are trying to save too large of a region of the map. Please zoom in further.",
-      "sw": ""
+      "sw": "",
+      "fr": "Vous êtes en train d'essayer de sauvegarder une zone trop large de la carte Veuillez SVP zoomer davantage en avant"
     },
     {
       "_base": "en",
       "en": "Make Available Offline",
-      "sw": ""
+      "sw": "",
+      "fr": "Rendre disponible hors ligne"
     },
     {
       "_base": "en",
       "en": "Download approximately {0} MB of map data and make available offline?",
-      "sw": ""
+      "sw": "",
+      "fr": "Télécharger en download environ  {0} MB de données cartographiques et rendre disponible hors ligne ?"
     },
     {
       "_base": "en",
       "en": "Saving cancelled",
-      "sw": ""
+      "sw": "",
+      "fr": "Sauvegarde annulée"
     },
     {
       "_base": "en",
       "en": "Map has been saved successfully",
-      "sw": ""
+      "sw": "",
+      "fr": "La carte a été sauvegardée avec succès"
     },
     {
       "_base": "en",
       "en": "An error occurred downloading map",
-      "sw": ""
+      "sw": "",
+      "fr": "Une erreur s'est produite en téléchargeant une carte en download"
     },
     {
       "_base": "en",
       "en": "Cancelling...",
-      "sw": ""
+      "sw": "",
+      "fr": "Annule..."
     },
     {
       "_base": "en",
       "en": "Saving {0}% complete",
-      "sw": ""
+      "sw": "",
+      "fr": "Sauvegarde {0}% terminée"
     },
     {
       "_base": "en",
       "en": "Calculating...",
-      "sw": ""
+      "sw": "",
+      "fr": "Calcule"
     },
     {
       "_base": "en",
       "en": "Your app is out of date. Please update mWater App on Google Play",
-      "sw": ""
+      "sw": "",
+      "fr": "Votre application est dépassée Veuillez SVP mettre à jour l'application mWater sur Google Play"
     },
     {
       "_base": "en",
       "en": "Site Map",
-      "sw": ""
+      "sw": "",
+      "fr": "Carte du site"
     },
     {
       "_base": "en",
       "en": "System is busy",
-      "sw": ""
+      "sw": "",
+      "fr": "Le système est occupé"
     },
     {
       "_base": "en",
       "en": "List",
-      "sw": ""
+      "sw": "",
+      "fr": "Liste"
     },
     {
       "_base": "en",
       "en": "All Sites",
-      "sw": ""
+      "sw": "",
+      "fr": "Tous les sites"
     },
     {
       "_base": "en",
       "en": "Only My Groups",
-      "sw": ""
+      "sw": "",
+      "fr": "Seulement mes groupes"
     },
     {
       "_base": "en",
       "en": "Map of Sites",
-      "sw": ""
+      "sw": "",
+      "fr": "Carte des sites"
     },
     {
       "_base": "en",
       "en": "List of Sites",
-      "sw": ""
+      "sw": "",
+      "fr": "Liste des sites"
     },
     {
       "_base": "en",
       "en": "Site",
-      "sw": ""
+      "sw": "",
+      "fr": "Site"
     },
     {
       "_base": "en",
       "en": "Type",
-      "sw": ""
+      "sw": "",
+      "fr": "Type"
     },
     {
       "_base": "en",
       "en": "Code",
-      "sw": ""
+      "sw": "",
+      "fr": "Code"
     },
     {
       "_base": "en",
       "en": "Set Location Here",
-      "sw": ""
+      "sw": "",
+      "fr": "Configurer l'emplacement ici"
     },
     {
       "_base": "en",
       "en": "Error resetting database",
-      "sw": ""
+      "sw": "",
+      "fr": "Erreur de réinitialisation de la base de données"
     },
     {
       "_base": "en",
       "en": "Reset successful",
-      "sw": ""
+      "sw": "",
+      "fr": "Réinitialisation réussie"
     },
     {
       "_base": "en",
       "en": "Nearby Sites",
-      "sw": ""
+      "sw": "",
+      "fr": "Sites proches"
     },
     {
       "_base": "en",
       "en": "Enter search text or ID of site",
-      "sw": ""
-    },
-    {
-      "_base": "en",
-      "en": "Create Site",
       "sw": "",
-      "_unused": true
+      "fr": "Entrez le texte à chercher ou l'identifiant du site"
     },
     {
       "_base": "en",
       "en": "Site not found",
-      "sw": ""
+      "sw": "",
+      "fr": "Impossible de trouver le site"
     },
     {
       "_base": "en",
       "en": "Site {0}",
-      "sw": ""
+      "sw": "",
+      "fr": "Site {0}"
     },
     {
       "_base": "en",
       "en": "Delete Site",
-      "sw": ""
+      "sw": "",
+      "fr": "Effacer le site"
     },
     {
       "_base": "en",
       "en": "Don't Know",
-      "sw": ""
+      "sw": "",
+      "fr": "Ne sais pas"
     },
     {
       "_base": "en",
       "en": "No Location Set",
-      "sw": ""
+      "sw": "",
+      "fr": "Pas d'emplacement configuré"
     },
     {
       "_base": "en",
       "en": "Permanently delete site?",
-      "sw": ""
+      "sw": "",
+      "fr": "Effacer le site de façon permanente ?"
     },
     {
       "_base": "en",
       "en": "Site deleted",
-      "sw": ""
+      "sw": "",
+      "fr": "Site effacé"
     },
     {
       "_base": "en",
       "en": "New Site",
-      "sw": ""
+      "sw": "",
+      "fr": "Nouveau site"
     },
     {
       "_base": "en",
       "en": "Site privacy",
-      "sw": ""
+      "sw": "",
+      "fr": "Politique de confidentialité du site"
     },
     {
       "_base": "en",
       "en": "Public",
-      "sw": ""
+      "sw": "",
+      "fr": "Public"
     },
     {
       "_base": "en",
       "en": "Visible",
-      "sw": ""
+      "sw": "",
+      "fr": "Visible"
     },
     {
       "_base": "en",
       "en": "Private should only be used for sites that are not publicly accessible",
-      "sw": ""
+      "sw": "",
+      "fr": "Privé devrait uniquement être utilisé pour les sites qui ne sont pas accessibles au public"
     },
     {
       "_base": "en",
       "en": "(No Group)",
-      "sw": ""
+      "sw": "",
+      "fr": "(Pas de groupe)"
     },
     {
       "_base": "en",
       "en": "Create site for group",
-      "sw": ""
+      "sw": "",
+      "fr": "Créer un site pour un groupe"
     },
     {
       "_base": "en",
       "en": "Please correct values",
-      "sw": ""
+      "sw": "",
+      "fr": "Veuillez SVP corriger les valeurs"
     },
     {
       "_base": "en",
       "en": "Unable to generate site id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range.",
-      "sw": ""
+      "sw": "",
+      "fr": "Impossible de générer un identifiant du site. Veuillez SVP vous assurer que vous avez une connexion ou que vous utilisez les Paramètres pour obtenir davantage avant d'être hors de portée de la connexion"
     },
     {
       "_base": "en",
       "en": "Offline Site Creation",
-      "sw": ""
+      "sw": "",
+      "fr": "Création de site hors-ligne"
     },
     {
       "_base": "en",
       "en": "Number of sites that can be created offline:",
-      "sw": ""
+      "sw": "",
+      "fr": "Nombre de sites qui peuvent être créés hors-ligne :"
     },
     {
       "_base": "en",
       "en": "Reset Storage",
-      "sw": ""
+      "sw": "",
+      "fr": "Réinitialisation du stockage"
     },
     {
       "_base": "en",
       "en": "See the map for a global view if no sites are found.",
-      "sw": ""
+      "sw": "",
+      "fr": "Consulter la carte pour une vue globale si aucun site ne peut être trouvé"
     },
     {
       "_base": "en",
       "en": "Note",
-      "sw": ""
+      "sw": "",
+      "fr": "Note :"
     },
     {
       "_base": "en",
       "en": "Select Site",
-      "sw": ""
+      "sw": "",
+      "fr": "Sélectionnez le site"
     },
     {
       "_base": "en",
       "en": "Code:",
-      "sw": ""
+      "sw": "",
+      "fr": "Code"
     },
     {
       "_base": "en",
       "en": "Note: Your username is visible on sites you create",
-      "sw": ""
+      "sw": "",
+      "fr": "Note : Votre nom d'utilisateur est visible sur les sites que vous créez"
     },
     {
       "_base": "en",
       "en": "Create",
-      "sw": ""
+      "sw": "",
+      "fr": "Créer"
     },
     {
       "_base": "en",
       "en": "Status for Site {0}",
-      "sw": ""
+      "sw": "",
+      "fr": "Statut pour le site {0}"
     },
     {
       "_base": "en",
       "en": "Status of Site",
-      "sw": ""
+      "sw": "",
+      "fr": "Statut du site"
     },
     {
       "_base": "en",
-      "en": "Lat/lng: ",
-      "sw": ""
+      "en": "Lat/lng:",
+      "sw": "",
+      "fr": "Latitude/longitude"
     },
     {
       "_base": "en",
       "en": "View on Map",
-      "sw": ""
+      "sw": "",
+      "fr": "Vue sur la carte"
     },
     {
       "_base": "en",
       "en": "Edit Site {0}",
-      "sw": ""
+      "sw": "",
+      "fr": "Éditer le site {0}"
     },
     {
       "_base": "en",
       "en": "Select site type",
-      "sw": ""
+      "sw": "",
+      "fr": "Sélectionner le type de site"
     },
     {
       "_base": "en",
       "en": "Select optional site subtype",
-      "sw": ""
+      "sw": "",
+      "fr": "Sélectionner un sous-type de site optionnel"
     },
     {
       "_base": "en",
       "en": "Enter site location",
-      "sw": ""
+      "sw": "",
+      "fr": "Entrer l'emplacement du site"
     },
     {
       "_base": "en",
       "en": "Other (please specify)",
-      "sw": ""
+      "sw": "",
+      "fr": "Autre (veuillez SVP préciser)"
     },
     {
       "_base": "en",
       "en": "Pump/lifting device",
-      "sw": ""
+      "sw": "",
+      "fr": "Dispositif pompe/levage"
     },
     {
       "_base": "en",
       "en": "Powered by",
-      "sw": ""
+      "sw": "",
+      "fr": "Alimenté par"
     },
     {
       "_base": "en",
       "en": "Drilling method",
-      "sw": ""
+      "sw": "",
+      "fr": "Méthode de perçage"
     },
     {
       "_base": "en",
       "en": "Supply",
-      "sw": ""
+      "sw": "",
+      "fr": "Approvisionnement"
     },
     {
       "_base": "en",
       "en": "Treatment works",
-      "sw": ""
+      "sw": "",
+      "fr": "Traitement fonctionne"
     },
     {
       "_base": "en",
       "en": "Pit emptying",
-      "sw": ""
+      "sw": "",
+      "fr": "Vidange des fosses"
     },
     {
       "_base": "en",
       "en": "Treatment",
-      "sw": ""
+      "sw": "",
+      "fr": "Traitement"
     },
     {
       "_base": "en",
       "en": "Set As Cover",
-      "sw": ""
+      "sw": "",
+      "fr": "Conçu comme couverture"
     },
     {
       "_base": "en",
       "en": "meters",
-      "sw": ""
+      "sw": "",
+      "fr": "mètres"
     },
     {
       "_base": "en",
       "en": "Current Location",
-      "sw": ""
+      "sw": "",
+      "fr": "Emplacement actuel"
     },
     {
       "_base": "en",
       "en": "Use Map",
-      "sw": ""
+      "sw": "",
+      "fr": "Utiliser la carte"
     },
     {
       "_base": "en",
       "en": "Water point",
-      "sw": ""
+      "sw": "",
+      "fr": "Point d'eau"
     },
     {
       "_base": "en",
       "en": "Protected dug well",
-      "sw": ""
+      "sw": "",
+      "fr": "Puits creusé protégé"
     },
     {
       "_base": "en",
       "en": "Unprotected dug well",
-      "sw": ""
+      "sw": "",
+      "fr": "Puits creusé non protégé"
     },
     {
       "_base": "en",
       "en": "Borehole or tubewell",
-      "sw": ""
+      "sw": "",
+      "fr": "Forage ou puits tubulaire"
     },
     {
       "_base": "en",
       "en": "Protected spring",
-      "sw": ""
+      "sw": "",
+      "fr": "Source protégée"
     },
     {
       "_base": "en",
       "en": "Unprotected spring",
-      "sw": ""
+      "sw": "",
+      "fr": "Source non protégée"
     },
     {
       "_base": "en",
       "en": "Rainwater",
-      "sw": ""
+      "sw": "",
+      "fr": "Eau de pluie"
     },
     {
       "_base": "en",
       "en": "Surface water",
-      "sw": ""
+      "sw": "",
+      "fr": "Eaux de surface"
     },
     {
       "_base": "en",
       "en": "Piped into dwelling",
-      "sw": ""
+      "sw": "",
+      "fr": "Eau courante à domicile"
     },
     {
       "_base": "en",
       "en": "Piped into yard/plot",
-      "sw": ""
+      "sw": "",
+      "fr": "Canalisée vers une cour/terrain"
     },
     {
       "_base": "en",
       "en": "Piped into public tap or basin",
-      "sw": ""
+      "sw": "",
+      "fr": "Canalisée vers un robinet ou un bassin public"
     },
     {
       "_base": "en",
       "en": "Bottled water",
-      "sw": ""
+      "sw": "",
+      "fr": "Eau en bouteille"
     },
     {
       "_base": "en",
       "en": "Tanker truck",
-      "sw": ""
+      "sw": "",
+      "fr": "Camion-citerne"
     },
     {
       "_base": "en",
       "en": "Cart with small tank/drum",
-      "sw": ""
+      "sw": "",
+      "fr": "Charrette surmontée d'un petit réservoir/fût"
     },
     {
       "_base": "en",
       "en": "Sanitation facility",
-      "sw": ""
+      "sw": "",
+      "fr": "Installation d'assainissement"
     },
     {
       "_base": "en",
       "en": "Flush/pour flush toilet",
-      "sw": ""
+      "sw": "",
+      "fr": "Chasse/toilette à chasse manuelle"
     },
     {
       "_base": "en",
       "en": "Ventilated improved pit latrine",
-      "sw": ""
+      "sw": "",
+      "fr": "Latrine améliorée à fosse autoventilée"
     },
     {
       "_base": "en",
       "en": "Pit latrine with slab",
-      "sw": ""
+      "sw": "",
+      "fr": "Latrine à fosse avec plaque"
     },
     {
       "_base": "en",
       "en": "Composting toilet",
-      "sw": ""
+      "sw": "",
+      "fr": "Cabinet d'aisance à compost"
     },
     {
       "_base": "en",
       "en": "Pit latrine without slab",
-      "sw": ""
+      "sw": "",
+      "fr": "Latrine à fosse sans plaque"
     },
     {
       "_base": "en",
       "en": "Hanging latrine",
-      "sw": ""
+      "sw": "",
+      "fr": "Latrine suspendue"
     },
     {
       "_base": "en",
       "en": "Bucket",
-      "sw": ""
+      "sw": "",
+      "fr": "Seau"
     },
     {
       "_base": "en",
       "en": "No facilities or bush or field",
-      "sw": ""
+      "sw": "",
+      "fr": "Pas de commodités ou de buisson ou de champs"
     },
     {
       "_base": "en",
       "en": "Household",
-      "sw": ""
+      "sw": "",
+      "fr": "Ménage"
     },
     {
       "_base": "en",
       "en": "Community",
-      "sw": ""
+      "sw": "",
+      "fr": "Communauté"
     },
     {
       "_base": "en",
       "en": "School",
-      "sw": ""
+      "sw": "",
+      "fr": "École"
     },
     {
       "_base": "en",
       "en": "Health facility",
-      "sw": ""
+      "sw": "",
+      "fr": "Centre de santé"
     },
     {
       "_base": "en",
       "en": "Your browser is refusing to store data for offline use. Please check that not in private browsing mode and reload page.",
-      "sw": ""
-    },
-    {
-      "_base": "en",
-      "en": "My Groups",
       "sw": "",
-      "_unused": true
+      "fr": "Votre navigateur refuse de stocker des données pour l'utilisation hors ligne. Veuillez SVP vérifier que vous n'êtes pas en mode de navigation privée et rechargez la page"
     },
     {
       "_base": "en",
       "en": "All Types",
-      "sw": ""
+      "sw": "",
+      "fr": "Tous les types"
     },
     {
       "_base": "en",
       "en": "Leave the group '{0}'? Only a group admin can re-add you.",
-      "sw": ""
+      "sw": "",
+      "fr": "Quitter le groupe '{0}' ? Seul un administrateur de groupe peut vous ajouter à nouveau"
     },
     {
       "_base": "en",
       "en": "Leave",
-      "sw": ""
+      "sw": "",
+      "fr": "Quitter"
     },
     {
       "_base": "en",
       "en": "You are not a member of any groups",
-      "sw": ""
+      "sw": "",
+      "fr": "Vous n'êtes membre d'aucun groupe"
     },
     {
       "_base": "en",
       "en": "A draft already exists for this survey",
-      "sw": ""
+      "sw": "",
+      "fr": "Un projet existe déjà pour cette enquête"
     },
     {
       "_base": "en",
       "en": "Use Existing Draft",
-      "sw": ""
+      "sw": "",
+      "fr": "Utiliser un projet déjà existant"
     },
     {
       "_base": "en",
       "en": "Several drafts already exists for this survey",
-      "sw": ""
+      "sw": "",
+      "fr": "Un projet existe déjà pour cette enquête"
     },
     {
       "_base": "en",
       "en": "Go to Drafts",
-      "sw": ""
+      "sw": "",
+      "fr": "Aller à projets"
     },
     {
       "_base": "en",
       "en": "Response has been finalized and cannot be edited",
-      "sw": ""
+      "sw": "",
+      "fr": "La réponse a été finalisée et ne peut être éditée"
     },
     {
       "_base": "en",
       "en": "Response is pending approval",
-      "sw": ""
+      "sw": "",
+      "fr": "La réponse est en attente d'approbation"
     },
     {
       "_base": "en",
       "en": "Submit",
-      "sw": ""
+      "sw": "",
+      "fr": "Soumettre"
     },
     {
       "_base": "en",
@@ -2513,7 +2250,8 @@
     {
       "_base": "en",
       "en": "Total Coliform",
-      "sw": ""
+      "sw": "",
+      "fr": "Coliformes totaux"
     },
     {
       "_base": "en",
@@ -2579,6 +2317,621 @@
       "_base": "en",
       "en": "Barcode scanning not supported on this platform",
       "sw": ""
+    },
+    {
+      "en": "<b>{0} images to upload</b>",
+      "es": "<b>{0} imágenes para cargar</b>",
+      "sw": "<b>{0} picha za kupakia </b>",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Add Water Source",
+      "es": "Agregar Fuente de Agua",
+      "sw": "Ongeza Chanzo cha Maji",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Map Water Sources",
+      "es": "Trazar un Mapa de los Fuentes de Agua",
+      "sw": "Ramani ya Vyanzo vya Maji",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "List Water Sources",
+      "es": "Hacer un Lista de los Fuentes de Agua",
+      "sw": "Orodha ya Vyanzo vya Maji",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Reset Local Storage",
+      "es": "Reinicializar el Almacenaje de Local",
+      "sw": "Anza upya hifadhi ya ndani",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "No geolocation available",
+      "es": "Geolocalización no disponible",
+      "sw": "Huduma ya kupatikana kijiografia haipo",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Cannot find location",
+      "es": "No se puede encontrar ubicación",
+      "sw": "Haiwezekani kupata eneo hili",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Invalid latitude",
+      "es": "Latitud no válido",
+      "sw": "Latitudo batili",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Invalid longitude",
+      "es": "Longitud no válido",
+      "sw": "Longitudo batili",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Create Water Source",
+      "es": "Crear Fuente de Agua",
+      "sw": "Unda Chanzo cha Maji",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Pending...",
+      "es": "Pendiente...",
+      "sw": "Inasubiri...",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "No Data",
+      "es": "No Hay Datos",
+      "sw": "Hakuna data",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "High",
+      "es": "Alto",
+      "sw": "Refu",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Water source",
+      "es": "Fuente de Agua",
+      "sw": "Chanzo cha Maji",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "E.Coli / 100mL",
+      "es": "E.Coli / 100mL",
+      "sw": "E.Coli / 100mL",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Admin",
+      "es": "Administración",
+      "sw": "Msimamizi",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Import Sources",
+      "es": "Importar Fuentes",
+      "sw": "Ingiza Vyanzo",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Error in data",
+      "es": "Error en los datos",
+      "sw": "Hitilafu katika data",
+      "_unused": true
+    },
+    {
+      "en": "New Source",
+      "es": "Fuente Nueva",
+      "sw": "Chanzo kipya",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Enter Source Type",
+      "es": "Introducir Tipo de Fuente",
+      "sw": "Chagua Aina ya Chanzo",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Privacy",
+      "es": "Privacidad",
+      "sw": "Usiri",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Water source is private",
+      "es": "Fuente de agua es privada",
+      "sw": "Chanzo cha Maji ni binafsi",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "This should only be used for sources that are not publically accessible",
+      "es": "Esto sólo debe usarse para fuentes que no son públicamente accesibles",
+      "sw": "Hii itumike kwa vyanzo ambavyo havitumiki na jamii pekee",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Set to current location?",
+      "es": "Establecer la ubicación actual?",
+      "sw": "Weka mahali ulipo sasa?",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Unable to generate source id. Please ensure that you have a connection or use Settings to obtain more before going out of connection range.",
+      "es": "Es incapaz de generar código fuente Por favor asegúrese de que tiene una conexión o utilizar las configuraciones para obtener más información antes de salir del rango de conexión",
+      "sw": "Haiwezekani kuzalisha namba ya pekee (id) ya chanzo. Tafadhali hakikisha umeunganishwa na mtandao au fungua Mipangilio ili kupata vyanzo zaidi kabla ya kutoka nje ya eneo lenye mawasiliano",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "TC",
+      "es": "TC",
+      "sw": "TC",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Start remote debugger (this will give developers temporary access to the app on your phone)?",
+      "es": "Iniciar el depurador remoto (esto le dará los desarrolladores acceso temporal a la aplicación en su teléfono)?",
+      "sw": "Anzisha kichambuzi cha mbali (waruhusu wabunifu wa programu wajaribu kutatua tatizo la simu yako kupitia Intaneti)?",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Debugger started with code {0}",
+      "es": "Depurador comenzado con código {0}",
+      "sw": "Kichambuzi kimeanzishwa na kanuni {0}",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Failed to load weinre",
+      "es": "Error al cargar weinre",
+      "sw": "Imeshindikana kupakia weinre",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Edit Source {0}",
+      "es": "Editar Fuente {0}",
+      "sw": "Hariri Chanzo {0}",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Nearby Sources",
+      "es": "Fuentes Cercanas",
+      "sw": "Vyanzo vilivyo Jirani",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Enter search text or ID of water source",
+      "es": "Introduzca el texto de búsqueda o el código de fuente de agua",
+      "sw": "Andika maandishi ya kutafuta au ID ya chanzo cha maji",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Source Map",
+      "es": "Mapa de los Fuentes",
+      "sw": "Ramani ya Vyanzo",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "All Sources",
+      "es": "Todas las Fuentes",
+      "sw": "Vyanzo Vyote",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Only My Organization",
+      "es": "Sólo mi organización",
+      "sw": "Shirika Langu Tu",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Note for Source {0}",
+      "es": "Nota para la fuente {0}",
+      "sw": "Noti ya Chanzo {0}",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Status of Water Source",
+      "es": "Estado de la Fuente de Agua",
+      "sw": "Hali ya Chanzo cha Maji",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Source not found",
+      "es": "Fuente no encontrada",
+      "sw": "Chanzo hakipatikani",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Delete Source",
+      "es": "Eliminar fuente",
+      "sw": "Futa Chanzo",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Add Note",
+      "es": "Agregar Nota",
+      "sw": "Ongeza Noti",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Permanently delete source?",
+      "es": "Eliminar permanentemente la fuente?",
+      "sw": "Futa chanzo kwa kudumu?",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Source deleted",
+      "es": "Fuente eliminada",
+      "sw": "Chanzo kimefutwa",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Survey form {0} not found",
+      "es": "Formulario de encuesta {0} no encontrado",
+      "sw": "Fomu ya Utafiti {0} haipatikani",
+      "_unused": true
+    },
+    {
+      "en": "List of Sources",
+      "es": "Lista de las Fuentes",
+      "sw": "Orodha ya Vyanzo",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Map of Sources",
+      "es": "Mapa de las Fuentes",
+      "sw": "Ramani ya Vyanzo",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Start New Water Test",
+      "es": "Comenzar Prueba de Agua Nueva",
+      "sw": "Anza Testi mpya ya Maji",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Recent Water Tests",
+      "es": "Pruebas de agua recientes",
+      "sw": "Testi za Maji za karibuni",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Start New Survey",
+      "es": "Comenzar Encuesta Nueva",
+      "sw": "Anza Utafiti mpya",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Recent Surveys",
+      "es": "Encuestas Recientes",
+      "sw": "Tafiti za hivi karibuni",
+      "_unused": true
+    },
+    {
+      "en": "Change user's password",
+      "es": "Cambiar la Contraseña de Usario",
+      "sw": "Badilisha neno la siri la mtumiaji",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Change Password",
+      "es": "Cambiar la Contraseña",
+      "sw": "Badilisha Neno la Siri",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Set user's organization",
+      "es": "Establecer la Organización del Usuario",
+      "sw": "Weka shirika la mtumiaji",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Move user's existing data to new organization",
+      "es": "Mover los datos existentes del usuario a la nueva organización",
+      "sw": "Hamisha data za mtumiaji zilizopo kwenda shirika jipya",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Change Organization",
+      "es": "Cambiar Organización",
+      "sw": "Badili shirika",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Crash!",
+      "es": "Choque!",
+      "sw": "Mvurugiko!",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Select type of survey to start",
+      "es": "Seleccione el tipo de encuesta para comenzar",
+      "sw": "Chagua aina ya utafiti wa kuanza",
+      "_unused": true
+    },
+    {
+      "en": "Note: Your username is visible on water sources you create",
+      "es": "Nota: Su nombre de usuario es visible en las fuentes de agua que se crea",
+      "sw": "Noti: Jina lako la utumiaji linaonekana katika vyanzo vya maji unavyounda",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "ID:",
+      "es": "ID:",
+      "sw": "ID:",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Edit Source",
+      "es": "Editar fuente",
+      "sw": "Hariri Chanzo",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Completed",
+      "es": "Completado",
+      "sw": "Imekamilika",
+      "_unused": true
+    },
+    {
+      "en": "Offline Source Creation",
+      "es": "Creación de Fuente sin Conexión",
+      "sw": "Uundaji wa Vyanzo bila Intaneti",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Number of sources that can be created offline:",
+      "es": "Número de fuentes que se pueden crear sin conexión",
+      "sw": "Idadi ya vyanzo inayoweza kuundwa bila kuunganishwa na Intaneti",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Select Source",
+      "es": "Seleccionar fuente",
+      "sw": "Chagua Chanzo",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Source",
+      "es": "Fuente",
+      "sw": "Chanzo",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "See the map for a global view if no sources are found.",
+      "es": "Vea el mapa para obtener una vista global si no encuentra fuentes",
+      "sw": "Angalia ramani kwa muonekano wa ulimwengu kama hakuna vyanzo vinanvyoonekana",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Set",
+      "es": "Fijar",
+      "sw": "Weka",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "en": "Source {0}",
+      "es": "Fuente {0}",
+      "sw": "Chanzo {0}",
+      "_base": "en",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Username must be composed of letters, numbers, spaces, period and dash and must be at least 7 characters long. It must start with a letter.",
+      "es": "",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Low GPS Accuracy",
+      "es": "",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Very Low GPS Accuracy. Waiting for better signal...",
+      "es": "",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Setting Location...",
+      "es": "",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "m",
+      "es": "",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "N/A",
+      "es": "",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "<b>{0} records to upload</b>",
+      "es": "",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "No surveys available. Please contact info@mwater.co to learn how to set one up",
+      "es": "",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Status for Source {0}",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Ok",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Working...",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Trying...",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Very Low GPS Accuracy",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Very low GPS Accuracy",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Very Low GPS Accuracy ±{0}m",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Low GPS Accuracy ±{0}m",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Good GPS Accuracy ±{0}m",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Very low GPS Accuracy...",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Low GPS Accuracy...",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Very low GPS Accuracy (±{0}m)...",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Low GPS Accuracy (±{0}m)...",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Create Site",
+      "sw": "",
+      "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "My Groups",
+      "sw": "",
+      "_unused": true
     }
   ]
 }
