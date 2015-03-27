@@ -1874,7 +1874,8 @@
       "_base": "en",
       "en": "Lat/lng:",
       "sw": "",
-      "fr": "Latitude/longitude"
+      "fr": "Latitude/longitude",
+      "_unused": true
     },
     {
       "_base": "en",
@@ -2215,37 +2216,44 @@
     {
       "_base": "en",
       "en": "Unable to sign in. Please check that you are connected to Internet",
-      "sw": ""
+      "sw": "",
+      "fr": ""
     },
     {
       "_base": "en",
       "en": "Groups",
-      "sw": ""
+      "sw": "",
+      "fr": ""
     },
     {
       "_base": "en",
       "en": "Sign in with Google",
-      "sw": ""
+      "sw": "",
+      "fr": ""
     },
     {
       "_base": "en",
       "en": "Sign in with Facebook",
-      "sw": ""
+      "sw": "",
+      "fr": ""
     },
     {
       "_base": "en",
       "en": "Sign in with Windows Live",
-      "sw": ""
+      "sw": "",
+      "fr": ""
     },
     {
       "_base": "en",
       "en": "-- or --",
-      "sw": ""
+      "sw": "",
+      "fr": ""
     },
     {
       "_base": "en",
       "en": "Logout of app? You will need an internet connection to log back in.",
-      "sw": ""
+      "sw": "",
+      "fr": ""
     },
     {
       "_base": "en",
@@ -2256,67 +2264,80 @@
     {
       "_base": "en",
       "en": "Anyone can see and edit the site",
-      "sw": ""
+      "sw": "",
+      "fr": ""
     },
     {
       "_base": "en",
       "en": "Anyone can see the site, but only you or your group can see and edit it",
-      "sw": ""
+      "sw": "",
+      "fr": ""
     },
     {
       "_base": "en",
       "en": "Only you or your group can see or edit site",
-      "sw": ""
+      "sw": "",
+      "fr": ""
     },
     {
       "_base": "en",
       "en": "{0} images to upload",
-      "sw": ""
+      "sw": "",
+      "fr": ""
     },
     {
       "_base": "en",
       "en": "Test Barcode Scanner",
-      "sw": ""
+      "sw": "",
+      "fr": ""
     },
     {
       "_base": "en",
       "en": "Very Low GPS Signal ±{0}m",
-      "sw": ""
+      "sw": "",
+      "fr": "Signal du GPS très faible ±{0}m"
     },
     {
       "_base": "en",
       "en": "Low GPS Signal ±{0}m",
-      "sw": ""
+      "sw": "",
+      "fr": "Signal du GPS faible ±{0}m"
     },
     {
       "_base": "en",
       "en": "Good GPS Signal ±{0}m",
-      "sw": ""
+      "sw": "",
+      "fr": "Bonne signal du GPS ±{0}m"
     },
     {
       "_base": "en",
       "en": "Very weak GPS signal (±{0}m)...",
-      "sw": ""
+      "sw": "",
+      "fr": "Signal du GPS très faible (±{0}m)"
     },
     {
       "_base": "en",
       "en": "Weak GPS signal (±{0}m)...",
-      "sw": ""
+      "sw": "",
+      "fr": "Signal du GPS faible (±{0}m)"
     },
     {
       "_base": "en",
       "en": "Loading survey...",
-      "sw": ""
+      "sw": "",
+      "fr": ""
     },
     {
       "_base": "en",
       "en": "Scan",
-      "sw": ""
+      "sw": "",
+      "fr": ""
     },
     {
       "_base": "en",
       "en": "Barcode scanning not supported on this platform",
-      "sw": ""
+      "sw": "",
+      "fr": ""
     },
     {
       "en": "<b>{0} images to upload</b>",
@@ -2932,6 +2953,18 @@
       "en": "My Groups",
       "sw": "",
       "_unused": true
+    },
+    {
+      "_base": "en",
+      "en": "Update Status",
+      "fr": "Mettre à jour le statut",
+      "sw": ""
+    },
+    {
+      "_base": "en",
+      "en": "Lat/lng: ",
+      "fr": "Lat/lng : ",
+      "sw": ""
     }
   ]
 }
