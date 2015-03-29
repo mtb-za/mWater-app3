@@ -2217,43 +2217,43 @@
       "_base": "en",
       "en": "Unable to sign in. Please check that you are connected to Internet",
       "sw": "",
-      "fr": ""
+      "fr": "Incapable de vous connecter. SVP verifier votre connection Internet"
     },
     {
       "_base": "en",
       "en": "Groups",
       "sw": "",
-      "fr": ""
+      "fr": "Groupes"
     },
     {
       "_base": "en",
       "en": "Sign in with Google",
       "sw": "",
-      "fr": ""
+      "fr": "Connectez-vous avec Google"
     },
     {
       "_base": "en",
       "en": "Sign in with Facebook",
       "sw": "",
-      "fr": ""
+      "fr": "Connectez-vous avec Facebook"
     },
     {
       "_base": "en",
       "en": "Sign in with Windows Live",
       "sw": "",
-      "fr": ""
+      "fr": "Connectez-vous avec Windows Live"
     },
     {
       "_base": "en",
       "en": "-- or --",
       "sw": "",
-      "fr": ""
+      "fr": "-- ou --"
     },
     {
       "_base": "en",
       "en": "Logout of app? You will need an internet connection to log back in.",
       "sw": "",
-      "fr": ""
+      "fr": "Fermeture de session? Vous allez avoir besoin d'une connection Internet pour vous reconnecter"
     },
     {
       "_base": "en",
@@ -2265,25 +2265,25 @@
       "_base": "en",
       "en": "Anyone can see and edit the site",
       "sw": "",
-      "fr": ""
+      "fr": "Tout le monde peut voir et modifier le site"
     },
     {
       "_base": "en",
       "en": "Anyone can see the site, but only you or your group can see and edit it",
       "sw": "",
-      "fr": ""
+      "fr": "Tout le monde peut voir le site, mais vous seul ou votre groupe peuvent le modifier"
     },
     {
       "_base": "en",
       "en": "Only you or your group can see or edit site",
       "sw": "",
-      "fr": ""
+      "fr": "Seulement vous ou votre groupe peuvent voir ou modifier le site"
     },
     {
       "_base": "en",
       "en": "{0} images to upload",
       "sw": "",
-      "fr": ""
+      "fr": "{0} images à télécharger"
     },
     {
       "_base": "en",
