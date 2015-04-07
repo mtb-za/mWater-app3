@@ -216,6 +216,7 @@ gulp.task 'bump_version', run('npm version patch')
 
 # Individual deployment tasks
 gulp.task 'deploy_app_mwater_co', -> deployS3('app-mwater-co')
+gulp.task 'deploy_trainingapp_mwater_co', -> deployS3('trainingapp.mwater.co')
 gulp.task 'deploy_app_mwater_org', -> deployS3('app.mwater.org')
 gulp.task 'deploy_beta_mwater_co', -> deployS3('beta.mwater.co')
 gulp.task 'deploy_demo_mwater_co', -> deployS3('demo.mwater.co')
@@ -227,6 +228,7 @@ gulp.task 'deploy', gulp.series([
   'build'
   'deploy_app_mwater_co'
   'deploy_app_mwater_org'
+  'deploy_trainingapp_mwater_co'
   ])
 
 gulp.task 'default', gulp.series('build')
