@@ -281,79 +281,67 @@ exports.createLoginContext = createLoginContext = (login, success) ->
     else
       imageManager = new SimpleImageManager(apiUrl)
 
-    withGroups = (groups) =>
-      groups = _.pluck(groups, "groupname")
+    baseContext = createBaseContext()
 
-      # Store in login
-      login.groups = groups
+    auth = new authModule.UserAuth(login.user, login.groups)
+    siteCodesManager = new siteCodes.SiteCodesManager({url: apiUrl + "site_codes?client=#{login.client}", storage: baseContext.storage})
+    dataSync = new syncModule.DataSync(db, siteCodesManager)
+    imageSync = new syncModule.ImageSync(imageManager)
 
-      baseContext = createBaseContext()
+    # Start synchronizing
+    dataSync.start(15*1000)  # Every 15 seconds
+    imageSync.start(30*1000)  # Every 30 seconds
 
-      auth = new authModule.UserAuth(login.user, login.groups)
-      siteCodesManager = new siteCodes.SiteCodesManager({url: apiUrl + "site_codes?client=#{login.client}", storage: baseContext.storage})
-      dataSync = new syncModule.DataSync(db, siteCodesManager)
-      imageSync = new syncModule.ImageSync(imageManager)
+    # Perform sync immediately
+    dataSync.perform()
+    imageSync.perform()
 
-      # Start synchronizing
-      dataSync.start(15*1000)  # Every 15 seconds
-      imageSync.start(30*1000)  # Every 30 seconds
+    stop = ->
+      dataSync.stop()
+      imageSync.stop()
 
-      # Perform sync immediately
-      dataSync.perform()
-      imageSync.perform()
-
-      stop = ->
-        dataSync.stop()
-        imageSync.stop()
-
-      # Create image acquirer with camera and imageManager if persistentFs and camera
-      if baseContext.camera? and persistentFs
-        imageAcquirer = {
-          acquire: (success, error) ->
-            baseContext.camera.takePicture (url) ->
-              # Add image
-              imageManager.addImage url, (id) =>
-                success(id)
-            , (err) ->
-              alert(T("Failed to take picture"))
-        }
-      else 
-        # Use ImageUploader
-        imageAcquirer = {
-          acquire: (success, error) ->
-            ImageUploader.acquire(apiUrl, login.client, success, error) 
-        }
-
-      ctx = _.extend baseContext, {
-        db: db 
-        imageManager: imageManager
-        auth: auth
-        login: login
-        siteCodesManager: siteCodesManager
-        dataSync: dataSync
-        imageSync: imageSync
-        stop: stop
-        imageAcquirer: imageAcquirer
+    # Create image acquirer with camera and imageManager if persistentFs and camera
+    if baseContext.camera? and persistentFs
+      imageAcquirer = {
+        acquire: (success, error) ->
+          baseContext.camera.takePicture (url) ->
+            # Add image
+            imageManager.addImage url, (id) =>
+              success(id)
+          , (err) ->
+            alert(T("Failed to take picture"))
+      }
+    else 
+      # Use ImageUploader
+      imageAcquirer = {
+        acquire: (success, error) ->
+          ImageUploader.acquire(apiUrl, login.client, success, error) 
       }
 
-      # Add function to asynchronously update groups list 
-      ctx.updateGroupsList = () ->
-        # Getting client returns groups in response
-        $.getJSON(apiUrl + "clients/" + login.client).done (response) =>
-          # Update login groups and save
-          login.groups = response.groups
-          loginUtils.setLogin(storage, login)
+    ctx = _.extend baseContext, {
+      db: db 
+      imageManager: imageManager
+      auth: auth
+      login: login
+      siteCodesManager: siteCodesManager
+      dataSync: dataSync
+      imageSync: imageSync
+      stop: stop
+      imageAcquirer: imageAcquirer
+    }
 
-          # Update auth
-          ctx.auth = new authModule.UserAuth(login.user, login.groups)
+    # Add function to asynchronously update groups list 
+    ctx.updateGroupsList = () ->
+      # Getting client returns groups in response
+      $.getJSON(apiUrl + "clients/" + login.client).done (response) =>
+        # Update login groups and save
+        login.groups = response.groups
+        loginUtils.setLogin(storage, login)
 
-      # Always update immediately
-      ctx.updateGroupsList()
+        # Update auth
+        ctx.auth = new authModule.UserAuth(login.user, login.groups)
 
-      success(ctx)
+    # Always update immediately
+    ctx.updateGroupsList()
 
-    # Only get groups once initially
-    withGroups = _.once(withGroups)
-
-    # Get list of groups from database
-    db.groups.find({ members: login.user }, { fields: { groupname: 1 } }).fetch(withGroups, error)
+    success(ctx)
