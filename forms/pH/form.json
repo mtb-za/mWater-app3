@@ -1,0 +1,17 @@
+{
+    "_id": "bfd55312bb6e41ebb8e543ea2fe417f8",
+    "type": "WaterTest",
+    "name": "pH (generic method)",
+    "desc": "Any method for measuring pH of water",
+    "code": "pHGeneric",
+    "_rev": 1,
+    "created": {
+        "on": "2015-04-14T10:05:50.050Z",
+        "by": "mtb-za"
+    },
+    "modified": {
+        "on": "2015-04-14T10:15:21.499Z",
+        "by": "mtb-za"
+    },
+    "user": "admin"
+}
